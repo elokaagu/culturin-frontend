@@ -1,0 +1,25 @@
+{
+  "name": "culturin-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.0.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "yarn": "^1.22.21"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^2.1.4",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.3"
+  },
+  "resolutions": {
+    "styled-components": "^6.1.1"
+  }
+}
