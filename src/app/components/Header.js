@@ -34,7 +34,12 @@ const Head = styled.div`
     font-weight: 600;
     font-size: 25px;
     color: white;
+    cursor: pointer;
+  }
 
+  p {
+    font-size: 20px;
+    color: white;
     cursor: pointer;
   }
 
