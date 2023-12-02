@@ -7,8 +7,6 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <Title>Culturin</Title>
-      <p>Where inspiration, meets exploration</p>
     </div>
   );
 }
