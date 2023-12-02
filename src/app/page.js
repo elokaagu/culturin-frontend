@@ -1,11 +1,16 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import styled from "styled-components";
+import React from "react";
 
 export default function Home() {
   return (
-    <main>
-      <h1>Culturin</h1>
-      <h2>Where inspiration, meets exploration</h2>
-    </main>
+    <div>
+      <Title>Culturin</Title>
+      <p>Where inspiration, meets exploration</p>
+    </div>
   );
 }
+
+export const Title = styled.h1`
+  color: white;
+`;
