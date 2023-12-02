@@ -25,4 +25,6 @@ export const Body = styled.div`
   margin-top: 60px;
   display: flex;
   flex-direction: row;
+  margin-left: 20px;
+  margin-right: 40px;
 `;

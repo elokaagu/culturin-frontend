@@ -21,8 +21,10 @@ const AppBody = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-left: 40px;
-  margin-right: 40px;
+  ${
+    "" /* margin-left: 40px;
+  margin-right: 40px; */
+  }
   line-height: 2;
 `;
 
@@ -36,9 +38,10 @@ const CardBody = styled.div`
   drop-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background: #1a1a1a;
   cursor: pointer;
-  wrap: wrap;
-  :hover {
-    background: white;
+
+  &:hover {
+    background-color: #4444;
+    transform: scale(0.99);
     transition: 0.3s ease-in-out;
   }
 `;
@@ -50,13 +53,16 @@ const CardText = styled.div`
 
   h1 {
     cursor: pointer;
+    font-size: 20px;
   }
 
   p {
     cursor: pointer;
+    font-size: 16px;
   }
 
   span {
     cursor: pointer;
+    font-size: 14px;
   }
 `;
