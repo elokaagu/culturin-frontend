@@ -2,17 +2,32 @@ import React from "react";
 import styled from "styled-components";
 import { Search } from "styled-icons/boxicons-regular";
 import { ChevronDown } from "styled-icons/boxicons-regular";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
     <Head>
       <HeaderLeft>
-        <h1>Culturin</h1>
+        <ul>
+          <li>
+            <Link href="/">
+              <Image
+                src="/culturin_logo.svg"
+                width={100}
+                height={100}
+                draggable={false}
+              />
+            </Link>
+          </li>
+        </ul>
       </HeaderLeft>
       <HeaderRight>
         <ul>
           <li>
-            <Search size="20" />
+            <Link href="/search">
+              <Search size="20" />
+            </Link>
           </li>
           <li>
             Countries <ChevronDown size="20" />
@@ -82,7 +97,13 @@ const Head = styled.div`
   }
 `;
 
-const HeaderLeft = styled.div``;
+const HeaderLeft = styled.div`
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+    transition: 0.3s ease-in-out;
+  }
+`;
 
 const HeaderRight = styled.div``;
 
