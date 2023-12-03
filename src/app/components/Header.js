@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { Search } from "styled-icons/boxicons-regular";
+import { ChevronDown } from "styled-icons/boxicons-regular";
 
 export default function Header() {
   return (
@@ -9,11 +11,18 @@ export default function Header() {
       </HeaderLeft>
       <HeaderRight>
         <ul>
-          <li>Countries</li>
+          <li>
+            <Search size="20" />
+          </li>
+          <li>
+            Countries <ChevronDown size="20" />
+          </li>
           <li>News</li>
           <li>TV</li>
           <li>Events</li>
-          <li>Sign In</li>
+          <li>
+            <Button>Sign In</Button>
+          </li>
         </ul>
       </HeaderRight>
     </Head>
@@ -76,3 +85,21 @@ const Head = styled.div`
 const HeaderLeft = styled.div``;
 
 const HeaderRight = styled.div``;
+
+const Button = styled.div`
+  border-radius: 999px;
+  width: 100%;
+  ${"" /* border: 1px solid white; */}
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+`;

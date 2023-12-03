@@ -12,6 +12,7 @@
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
+    "styled-icons": "^10.47.0",
     "yarn": "^1.22.21"
   },
   "devDependencies": {
