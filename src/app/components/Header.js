@@ -4,6 +4,15 @@ import { Search } from "styled-icons/boxicons-regular";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  Button,
+  DropdownSection,
+  DropdownItem,
+  cn,
+} from "@nextui-org/react";
 
 export default function Header() {
   return (
@@ -30,13 +39,31 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            Countries <ChevronDown size="20" />
+            {/* Countries <ChevronDown size="20" /> */}
+            <Dropdown
+              backdrop="blur"
+              style={{
+                width: "250px",
+              }}
+            >
+              <DropdownTrigger>
+                <Button variant="flat" color="white" disableAnimation="true">
+                  Countries <ChevronDown size="20" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Static Actions">
+                <DropdownItem>United States</DropdownItem>
+                <DropdownItem>Europe</DropdownItem>
+                <DropdownItem>Africa</DropdownItem>
+                <DropdownItem>Asia</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </li>
           <li>News</li>
           <li>TV</li>
           <li>Events</li>
           <li>
-            <Button>Sign In</Button>
+            <SigninButton>Sign In</SigninButton>
           </li>
         </ul>
       </HeaderRight>
@@ -107,7 +134,7 @@ const HeaderLeft = styled.div`
 
 const HeaderRight = styled.div``;
 
-const Button = styled.div`
+const SigninButton = styled.div`
   border-radius: 999px;
   width: 100%;
   ${"" /* border: 1px solid white; */}

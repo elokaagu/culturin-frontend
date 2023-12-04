@@ -22,9 +22,14 @@ export const Title = styled.h1`
 `;
 
 export const Body = styled.div`
-  margin-top: 60px;
+  ${"" /* margin-top: 60px; */}
   display: flex;
   flex-direction: row;
-  margin-left: 20px;
-  margin-right: 40px;
+  ${
+    "" /* margin-left: 20px;
+  margin-right: 40px; */
+  }
+  background: black;
+  width: 100%;
+  height: 100vh;
 `;

@@ -1,6 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+import * as React from "react";
+
+// 1. import `NextUIProvider` component
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

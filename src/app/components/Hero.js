@@ -20,12 +20,9 @@ export default function Hero() {
 const AppBody = styled.div`
   padding: 20px;
   display: flex;
+  margin-top: 20px;
   flex-direction: column;
   width: 100%;
-  ${
-    "" /* margin-left: 40px;
-  margin-right: 40px; */
-  }
   line-height: 2;
 `;
 
@@ -51,6 +48,7 @@ const CardText = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
+  color: white;
 
   h1 {
     cursor: pointer;
