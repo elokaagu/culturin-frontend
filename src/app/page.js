@@ -19,6 +19,11 @@ export default function Home() {
           <Hero />
           <Hero />
         </Row>
+        <Row>
+          <Hero />
+          <Hero />
+          <Hero />
+        </Row>
       </Body>
     </div>
   );
