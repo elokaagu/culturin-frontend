@@ -9,9 +9,16 @@ export default function Home() {
     <div>
       <Header />
       <Body>
-        <Hero />
-        <Hero />
-        <Hero />
+        <Row>
+          <Hero />
+          <Hero />
+          <Hero />
+        </Row>
+        <Row>
+          <Hero />
+          <Hero />
+          <Hero />
+        </Row>
       </Body>
     </div>
   );
@@ -23,13 +30,17 @@ export const Title = styled.h1`
 
 export const Body = styled.div`
   ${"" /* margin-top: 60px; */}
-  display: flex;
-  flex-direction: row;
   ${
     "" /* margin-left: 20px;
   margin-right: 40px; */
   }
   background: black;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+`;
+
+export const Row = styled.div`
+display: flex;
+flex direction: columnn;
+flex: 1;
 `;
