@@ -12,6 +12,7 @@ import {
   DropdownSection,
   cn,
 } from "@nextui-org/react";
+import { signIn } from "next-auth/react";
 
 const options = ["United States", "Europe", "Africa", "Asia"];
 
@@ -72,7 +73,9 @@ export default function Header() {
           <li>TV</li>
           <li>Events</li> */}
           <li>
-            <SigninButton>Sign In</SigninButton>
+            <SigninButton onClick={() => signIn("google")}>
+              Sign In
+            </SigninButton>
           </li>
         </ul>
       </HeaderRight>
