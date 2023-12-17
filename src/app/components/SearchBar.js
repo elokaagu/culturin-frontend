@@ -7,7 +7,7 @@ export default function SearchBar() {
     <Body>
       <SearchBox>
         <Search size="20" />
-        <p>Search</p>
+        <input type="text" name="search" placeholder="Search" />
       </SearchBox>
     </Body>
   );
@@ -34,6 +34,18 @@ const SearchBox = styled.div`
   color: white;
   font-weight: 600;
   cursor: pointer;
+
+  > input {
+    background: transparent;
+    margin-left: 10px;
+    outline: none;
+    width: 100%;
+    border: none;
+    height: 100%;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+  }
 
   p {
     margin-left: 10px;

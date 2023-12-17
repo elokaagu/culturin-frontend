@@ -68,9 +68,9 @@ export default function Header() {
               )}
             </DropdownContainer>
           </li>
-          <li>News</li>
+          {/* <li>News</li>
           <li>TV</li>
-          <li>Events</li>
+          <li>Events</li> */}
           <li>
             <SigninButton>Sign In</SigninButton>
           </li>
