@@ -1,13 +1,23 @@
+"use client";
 import React from "react";
 import styled from "styled-components";
 import { Search } from "styled-icons/boxicons-regular";
+import { useState } from "react";
 
 export default function SearchBar() {
+  const [searchQuery, setSearchQuery] = useState("");
+
   return (
     <Body>
       <SearchBox>
         <Search size="20" />
-        <input type="text" name="search" placeholder="Search" />
+        <input
+          type="text"
+          name="search"
+          placeholder="Search"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+        />
       </SearchBox>
     </Body>
   );
