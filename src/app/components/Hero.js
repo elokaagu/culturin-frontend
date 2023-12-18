@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import { device } from "../styles/breakpoints";
 
 export default function Hero() {
   return (
@@ -9,9 +10,9 @@ export default function Hero() {
       <CardText>
         <h1>Beats Beyond Borders</h1>
         <p>The Rise of Hip Hop In The Middle East </p>
-        <span>
+        {/* <span>
           <b>Read More</b>
-        </span>
+        </span> */}
       </CardText>
     </AppBody>
   );
@@ -42,6 +43,10 @@ const CardBody = styled.div`
     transform: scale(0.99);
     transition: 0.3s ease-in-out;
   }
+
+  @media ${device.laptop} {
+    height: 200px;
+  }
 `;
 
 const CardText = styled.div`
@@ -53,15 +58,27 @@ const CardText = styled.div`
   h1 {
     cursor: pointer;
     font-size: 20px;
+
+    @media ${device.laptop} {
+      font-size: 16px;
+    }
   }
 
   p {
     cursor: pointer;
     font-size: 16px;
+
+    @media ${device.laptop} {
+      font-size: 12px;
+    }
   }
 
   span {
     cursor: pointer;
     font-size: 14px;
+
+    @media ${device.laptop} {
+      font-size: 12px;
+    }
   }
 `;

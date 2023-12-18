@@ -3,14 +3,26 @@ import React from "react";
 import styled from "styled-components";
 import { Search } from "styled-icons/boxicons-regular";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
+
+  const onSearch = () => {
+    event.preventDefault();
+
+    const encodedSearchQuery = encodeURI(searchQuery);
+    router.push(`/search?q=${encodedSearchQuery}`);
+
+    console.log("current query", encodedSearchQuery);
+  };
 
   return (
     <Body>
       <SearchBox>
         <Search size="20" />
+        {/* <form onSubmit={onSearch}> */}
         <input
           type="text"
           name="search"
@@ -18,6 +30,7 @@ export default function SearchBar() {
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
         />
+        {/* </form> */}
       </SearchBox>
     </Body>
   );

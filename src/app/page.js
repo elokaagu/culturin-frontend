@@ -3,6 +3,7 @@ import styled from "styled-components";
 import React from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import { device } from "./styles/breakpoints";
 
 export default function Home() {
   // Initializing useState() hook
@@ -11,11 +12,6 @@ export default function Home() {
     <div>
       <Header />
       <Body>
-        <Row>
-          <Hero />
-          <Hero />
-          <Hero />
-        </Row>
         <Row>
           <Hero />
           <Hero />
@@ -50,4 +46,5 @@ export const Row = styled.div`
 display: flex;
 flex direction: columnn;
 flex: 1;
+
 `;
