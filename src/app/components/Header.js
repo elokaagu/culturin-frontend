@@ -97,6 +97,10 @@ const Head = styled.div`
     padding: 20px;
   }
 
+  @media ${device.mobile} {
+    padding: 20px;
+  }
+
   h1 {
     font-weight: 600;
     font-size: 25px;
