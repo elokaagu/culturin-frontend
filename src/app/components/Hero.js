@@ -22,9 +22,13 @@ const AppBody = styled.div`
   padding: 20px;
   display: flex;
   margin-top: 20px;
+  margin-left: 30px;
   flex-direction: column;
   width: 100%;
   line-height: 2;
+  @media ${device.laptop} {
+    margin-left: 20px;
+  }
 `;
 
 const CardBody = styled.div`

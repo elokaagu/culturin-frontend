@@ -13,6 +13,7 @@ import {
   cn,
 } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
+import { device } from "../styles/breakpoints";
 
 const options = ["United States", "Europe", "Africa", "Asia"];
 
@@ -90,8 +91,11 @@ const Head = styled.div`
   align-items: center;
   height: 60px;
   background: black;
-  padding: 50px;
+  padding: 40px;
   flex: 1;
+  @media ${device.laptop} {
+    padding: 20px;
+  }
 
   h1 {
     font-weight: 600;
