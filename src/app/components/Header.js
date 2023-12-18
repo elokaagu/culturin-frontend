@@ -127,6 +127,10 @@ const Head = styled.div`
     color: white;
     padding: 20px;
     cursor: pointer;
+
+    @media ${device.mobile} {
+      padding: 10px;
+    }
   }
 
   ul {

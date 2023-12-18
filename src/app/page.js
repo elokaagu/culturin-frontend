@@ -46,5 +46,9 @@ export const Row = styled.div`
 display: flex;
 flex direction: columnn;
 flex: 1;
+@media ${device.mobile} {
+  padding: 10px;
+
+  }
 
 `;

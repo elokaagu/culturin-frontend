@@ -29,6 +29,11 @@ const AppBody = styled.div`
   @media ${device.laptop} {
     margin-left: 20px;
   }
+  @media ${device.mobile} {
+    padding: 6px;
+    line-height: 1.8;
+    margin-left: 0px;
+  }
 `;
 
 const CardBody = styled.div`
@@ -50,6 +55,10 @@ const CardBody = styled.div`
 
   @media ${device.laptop} {
     height: 200px;
+  }
+
+  @media ${device.mobile} {
+    height: 150px;
   }
 `;
 
