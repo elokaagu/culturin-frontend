@@ -22,7 +22,7 @@ export default function Header() {
   const toggling = () => setIsOpen(!isOpen);
   const [selectedOption, setSelectedOption] = useState(null);
 
-  const onOptionClicked = (value) => () => {
+  const onOptionClicked = (value: React.SetStateAction<null>) => () => {
     setSelectedOption(value);
     setIsOpen(false);
     console.log(selectedOption);
