@@ -10,7 +10,7 @@ export default function SearchBar() {
   const router = useRouter();
 
   const onSearch = () => {
-    event.preventDefault();
+    // event.preventDefault();
 
     const encodedSearchQuery = encodeURI(searchQuery);
     router.push(`/search?q=${encodedSearchQuery}`);
