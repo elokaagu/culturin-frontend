@@ -3,7 +3,7 @@ const { nextui } = require("@nextui-org/react");
 
 module.exports = {
   content: [
-    "./app/**/*.{html,js}",
+    "./app/**/*.{html,js,ts,tsx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
 
