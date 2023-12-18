@@ -48,7 +48,5 @@ flex direction: columnn;
 flex: 1;
 @media ${device.mobile} {
   padding: 10px;
-
   }
-
 `;
