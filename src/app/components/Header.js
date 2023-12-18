@@ -15,7 +15,7 @@ import {
 import { signIn } from "next-auth/react";
 import { device } from "../styles/breakpoints";
 
-const options = ["United States", "Europe", "Africa", "Asia"];
+const options = ["Africa", "Asia", "North America", "South America", "Europe"];
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,9 +61,10 @@ export default function Header() {
               {isOpen && (
                 <DropdownListContainer>
                   <DropdownList>
-                    <DropdownItem>USA</DropdownItem>
                     <DropdownItem>Africa</DropdownItem>
                     <DropdownItem>Asia</DropdownItem>
+                    <DropdownItem>North America</DropdownItem>
+                    <DropdownItem>South America</DropdownItem>
                     <DropdownItem>Europe</DropdownItem>
                   </DropdownList>
                 </DropdownListContainer>
@@ -195,6 +196,25 @@ const DropdownList = styled("ul")`
   background: white;
   z-index: 100;
   border-radius: 10px;
+  animation: fadeIn 0.3s;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.5;
+    }
+  }
 `;
 
 const DropdownItem = styled("li")`
