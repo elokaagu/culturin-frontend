@@ -14,7 +14,11 @@ export const metadata = {
   description: "Where Inspiration Meets Exploration",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body className={inter.className}>
