@@ -4,12 +4,15 @@ import React from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import { device } from "./styles/breakpoints";
+import { options } from "./api/auth/[...nextauth]/options";
+import { getServerSession } from "next-auth";
 
 export default function Home() {
   // Initializing useState() hook
+  const session = getServerSession(options);
 
   return (
-    <div>
+    <>
       <Header />
       <Body>
         <Row>
@@ -23,7 +26,7 @@ export default function Home() {
           <Hero />
         </Row>
       </Body>
-    </div>
+    </>
   );
 }
 
