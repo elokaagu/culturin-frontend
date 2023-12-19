@@ -15,18 +15,6 @@ export default function Search() {
   );
 }
 
-export const Title = styled.h1`
-  color: white;
-`;
-
-export const Body = styled.div`
-  margin-top: 60px;
-  display: flex;
-  flex-direction: row;
-  margin-left: 20px;
-  margin-right: 40px;
-`;
-
 const AppBody = styled.div`
   padding: 20px;
   display: flex;

@@ -9,7 +9,7 @@ import { getServerSession } from "next-auth";
 
 export default function Home() {
   // Initializing useState() hook
-  const session = getServerSession(options);
+  // const session = getServerSession(options);
 
   return (
     <>
@@ -30,11 +30,7 @@ export default function Home() {
   );
 }
 
-export const Title = styled.h1`
-  color: white;
-`;
-
-export const Body = styled.div`
+const Body = styled.div`
   ${"" /* margin-top: 60px; */}
   ${
     "" /* margin-left: 20px;
@@ -45,7 +41,7 @@ export const Body = styled.div`
   height: 100%;
 `;
 
-export const Row = styled.div`
+const Row = styled.div`
 display: flex;
 flex direction: columnn;
 flex: 1;

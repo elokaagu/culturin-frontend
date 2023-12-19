@@ -1,20 +1,14 @@
+"use client";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SessionProvider } from "next-auth/react";
-
 import "./styles/globals.css";
-
 import * as React from "react";
 import { Session } from "inspector";
 
 // 1. import `NextUIProvider` component
 
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata = {
-  title: "Culturin | Where Inspiration Meets Exploration",
-  description: "Where Inspiration Meets Exploration",
-};
 
 export default function RootLayout({
   children,
@@ -25,6 +19,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>Culturin | Where Inspiration Meets Exploration</title>
+        <meta
+          name="description"
+          content="Where Inspiration Meets Exploration"
+        />
+      </head>
       <body className={inter.className}>
         <SessionProvider session={session}>
           {children} <Analytics />
