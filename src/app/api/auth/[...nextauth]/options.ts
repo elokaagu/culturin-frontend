@@ -1,9 +1,15 @@
 import type { NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import nextAuth from "next-auth";
 
 export const options: NextAuthOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET as string,
+    }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
@@ -38,4 +44,15 @@ export const options: NextAuthOptions = {
   pages: {
     signIn: "/signin",
   },
+  // callbacks: {
+  //   async session({ session, token, user }) {
+  //     session.user.username = session.user.name
+  //       .split("")
+  //       .join("")
+  //       .toLocaleLowerCase();
+
+  //     session.user.uid = token.sub;
+  //     return session;
+  //   },
+  // },
 };

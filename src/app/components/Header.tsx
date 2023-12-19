@@ -76,7 +76,11 @@ export default function Header() {
           <li>TV</li>
           <li>Events</li> */}
           <li>
-            <SigninButton onClick={() => signIn("google")}>
+            <SigninButton
+              onClick={async () => {
+                await signIn();
+              }}
+            >
               Sign In
             </SigninButton>
           </li>
