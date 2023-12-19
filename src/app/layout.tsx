@@ -1,9 +1,11 @@
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
+import { SessionProvider } from "next-auth/react";
 
 import "./styles/globals.css";
 
 import * as React from "react";
+import { Session } from "inspector";
 
 // 1. import `NextUIProvider` component
 
@@ -16,13 +18,17 @@ export const metadata = {
 
 export default function RootLayout({
   children,
+  params: { session, ...params },
 }: {
   children: React.ReactNode;
+  params: any; // Replace 'any' with the appropriate type for 'params'
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children} <Analytics />
+        <SessionProvider session={session}>
+          {children} <Analytics />
+        </SessionProvider>
       </body>
     </html>
   );

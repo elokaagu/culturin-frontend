@@ -1,19 +1,25 @@
 import { getProviders, signIn as SignIntoProvider } from "next-auth/react";
 import styles from "../../../styles/SignIn.module.css";
 
+type Provider = {
+  id: string;
+  name: string;
+  type: string;
+};
+
 function signIn({ providers }: { providers: any }) {
   return (
     <>
       {Object.values(providers).map((provider) => (
-        <div key={provider.name as string} className={styles.container}>
+        <div key={(provider as Provider).name} className={styles.container}>
           <button
             onClick={() =>
-              SignIntoProvider(provider.id as string, {
+              SignIntoProvider((provider as Provider).id, {
                 callbackUrl: "/dashboard",
               })
             }
           >
-            Sign in with {provider.name}
+            Sign in with {(provider as Provider).name}
           </button>
         </div>
       ))}
