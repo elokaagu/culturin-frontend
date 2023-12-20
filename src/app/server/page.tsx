@@ -10,5 +10,5 @@ export default async function ServerPage() {
       <Home />
     </>;
   }
-  return redirect("/api/auth/signin?callbackUrl=/server");
+  return redirect("http://localhost:3000/api/auth/callback/google");
 }
