@@ -4,18 +4,8 @@ import { Search } from "styled-icons/boxicons-regular";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  Button,
-  DropdownSection,
-  cn,
-} from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import { device } from "../styles/breakpoints";
-
-const options = ["Africa", "Asia", "North America", "South America", "Europe"];
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +42,6 @@ export default function Header() {
               <SearchIcon size="20" />
             </Link>
           </li>
-          {/* Countries <ChevronDown size="20" /> */}
           <li>
             <DropdownContainer>
               <DropdownHeader onClick={toggling}>
