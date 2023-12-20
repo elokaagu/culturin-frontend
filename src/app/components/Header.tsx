@@ -95,7 +95,10 @@ const Head = styled.div`
   }
 
   @media ${device.mobile} {
-    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 20px;
   }
 
   h1 {
