@@ -9,13 +9,10 @@ export default function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
-  const onSearch = () => {
-    // event.preventDefault();
-
+  const onSearch = (event: React.FormEvent) => {
+    event.preventDefault();
     const encodedSearchQuery = encodeURI(searchQuery);
     router.push(`/search?q=${encodedSearchQuery}`);
-
-    console.log("current query", encodedSearchQuery);
   };
 
   return (
