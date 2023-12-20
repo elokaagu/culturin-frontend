@@ -15,7 +15,7 @@ export function GoogleSignInButton() {
           await signOut();
         }}
       >
-        {session?.user?.name}
+        {session?.user?.name?.split(" ")[0] || "Guest"}
       </SigninButton>
     );
   }
