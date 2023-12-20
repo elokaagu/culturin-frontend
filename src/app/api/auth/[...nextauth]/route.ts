@@ -1,34 +1,18 @@
-import NextAuth from "next-auth/next";
-import { options } from "./options";
+import NextAuth, { AuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 
-const handler = NextAuth(options);
+const authOptions: AuthOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET as string,
+    }),
+  ],
+  pages: {
+    signIn: "/signin",
+  },
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
-// export async function GET(request: Request) {
-//   const response = await handler(request);
-//   const session = await response.json();
-//   if (session.user) {
-//     return new Response(null, {
-//       status: 302,
-//       headers: {
-//         Location: "/",
-//       },
-//     });
-//   }
-//   return response;
-// }
-
-// export async function POST(request: Request) {
-//   const response = await handler(request);
-//   const session = await response.json();
-//   if (session.user) {
-//     return new Response(null, {
-//       status: 302,
-//       headers: {
-//         Location: "/",
-//       },
-//     });
-//   }
-//   return response;
-// }

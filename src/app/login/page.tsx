@@ -4,7 +4,7 @@ import React from "react";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import { device } from "../styles/breakpoints";
-import { options } from "../api/auth/[...nextauth]/options";
+// import { options } from "../api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { CredentialsForm } from "../components/CredentialsForm";
 import { GoogleSignInButton } from "../components/AuthButtons";
@@ -29,9 +29,5 @@ const AppBody = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100%;
-  ${
-    "" /* margin-left: 40px;
-  margin-right: 40px; */
-  }
   line-height: 2;
 `;

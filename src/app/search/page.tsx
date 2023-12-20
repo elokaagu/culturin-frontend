@@ -22,9 +22,5 @@ const AppBody = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100%;
-  ${
-    "" /* margin-left: 40px;
-  margin-right: 40px; */
-  }
   line-height: 2;
 `;

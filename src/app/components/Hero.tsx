@@ -10,9 +10,6 @@ export default function Hero() {
       <CardText>
         <h1>Beats Beyond Borders</h1>
         <p>The Rise of Hip Hop In The Middle East </p>
-        {/* <span>
-          <b>Read More</b>
-        </span> */}
       </CardText>
     </AppBody>
   );

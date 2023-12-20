@@ -4,7 +4,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { SessionProvider } from "next-auth/react";
 import "./styles/globals.css";
 import * as React from "react";
-import { Session } from "inspector";
 
 // 1. import `NextUIProvider` component
 

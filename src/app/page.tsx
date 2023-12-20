@@ -5,10 +5,10 @@ import React from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import { device } from "./styles/breakpoints";
-import {
-  loginIsRequiredServer,
-  options,
-} from "./api/auth/[...nextauth]/options";
+// import {
+//   loginIsRequiredServer,
+//   options,
+// } from "./api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import prisma from "../app/api/auth/[...nextauth]/prisma";
 
@@ -22,22 +22,22 @@ type Session = {
 };
 
 export default function Home() {
-  const [session, setSession] = React.useState<Session | null>(null);
+  // const [session, setSession] = React.useState<Session | null>(null);
 
-  React.useEffect(() => {
-    const fetchSession = async () => {
-      await loginIsRequiredServer();
-      const session = await getServerSession(options);
-      setSession(session as Session | null);
-    };
-    fetchSession();
-  }, []);
+  // React.useEffect(() => {
+  //   const fetchSession = async () => {
+  //     await loginIsRequiredServer();
+  //     const session = await getServerSession(options);
+  //     setSession(session as Session | null);
+  //   };
+  //   fetchSession();
+  // }, []);
 
   return (
     <>
       <Header />
       <Body>
-        <h1>Hey, {session?.user?.name}</h1>
+        <h1>Hey</h1>
         <Row>
           <Hero />
           <Hero />
