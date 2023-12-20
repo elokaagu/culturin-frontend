@@ -1,33 +1,32 @@
-"use client";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import { SessionProvider } from "next-auth/react";
 import "./styles/globals.css";
 import * as React from "react";
-
-// 1. import `NextUIProvider` component
+import SessionProvider from "./components/SessionProvider";
+import { getServerSession } from "next-auth";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
+export const metadata: Metadata = {
+  title: "Cultiurin",
+  description: "Where Inspiration Meets Exploration",
+};
+
+export default async function RootLayout({
   children,
-  params: { session, ...params },
 }: {
   children: React.ReactNode;
-  params: any; // Replace 'any' with the appropriate type for 'params'
 }) {
+  const session = await getServerSession();
+
   return (
     <html lang="en">
-      <head>
-        <title>Culturin | Where Inspiration Meets Exploration</title>
-        <meta
-          name="description"
-          content="Where Inspiration Meets Exploration"
-        />
-      </head>
       <body className={inter.className}>
         <SessionProvider session={session}>
-          {children} <Analytics />
+          <>
+            {children} <Analytics />
+          </>
         </SessionProvider>
       </body>
     </html>
