@@ -4,7 +4,6 @@ import React from "react";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import { device } from "../styles/breakpoints";
-// import { options } from "../api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { CredentialsForm } from "../components/CredentialsForm";
 import { GoogleSignInButton } from "../components/AuthButtons";
