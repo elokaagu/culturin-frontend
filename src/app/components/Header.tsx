@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { device } from "../styles/breakpoints";
+import { GoogleSignInButton } from "./AuthButtons";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,13 +66,14 @@ export default function Header() {
           <li>TV</li>
           <li>Events</li> */}
           <li>
-            <SigninButton
+            <GoogleSignInButton />
+            {/* <SigninButton
               onClick={async () => {
                 await signIn();
               }}
             >
               Sign In
-            </SigninButton>
+            </SigninButton> */}
           </li>
         </ul>
       </HeaderRight>
