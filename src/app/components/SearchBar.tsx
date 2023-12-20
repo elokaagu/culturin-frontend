@@ -22,15 +22,15 @@ export default function SearchBar() {
     <Body>
       <SearchBox>
         <Search size="20" />
-        {/* <form onSubmit={onSearch}> */}
-        <input
-          type="text"
-          name="search"
-          placeholder="Search"
-          value={searchQuery}
-          onChange={(event) => setSearchQuery(event.target.value)}
-        />
-        {/* </form> */}
+        <SearchForm onSubmit={onSearch}>
+          <SearchInput
+            type="text"
+            name="search"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+          />
+        </SearchForm>
       </SearchBox>
     </Body>
   );
@@ -58,18 +58,6 @@ const SearchBox = styled.div`
   font-weight: 600;
   cursor: pointer;
 
-  > input {
-    background: transparent;
-    margin-left: 10px;
-    outline: none;
-    width: 100%;
-    border: none;
-    height: 100%;
-    color: white;
-    font-weight: 600;
-    font-size: 18px;
-  }
-
   p {
     margin-left: 10px;
   }
@@ -78,4 +66,26 @@ const SearchBox = styled.div`
     opacity: 0.8;
     transition: 0.3s ease-in-out;
   }
+`;
+
+const SearchInput = styled.input`
+  background: transparent;
+  margin-left: 10px;
+  outline: none;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex: 2;
+  border: none;
+  height: 100%;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+`;
+
+const SearchForm = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
 `;
