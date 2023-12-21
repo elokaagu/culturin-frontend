@@ -10,7 +10,7 @@ import { Post, User } from "@prisma/client";
 const fetchPosts = async (url: string) => {
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Error("Something went wrong");
+    throw new Error("Ooops");
   }
 
   return response.json();
