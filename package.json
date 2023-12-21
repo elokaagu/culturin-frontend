@@ -26,6 +26,7 @@
     "styled": "^1.0.0",
     "styled-components": "^5.3.11",
     "styled-icons": "^10.47.0",
+    "swr": "^2.2.4",
     "yarn": "^1.22.21"
   },
   "devDependencies": {

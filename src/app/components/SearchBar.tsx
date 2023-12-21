@@ -3,15 +3,18 @@ import React from "react";
 import styled from "styled-components";
 import { Search } from "styled-icons/boxicons-regular";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SearchBar() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const search = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(
+    search ? search.get("q") : null
+  );
   const router = useRouter();
 
   const onSearch = (event: React.FormEvent) => {
     event.preventDefault();
-    const encodedSearchQuery = encodeURI(searchQuery);
+    const encodedSearchQuery = encodeURI(searchQuery || "");
     router.push(`/search?q=${encodedSearchQuery}`);
   };
 
@@ -24,7 +27,7 @@ export default function SearchBar() {
             type="text"
             name="search"
             placeholder="Search"
-            value={searchQuery}
+            value={searchQuery || ""}
             onChange={(event) => setSearchQuery(event.target.value)}
           />
         </SearchForm>
