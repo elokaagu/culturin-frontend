@@ -37,11 +37,11 @@ const Search = () => {
       <AppBody>
         <SearchBar />
         <>
-          <p>
+          <SearchResults>
             {data.posts.map((post) => (
               <>{post.content}</>
             ))}
-          </p>
+          </SearchResults>
         </>
       </AppBody>
     </div>
@@ -58,4 +58,20 @@ const AppBody = styled.div`
   height: 100vh;
   width: 100%;
   line-height: 2;
+`;
+
+const SearchResults = styled.div`
+  margin: 20px auto;
+
+  flex-direction: row;
+  align-items: center;
+  border-radius: 20px;
+  padding: 20px;
+  background-color: #262627;
+  font-weight: 400;
+  cursor: pointer;
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  color: white;
 `;

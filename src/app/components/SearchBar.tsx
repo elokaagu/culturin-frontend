@@ -18,6 +18,10 @@ export default function SearchBar() {
     router.push(`/search?q=${encodedSearchQuery}`);
   };
 
+  function handleReset() {
+    setSearchQuery("");
+  }
+
   return (
     <Body>
       <SearchBox>
@@ -29,6 +33,10 @@ export default function SearchBar() {
             placeholder="Search"
             value={searchQuery || ""}
             onChange={(event) => setSearchQuery(event.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleReset();
+            }}
+            autoComplete="off"
           />
         </SearchForm>
       </SearchBox>
