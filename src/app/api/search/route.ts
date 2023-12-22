@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../auth/[...nextauth]/prisma";
+// import prisma from "../auth/[...nextauth]/prisma";
 import { PrismaClient } from "@prisma/client";
 
 import { NextRequest, NextResponse } from "next/server";
+
+import prisma from "../../../../lib/prisma";
 
 export async function GET(request: NextRequest, response: NextResponse) {
   // const { q: query } = request.query;
