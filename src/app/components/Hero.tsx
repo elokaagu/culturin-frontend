@@ -74,6 +74,7 @@ const CardBody = styled.div`
 
   @media ${device.mobile} {
     height: 140px;
+    width: 100px;
   }
 `;
 
