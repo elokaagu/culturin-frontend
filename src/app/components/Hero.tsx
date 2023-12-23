@@ -22,7 +22,7 @@ const AppBody = styled.div`
   margin-right: 30px; */
   flex-direction: column;
   width: 100%;
-  line-height: 2;
+  line-height: 1.5;
   @media ${device.laptop} {
     margin-left: 20px;
   }
