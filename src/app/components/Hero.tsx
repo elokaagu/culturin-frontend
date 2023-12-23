@@ -46,7 +46,7 @@ const AppBody = styled.div`
   }
   @media ${device.mobile} {
     padding: 6px;
-    line-height: 1.8;
+    line-height: 1.5;
     margin-left: 0px;
   }
 `;
@@ -73,7 +73,7 @@ const CardBody = styled.div`
   }
 
   @media ${device.mobile} {
-    height: 150px;
+    height: 140px;
   }
 `;
 
@@ -125,6 +125,7 @@ const CardAuthor = styled.div`
   display: flex;
   pointer: cursor;
   flex-direction: row;
+  align-items: center;
 `;
 
 const AvatarContainer = styled.div`
