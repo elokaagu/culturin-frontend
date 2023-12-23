@@ -73,7 +73,7 @@ const CardBody = styled.div`
   }
 
   @media ${device.mobile} {
-    height: 120px;
+    height: 150px;
   }
 `;
 
@@ -90,6 +90,10 @@ const CardText = styled.div`
     @media ${device.laptop} {
       font-size: 16px;
     }
+
+    @media ${device.mobile} {
+      font-size: 14px;
+    }
   }
 
   p {
@@ -100,6 +104,10 @@ const CardText = styled.div`
     @media ${device.laptop} {
       font-size: 12px;
       color: grey;
+    }
+
+    @media ${device.mobile} {
+      font-size: 12px;
     }
   }
 
