@@ -36,8 +36,6 @@ export default function Home() {
           <Hero />
           <Hero />
           <Hero />
-          <Hero />
-          <Hero />
         </Row>
         <Row>
           <Hero />
