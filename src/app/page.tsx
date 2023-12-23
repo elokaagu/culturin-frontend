@@ -31,6 +31,18 @@ export default function Home() {
           <Hero />
           <Hero />
           <Hero />
+          <Hero />
+          <Hero />
+          <Hero />
+          <Hero />
+          <Hero />
+          <Hero />
+          <Hero />
+        </Row>
+        <Row>
+          <Hero />
+          <Hero />
+          <Hero />
         </Row>
       </Body>
     </>
@@ -50,6 +62,7 @@ const Body = styled.div`
 
 const Row = styled.div`
 display: flex;
+padding: 20px;
 flex direction: columnn;
 flex: 1;
 @media ${device.mobile} {

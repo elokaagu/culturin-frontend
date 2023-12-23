@@ -9,17 +9,17 @@ export default function Hero() {
       <CardBody />
       <CardText>
         <h1>Beats Beyond Borders</h1>
-        <p>The Rise of Hip Hop In The Middle East </p>
+        <p>elokaagu</p>
       </CardText>
     </AppBody>
   );
 }
 
 const AppBody = styled.div`
-  padding: 20px;
+  padding: 10px;
   display: flex;
-  margin-top: 20px;
-  margin-left: 30px;
+  /* margin-left: 30px;
+  margin-right: 30px; */
   flex-direction: column;
   width: 100%;
   line-height: 2;
@@ -77,9 +77,11 @@ const CardText = styled.div`
   p {
     cursor: pointer;
     font-size: 16px;
+    color: grey;
 
     @media ${device.laptop} {
       font-size: 12px;
+      color: grey;
     }
   }
 
