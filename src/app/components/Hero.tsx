@@ -73,7 +73,7 @@ const CardBody = styled.div`
   }
 
   @media ${device.mobile} {
-    height: 150px;
+    height: 120px;
   }
 `;
 
