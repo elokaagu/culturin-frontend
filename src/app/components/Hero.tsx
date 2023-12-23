@@ -2,6 +2,12 @@ import * as React from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { device } from "../styles/breakpoints";
+import { AvatarIcon } from "@nextui-org/react";
+
+const imageStyle = {
+  borderRadius: "50%",
+  // border: "1px solid grey",
+};
 
 export default function Hero() {
   return (
@@ -9,7 +15,19 @@ export default function Hero() {
       <CardBody />
       <CardText>
         <h1>Beats Beyond Borders</h1>
-        <p>elokaagu</p>
+        <CardAuthor>
+          <AvatarContainer>
+            <Image
+              src="/eloka.jpeg"
+              alt="elokaagu"
+              priority={true}
+              width={25}
+              height={25}
+              style={imageStyle}
+            />
+          </AvatarContainer>
+          <p>elokaagu</p>
+        </CardAuthor>
       </CardText>
     </AppBody>
   );
@@ -93,4 +111,15 @@ const CardText = styled.div`
       font-size: 12px;
     }
   }
+`;
+
+const CardAuthor = styled.div`
+  display: flex;
+  pointer: cursor;
+  flex-direction: row;
+`;
+
+const AvatarContainer = styled.div`
+  display: flex;
+  margin-right: 6px;
 `;
