@@ -16,7 +16,7 @@ export default function Hero() {
       <CardText>
         <h1>Beats Beyond Borders</h1>
         <CardAuthor>
-          <AvatarContainer>
+          {/* <AvatarContainer>
             <Image
               src="/eloka.jpeg"
               alt="elokaagu"
@@ -25,7 +25,7 @@ export default function Hero() {
               height={25}
               style={imageStyle}
             />
-          </AvatarContainer>
+          </AvatarContainer> */}
           <p>elokaagu</p>
         </CardAuthor>
       </CardText>

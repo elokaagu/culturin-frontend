@@ -42,16 +42,14 @@ export default function Header() {
       </HeaderCenter>
       <HeaderRight>
         <ul>
-          <li>
-            <Link href="/create">
-              <li>
-                <Plus size="20" /> <span />
-                Create
-              </li>
-            </Link>
+          <Link href="/create">
+            <li>
+              <Plus size="20" /> <span />
+              Create
+            </li>
+          </Link>
 
-            {/* <Link href="/search">Upload</Link> */}
-          </li>
+          {/* <Link href="/search">Upload</Link> */}
           <li>
             <DropdownContainer>
               <DropdownHeader onClick={toggling}>
@@ -162,9 +160,14 @@ const HeaderLeft = styled.div`
     opacity: 0.8;
     transition: 0.3s ease-in-out;
   }
+  flex: 0.33;
 `;
 
-const HeaderRight = styled.div``;
+const HeaderRight = styled.div`
+  /* flex: 0.33;
+  align-items: right; */
+  justify-content: space-between;
+`;
 
 const SigninButton = styled.div`
   border-radius: 999px;
