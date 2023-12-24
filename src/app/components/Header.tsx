@@ -7,6 +7,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { device } from "../styles/breakpoints";
 import { GoogleSignInButton } from "./AuthButtons";
+import SearchBar from "./SearchBar";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,13 +37,16 @@ export default function Header() {
           </li>
         </ul>
       </HeaderLeft>
+      <HeaderCenter>
+        <SearchBar />
+      </HeaderCenter>
       <HeaderRight>
         <ul>
-          <li>
+          {/* <li>
             <Link href="/search">
               <SearchIcon size="20" />
             </Link>
-          </li>
+          </li> */}
           <li>
             <DropdownContainer>
               <DropdownHeader onClick={toggling}>
@@ -241,4 +245,8 @@ const DropdownListContainer = styled.div`
     text-decoration: none;
     color: black;
   }
+`;
+
+const HeaderCenter = styled.div`
+  flex: 1;
 `;

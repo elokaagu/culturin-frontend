@@ -35,7 +35,6 @@ const Search = () => {
     <div>
       <Header />
       <AppBody>
-        <SearchBar />
         <>
           <SearchResults>
             {data.posts.map((post) => (
