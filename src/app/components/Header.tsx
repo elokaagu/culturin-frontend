@@ -98,7 +98,6 @@ const Head = styled.div`
   height: 60px;
   background: black;
   padding: 40px;
-  flex: 1;
   @media ${device.laptop} {
     padding: 20px;
   }
