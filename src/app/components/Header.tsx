@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Search } from "styled-icons/boxicons-regular";
+import { Plus, Search } from "styled-icons/boxicons-regular";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,11 +42,16 @@ export default function Header() {
       </HeaderCenter>
       <HeaderRight>
         <ul>
-          {/* <li>
-            <Link href="/search">
-              <SearchIcon size="20" />
+          <li>
+            <Link href="/create">
+              <li>
+                <Plus size="20" /> <span />
+                Create
+              </li>
             </Link>
-          </li> */}
+
+            {/* <Link href="/search">Upload</Link> */}
+          </li>
           <li>
             <DropdownContainer>
               <DropdownHeader onClick={toggling}>
