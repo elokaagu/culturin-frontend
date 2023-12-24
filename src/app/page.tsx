@@ -26,14 +26,18 @@ export default function Home() {
           <Hero />
           <Hero />
           <Hero />
-        </Row>
-        <Row>
-          <Hero />
-          <Hero />
           <Hero />
           <Hero />
         </Row>
         <Row>
+          <Hero />
+          <Hero />
+          <Hero />
+          <Hero />
+        </Row>
+        <Row>
+          <Hero />
+          <Hero />
           <Hero />
           <Hero />
           <Hero />
