@@ -46,8 +46,21 @@ export default function Home() {
           <GlobalStyles />
           <Body>
             <Switch>
-              <Toggle size={20} onClick={toggleTheme} />
+              <SwitchItem>
+                <p>Switch modes</p>
+              </SwitchItem>
+              <SwitchItem>
+                <Toggle size={20} onClick={toggleTheme} />
+              </SwitchItem>
             </Switch>
+
+            <Row>
+              <Hero />
+              <Hero />
+              <Hero />
+              <Hero />
+              <Hero />
+            </Row>
             <Row>
               <Hero />
               <Hero />
@@ -77,12 +90,6 @@ export default function Home() {
 }
 
 const Body = styled.div`
-  ${"" /* margin-top: 60px; */}
-  ${
-    "" /* margin-left: 20px;
-  margin-right: 40px; */
-  }
-  /* background: white; */
   background: ${(props) => props.theme.body};
   width: 100%;
   height: 100%;
@@ -101,5 +108,17 @@ flex: 1;
 `;
 
 const Switch = styled.div`
-  padding: 20px;
+  padding: 30px;
+  display: flex;
+  align-items: right;
+  position: fixed;
+  z-index: 200;
+  cursor: pointer;
+  flex: 1;
+  justify-content: flex-end;
+  margin-right: 30px;
+`;
+
+const SwitchItem = styled.div`
+  padding-right: 8px;
 `;

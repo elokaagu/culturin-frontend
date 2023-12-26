@@ -34,80 +34,77 @@ export default function Header() {
   };
 
   return (
-    <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      <>
-        <GlobalStyles />
-        <Head>
-          <HeaderLeft>
-            <ul>
-              <li>
-                <Link href="/">
-                  <Image
-                    src="/culturin_logo.svg"
-                    width={100}
-                    height={100}
-                    draggable={false}
-                    alt="culturin logo"
-                  />
-                </Link>
-              </li>
-            </ul>
-          </HeaderLeft>
-          <HeaderCenter>
-            <SearchBar />
-          </HeaderCenter>
-          <HeaderRight>
+    <>
+      <Head>
+        <HeaderLeft>
+          <ul>
             <li>
-              <Switch>
-                <Toggle size={20} onClick={toggleTheme} />
-              </Switch>
-            </li>
-            <ul>
-              <Link href="/create">
-                <li>
-                  <Plus size="20" /> <span />
-                  Create
-                </li>
+              <Link href="/">
+                <Image
+                  src="/culturin_logo.svg"
+                  width={100}
+                  height={100}
+                  draggable={false}
+                  alt="culturin logo"
+                />
               </Link>
-
-              {/* <Link href="/search">Upload</Link> */}
+            </li>
+          </ul>
+        </HeaderLeft>
+        <HeaderCenter>
+          <SearchBar />
+        </HeaderCenter>
+        <HeaderRight>
+          <li>
+            <Switch>
+              <Toggle size={20} onClick={toggleTheme} />
+            </Switch>
+          </li>
+          <ul>
+            <Link href="/create">
               <li>
-                <DropdownContainer>
-                  <DropdownHeader onClick={toggling}>
-                    Countries
-                    <ChevronDown size="20" />
-                  </DropdownHeader>
-                  {isOpen && (
-                    <DropdownListContainer>
-                      <DropdownList>
-                        <DropdownItem>Africa</DropdownItem>
-                        <DropdownItem>Asia</DropdownItem>
-                        <DropdownItem>North America</DropdownItem>
-                        <DropdownItem>South America</DropdownItem>
-                        <DropdownItem>Europe</DropdownItem>
-                      </DropdownList>
-                    </DropdownListContainer>
-                  )}
-                </DropdownContainer>
+                <Plus size="20" /> <span />
+                Create
               </li>
-              {/* <li>News</li>
+            </Link>
+
+            {/* <Link href="/search">Upload</Link> */}
+            <li>
+              <DropdownContainer>
+                <DropdownHeader onClick={toggling}>
+                  Countries
+                  <ChevronDown size="20" />
+                </DropdownHeader>
+                {isOpen && (
+                  <DropdownListContainer>
+                    <DropdownList>
+                      <DropdownItem>Africa</DropdownItem>
+                      <DropdownItem>Asia</DropdownItem>
+                      <DropdownItem>North America</DropdownItem>
+                      <DropdownItem>South America</DropdownItem>
+                      <DropdownItem>Europe</DropdownItem>
+                    </DropdownList>
+                  </DropdownListContainer>
+                )}
+              </DropdownContainer>
+            </li>
+            {/* <li>News</li>
           <li>TV</li>
           <li>Events</li> */}
-              <li>
-                <GoogleSignInButton />
-                {/* <SigninButton
+            <li>
+              <GoogleSignInButton />
+              {/* <SigninButton
               onClick={async () => {
                 await signIn();
               }}
             >
               Sign In
             </SigninButton> */}
-              </li>
-            </ul>
-          </HeaderRight>
-        </Head>
-      </>
-    </ThemeProvider>
+            </li>
+          </ul>
+        </HeaderRight>
+      </Head>
+    </>
   );
 }
 
@@ -117,8 +114,10 @@ const Head = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 60px;
+  /* position: fixed;
+  width: calc(100% - 80px); */
+  z-index: 100;
   background: black;
-
   padding: 40px;
   @media ${device.laptop} {
     padding: 20px;

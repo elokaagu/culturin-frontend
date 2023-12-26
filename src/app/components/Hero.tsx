@@ -36,6 +36,7 @@ export default function Hero() {
 const AppBody = styled.div`
   padding: 10px;
   display: flex;
+  margin-top: 60px;
   /* margin-left: 30px;
   margin-right: 30px; */
   flex-direction: column;
