@@ -45,14 +45,19 @@ export default function Home() {
         <>
           <GlobalStyles />
           <Body>
-            <Switch>
-              <SwitchItem>
-                <p>Switch modes</p>
-              </SwitchItem>
-              <SwitchItem>
-                <Toggle size={20} onClick={toggleTheme} />
-              </SwitchItem>
-            </Switch>
+            <Row>
+              <Title>
+                <h2>Explore</h2>
+                <Switch>
+                  <SwitchItem>
+                    <p>Switch modes</p>
+                  </SwitchItem>
+                  <SwitchItem>
+                    <Toggle size={20} onClick={toggleTheme} />
+                  </SwitchItem>
+                </Switch>
+              </Title>
+            </Row>
 
             <Row>
               <Hero />
@@ -108,7 +113,7 @@ flex: 1;
 `;
 
 const Switch = styled.div`
-  padding: 30px;
+  padding-top: 40px;
   display: flex;
   align-items: right;
   position: fixed;
@@ -121,4 +126,11 @@ const Switch = styled.div`
 
 const SwitchItem = styled.div`
   padding-right: 8px;
+`;
+
+const Title = styled.div`
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
 `;

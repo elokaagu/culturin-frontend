@@ -55,11 +55,11 @@ export default function Header() {
           <SearchBar />
         </HeaderCenter>
         <HeaderRight>
-          <li>
+          {/* <li>
             <Switch>
               <Toggle size={20} onClick={toggleTheme} />
             </Switch>
-          </li>
+          </li> */}
           <ul>
             <Link href="/create">
               <li>
