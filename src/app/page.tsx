@@ -1,12 +1,17 @@
 "use client";
 
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import { device } from "./styles/breakpoints";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
+import { Toggle } from "styled-icons/ionicons-outline";
 
 import prisma from "../app/api/auth/[...nextauth]/prisma";
+
+//Session Data
 
 type Session = {
   user: {
@@ -17,33 +22,56 @@ type Session = {
   // Add any other properties you expect 'session' to have
 };
 
+// Theme Provider
+
 export default function Home() {
+  // States
+
+  const [theme, setTheme] = useState("dark");
+
+  const isDarkTheme = theme === "dark";
+
+  // Toggle Theme
+
+  const toggleTheme = () => {
+    setTheme(isDarkTheme ? "light" : "dark");
+  };
+
+  // Return
   return (
     <>
       <Header />
-      <Body>
-        <Row>
-          <Hero />
-          <Hero />
-          <Hero />
-          <Hero />
-          <Hero />
-        </Row>
-        <Row>
-          <Hero />
-          <Hero />
-          <Hero />
-          <Hero />
-          <Hero />
-        </Row>
-        <Row>
-          <Hero />
-          <Hero />
-          <Hero />
-          <Hero />
-          <Hero />
-        </Row>
-      </Body>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <>
+          <GlobalStyles />
+          <Body>
+            <Switch>
+              <Toggle size={20} onClick={toggleTheme} />
+            </Switch>
+            <Row>
+              <Hero />
+              <Hero />
+              <Hero />
+              <Hero />
+              <Hero />
+            </Row>
+            <Row>
+              <Hero />
+              <Hero />
+              <Hero />
+              <Hero />
+              <Hero />
+            </Row>
+            <Row>
+              <Hero />
+              <Hero />
+              <Hero />
+              <Hero />
+              <Hero />
+            </Row>
+          </Body>
+        </>
+      </ThemeProvider>
     </>
   );
 }
@@ -54,9 +82,11 @@ const Body = styled.div`
     "" /* margin-left: 20px;
   margin-right: 40px; */
   }
-  background: black;
+  /* background: white; */
+  background: ${(props) => props.theme.body};
   width: 100%;
   height: 100%;
+  transition: all 0.25s ease;
 `;
 
 const Row = styled.div`
@@ -68,4 +98,8 @@ flex: 1;
   padding: 10px;
   overflow: scroll;
   }
+`;
+
+const Switch = styled.div`
+  padding: 20px;
 `;

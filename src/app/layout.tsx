@@ -1,10 +1,11 @@
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./styles/globals.css";
-import * as React from "react";
 import SessionProvider from "./components/SessionProvider";
 import { getServerSession } from "next-auth";
 import { Metadata } from "next";
+import React, { useState } from "react";
+import ThemeClient from "./styles/ThemeClient";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,13 +21,15 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession();
 
+  // Toggle Theme
+
   return (
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider session={session}>
-          <>
+          <ThemeClient>
             {children} <Analytics />
-          </>
+          </ThemeClient>
         </SessionProvider>
       </body>
     </html>

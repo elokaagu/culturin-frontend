@@ -82,7 +82,7 @@ const CardText = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
-  color: white;
+  color: ${(props) => props.theme.title};
 
   h1 {
     cursor: pointer;
@@ -100,7 +100,7 @@ const CardText = styled.div`
   p {
     cursor: pointer;
     font-size: 16px;
-    color: grey;
+    color: ${(props) => props.theme.subtitle};
 
     @media ${device.laptop} {
       font-size: 12px;

@@ -8,8 +8,21 @@ import { signIn } from "next-auth/react";
 import { device } from "../styles/breakpoints";
 import { GoogleSignInButton } from "./AuthButtons";
 import SearchBar from "./SearchBar";
+import { Toggle } from "styled-icons/ionicons-outline";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 
 export default function Header() {
+  const [theme, setTheme] = useState("light");
+
+  const isDarkTheme = theme === "dark";
+
+  // Toggle Theme
+
+  const toggleTheme = () => {
+    setTheme(isDarkTheme ? "light" : "dark");
+  };
+
   const [isOpen, setIsOpen] = useState(false);
   const toggling = () => setIsOpen(!isOpen);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -21,70 +34,80 @@ export default function Header() {
   };
 
   return (
-    <Head>
-      <HeaderLeft>
-        <ul>
-          <li>
-            <Link href="/">
-              <Image
-                src="/culturin_logo.svg"
-                width={100}
-                height={100}
-                draggable={false}
-                alt="culturin logo"
-              />
-            </Link>
-          </li>
-        </ul>
-      </HeaderLeft>
-      <HeaderCenter>
-        <SearchBar />
-      </HeaderCenter>
-      <HeaderRight>
-        <ul>
-          <Link href="/create">
+    <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+      <>
+        <GlobalStyles />
+        <Head>
+          <HeaderLeft>
+            <ul>
+              <li>
+                <Link href="/">
+                  <Image
+                    src="/culturin_logo.svg"
+                    width={100}
+                    height={100}
+                    draggable={false}
+                    alt="culturin logo"
+                  />
+                </Link>
+              </li>
+            </ul>
+          </HeaderLeft>
+          <HeaderCenter>
+            <SearchBar />
+          </HeaderCenter>
+          <HeaderRight>
             <li>
-              <Plus size="20" /> <span />
-              Create
+              <Switch>
+                <Toggle size={20} onClick={toggleTheme} />
+              </Switch>
             </li>
-          </Link>
+            <ul>
+              <Link href="/create">
+                <li>
+                  <Plus size="20" /> <span />
+                  Create
+                </li>
+              </Link>
 
-          {/* <Link href="/search">Upload</Link> */}
-          <li>
-            <DropdownContainer>
-              <DropdownHeader onClick={toggling}>
-                Countries
-                <ChevronDown size="20" />
-              </DropdownHeader>
-              {isOpen && (
-                <DropdownListContainer>
-                  <DropdownList>
-                    <DropdownItem>Africa</DropdownItem>
-                    <DropdownItem>Asia</DropdownItem>
-                    <DropdownItem>North America</DropdownItem>
-                    <DropdownItem>South America</DropdownItem>
-                    <DropdownItem>Europe</DropdownItem>
-                  </DropdownList>
-                </DropdownListContainer>
-              )}
-            </DropdownContainer>
-          </li>
-          {/* <li>News</li>
+              {/* <Link href="/search">Upload</Link> */}
+              <li>
+                <DropdownContainer>
+                  <DropdownHeader onClick={toggling}>
+                    Countries
+                    <ChevronDown size="20" />
+                  </DropdownHeader>
+                  {isOpen && (
+                    <DropdownListContainer>
+                      <DropdownList>
+                        <DropdownItem>Africa</DropdownItem>
+                        <DropdownItem>Asia</DropdownItem>
+                        <DropdownItem>North America</DropdownItem>
+                        <DropdownItem>South America</DropdownItem>
+                        <DropdownItem>Europe</DropdownItem>
+                      </DropdownList>
+                    </DropdownListContainer>
+                  )}
+                </DropdownContainer>
+              </li>
+              {/* <li>News</li>
           <li>TV</li>
           <li>Events</li> */}
-          <li>
-            <GoogleSignInButton />
-            {/* <SigninButton
+              <li>
+                <GoogleSignInButton />
+                {/* <SigninButton
               onClick={async () => {
                 await signIn();
               }}
             >
               Sign In
             </SigninButton> */}
-          </li>
-        </ul>
-      </HeaderRight>
-    </Head>
+              </li>
+            </ul>
+          </HeaderRight>
+        </Head>
+      </>
+    </ThemeProvider>
   );
 }
 
@@ -95,6 +118,7 @@ const Head = styled.div`
   align-items: center;
   height: 60px;
   background: black;
+
   padding: 40px;
   @media ${device.laptop} {
     padding: 20px;
@@ -257,3 +281,5 @@ const DropdownListContainer = styled.div`
 const HeaderCenter = styled.div`
   flex: 1;
 `;
+
+const Switch = styled.div``;
