@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import { AvatarIcon } from "@nextui-org/react";
+import ghosthouse from "../Images/ghosthouse.jpeg";
 
 const imageStyle = {
   borderRadius: "50%",
@@ -14,9 +15,12 @@ export default function Hero() {
     <AppBody>
       <CardBody>
         <Image
-          src={"/ghosthouse.jpeg"}
+          // src={"/ghosthouse.jpeg"}
+          src={ghosthouse}
           alt="ghosthouse"
           layout="fill"
+          placeholder="blur"
+          // blurDataURL="/ghosthouse.jpeg"
           objectFit="cover"
         />
       </CardBody>
