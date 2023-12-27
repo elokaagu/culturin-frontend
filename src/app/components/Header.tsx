@@ -11,6 +11,7 @@ import SearchBar from "./SearchBar";
 import { Toggle } from "styled-icons/ionicons-outline";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
+import Hamburger from "hamburger-react";
 
 export default function Header() {
   const [theme, setTheme] = useState("light");
@@ -103,6 +104,13 @@ export default function Header() {
             </li>
           </ul>
         </HeaderRight>
+        <HeaderRightMobile>
+          <ul>
+            <HamburgerMenu>
+              <Hamburger toggled={isOpen} toggle={toggling} size={20} />
+            </HamburgerMenu>
+          </ul>
+        </HeaderRightMobile>
       </Head>
     </>
   );
@@ -190,6 +198,9 @@ const HeaderRight = styled.div`
   /* flex: 0.33;
   align-items: right; */
   justify-content: space-between;
+  @media ${device.mobile} {
+    display: none;
+  }
 `;
 
 const SigninButton = styled.div`
@@ -224,7 +235,11 @@ const DropdownHeader = styled.div`
   flex-direction: row; */
 `;
 
-const DropdownContainer = styled("div")``;
+const DropdownContainer = styled("div")`
+  @media ${device.mobile} {
+    display: none;
+  }
+`;
 
 const DropdownList = styled("ul")`
   margin: 30px;
@@ -279,6 +294,22 @@ const DropdownListContainer = styled.div`
 
 const HeaderCenter = styled.div`
   flex: 1;
+  @media ${device.mobile} {
+    display: flex;
+  }
 `;
 
 const Switch = styled.div``;
+
+const HamburgerMenu = styled.div`
+  display: none;
+  @media ${device.mobile} {
+    display: flex;
+  }
+`;
+
+const HeaderRightMobile = styled.div`
+  /* flex: 0.33;
+  align-items: right; */
+  justify-content: space-between;
+`;
