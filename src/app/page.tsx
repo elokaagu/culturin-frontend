@@ -8,6 +8,7 @@ import { device } from "./styles/breakpoints";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { Toggle } from "styled-icons/ionicons-outline";
+import Sidebar from "./components/Sidebar";
 
 import prisma from "../app/api/auth/[...nextauth]/prisma";
 
@@ -44,7 +45,11 @@ export default function Home() {
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <>
           <GlobalStyles />
+
           <Body>
+            <SidebarMobile>
+              <Sidebar />
+            </SidebarMobile>
             <Row>
               <Title>
                 <h2>Explore</h2>
@@ -133,4 +138,11 @@ const Title = styled.div`
   padding-right: 20px;
   display: flex;
   flex-direction: column;
+`;
+
+const SidebarMobile = styled.div`
+  display: none;
+  @media ${device.mobile} {
+    display: none;
+  }
 `;

@@ -12,6 +12,7 @@ import { Toggle } from "styled-icons/ionicons-outline";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import Hamburger from "hamburger-react";
+import Sidebar from "./Sidebar";
 
 export default function Header() {
   const [theme, setTheme] = useState("light");
@@ -107,7 +108,15 @@ export default function Header() {
         <HeaderRightMobile>
           <ul>
             <HamburgerMenu>
-              <Hamburger toggled={isOpen} toggle={toggling} size={20} />
+              <Hamburger
+                rounded
+                toggled={isOpen}
+                toggle={toggling}
+                size={20}
+                onToggle={() => {
+                  console.log("toggle");
+                }}
+              />
             </HamburgerMenu>
           </ul>
         </HeaderRightMobile>
@@ -311,5 +320,9 @@ const HamburgerMenu = styled.div`
 const HeaderRightMobile = styled.div`
   /* flex: 0.33;
   align-items: right; */
+  display: none;
+  @media ${device.mobile} {
+    display: flex;
+  }
   justify-content: space-between;
 `;
