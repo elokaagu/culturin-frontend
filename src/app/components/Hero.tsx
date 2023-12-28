@@ -92,8 +92,8 @@ const CardBody = styled.div`
   }
 
   @media ${device.mobile} {
-    height: 140px;
-    width: 110px;
+    height: 200px;
+    width: 150px;
   }
 `;
 
