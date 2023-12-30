@@ -55,9 +55,6 @@ export default function Home() {
                 <h2>Explore</h2>
                 <Switch>
                   <SwitchItem>
-                    <p>Switch modes</p>
-                  </SwitchItem>
-                  <SwitchItem>
                     <Toggle size={20} onClick={toggleTheme} />
                   </SwitchItem>
                 </Switch>
@@ -131,6 +128,9 @@ const Switch = styled.div`
 
 const SwitchItem = styled.div`
   padding-right: 8px;
+  position: fixed;
+  right: 40px;
+  bottom: 20px;
 `;
 
 const Title = styled.div`
