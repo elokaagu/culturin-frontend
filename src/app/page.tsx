@@ -52,13 +52,13 @@ export default function Home() {
             </SidebarMobile>
             <Row>
               <Title>
-                <h2>Explore</h2>
-                <Switch>
-                  <SwitchItem>
-                    <Toggle size={20} onClick={toggleTheme} />
-                  </SwitchItem>
-                </Switch>
+                <h3>Explore</h3>
               </Title>
+              <Switch>
+                <SwitchItem>
+                  <Toggle size={20} onClick={toggleTheme} />
+                </SwitchItem>
+              </Switch>
             </Row>
 
             <Row>
@@ -134,10 +134,15 @@ const SwitchItem = styled.div`
 `;
 
 const Title = styled.div`
-  padding-left: 20px;
+  margin: auto 0px;
+  padding-left: 30px;
+  padding-top: 20px;
   padding-right: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
 `;
 
 const SidebarMobile = styled.div`

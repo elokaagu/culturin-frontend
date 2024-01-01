@@ -74,17 +74,31 @@ export default function Header() {
             <li>
               <DropdownContainer>
                 <DropdownHeader onClick={toggling}>
-                  Countries
+                  Destinations
                   <ChevronDown size="20" />
                 </DropdownHeader>
                 {isOpen && (
                   <DropdownListContainer>
                     <DropdownList>
-                      <DropdownItem>Africa</DropdownItem>
-                      <DropdownItem>Asia</DropdownItem>
-                      <DropdownItem>North America</DropdownItem>
-                      <DropdownItem>South America</DropdownItem>
-                      <DropdownItem>Europe</DropdownItem>
+                      <DropdownItem>
+                        <Link href="/countries/africa">Africa</Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link href="/countries/asia">Asia</Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link href="/countries/europe">Europe</Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link href="/countries/north-america">
+                          North America
+                        </Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link href="/countries/south-america">
+                          South America
+                        </Link>
+                      </DropdownItem>
                     </DropdownList>
                   </DropdownListContainer>
                 )}
@@ -135,7 +149,11 @@ const Head = styled.div`
   width: calc(100% - 80px); */
   z-index: 100;
   background: black;
-  padding: 40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+
   @media ${device.laptop} {
     padding: 20px;
   }
@@ -282,6 +300,14 @@ const DropdownItem = styled("li")`
   list-style: none;
   color: black;
   width: 100%;
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  a:hover {
+    color: #4444;
+  }
 `;
 
 const DropdownListContainer = styled.div`

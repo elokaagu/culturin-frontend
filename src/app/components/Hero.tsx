@@ -25,7 +25,7 @@ export default function Hero() {
         />
       </CardBody>
       <CardText>
-        <h1>Mexico City</h1>
+        <h1>Tulum</h1>
         <CardAuthor>
           {/* <AvatarContainer>
             <Image
@@ -37,7 +37,7 @@ export default function Hero() {
               style={imageStyle}
             />
           </AvatarContainer> */}
-          <p>elokaagu</p>
+          <p>Mexico</p>
         </CardAuthor>
       </CardText>
     </AppBody>
