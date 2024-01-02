@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { Metadata } from "next";
 import React from "react";
 import ThemeClient from "./styles/ThemeClient";
+import Navbar from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 

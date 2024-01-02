@@ -35,6 +35,12 @@ export default function Header() {
     console.log(selectedOption);
   };
 
+  // const navigation = () => {
+  //   const [openSidebar, setOpenSidebar] = useState(false);
+  //   const toggle = () => {
+  //     setOpenSidebar(!openSidebar);
+  //   };
+
   return (
     <>
       <Head>
@@ -129,6 +135,7 @@ export default function Header() {
                 size={20}
                 onToggle={() => {
                   console.log("toggle");
+                  // <Sidebar setOpenSidebar={openSidebar} toggle={toggle} />
                 }}
               />
             </HamburgerMenu>

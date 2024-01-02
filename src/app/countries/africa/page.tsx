@@ -15,6 +15,7 @@ export default function Africa() {
           </CountriesTitle>
           <CountriesList>
             <p>Nigeria</p>
+            <p>Niger</p>
             <p>Kenya</p>
             <p>Ethiopia</p>
             <p>Uganda</p>
