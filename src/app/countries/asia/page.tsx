@@ -31,6 +31,7 @@ export default function Asia() {
 const AppBody = styled.div`
   padding: 40px;
   display: flex;
+  padding-top: 150px;
   flex: 1;
   align-items: left;
   background: black;

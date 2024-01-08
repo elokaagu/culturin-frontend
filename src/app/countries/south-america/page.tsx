@@ -36,6 +36,7 @@ const AppBody = styled.div`
   flex-direction: column;
   height: 100%;
   line-height: 2;
+  padding-top: 150px;
   color: white;
 `;
 

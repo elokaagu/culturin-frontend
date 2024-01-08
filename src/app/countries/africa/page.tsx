@@ -33,6 +33,7 @@ const AppBody = styled.div`
   padding: 40px;
   display: flex;
   flex: 1;
+  padding-top: 150px;
   align-items: left;
   background: black;
   flex-direction: column;

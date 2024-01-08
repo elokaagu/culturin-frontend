@@ -104,6 +104,8 @@ const CardBody = styled.div`
   drop-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background: #1a1a1a;
   cursor: pointer;
+  box-shadow: 0px 6px 8px rgba(25, 50, 47, 0.08),
+    0px 4px 4px rgba(18, 71, 52, 0.02), 0px 1px 16px rgba(18, 71, 52, 0.03);
 
   img {
     border-radius: 8px;
@@ -135,7 +137,7 @@ const CardText = styled.div`
 
   h1 {
     cursor: pointer;
-    font-size: 20px;
+    font-size: 16px;
 
     @media ${device.laptop} {
       font-size: 16px;
@@ -148,7 +150,7 @@ const CardText = styled.div`
 
   p {
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     color: ${(props) => props.theme.subtitle};
 
     @media ${device.laptop} {
