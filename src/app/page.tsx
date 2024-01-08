@@ -53,6 +53,8 @@ export default function Home() {
             <Row>
               <Title>
                 <h3>Explore</h3>
+
+                <p>Browse to find and collect inspirations</p>
               </Title>
               <Switch>
                 <SwitchItem>
@@ -61,20 +63,6 @@ export default function Home() {
               </Switch>
             </Row>
 
-            <Row>
-              <Hero />
-              <Hero />
-              <Hero />
-              <Hero />
-              <Hero />
-            </Row>
-            <Row>
-              <Hero />
-              <Hero />
-              <Hero />
-              <Hero />
-              <Hero />
-            </Row>
             <Row>
               <Hero />
               <Hero />
@@ -134,15 +122,20 @@ const SwitchItem = styled.div`
 `;
 
 const Title = styled.div`
-  margin: auto 0px;
+  margin: auto 10px;
   padding-left: 30px;
   padding-top: 20px;
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   width: 100%;
   cursor: pointer;
+
+  h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
 `;
 
 const SidebarMobile = styled.div`

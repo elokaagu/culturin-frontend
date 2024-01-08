@@ -4,30 +4,54 @@ import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import { AvatarIcon } from "@nextui-org/react";
 import ghosthouse from "../Images/ghosthouse.jpeg";
+import Link from "next/link";
 
 const imageStyle = {
   borderRadius: "50%",
   // border: "1px solid grey",
 };
 
+const data = [
+  {
+    city: "Enugu, Nigeria",
+    author: "elokaagu",
+    imageSrc: "/images/eloka1.jpg",
+  },
+  {
+    city: "Lisbon, Portugal",
+    author: "louisleonidas",
+    imageSrc: "/images/car1.jpg",
+  },
+  {
+    city: "LA, California",
+    author: "cynthia",
+    imageSrc: "/images/eloka1.jpg",
+  },
+  // Add more data objects as needed
+];
+
 export default function Hero() {
   return (
     <AppBody>
-      <CardBody>
-        <Image
-          // src={"/ghosthouse.jpeg"}
-          src={ghosthouse}
-          alt="ghosthouse"
-          layout="fill"
-          placeholder="blur"
-          // blurDataURL="/ghosthouse.jpeg"
-          objectFit="cover"
-        />
-      </CardBody>
-      <CardText>
-        <h1>Tulum</h1>
-        <CardAuthor>
-          {/* <AvatarContainer>
+      {data.map((cardData, index) => (
+        <Card key={index}>
+          <Link href="/posts">
+            <CardBody>
+              <Image
+                src={cardData.imageSrc}
+                alt={cardData.city}
+                layout="fill"
+                placeholder="blur"
+                objectFit="cover"
+                blurDataURL={cardData.imageSrc}
+              />
+            </CardBody>
+          </Link>
+
+          <CardText>
+            <h1>{cardData.city}</h1>
+            <CardAuthor>
+              {/* <AvatarContainer>
             <Image
               src="/eloka.jpeg"
               alt="elokaagu"
@@ -37,9 +61,11 @@ export default function Hero() {
               style={imageStyle}
             />
           </AvatarContainer> */}
-          <p>Mexico</p>
-        </CardAuthor>
-      </CardText>
+              <p>{cardData.author}</p>
+            </CardAuthor>
+          </CardText>
+        </Card>
+      ))}
     </AppBody>
   );
 }
@@ -47,7 +73,7 @@ export default function Hero() {
 const AppBody = styled.div`
   padding: 10px;
   display: flex;
-  margin-top: 60px;
+  margin-top: 20px;
   /* margin-left: 30px;
   margin-right: 30px; */
   flex-direction: column;
@@ -61,6 +87,10 @@ const AppBody = styled.div`
     line-height: 1.5;
     margin-left: 0px;
   }
+`;
+
+const Card = styled.div`
+  padding-bottom: 20px;
 `;
 
 const CardBody = styled.div`
