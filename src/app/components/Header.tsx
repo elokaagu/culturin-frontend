@@ -152,8 +152,8 @@ const Head = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 60px;
-  /* position: fixed;
-  width: calc(100% - 80px); */
+  position: fixed;
+  width: calc(100% - 60px);
   z-index: 100;
   background: black;
   padding-top: 40px;
