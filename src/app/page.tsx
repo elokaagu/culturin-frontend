@@ -141,6 +141,10 @@ const Title = styled.div`
     font-size: 20px;
     margin-bottom: 10px;
   }
+
+  @media ${device.mobile} {
+    padding-left: 0px;
+  }
 `;
 
 const SidebarMobile = styled.div`
