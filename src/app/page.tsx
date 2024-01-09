@@ -90,6 +90,10 @@ const Body = styled.div`
   height: 100%;
   padding-top: 150px;
   transition: all 0.25s ease;
+
+  @media ${device.mobile} {
+    padding-top: 100px;
+  }
 `;
 
 const Row = styled.div`

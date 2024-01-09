@@ -169,6 +169,7 @@ const Head = styled.div`
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 10px;
+    width: calc(100% - 20px);
     padding-right: 20px;
   }
 

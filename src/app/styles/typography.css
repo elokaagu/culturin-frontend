@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "New Spirit Condensed Regular";
+  src: url("./fonts/NewSpirit-Regular-Condensed.otf");
+  font-synthesis: none;
+}
+@font-face {
+  font-family: "New Spirit Condensed SemiBold";
+  src: url("./fonts/NewSpirit-SemiBold-Condensed.otf");
+  font-synthesis: none;
+}
+@font-face {
+  font-family: "New Spirit Condensed Bold";
+  src: url("./fonts/NewSpirit-Bold-Condensed.otf");
+  font-synthesis: none;
+}
+@font-face {
+  font-family: "New Spirit Condensed Light";
+  src: url("./fonts/NewSpirit-Light-Condensed.otf");
+  font-synthesis: none;
+}
