@@ -62,19 +62,13 @@ export default function Home() {
                 </SwitchItem>
               </Switch>
             </Row>
-
             <Row>
-              <Hero />
-              <Hero />
-              <Hero />
-              <Hero />
               <Hero />
             </Row>
             <Row>
               <Hero />
-              <Hero />
-              <Hero />
-              <Hero />
+            </Row>
+            <Row>
               <Hero />
             </Row>
           </Body>
@@ -101,6 +95,7 @@ display: flex;
 padding: 20px;
 flex direction: columnn;
 flex: 1;
+overflow: scroll;
 @media ${device.mobile} {
   padding: 10px;
   overflow: scroll;

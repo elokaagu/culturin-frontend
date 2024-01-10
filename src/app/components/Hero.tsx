@@ -2,9 +2,8 @@ import * as React from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { device } from "../styles/breakpoints";
-import { AvatarIcon } from "@nextui-org/react";
-import ghosthouse from "../Images/ghosthouse.jpeg";
 import Link from "next/link";
+import { CldImage } from "next-cloudinary";
 
 const imageStyle = {
   borderRadius: "50%",
@@ -15,17 +14,41 @@ const data = [
   {
     city: "Enugu, Nigeria",
     author: "elokaagu",
-    imageSrc: "/images/eloka1.jpg",
+    // imageSrc: "/images/eloka1.jpg",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/cxvaq2xztm62zrccsx4u.jpg",
   },
   {
     city: "Lisbon, Portugal",
     author: "louisleonidas",
-    imageSrc: "/images/car1.jpg",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
   },
   {
     city: "LA, California",
     author: "cynthia",
-    imageSrc: "/images/eloka1.jpg",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/xss8yv2irwwxsxndwqr9.jpg",
+  },
+  {
+    city: "Berlin, Germany",
+    author: "elokaagu",
+    // imageSrc: "/images/eloka1.jpg",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890835/mnvamvov5orwyqcum4mo.jpg",
+  },
+  {
+    city: "Tokyo, Japan",
+    author: "louisleonidas",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg",
+  },
+
+  {
+    city: "Dubai, Middle East",
+    author: "unikernest",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
   },
   // Add more data objects as needed
 ];
@@ -37,7 +60,7 @@ export default function Hero() {
         <Card key={index}>
           <Link href="/posts">
             <CardBody>
-              <Image
+              <CldImage
                 src={cardData.imageSrc}
                 alt={cardData.city}
                 layout="fill"
@@ -74,9 +97,9 @@ const AppBody = styled.div`
   padding: 10px;
   display: flex;
   margin-top: 20px;
-  /* margin-left: 30px;
-  margin-right: 30px; */
-  flex-direction: column;
+  margin-left: 30px;
+  margin-right: 30px;
+  flex-direction: row;
   width: 100%;
   line-height: 1.5;
   @media ${device.laptop} {
@@ -91,6 +114,7 @@ const AppBody = styled.div`
 
 const Card = styled.div`
   padding-bottom: 20px;
+  padding-right: 20px;
 `;
 
 const CardBody = styled.div`
@@ -99,7 +123,8 @@ const CardBody = styled.div`
   flex-direction: column;
   justify-content: left;
   height: 300px;
-  /* padding: 20px; */
+  width: 200px;
+  padding: 20px;
   border-radius: 8px;
   drop-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background: #1a1a1a;
@@ -116,7 +141,8 @@ const CardBody = styled.div`
 
   &:hover {
     background-color: #4444;
-    transform: scale(0.99);
+    opacity: 0.4;
+    transform: scale(0.98);
     transition: 0.3s ease-in-out;
   }
 
