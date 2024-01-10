@@ -26,7 +26,7 @@ const data = [
   },
   {
     city: "LA, California",
-    author: "cynthia",
+    author: "cynthiabahati",
     imageSrc:
       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/xss8yv2irwwxsxndwqr9.jpg",
   },

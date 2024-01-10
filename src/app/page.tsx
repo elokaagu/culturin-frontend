@@ -54,7 +54,7 @@ export default function Home() {
               <Title>
                 <h3>Explore</h3>
 
-                <p>Browse to find and collect inspirations</p>
+                <p>Discover a world of travel, inspiration and culture</p>
               </Title>
               <Switch>
                 <SwitchItem>

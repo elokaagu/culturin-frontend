@@ -21,6 +21,9 @@ export default function Create() {
           <p>View your profile</p> <ChevronDown size="20" />
         </CreateResults>
         <CreateResults>
+          <p>Make your itinerary</p> <Plus size="20" />
+        </CreateResults>
+        <CreateResults>
           <p>Share your plans</p> <Share size="20" />
         </CreateResults>
       </AppBody>
