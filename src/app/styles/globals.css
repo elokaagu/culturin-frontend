@@ -39,3 +39,11 @@ html {
     opacity: 1;
   }
 }
+
+.mapbox-logo {
+  display: none !important;
+}
+
+.mapboxgl-ctrl-logo {
+  display: none !important;
+}

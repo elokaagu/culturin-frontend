@@ -2,27 +2,33 @@
 import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
+import MapGl from "../../components/Map";
 
 export default function Asia() {
   return (
     <>
       <Header />
       <AppBody>
-        <CountriesDetails>
-          <CountriesTitle>
-            <h1>Asia</h1>
-            <p>Browse Countries</p>
-          </CountriesTitle>
-          <CountriesList>
-            <p>China</p>
-            <p>Japan</p>
-            <p>South Korea</p>
-            <p>Taiwan</p>
-            <p>Bali</p>
-            <p>India</p>
-            <p>Pakistan</p>
-          </CountriesList>
-        </CountriesDetails>
+        <CountryContainer>
+          <CountriesDetails>
+            <CountriesTitle>
+              <h1>Asia</h1>
+              <p>Browse Countries</p>
+            </CountriesTitle>
+            <CountriesList>
+              <p>China</p>
+              <p>Japan</p>
+              <p>South Korea</p>
+              <p>Taiwan</p>
+              <p>Bali</p>
+              <p>India</p>
+              <p>Pakistan</p>
+            </CountriesList>
+          </CountriesDetails>
+        </CountryContainer>
+        <MapBody>
+          <MapGl continent="asia" />
+        </MapBody>
       </AppBody>
     </>
   );
@@ -35,10 +41,16 @@ const AppBody = styled.div`
   flex: 1;
   align-items: left;
   background: black;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
   line-height: 2;
   color: white;
+`;
+
+const CountryContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex: 1;
 `;
 
 const CountriesDetails = styled.div`
@@ -67,4 +79,9 @@ const CountriesTitle = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+`;
+
+const MapBody = styled.div`
+  margin: 20px;
+  border-radius: 15px;
 `;

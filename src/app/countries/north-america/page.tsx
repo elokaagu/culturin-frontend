@@ -2,23 +2,29 @@
 import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
+import MapGl from "../../components/Map";
 
 export default function NorthAmerica() {
   return (
     <>
       <Header />
       <AppBody>
-        <CountriesDetails>
-          <CountriesTitle>
-            <h1>North America</h1>
-            <p>Browse Countries</p>
-          </CountriesTitle>
-          <CountriesList>
-            <p>United States of America</p>
-            <p>Mexico</p>
-            <p>Canada</p>
-          </CountriesList>
-        </CountriesDetails>
+        <CountryContainer>
+          <CountriesDetails>
+            <CountriesTitle>
+              <h1>North America</h1>
+              <p>Browse Countries</p>
+            </CountriesTitle>
+            <CountriesList>
+              <p>United States of America</p>
+              <p>Mexico</p>
+              <p>Canada</p>
+            </CountriesList>
+          </CountriesDetails>
+        </CountryContainer>
+        <MapBody>
+          <MapGl continent="northAmerica" />
+        </MapBody>
       </AppBody>
     </>
   );
@@ -30,11 +36,17 @@ const AppBody = styled.div`
   flex: 1;
   align-items: left;
   background: black;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
   padding-top: 150px;
   line-height: 2;
   color: white;
+`;
+
+const CountryContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex: 1;
 `;
 
 const CountriesDetails = styled.div`
@@ -63,4 +75,9 @@ const CountriesTitle = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+`;
+
+const MapBody = styled.div`
+  margin: 20px;
+  border-radius: 15px;
 `;
