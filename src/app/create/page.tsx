@@ -6,6 +6,7 @@ import SearchBar from "../components/SearchBar";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import { Plus } from "styled-icons/boxicons-regular";
 import { Share } from "styled-icons/boxicons-regular";
+import Link from "next/link";
 
 export default function Create() {
   return (
@@ -14,17 +15,22 @@ export default function Create() {
       <AppBody>
         <h1>Create</h1>
         <p>Upload a pin from your favourite locations</p>
-        <CreateResults>
-          <p>Create a pin</p> <Plus size="20" />
-        </CreateResults>
+
+        <Link
+          href="/create/upload"
+          style={{
+            textDecoration: "none",
+          }}
+        >
+          <CreateResults>
+            <p>Create a pin</p> <Plus size="20" />
+          </CreateResults>
+        </Link>
         <CreateResults>
           <p>View your profile</p> <ChevronDown size="20" />
         </CreateResults>
         <CreateResults>
-          <p>Make your itinerary</p> <Plus size="20" />
-        </CreateResults>
-        <CreateResults>
-          <p>Share your plans</p> <Share size="20" />
+          <p>Make your itinerary</p> <Share size="20" />
         </CreateResults>
       </AppBody>
     </div>
@@ -56,11 +62,16 @@ const CreateResults = styled.div`
   cursor: pointer;
   display: flex;
   color: white;
-  width: 30%;
+  width: 350px;
   margin: 20px;
   &:hover {
     background: #222222;
     transition: 0.3s ease-in-out;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
   }
 `;
 
