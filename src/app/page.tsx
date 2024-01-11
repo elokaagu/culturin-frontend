@@ -9,6 +9,8 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { Toggle } from "styled-icons/ionicons-outline";
 import Sidebar from "./components/Sidebar";
+import { useRouter } from "next/router";
+// import { useSession } from "next-auth/client";
 
 import prisma from "../app/api/auth/[...nextauth]/prisma";
 
@@ -37,6 +39,23 @@ export default function Home() {
   const toggleTheme = () => {
     setTheme(isDarkTheme ? "light" : "dark");
   };
+
+  // Sign up or Sign in
+  // const [session, loading] = useSession();
+
+  // // const router = useRouter();
+
+  // // Check if the user is authenticated
+  // if (loading) {
+  //   // Loading state while checking authentication
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (!session) {
+  //   // If user is not authenticated, redirect to sign-up page
+  //   router.push("/signup"); // Replace with your sign-up page URL
+  //   return null; // Return null while redirecting
+  // }
 
   // Return
   return (
