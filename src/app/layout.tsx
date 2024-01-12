@@ -22,6 +22,10 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession();
 
+  if (session) {
+    console.log(session);
+  }
+
   // Toggle Theme
 
   return (
