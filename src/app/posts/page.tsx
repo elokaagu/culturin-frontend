@@ -154,7 +154,7 @@ const Body = styled.div`
 `;
 
 const BackLink = styled.a`
-  color: rgb(130, 143, 255);
+  color: rgb(250, 193, 0);
   padding-bottom: 20px;
   text-decoration: none;
   position: absolute;
