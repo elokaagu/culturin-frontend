@@ -63,9 +63,9 @@ export default function Hero() {
               <CldImage
                 src={cardData.imageSrc}
                 alt={cardData.city}
-                layout="fill"
                 placeholder="blur"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }}
                 blurDataURL={cardData.imageSrc}
               />
             </CardBody>

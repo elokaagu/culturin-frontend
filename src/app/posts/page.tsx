@@ -3,9 +3,9 @@
 import React from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
-import Hero from "../components/Hero";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
+import { CldImage } from "next-cloudinary";
 
 export default function Posts() {
   return (
@@ -39,6 +39,22 @@ export default function Posts() {
         <Subtitle>
           <h3>Unveiling Enugu's Rich Cultural Heritage</h3>
         </Subtitle>
+        <ImageContainer>
+          {" "}
+          <ImageWrap>
+            <CldImage
+              src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+              alt="mainImage"
+              placeholder="blur"
+              blurDataURL="/images/blur.jpg"
+              width={700}
+              height={500}
+              style={{ objectFit: "cover" }}
+              draggable="false"
+            />
+          </ImageWrap>
+        </ImageContainer>
+
         <Body>
           <p>
             Enugu, often referred to as the "Coal City State," is a Nigerian
@@ -94,7 +110,7 @@ const AppBody = styled.div`
   padding: 40px;
   display: flex;
   padding-top: 150px;
-  align-items: left;
+  align-items: center;
   background: black;
   flex-direction: column;
   height: 100%;
@@ -157,7 +173,7 @@ const BackLink = styled.a`
   color: rgb(250, 193, 0);
   padding-bottom: 20px;
   text-decoration: none;
-  position: absolute;
+  position: fixed;
   left: 50px;
   top: 200px;
 
@@ -171,5 +187,26 @@ const BackLink = styled.a`
     position: absolute;
     left: 35px;
     top: 50px;
+  }
+`;
+
+const ImageContainer = styled.div`
+  padding-bottom: 20px;
+  border-radius: 20px;
+  cursor: pointer;
+`;
+
+const ImageWrap = styled.span`
+  & > span {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 20px;
+    object-fit: cover;
+  }
+
+  @media ${device.laptop} {
+    & > span {
+      border-radius: 5px;
+      object-fit: cover;
+    }
   }
 `;
