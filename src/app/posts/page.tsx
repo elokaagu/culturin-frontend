@@ -46,10 +46,15 @@ export default function Posts() {
               src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
               alt="mainImage"
               placeholder="blur"
-              blurDataURL="/images/blur.jpg"
               width={700}
               height={500}
-              style={{ objectFit: "cover" }}
+              blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+              style={{
+                // width: "100%",
+                // height: "auto",
+                objectFit: "cover",
+                position: "relative",
+              }}
               draggable="false"
             />
           </ImageWrap>
@@ -116,6 +121,12 @@ const AppBody = styled.div`
   height: 100%;
   line-height: 2;
   color: white;
+
+  @media ${device.mobile} {
+    padding-left: 0px;
+    padding-top: 80px;
+    align-items: left;
+  }
 `;
 
 const Title = styled.div`
@@ -128,9 +139,14 @@ const Title = styled.div`
   align-items: center;
   cursor: pointer;
 
-  h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
+  @media ${device.mobile} {
+    padding-left: 0px;
+    align-items: center;
+    margin-left: 0px;
+
+    h1 {
+      font-size: 20px;
+    }
   }
 `;
 
@@ -148,6 +164,11 @@ const Subtitle = styled.div`
     font-size: 20px;
     margin-bottom: 20px;
     color: grey;
+  }
+
+  @media ${device.mobile} {
+    padding-left: 10px;
+    align-items: left;
   }
 `;
 
@@ -167,6 +188,18 @@ const Body = styled.div`
     padding-bottom: 36px;
     color: white;
   }
+
+  @media ${device.mobile} {
+    padding-left: 20px;
+    align-items: left;
+    width: 100%;
+
+    p {
+      font-size: 18px;
+      padding-bottom: 36px;
+      color: white;
+    }
+  }
 `;
 
 const BackLink = styled.a`
@@ -183,10 +216,11 @@ const BackLink = styled.a`
     transition: all 0.5s ease-in-out;
   }
 
-  @media ${device.laptop} {
-    position: absolute;
-    left: 35px;
-    top: 50px;
+  @media ${device.mobile} {
+    // position: fixed;
+    // left: 20px;
+    // top: 150px;
+    display: none;
   }
 `;
 
@@ -194,6 +228,9 @@ const ImageContainer = styled.div`
   padding-bottom: 20px;
   border-radius: 20px;
   cursor: pointer;
+
+  @media ${device.mobile} {
+  }
 `;
 
 const ImageWrap = styled.span`
@@ -203,7 +240,7 @@ const ImageWrap = styled.span`
     object-fit: cover;
   }
 
-  @media ${device.laptop} {
+  @media ${device.mobile} {
     & > span {
       border-radius: 5px;
       object-fit: cover;
