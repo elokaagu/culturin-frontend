@@ -3,7 +3,6 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import { device } from "../../styles/breakpoints";
-import { Plus } from "styled-icons/boxicons-regular";
 import { CldUploadWidget } from "next-cloudinary";
 
 export default function Upload() {
@@ -15,7 +14,7 @@ export default function Upload() {
           <UploadDetails>
             <UploadTitle>
               <h1>Upload</h1>
-              <p>Upload your images</p>
+              <p>Add to your collection</p>
             </UploadTitle>
             <UploadField>
               <CldUploadWidget uploadPreset="culturin">
@@ -36,13 +35,13 @@ export default function Upload() {
 }
 
 const AppBody = styled.div`
-  padding: 40px;
-  display: flex;
-  flex-direction: row;
-  jusitfy-content: space-between;
-  flex: 1;
+  padding: 20px;
   padding-top: 150px;
+  display: flex;
+  flex: 1;
+  align-items: center;
   background: black;
+  flex-direction: column;
   height: 100%;
   line-height: 2;
   color: white;
@@ -55,6 +54,7 @@ const AppBody = styled.div`
 const UploadContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
 `;
 
 const UploadTitle = styled.div`
@@ -70,7 +70,7 @@ const UploadDetails = styled.div`
   justify-content: center;
   border: 2px solid #222;
   border-radius: 15px;
-  width: 320px;
+  width: 300px;
   &:hover {
     opacity: 0.8;
     background: #111;
@@ -82,6 +82,7 @@ const UploadField = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+  align-items: center;
   cursor: pointer;
 `;
 
@@ -90,10 +91,10 @@ const UploadButton = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   background-color: white;
   color: black;
   font-weight: 600;
+  align-items: center;
   cursor: pointer;
 
   &:hover {
