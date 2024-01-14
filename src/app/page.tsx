@@ -10,7 +10,7 @@ import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { Toggle } from "styled-icons/ionicons-outline";
 import Sidebar from "./components/Sidebar";
 
-import prisma from "../app/api/auth/[...nextauth]/prisma";
+// import prisma from "../app/api/auth/[...nextauth]/prisma";
 
 //Session Data
 
@@ -29,6 +29,7 @@ export default function Home() {
   // States
 
   const [theme, setTheme] = useState("dark");
+  const [isNavOpen, setIsNavOpen] = useState(false); // Define isNavOpen state
 
   const isDarkTheme = theme === "dark";
 
@@ -50,7 +51,7 @@ export default function Home() {
 
           <Body>
             <SidebarMobile>
-              <Sidebar />
+              <Sidebar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
             </SidebarMobile>
             <Row>
               <Title>
@@ -96,7 +97,7 @@ const Body = styled.div`
 const Row = styled.div`
 display: flex;
 padding: 20px;
-flex direction: columnn;
+flex direction: column;
 flex: 1;
 overflow: scroll;
 @media ${device.mobile} {
@@ -148,6 +149,6 @@ const Title = styled.div`
 const SidebarMobile = styled.div`
   display: none;
   @media ${device.mobile} {
-    display: none;
+    display: block;
   }
 `;

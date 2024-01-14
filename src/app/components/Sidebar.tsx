@@ -6,7 +6,12 @@ import { Plus } from "styled-icons/boxicons-regular";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import { GoogleSignInButton } from "./AuthButtons";
 
-export default function Sidebar() {
+interface SidebarProps {
+  isNavOpen: boolean;
+  setIsNavOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isNavOpen, setIsNavOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggling = () => setIsOpen(!isOpen);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -16,6 +21,7 @@ export default function Sidebar() {
     setIsOpen(false);
     console.log(selectedOption);
   };
+
   return (
     <SidebarContainer>
       <SidebarText>
@@ -76,7 +82,9 @@ export default function Sidebar() {
       </SidebarText>
     </SidebarContainer>
   );
-}
+};
+
+export default Sidebar;
 
 const SidebarContainer = styled.div`
   display: flex;
