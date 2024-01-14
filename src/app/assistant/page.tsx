@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
+import ChatComponent from "../components/ChatComponent";
 
 export default function Assistant() {
   return (
@@ -13,9 +14,7 @@ export default function Assistant() {
         <AssistantTitle>
           <h1>AI</h1>
         </AssistantTitle>
-        <AssistantDetails>
-          <p>How can I help ?</p>
-        </AssistantDetails>
+        <ChatComponent />
       </AppBody>
     </>
   );
@@ -42,13 +41,4 @@ const AppBody = styled.div`
 const AssistantTitle = styled.div`
   cursor: pointer;
   padding: 20px;
-`;
-
-const AssistantDetails = styled.div`
-  cursor: pointer;
-  padding: 20px;
-
-  background: #1e1e1e;
-  border-radius: 10px;
-  width: 50%;
 `;
