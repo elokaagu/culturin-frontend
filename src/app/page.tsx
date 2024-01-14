@@ -50,9 +50,6 @@ export default function Home() {
           <GlobalStyles />
 
           <Body>
-            <SidebarMobile>
-              <Sidebar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
-            </SidebarMobile>
             <Row>
               <Title>
                 <h3>Explore</h3>

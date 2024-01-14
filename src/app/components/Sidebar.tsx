@@ -100,6 +100,7 @@ const SidebarContainer = styled.div`
   width: 80%;
   padding-top: 60px;
   transition: all 0.25s ease;
+  animation: fadeIn 0.3s;
 
   li {
     list-style: none;
