@@ -26,9 +26,16 @@ export default function Create() {
             <p>Create a pin</p> <Plus size="20" />
           </CreateResults>
         </Link>
-        <CreateResults>
-          <p>View your profile</p> <ChevronDown size="20" />
-        </CreateResults>
+        <Link
+          href="/profile"
+          style={{
+            textDecoration: "none",
+          }}
+        >
+          <CreateResults>
+            <p>View your profile</p> <ChevronDown size="20" />
+          </CreateResults>
+        </Link>
         <CreateResults>
           <p>Make your itinerary</p> <Share size="20" />
         </CreateResults>
