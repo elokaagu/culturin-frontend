@@ -1,17 +1,27 @@
 "use client";
 import React from "react";
 import styled from "styled-components";
+import { useChat } from "ai/react";
 
 export default function ChatComponent() {
+  // Vercel AI SDK
+  const { input, handleInputChange, handleSubmit, isLoading, messages } =
+    useChat();
+
+  console.log(messages);
+  console.log(input);
+
   return (
     <>
       <ChatBox>
-        <ChatForm>
+        <ChatForm onSubmit={handleSubmit}>
           <ChatInput
             type="textarea"
             name="search"
             placeholder="How can I help ?"
             autoComplete="off"
+            value={input}
+            onChange={handleInputChange}
           />
         </ChatForm>
       </ChatBox>
