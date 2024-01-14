@@ -36,9 +36,16 @@ export default function Create() {
             <p>View your profile</p> <ChevronDown size="20" />
           </CreateResults>
         </Link>
-        <CreateResults>
-          <p>Make your itinerary</p> <Share size="20" />
-        </CreateResults>
+        <Link
+          href="/assistant"
+          style={{
+            textDecoration: "none",
+          }}
+        >
+          <CreateResults>
+            <p>Make your itinerary</p> <Share size="20" />
+          </CreateResults>
+        </Link>
       </AppBody>
     </div>
   );
