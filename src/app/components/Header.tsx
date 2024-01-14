@@ -13,6 +13,7 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import Hamburger from "hamburger-react";
 import Sidebar from "./Sidebar";
+import { Dispatch, SetStateAction } from "react";
 
 export default function Header() {
   const [theme, setTheme] = useState("light");
@@ -35,11 +36,18 @@ export default function Header() {
     console.log(selectedOption);
   };
 
-  // const navigation = () => {
-  //   const [openSidebar, setOpenSidebar] = useState(false);
-  //   const toggle = () => {
-  //     setOpenSidebar(!openSidebar);
-  //   };
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false); // New state for mobile sidebar
+
+  const handleMobileSidebarToggle = () => {
+    setIsMobileSidebarOpen(!isMobileSidebarOpen);
+  };
+
+  type SidebarProps = {
+    isNavOpen: boolean;
+    setIsNavOpen: Dispatch<SetStateAction<boolean>>;
+  };
 
   return (
     <>
@@ -130,14 +138,18 @@ export default function Header() {
             <HamburgerMenu>
               <Hamburger
                 rounded
-                toggled={isOpen}
-                toggle={toggling}
+                toggled={isMobileSidebarOpen} // Use isMobileSidebarOpen state to control the hamburger menu
+                toggle={handleMobileSidebarToggle} // Toggle the mobile sidebar state
                 size={20}
-                onToggle={() => {
-                  console.log("toggle");
-                  // <Sidebar setOpenSidebar={openSidebar} toggle={toggle} />
-                }}
+                // onToggle={() => {
+                //   console.log("toggle");
+                //   <Sidebar />;
+                // }}
+                onToggle={() => setIsNavOpen(!isNavOpen)}
               />
+              {isMobileSidebarOpen && ( // Render the Sidebar component based on mobile sidebar state
+                <Sidebar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
+              )}
             </HamburgerMenu>
           </ul>
         </HeaderRightMobile>
@@ -348,6 +360,7 @@ const HamburgerMenu = styled.div`
   display: none;
   @media ${device.mobile} {
     display: flex;
+    z-index: 600;
   }
 `;
 

@@ -2,23 +2,32 @@ import React from "react";
 import styled from "styled-components";
 import { device } from "../styles/breakpoints";
 
-export default function Sidebar({}) {
+export default function Sidebar() {
   return (
     <SidebarContainer>
-      <li>News</li>
-      <li>TV</li>
-      <li>Events</li>
+      <SidebarText>
+        <li>Create</li>
+        <li>Destinations</li>
+        <li>Logout</li>
+      </SidebarText>
     </SidebarContainer>
   );
 }
 
 const SidebarContainer = styled.div`
-  display: column;
+  display: flex;
+  flex-direction: column;
   flex: 1;
-  z-index: 300;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  background-color: black;
+  z-index: 200;
   height: 100%;
-  width: 100%;
-  padding: 20px;
+  width: 80%;
+  padding-top: 60px;
+  transition: all 0.25s ease;
 
   li {
     list-style: none;
@@ -46,4 +55,10 @@ const SidebarContainer = styled.div`
     color: grey;
     transition: 0.3s ease-in-out;
   }
+`;
+
+const SidebarText = styled.div`
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
 `;

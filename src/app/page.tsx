@@ -58,6 +58,7 @@ export default function Home() {
 
                 <p>Discover a world of travel, inspiration and culture</p>
               </Title>
+
               <Switch>
                 <SwitchItem>
                   <Toggle size={20} onClick={toggleTheme} />
