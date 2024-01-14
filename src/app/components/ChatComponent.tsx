@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import styled from "styled-components";
-import { useChat } from "ai/react";
+import { useChat, Message } from "ai/react";
 
 export default function ChatComponent() {
   // Vercel AI SDK
@@ -44,6 +44,35 @@ export default function ChatComponent() {
             </p>
           </UserMessage>
         </BotMessage>
+
+        {messages.map((message: Message) => {
+          return (
+            <div key={message.id}>
+              {message.role === "assistant" ? (
+                <BotMessage>
+                  <h3>Ibn</h3>
+                </BotMessage>
+              ) : (
+                <BotMessage>
+                  <h3>User</h3>
+                </BotMessage>
+              )}
+              {message.content
+                .split("\n")
+                .map((currentTextBlock: string, index: number) => {
+                  if (currentTextBlock === "") {
+                    return;
+                    <UserMessage>
+                      <p key={message.id + index}>&nbsp</p>;
+                    </UserMessage>;
+                  } else {
+                    return <p key={message.id + index}>{currentTextBlock}</p>;
+                  }
+                })}
+              {}
+            </div>
+          );
+        })}
       </MessageBox>
     </>
   );
