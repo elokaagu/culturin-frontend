@@ -48,7 +48,11 @@ export default function ChatComponent() {
                   if (currentTextBlock === "") {
                     return;
                     <UserMessage>
-                      <p key={message.id + index}>&nbsp</p>;
+                      <p key={message.id + index}>
+                        &nbsp
+                        <br />
+                      </p>
+                      ;
                     </UserMessage>;
                   } else {
                     return <p key={message.id + index}>{currentTextBlock}</p>;
