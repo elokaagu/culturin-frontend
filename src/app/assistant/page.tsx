@@ -24,7 +24,7 @@ const AppBody = styled.div`
   padding: 40px;
   display: flex;
   padding-top: 150px;
-  align-items: left;
+  align-items: center;
   background: black;
   flex-direction: column;
   height: 100%;
