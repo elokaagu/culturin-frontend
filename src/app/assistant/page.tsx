@@ -40,5 +40,5 @@ const AppBody = styled.div`
 
 const AssistantTitle = styled.div`
   cursor: pointer;
-  padding: 20px;
+  padding-bottom: 20px;
 `;
