@@ -13,6 +13,9 @@ export default function Assistant() {
         <AssistantTitle>
           <h1>AI</h1>
         </AssistantTitle>
+        <AssistantDetails>
+          <p>How can I help ?</p>
+        </AssistantDetails>
       </AppBody>
     </>
   );
@@ -38,5 +41,14 @@ const AppBody = styled.div`
 
 const AssistantTitle = styled.div`
   cursor: pointer;
-  padding: 10px;
+  padding: 20px;
+`;
+
+const AssistantDetails = styled.div`
+  cursor: pointer;
+  padding: 20px;
+
+  background: #1e1e1e;
+  border-radius: 10px;
+  width: 50%;
 `;
