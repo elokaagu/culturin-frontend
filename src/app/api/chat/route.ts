@@ -1,28 +1,33 @@
 // Route Handlers
 import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
+import OpenAI from "openai";
 
-export const runtime = "edge";
+// Create an OpenAI API client
+// const config = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
 
-const config = new Configuration({
+// const openai = new OpenAIApi(config);
+
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const openai = new OpenAIApi(config);
+// Set the runtime to edge for best performance
+
+export const runtime = "edge";
 
 // POST
-
-export async function POST(request: Request) {
-  const { messages } = await request.json();
+export async function POST(req: Request) {
+  const { messages } = await req.json();
 
   // Messages
   console.log(messages);
 
-  // GPT-4 system message
-
   // Create chat completion
-  const response = await openai.createChatCompletion({
-    model: "gpt-4",
+  const response = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
     stream: true,
     messages: [
       {
@@ -36,7 +41,7 @@ export async function POST(request: Request) {
 
   // Create a stream of data from OpenAI
 
-  const stream = await OpenAIStream(response);
+  const stream = OpenAIStream(response);
 
   // Send the stream as a response to the client
   return new StreamingTextResponse(stream);

@@ -2,6 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useChat, Message } from "ai/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function ChatComponent() {
   // Vercel AI SDK
@@ -10,6 +11,9 @@ export default function ChatComponent() {
 
   console.log(messages);
   console.log(input);
+
+  //User name
+  const { data: session } = useSession();
 
   return (
     <>
@@ -26,25 +30,6 @@ export default function ChatComponent() {
         </ChatForm>
       </ChatBox>
       <MessageBox>
-        <BotMessage>
-          <h3>Ibn</h3>
-          <p>I am a robot that uses GPT-4 to recommend travel destinations</p>
-        </BotMessage>
-        <UserMessage>
-          <h3>Eloka</h3>
-          <p>That is great to know !</p>
-        </UserMessage>
-        <BotMessage>
-          <h3>Ibn</h3>
-          <p>Anything else I can help you with ?</p>
-          <UserMessage>
-            <h3>Eloka</h3>
-            <p>
-              Yes please, can you help me plan my trip to Hamburg on Feb 20th ?
-            </p>
-          </UserMessage>
-        </BotMessage>
-
         {messages.map((message: Message) => {
           return (
             <div key={message.id}>
@@ -54,7 +39,7 @@ export default function ChatComponent() {
                 </BotMessage>
               ) : (
                 <BotMessage>
-                  <h3>User</h3>
+                  <h3>{session?.user?.name?.split(" ")[0] || "Guest"}</h3>
                 </BotMessage>
               )}
               {message.content
