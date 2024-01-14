@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import React from "react";
 import ThemeClient from "./styles/ThemeClient";
 import Navbar from "./components/Navbar";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,7 +34,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <SessionProvider session={session}>
           <ThemeClient>
-            {children} <Analytics />
+            {children} <Analytics /> <SpeedInsights />
           </ThemeClient>
         </SessionProvider>
       </body>
