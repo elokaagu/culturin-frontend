@@ -4,13 +4,17 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
+import ProfileCard from "../components/ProfileCard";
 
 export default function Profile() {
   return (
     <>
       <Header />
       <AppBody>
-        <h1>Profile</h1>
+        <ProfileTitle>
+          <h1>My Profile</h1>
+        </ProfileTitle>
+        <ProfileCard />
       </AppBody>
     </>
   );
@@ -20,7 +24,7 @@ const AppBody = styled.div`
   padding: 40px;
   display: flex;
   padding-top: 150px;
-  align-items: center;
+  align-items: left;
   background: black;
   flex-direction: column;
   height: 100%;
@@ -32,4 +36,9 @@ const AppBody = styled.div`
     padding-top: 80px;
     align-items: left;
   }
+`;
+
+const ProfileTitle = styled.div`
+  cursor: pointer;
+  padding: 10px;
 `;
