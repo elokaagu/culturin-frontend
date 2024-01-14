@@ -4,6 +4,7 @@ import googleLogo from "/public/google.png";
 import githubLogo from "/public/github.png";
 import { signIn, signOut, useSession } from "next-auth/react";
 import styled from "styled-components";
+import { device } from "../styles/breakpoints";
 
 export function GoogleSignInButton() {
   const { data: session } = useSession();
@@ -128,5 +129,9 @@ const SigninButton = styled.div`
   &:hover {
     background: grey;
     transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
   }
 `;
