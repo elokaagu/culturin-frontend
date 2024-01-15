@@ -228,10 +228,18 @@ const BackLink = styled.a`
 
 const ImageContainer = styled.div`
   padding-bottom: 20px;
-  border-radius: 20px;
   cursor: pointer;
 
   @media ${device.mobile} {
+    margin: 0 auto;
+    padding-left: 10px;
+    border-radius: 20px;
+
+    img {
+      margin-left: 0;
+      border-radius: 10px;
+      width: 360px;
+    }
   }
 `;
 
@@ -244,8 +252,8 @@ const ImageWrap = styled.span`
 
   @media ${device.mobile} {
     & > span {
-      border-radius: 5px;
       object-fit: cover;
+      border-radius: 20px; /* Rounded edges on mobile */
     }
   }
 `;
