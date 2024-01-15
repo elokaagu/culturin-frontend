@@ -125,7 +125,7 @@ const MessageBox = styled.div`
   flex-direction: column;
   align-items: left;
   border-radius: 10px;
-  width: 80%;
+  width: 100%;
   padding: 20px;
   padding-left: 20px;
   padding-right: 20px;

@@ -239,6 +239,7 @@ const HeaderLeft = styled.div`
     transition: 0.3s ease-in-out;
   }
   flex: 0.33;
+  z-index: 600;
 `;
 
 const HeaderRight = styled.div`

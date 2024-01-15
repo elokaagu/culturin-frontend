@@ -52,6 +52,7 @@ const AssistantTitle = styled.div`
 `;
 
 const ChatAssistant = styled.div`
+  width: 50%;
   @media ${device.mobile} {
     align-items: left;
     margin-left: 40px;
