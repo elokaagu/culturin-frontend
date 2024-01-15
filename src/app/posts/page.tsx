@@ -229,6 +229,9 @@ const BackLink = styled.a`
 const ImageContainer = styled.div`
   padding-bottom: 20px;
   cursor: pointer;
+  img {
+    border-radius: 10px;
+  }
 
   @media ${device.mobile} {
     margin: 0 auto;
