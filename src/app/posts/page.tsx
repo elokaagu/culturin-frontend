@@ -145,7 +145,10 @@ const Title = styled.div`
     width: 100%;
 
     h1 {
-      font-size: 20px;
+      font-size: 25px;
+      align-items: left;
+      margin-left: 40px;
+      width: 100%;
     }
   }
 `;
@@ -153,7 +156,6 @@ const Title = styled.div`
 const Subtitle = styled.div`
   margin: auto 10px;
   padding-left: 30px;
-  padding-top: 20px;
   padding-right: 20px;
   display: flex;
   flex-direction: column;
@@ -219,7 +221,7 @@ const BackLink = styled.a`
   @media ${device.mobile} {
     // position: fixed;
     // left: 20px;
-    // top: 150px;
+    // top: 105px;
     display: none;
   }
 `;
