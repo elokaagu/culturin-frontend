@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import MapGl from "../../components/Map";
+import { device } from "../../styles/breakpoints";
 
 export default function Africa() {
   return (
@@ -47,6 +48,12 @@ const AppBody = styled.div`
   height: 100%;
   line-height: 2;
   color: white;
+  overflow: hidden;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const CountryContainer = styled.div`

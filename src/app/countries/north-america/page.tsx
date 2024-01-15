@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import MapGl from "../../components/Map";
+import { device } from "../../styles/breakpoints";
 
 export default function NorthAmerica() {
   return (
@@ -41,6 +42,12 @@ const AppBody = styled.div`
   padding-top: 150px;
   line-height: 2;
   color: white;
+  overflow: hidden;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const CountryContainer = styled.div`

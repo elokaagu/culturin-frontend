@@ -14,7 +14,9 @@ export default function Assistant() {
         <AssistantTitle>
           <h1>AI</h1>
         </AssistantTitle>
-        <ChatComponent />
+        <ChatAssistant>
+          <ChatComponent />
+        </ChatAssistant>
       </AppBody>
     </>
   );
@@ -41,4 +43,18 @@ const AppBody = styled.div`
 const AssistantTitle = styled.div`
   cursor: pointer;
   padding-bottom: 20px;
+
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 40px;
+    width: 100%;
+  }
+`;
+
+const ChatAssistant = styled.div`
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 40px;
+    width: 100%;
+  }
 `;

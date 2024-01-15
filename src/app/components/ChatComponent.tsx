@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import { useChat, Message } from "ai/react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { device } from "../styles/breakpoints";
 
 export default function ChatComponent() {
   // Vercel AI SDK
@@ -98,6 +99,10 @@ const ChatBox = styled.div`
   }
 
   margin-bottom: 20px;
+
+  @media ${device.mobile} {
+    width: 80%;
+  }
 `;
 
 const ChatInput = styled.input`
@@ -142,6 +147,10 @@ const MessageBox = styled.div`
   &:hover {
     opacity: 0.8;
     transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 80%;
   }
 `;
 

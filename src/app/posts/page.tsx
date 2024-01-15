@@ -140,9 +140,9 @@ const Title = styled.div`
   cursor: pointer;
 
   @media ${device.mobile} {
-    padding-left: 0px;
-    align-items: center;
-    margin-left: 0px;
+    align-items: left;
+    margin-left: 0;
+    width: 100%;
 
     h1 {
       font-size: 20px;
