@@ -7,15 +7,17 @@ import { ChevronDown } from "styled-icons/boxicons-regular";
 import { Plus } from "styled-icons/boxicons-regular";
 import { Share } from "styled-icons/boxicons-regular";
 import Link from "next/link";
+import { device } from "../styles/breakpoints";
 
 export default function Create() {
   return (
     <div>
       <Header />
       <AppBody>
-        <h1>Create</h1>
-        <p>Upload a pin from your favourite locations</p>
-
+        <CreateTitle>
+          <h1>Create</h1>
+          <p>Upload a pin from your favourite locations</p>
+        </CreateTitle>
         <Link
           href="/create/upload"
           style={{
@@ -89,4 +91,10 @@ const CreateResults = styled.div`
   }
 `;
 
-const CreateTitle = styled.div``;
+const CreateTitle = styled.div`
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 0;
+    width: 100%;
+  }
+`;

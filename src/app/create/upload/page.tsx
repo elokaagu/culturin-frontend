@@ -47,7 +47,9 @@ const AppBody = styled.div`
   color: white;
 
   @media ${device.mobile} {
-    padding-top: 100px;
+    align-items: left;
+    margin-left: 0;
+    width: 100%;
   }
 `;
 
@@ -55,11 +57,23 @@ const UploadContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 0;
+    width: 100%;
+  }
 `;
 
 const UploadTitle = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 0;
+    width: 100%;
+  }
 `;
 
 const UploadDetails = styled.div`
@@ -84,6 +98,12 @@ const UploadField = styled.div`
   padding: 20px;
   align-items: center;
   cursor: pointer;
+
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 0;
+    width: 100%;
+  }
 `;
 
 const UploadButton = styled.div`
@@ -100,5 +120,11 @@ const UploadButton = styled.div`
   &:hover {
     background: grey;
     transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 0;
+    width: 100%;
   }
 `;

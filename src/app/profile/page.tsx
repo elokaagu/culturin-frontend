@@ -14,7 +14,9 @@ export default function Profile() {
         <ProfileTitle>
           <h1>My Profile</h1>
         </ProfileTitle>
-        <ProfileCard />
+        <Row>
+          <ProfileCard />
+        </Row>
       </AppBody>
     </>
   );
@@ -30,6 +32,7 @@ const AppBody = styled.div`
   height: 100%;
   line-height: 2;
   color: white;
+  overflow: none;
 
   @media ${device.mobile} {
     padding-left: 0px;
@@ -41,4 +44,8 @@ const AppBody = styled.div`
 const ProfileTitle = styled.div`
   cursor: pointer;
   padding: 10px;
+`;
+
+const Row = styled.div`
+  overflow: scroll;
 `;
