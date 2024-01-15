@@ -80,7 +80,7 @@ const ChatBox = styled.div`
   flex-direction: row;
   align-items: center;
   border-radius: 10px;
-  width: 50%;
+  width: 100%;
   padding: 20px;
   padding-left: 20px;
   padding-right: 20px;
@@ -109,7 +109,7 @@ const ChatInput = styled.input`
   background: transparent;
   margin-left: 10px;
   outline: none;
-  width: 100%;
+  width: 80%;
   display: flex;
   flex-direction: row;
   flex: 2;
@@ -125,7 +125,7 @@ const MessageBox = styled.div`
   flex-direction: column;
   align-items: left;
   border-radius: 10px;
-  width: 50%;
+  width: 80%;
   padding: 20px;
   padding-left: 20px;
   padding-right: 20px;

@@ -43,7 +43,7 @@ export default function Posts() {
           {" "}
           <ImageWrap>
             <CldImage
-              src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+              src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
               alt="mainImage"
               placeholder="blur"
               width={700}
