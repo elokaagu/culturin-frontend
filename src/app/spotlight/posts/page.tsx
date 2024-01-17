@@ -43,7 +43,7 @@ export default function SpotlightPosts() {
           {" "}
           <ImageWrap>
             <CldImage
-              src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
+              src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705493709/ojcn4o1quyu8e6fdyaws.webp"
               alt="mainImage"
               placeholder="blur"
               width={700}
@@ -136,8 +136,13 @@ const Title = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   cursor: pointer;
+
+  @media ${device.mobile} {
+    padding-left: 0px;
+    padding-top: 80px;
+    align-items: left;
+  }
 `;
 
 const Subtitle = styled.div`
