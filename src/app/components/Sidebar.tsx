@@ -66,6 +66,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavOpen, setIsNavOpen }) => {
             )}
           </li>
         </SidebarItem>
+        <SidebarItem>
+          <Link href="/spotlight">
+            {" "}
+            <li>Spotlight </li>
+          </Link>
+        </SidebarItem>
 
         <SidebarItem>
           <li>

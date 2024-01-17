@@ -118,9 +118,11 @@ export default function Header() {
                 )}
               </DropdownContainer>
             </li>
-            {/* <li>News</li>
-          <li>TV</li>
-          <li>Events</li> */}
+
+            <Link href="/spotlight">
+              <li>Spotlight</li>
+            </Link>
+
             <li>
               <GoogleSignInButton />
               {/* <SigninButton

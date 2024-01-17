@@ -52,8 +52,7 @@ export default function Home() {
           <Body>
             <Row>
               <Title>
-                <h3>Explore</h3>
-
+                <h1>Explore</h1>
                 <p>Discover a world of travel, inspiration and culture</p>
               </Title>
 
@@ -133,9 +132,8 @@ const Title = styled.div`
   width: 100%;
   cursor: pointer;
 
-  h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
+  h1 {
+    margin-bottom: 20px;
   }
 
   @media ${device.mobile} {

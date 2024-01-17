@@ -92,6 +92,8 @@ const CreateResults = styled.div`
 `;
 
 const CreateTitle = styled.div`
+  align-items: center;
+
   @media ${device.mobile} {
     align-items: left;
     margin-left: 0;

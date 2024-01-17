@@ -1,16 +1,18 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
 import { CldImage } from "next-cloudinary";
+import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 
 export default function Posts() {
   return (
     <>
       <Header />
+
       <AppBody>
         <Link href="/" passHref>
           <BackLink>
