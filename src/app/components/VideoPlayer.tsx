@@ -4,7 +4,8 @@ import styled from "styled-components";
 import ReactPlayer from "react-player";
 
 const VideoPlayer = () => {
-  let videosrc = "https://www.youtube.com/watch?v=jidqrehoZgI&t=845s";
+  let videosrc =
+    "https://stream.mux.com/SrMydri3II01Y2kyNTvEPjq2Rjs02HZ4TYmWwoLkHovy8.m3u8";
 
   return (
     <AppBody>
@@ -15,7 +16,7 @@ const VideoPlayer = () => {
         controls={false}
         playing={true}
         muted={true}
-        modestbranding
+        modestbranding={true}
         loop={true}
       />
       <source src={videosrc} type="video/mp4" />
