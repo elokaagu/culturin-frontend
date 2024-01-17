@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
@@ -12,7 +12,6 @@ export default function Posts() {
   return (
     <>
       <Header />
-
       <AppBody>
         <Link href="/" passHref>
           <BackLink>
