@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
+import Feed from "../components/Feed";
 
 export default function Spotlight() {
   return (
@@ -13,7 +14,9 @@ export default function Spotlight() {
         <SpotlightTitle>
           <h1>My Spotlight</h1>
         </SpotlightTitle>
-        <Row></Row>
+        <FeedContainer>
+          <Feed />
+        </FeedContainer>
       </AppBody>
     </>
   );
@@ -43,6 +46,4 @@ const SpotlightTitle = styled.div`
   padding: 10px;
 `;
 
-const Row = styled.div`
-  overflow: scroll;
-`;
+const FeedContainer = styled.div``;
