@@ -12,9 +12,11 @@ export default function Spotlight() {
       <Header />
       <AppBody>
         <SpotlightTitle>
-          <h1>My Spotlight</h1>
+          <h1>Spotlight</h1>
         </SpotlightTitle>
         <FeedContainer>
+          <Feed />
+          <Feed />
           <Feed />
         </FeedContainer>
       </AppBody>
@@ -44,6 +46,7 @@ const AppBody = styled.div`
 const SpotlightTitle = styled.div`
   cursor: pointer;
   padding: 10px;
+  margin-left: 320px;
 `;
 
 const FeedContainer = styled.div``;
