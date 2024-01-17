@@ -36,7 +36,7 @@ export default function Feed() {
           <span>17th January 2024</span>
         </FeedText>
         <FeedImage>
-          <Link href="/spotlight-posts">
+          <Link href="/spotlight/posts">
             <ImageWrap>
               <CldImage
                 src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705493709/ojcn4o1quyu8e6fdyaws.webp"
