@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
 import Image from "next/image";
+import { GoogleSignInButton } from "../components/AuthButtons";
 
 export default function Signin() {
   return (
@@ -14,15 +15,24 @@ export default function Signin() {
           <Link href="/">
             <Image
               src="/culturin_logo.svg"
-              width={250}
-              height={250}
+              width={200}
+              height={200}
               draggable={false}
               alt="culturin logo"
             />
           </Link>
         </AppLeft>
         <AppRight>
-          <p>Sign up</p>
+          <Title>
+            <h1>Explore the art of Culturin</h1>
+            <p>Join today.</p>
+          </Title>
+          <SignInSection>
+            <SigninButton>
+              <p>Sign up</p>
+            </SigninButton>
+            <GoogleSignInButton />
+          </SignInSection>
         </AppRight>
       </AppBody>
     </>
@@ -30,15 +40,12 @@ export default function Signin() {
 }
 
 const AppBody = styled.div`
-  padding-left: 200px;
-  padding-right: 200px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: black;
   flex-direction: row;
   height: 100vh;
-  line-height: 2;
   color: white;
   overflow: none;
 
@@ -49,6 +56,64 @@ const AppBody = styled.div`
   }
 `;
 
-const AppLeft = styled.div``;
+const AppLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  align-items: center;
+`;
 
-const AppRight = styled.div``;
+const AppRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  align-items: center;
+`;
+
+const SignInSection = styled.div`
+  width: 40%;
+  align-items: center;
+`;
+
+const SigninButton = styled.div`
+  border-radius: 999px;
+  width: 100%;
+  ${"" /* border: 1px solid white; */}
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  padding-right: 10px;
+  background-color: #1d9bf0;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
+  }
+`;
+
+const Title = styled.div`
+  display: flex;
+  padding-bottom: 20px;
+  flex-direction: column;
+  align-items: left;
+  width: 40%;
+  cursor: pointer;
+
+  h2 {
+    margin-bottom: 10px;
+  }
+
+  @media ${device.mobile} {
+    padding-left: 0px;
+  }
+`;

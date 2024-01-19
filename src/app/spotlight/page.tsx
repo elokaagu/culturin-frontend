@@ -12,7 +12,7 @@ export default function Spotlight() {
       <Header />
       <AppBody>
         <SpotlightTitle>
-          <h1>Spotlight</h1>
+          <h1> Spotlight</h1>
         </SpotlightTitle>
         <FeedContainer>
           <Feed />
