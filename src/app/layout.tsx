@@ -8,6 +8,8 @@ import React from "react";
 import ThemeClient from "./styles/ThemeClient";
 import Navbar from "./components/Navbar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { redirect } from "next/navigation";
+import { getSession } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +25,7 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession();
 
-  if (session) {
+  if (!session) {
     console.log(session);
   }
 

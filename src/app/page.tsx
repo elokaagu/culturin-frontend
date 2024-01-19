@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import { device } from "./styles/breakpoints";
@@ -10,6 +10,11 @@ import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { Toggle } from "styled-icons/ionicons-outline";
 import Sidebar from "./components/Sidebar";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { getServerSession } from "next-auth";
+import { getSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+
 // import prisma from "../app/api/auth/[...nextauth]/prisma";
 
 //Session Data
@@ -25,7 +30,7 @@ type Session = {
 
 // Theme Provider
 
-export default function Home() {
+export default function Home({ session }: { session: any }) {
   // States
 
   const [theme, setTheme] = useState("dark");
@@ -40,6 +45,12 @@ export default function Home() {
   };
 
   // Sign up or Sign in
+
+  if (!session) {
+    // Redirect or show a message if there is no session
+    // Or handle the unauthenticated state as needed
+    redirect("/signin");
+  }
 
   // Return
   return (
