@@ -9,7 +9,7 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { Toggle } from "styled-icons/ionicons-outline";
 import Sidebar from "./components/Sidebar";
-
+import Link from "next/link";
 // import prisma from "../app/api/auth/[...nextauth]/prisma";
 
 //Session Data
@@ -54,6 +54,9 @@ export default function Home() {
               <Title>
                 <h1>Explore</h1>
                 <p>Discover a world of travel, inspiration and culture</p>
+                <Link href="/signin">
+                  <p>Sign in</p>
+                </Link>
               </Title>
 
               <Switch>
