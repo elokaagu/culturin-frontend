@@ -5,6 +5,32 @@ import githubLogo from "/public/github.png";
 import { signIn, signOut, useSession } from "next-auth/react";
 import styled from "styled-components";
 import { device } from "../styles/breakpoints";
+import { redirect } from "next/navigation";
+
+export function HomeSigninButton() {
+  const { data: session } = useSession();
+
+  if (session) {
+    return (
+      <SigninButton
+        onClick={async () => {
+          await signOut();
+        }}
+      >
+        {session?.user?.name?.split(" ")[0] || "Guest"}
+      </SigninButton>
+    );
+  }
+  return (
+    <SigninButton
+      onClick={async () => {
+        await signIn("credentials", { callbackUrl: "http://localhost:3000/" });
+      }}
+    >
+      Sign in
+    </SigninButton>
+  );
+}
 
 export function GoogleSignInButton() {
   const { data: session } = useSession();

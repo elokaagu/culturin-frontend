@@ -5,7 +5,10 @@ import Header from "../components/Header";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
 import Image from "next/image";
-import { GoogleSignInButton } from "../components/AuthButtons";
+import {
+  GoogleSignInButton,
+  HomeSigninButton,
+} from "../components/AuthButtons";
 
 export default function Signin() {
   return (
@@ -31,7 +34,7 @@ export default function Signin() {
             <SigninButton>
               <p>Sign up</p>
             </SigninButton>
-            <GoogleSignInButton />
+            <HomeSigninButton />
           </SignInSection>
         </AppRight>
       </AppBody>

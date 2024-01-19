@@ -1,19 +1,15 @@
 "use client";
 
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import { device } from "./styles/breakpoints";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { Toggle } from "styled-icons/ionicons-outline";
-import Sidebar from "./components/Sidebar";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { getServerSession } from "next-auth";
-import { getSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 // import prisma from "../app/api/auth/[...nextauth]/prisma";
 
@@ -30,8 +26,9 @@ type Session = {
 
 // Theme Provider
 
-export default function Home({ session }: { session: any }) {
+export default function Home() {
   // States
+  const { data: session } = useSession();
 
   const [theme, setTheme] = useState("dark");
   const [isNavOpen, setIsNavOpen] = useState(false); // Define isNavOpen state
@@ -65,9 +62,6 @@ export default function Home({ session }: { session: any }) {
               <Title>
                 <h1>Explore</h1>
                 <p>Discover a world of travel, inspiration and culture</p>
-                <Link href="/signin">
-                  <p>Sign in</p>
-                </Link>
               </Title>
 
               <Switch>
