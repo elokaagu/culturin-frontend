@@ -47,6 +47,16 @@ const SpotlightTitle = styled.div`
   cursor: pointer;
   padding: 10px;
   margin-left: 320px;
+
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 10px;
+  }
 `;
 
-const FeedContainer = styled.div``;
+const FeedContainer = styled.div`
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 20px;
+  }
+`;

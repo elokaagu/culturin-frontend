@@ -30,11 +30,6 @@ export default function Feed() {
       </Link>
 
       <FeedContainer>
-        <FeedText>
-          <h1>Introducing Cynthia Bailey</h1>
-          <p>American star talks travel, culture and health </p>
-          <span>17th January 2024</span>
-        </FeedText>
         <FeedImage>
           <Link href="/spotlight/posts">
             <ImageWrap>
@@ -57,6 +52,11 @@ export default function Feed() {
             </ImageWrap>
           </Link>
         </FeedImage>
+        <FeedText>
+          <h1>Introducing Cynthia Bailey</h1>
+          <p>American star talks travel, culture and health </p>
+          <span>17th January 2024</span>
+        </FeedText>
       </FeedContainer>
     </AppBody>
   );
@@ -68,6 +68,11 @@ const AppBody = styled.div`
   align-items: center;
   justify-content: center;
   padding-top: 50px;
+
+  @media ${device.mobile} {
+    padding-top: 10px;
+    margin-left: 0px;
+  }
 `;
 
 const FeedContainer = styled.div`
@@ -102,6 +107,14 @@ const FeedContainer = styled.div`
   a {
     text-decoration: none;
   }
+
+  @media ${device.mobile} {
+    padding-top: 10px;
+    margin-left: 0px;
+    width: 100%;
+    flex-direction: column;
+    align-items: left;
+  }
 `;
 
 const FeedText = styled.div`
@@ -113,6 +126,13 @@ const FeedImage = styled.div`
   cursor: pointer;
   img {
     border-radius: 10px;
+  }
+  @media ${device.mobile} {
+    margin-left: 40px;
+    padding-top: 20px;
+    width: 100%;
+    flex-direction: column;
+    align-items: left;
   }
 `;
 
