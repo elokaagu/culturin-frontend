@@ -23,7 +23,10 @@ export function HomeSigninButton() {
   return (
     <SigninButton
       onClick={async () => {
-        await signIn("credentials", { callbackUrl: "/" });
+        await signIn("credentials", {
+          redirect: true,
+          callbackUrl: "/",
+        });
       }}
     >
       Sign in
