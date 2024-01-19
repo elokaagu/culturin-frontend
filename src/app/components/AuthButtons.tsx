@@ -5,7 +5,6 @@ import githubLogo from "/public/github.png";
 import { signIn, signOut, useSession } from "next-auth/react";
 import styled from "styled-components";
 import { device } from "../styles/breakpoints";
-import { redirect } from "next/navigation";
 
 export function HomeSigninButton() {
   const { data: session } = useSession();
@@ -24,7 +23,7 @@ export function HomeSigninButton() {
   return (
     <SigninButton
       onClick={async () => {
-        await signIn("credentials", { callbackUrl: "http://localhost:3000/" });
+        await signIn("credentials", { callbackUrl: "/" });
       }}
     >
       Sign in
