@@ -4,8 +4,7 @@ import styled from "styled-components";
 import ReactPlayer from "react-player";
 
 const VideoPlayer = () => {
-  let videosrc =
-    "https://stream.mux.com/SrMydri3II01Y2kyNTvEPjq2Rjs02HZ4TYmWwoLkHovy8.m3u8";
+  let videosrc = "https://www.youtube.com/watch?v=IX8reBGLQFk";
 
   return (
     <AppBody>

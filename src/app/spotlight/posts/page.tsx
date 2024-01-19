@@ -62,7 +62,7 @@ export default function SpotlightPosts() {
         </ImageContainer>
         <VideoPlayer />
         <Body>
-          <p>
+          {/* <p>
             Cynthia, often referred to as the "Coal City State," is a Nigerian
             city that boasts a diverse and vibrant cultural heritage. Located in
             the southeastern region of Nigeria, Enugu is not only known for its
@@ -76,7 +76,7 @@ export default function SpotlightPosts() {
             museums and memorials, gaining insight into the city's historical
             struggles and triumphs. Enugu's cultural heritage is also deeply
             intertwined with its indigenous people, primarily the Igbo.
-          </p>
+          </p> */}
         </Body>
       </AppBody>
     </>
