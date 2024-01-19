@@ -1,14 +1,10 @@
 "use client";
 import React from "react";
 import styled from "styled-components";
-import Header from "../components/Header";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
 import Image from "next/image";
-import {
-  GoogleSignInButton,
-  HomeSigninButton,
-} from "../components/AuthButtons";
+import { HomeSigninButton } from "../components/AuthButtons";
 
 export default function Signin() {
   return (

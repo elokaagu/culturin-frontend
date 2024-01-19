@@ -33,6 +33,7 @@ export default function SpotlightPosts() {
             back
           </BackLink>
         </Link>
+
         <Title>
           <h1>Cynthia Bailey</h1>
         </Title>
@@ -62,7 +63,7 @@ export default function SpotlightPosts() {
         </ImageContainer>
         <VideoPlayer />
         <Body>
-          {/* <p>
+          <p>
             Cynthia, often referred to as the "Coal City State," is a Nigerian
             city that boasts a diverse and vibrant cultural heritage. Located in
             the southeastern region of Nigeria, Enugu is not only known for its
@@ -76,7 +77,7 @@ export default function SpotlightPosts() {
             museums and memorials, gaining insight into the city's historical
             struggles and triumphs. Enugu's cultural heritage is also deeply
             intertwined with its indigenous people, primarily the Igbo.
-          </p> */}
+          </p>
         </Body>
       </AppBody>
     </>
@@ -84,6 +85,7 @@ export default function SpotlightPosts() {
 }
 
 const AppBody = styled.div`
+  height: 100%;
   padding: 40px;
   display: flex;
   padding-top: 150px;
@@ -112,9 +114,16 @@ const Title = styled.div`
   cursor: pointer;
 
   @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
     align-items: left;
+    margin-left: 0;
+    width: 100%;
+
+    h1 {
+      font-size: 25px;
+      align-items: left;
+      margin-left: 40px;
+      width: 100%;
+    }
   }
 `;
 
@@ -192,6 +201,9 @@ const ImageWrap = styled.span`
     & > span {
       object-fit: cover;
       border-radius: 20px; /* Rounded edges on mobile */
+    }
+    img {
+      margin-left: 0;
     }
   }
 `;

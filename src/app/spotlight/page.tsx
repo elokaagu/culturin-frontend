@@ -25,6 +25,7 @@ export default function Spotlight() {
 }
 
 const AppBody = styled.div`
+  height: 100%;
   padding: 40px;
   display: flex;
   padding-top: 150px;
