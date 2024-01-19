@@ -50,9 +50,16 @@ const AppBody = styled.div`
   overflow: none;
 
   @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
     align-items: left;
+    display: flex;
+    flex-direction: column;
+    height: 100vw;
+
+    img {
+      margin-top: 100px;
+      align-items: left;
+      margin-left: 0px;
+    }
   }
 `;
 
@@ -60,7 +67,20 @@ const AppLeft = styled.div`
   display: flex;
   flex-direction: column;
   width: 100vw;
-  align-items: center;
+  img {
+    margin-left: 200px;
+  }
+
+  @media ${device.mobile} {
+    align-items: left;
+    width: 100%;
+
+    img {
+      margin-top: 100px;
+      align-items: left;
+      margin-left: 40px;
+    }
+  }
 `;
 
 const AppRight = styled.div`
@@ -68,11 +88,21 @@ const AppRight = styled.div`
   flex-direction: column;
   width: 100vw;
   align-items: center;
+
+  @media ${device.mobile} {
+    align-items: left;
+  }
 `;
 
 const SignInSection = styled.div`
   width: 40%;
   align-items: center;
+
+  @media ${device.mobile} {
+    align-items: left;
+    width: 100%;
+    margin-left: 65px;
+  }
 `;
 
 const SigninButton = styled.div`
@@ -114,6 +144,7 @@ const Title = styled.div`
   }
 
   @media ${device.mobile} {
-    padding-left: 0px;
+    align-items: left;
+    width: 80%;
   }
 `;
