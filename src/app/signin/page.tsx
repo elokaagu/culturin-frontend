@@ -8,6 +8,7 @@ import { HomeSigninButton } from "../components/AuthButtons";
 import dynamic from "next/dynamic";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
+import { GetStaticProps, GetStaticPaths } from "next";
 
 export default function Signin() {
   const [theme, setTheme] = useState("dark");
