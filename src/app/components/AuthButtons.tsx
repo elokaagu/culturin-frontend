@@ -1,7 +1,7 @@
 "use client";
-import Image from "next/image";
-import googleLogo from "/public/google.png";
-import githubLogo from "/public/github.png";
+// import Image from "next/image";
+// import googleLogo from "/public/google.png";
+// import githubLogo from "/public/github.png";
 import { signIn, signOut, useSession } from "next-auth/react";
 import styled from "styled-components";
 import { device } from "../styles/breakpoints";
@@ -13,7 +13,7 @@ export function HomeSigninButton() {
     return (
       <SigninButton
         onClick={async () => {
-          await signOut();
+          await signOut({ callbackUrl: "/" });
         }}
       >
         {session?.user?.name?.split(" ")[0] || "Guest"}
@@ -41,7 +41,7 @@ export function GoogleSignInButton() {
     return (
       <SigninButton
         onClick={async () => {
-          await signOut();
+          await signOut({ callbackUrl: "/" });
         }}
       >
         {session?.user?.name?.split(" ")[0] || "Guest"}

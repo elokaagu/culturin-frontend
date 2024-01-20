@@ -10,6 +10,7 @@ import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { Toggle } from "styled-icons/ionicons-outline";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
+// import dynamic from "next/dynamic";
 
 // import prisma from "../app/api/auth/[...nextauth]/prisma";
 
@@ -25,6 +26,14 @@ type Session = {
 };
 
 // Theme Provider
+
+// Dynamic imports
+
+// const Hero = dynamic(() => import("./components/Hero"));
+
+// const DynamicHero = dynamic(() => import("./components/Hero"), {
+//   loading: () => <p>Loading...</p>,
+// });
 
 export default function Home() {
   // States
@@ -48,6 +57,9 @@ export default function Home() {
     // Or handle the unauthenticated state as needed
     redirect("/signin");
   }
+
+  // Dymamic imports
+  const [showMore, setShowMore] = useState(false);
 
   // Return
   return (

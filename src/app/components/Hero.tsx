@@ -67,6 +67,7 @@ export default function Hero() {
                 fill
                 style={{ objectFit: "cover" }}
                 blurDataURL={cardData.imageSrc}
+                priority={true}
               />
             </CardBody>
           </Link>

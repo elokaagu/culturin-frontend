@@ -5,6 +5,7 @@ import Link from "next/link";
 import { device } from "../styles/breakpoints";
 import Image from "next/image";
 import { HomeSigninButton } from "../components/AuthButtons";
+import dynamic from "next/dynamic";
 
 export default function Signin() {
   return (
@@ -18,6 +19,7 @@ export default function Signin() {
               height={200}
               draggable={false}
               alt="culturin logo"
+              priority={true}
             />
           </Link>
         </AppLeft>
