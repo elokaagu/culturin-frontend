@@ -1,4 +1,5 @@
 import { DefaultTheme, createGlobalStyle } from "styled-components";
+import { device } from "./breakpoints";
 
 declare module "styled-components" {
   export interface DefaultTheme {
@@ -13,6 +14,11 @@ export const GlobalStyles = createGlobalStyle`
         background: ${({ theme }) => theme.body};
         color: ${({ theme }) => theme.title};
         transition: background 0.5s ease-in, color 0.5s ease-in;
+        @media ${device.mobile} {
+          body {
+            overflow: hidden;
+          }
+        }
     }
 `;
 export const lightTheme = {
