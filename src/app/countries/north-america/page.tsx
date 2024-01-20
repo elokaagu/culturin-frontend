@@ -17,8 +17,9 @@ export default function NorthAmerica() {
               <p>Browse Countries</p>
             </CountriesTitle>
             <CountriesList>
-              <p>United States of America</p>
+              <p>USA</p>
               <p>Mexico</p>
+              <p>Caribbean</p>
               <p>Canada</p>
             </CountriesList>
           </CountriesDetails>

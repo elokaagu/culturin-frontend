@@ -24,6 +24,7 @@ export default function Asia() {
               <p>Bali</p>
               <p>India</p>
               <p>Pakistan</p>
+              <p>Thailand</p>
             </CountriesList>
           </CountriesDetails>
         </CountryContainer>
