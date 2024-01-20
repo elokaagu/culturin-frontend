@@ -16,7 +16,7 @@ const data = [
     author: "elokaagu",
     // imageSrc: "/images/eloka1.jpg",
     imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/cxvaq2xztm62zrccsx4u.jpg",
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg",
   },
   {
     city: "Lisbon, Portugal",

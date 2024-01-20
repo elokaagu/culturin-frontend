@@ -116,7 +116,7 @@ export default function Header() {
             </li>
 
             <Link href="/spotlight">
-              <li>Spotlight</li>
+              <li>News</li>
             </Link>
 
             <li>

@@ -12,7 +12,7 @@ export default function Assistant() {
       <Header />
       <AppBody>
         <AssistantTitle>
-          <h1>AI</h1>
+          <h1>Atlas AI</h1>
         </AssistantTitle>
         <ChatAssistant>
           <ChatComponent />

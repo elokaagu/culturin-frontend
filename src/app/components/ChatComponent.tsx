@@ -36,7 +36,7 @@ export default function ChatComponent() {
             <div key={message.id}>
               {message.role === "assistant" ? (
                 <BotMessage>
-                  <h3>Ibn</h3>
+                  <h3>Atlas</h3>
                 </BotMessage>
               ) : (
                 <BotMessage>
