@@ -13,7 +13,7 @@ export function HomeSigninButton() {
     return (
       <SigninButton
         onClick={async () => {
-          await signOut({ callbackUrl: "/" });
+          await signOut();
         }}
       >
         {session?.user?.name?.split(" ")[0] || "Guest"}
@@ -41,7 +41,10 @@ export function GoogleSignInButton() {
     return (
       <SigninButton
         onClick={async () => {
-          await signOut({ callbackUrl: "/" });
+          await signOut({
+            redirect: false, // Prevents redirection after signing out
+            callbackUrl: "/", // This is optional since redirect is false
+          });
         }}
       >
         {session?.user?.name?.split(" ")[0] || "Guest"}
