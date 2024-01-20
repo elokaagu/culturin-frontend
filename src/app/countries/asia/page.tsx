@@ -1,37 +1,47 @@
 "use client";
-import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import MapGl from "../../components/Map";
 import { device } from "../../styles/breakpoints";
+import React, { useState } from "react";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
 export default function Asia() {
+  const [theme, setTheme] = useState("dark");
+
+  const isDarkTheme = theme === "dark";
+
   return (
     <>
       <Header />
-      <AppBody>
-        <CountryContainer>
-          <CountriesDetails>
-            <CountriesTitle>
-              <h1>Asia</h1>
-              <p>Browse Countries</p>
-            </CountriesTitle>
-            <CountriesList>
-              <p>China</p>
-              <p>Japan</p>
-              <p>South Korea</p>
-              <p>Taiwan</p>
-              <p>Bali</p>
-              <p>India</p>
-              <p>Pakistan</p>
-              <p>Thailand</p>
-            </CountriesList>
-          </CountriesDetails>
-        </CountryContainer>
-        <MapBody>
-          <MapGl continent="asia" />
-        </MapBody>
-      </AppBody>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <GlobalStyles />
+
+        <AppBody>
+          <CountryContainer>
+            <CountriesDetails>
+              <CountriesTitle>
+                <h1>Asia</h1>
+                <p>Browse Countries</p>
+              </CountriesTitle>
+              <CountriesList>
+                <p>China</p>
+                <p>Japan</p>
+                <p>South Korea</p>
+                <p>Taiwan</p>
+                <p>Bali</p>
+                <p>India</p>
+                <p>Pakistan</p>
+                <p>Thailand</p>
+              </CountriesList>
+            </CountriesDetails>
+          </CountryContainer>
+          <MapBody>
+            <MapGl continent="asia" />
+          </MapBody>
+        </AppBody>
+      </ThemeProvider>
     </>
   );
 }

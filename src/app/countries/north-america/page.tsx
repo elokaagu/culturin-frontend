@@ -1,33 +1,42 @@
 "use client";
-import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import MapGl from "../../components/Map";
 import { device } from "../../styles/breakpoints";
+import React, { useState } from "react";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
 export default function NorthAmerica() {
+  const [theme, setTheme] = useState("dark");
+
+  const isDarkTheme = theme === "dark";
   return (
     <>
       <Header />
-      <AppBody>
-        <CountryContainer>
-          <CountriesDetails>
-            <CountriesTitle>
-              <h1>North America</h1>
-              <p>Browse Countries</p>
-            </CountriesTitle>
-            <CountriesList>
-              <p>USA</p>
-              <p>Mexico</p>
-              <p>Caribbean</p>
-              <p>Canada</p>
-            </CountriesList>
-          </CountriesDetails>
-        </CountryContainer>
-        <MapBody>
-          <MapGl continent="northAmerica" />
-        </MapBody>
-      </AppBody>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <GlobalStyles />
+
+        <AppBody>
+          <CountryContainer>
+            <CountriesDetails>
+              <CountriesTitle>
+                <h1>North America</h1>
+                <p>Browse Countries</p>
+              </CountriesTitle>
+              <CountriesList>
+                <p>USA</p>
+                <p>Mexico</p>
+                <p>Caribbean</p>
+                <p>Canada</p>
+              </CountriesList>
+            </CountriesDetails>
+          </CountryContainer>
+          <MapBody>
+            <MapGl continent="northAmerica" />
+          </MapBody>
+        </AppBody>
+      </ThemeProvider>
     </>
   );
 }

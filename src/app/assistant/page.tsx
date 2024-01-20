@@ -1,23 +1,31 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
+import { ThemeProvider } from "styled-components";
 import { device } from "../styles/breakpoints";
 import ChatComponent from "../components/ChatComponent";
+import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 
 export default function Assistant() {
+  const [theme, setTheme] = useState("dark");
+
+  const isDarkTheme = theme === "dark";
   return (
     <>
       <Header />
-      <AppBody>
-        <AssistantTitle>
-          <h1>Atlas AI</h1>
-        </AssistantTitle>
-        <ChatAssistant>
-          <ChatComponent />
-        </ChatAssistant>
-      </AppBody>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <GlobalStyles />
+        <AppBody>
+          <AssistantTitle>
+            <h1>Atlas AI</h1>
+          </AssistantTitle>
+          <ChatAssistant>
+            <ChatComponent />
+          </ChatAssistant>
+        </AppBody>
+      </ThemeProvider>
     </>
   );
 }

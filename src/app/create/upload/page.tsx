@@ -1,35 +1,44 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import { device } from "../../styles/breakpoints";
 import { CldUploadWidget } from "next-cloudinary";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
 export default function Upload() {
+  const [theme, setTheme] = useState("dark");
+
+  const isDarkTheme = theme === "dark";
+
   return (
     <>
       <Header />
-      <AppBody>
-        <UploadContainer>
-          <UploadDetails>
-            <UploadTitle>
-              <h1>Upload</h1>
-              <p>Add to your collection</p>
-            </UploadTitle>
-            <UploadField>
-              <CldUploadWidget uploadPreset="culturin">
-                {({ open }) => {
-                  return (
-                    <UploadButton onClick={() => open()}>
-                      Upload an image
-                    </UploadButton>
-                  );
-                }}
-              </CldUploadWidget>
-            </UploadField>
-          </UploadDetails>
-        </UploadContainer>
-      </AppBody>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <GlobalStyles />
+        <AppBody>
+          <UploadContainer>
+            <UploadDetails>
+              <UploadTitle>
+                <h1>Upload</h1>
+                <p>Add to your collection</p>
+              </UploadTitle>
+              <UploadField>
+                <CldUploadWidget uploadPreset="culturin">
+                  {({ open }) => {
+                    return (
+                      <UploadButton onClick={() => open()}>
+                        Upload an image
+                      </UploadButton>
+                    );
+                  }}
+                </CldUploadWidget>
+              </UploadField>
+            </UploadDetails>
+          </UploadContainer>
+        </AppBody>
+      </ThemeProvider>
     </>
   );
 }

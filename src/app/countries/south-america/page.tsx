@@ -1,35 +1,44 @@
 "use client";
-import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import MapGl from "../../components/Map";
 import { device } from "../../styles/breakpoints";
+import React, { useState } from "react";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
 export default function SouthAmerica() {
+  const [theme, setTheme] = useState("dark");
+
+  const isDarkTheme = theme === "dark";
   return (
     <>
       <Header />
-      <AppBody>
-        <CountryContainer>
-          <CountriesDetails>
-            <CountriesTitle>
-              <h1>South America</h1>
-              <p>Browse Countries</p>
-            </CountriesTitle>
-            <CountriesList>
-              <p>Brazil</p>
-              <p>Argentina</p>
-              <p>Chile</p>
-              <p>Ecuador</p>
-              <p>Peru</p>
-              <p>Bolivia</p>
-            </CountriesList>
-          </CountriesDetails>
-        </CountryContainer>
-        <MapBody>
-          <MapGl continent="southAmerica" />
-        </MapBody>
-      </AppBody>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <GlobalStyles />
+
+        <AppBody>
+          <CountryContainer>
+            <CountriesDetails>
+              <CountriesTitle>
+                <h1>South America</h1>
+                <p>Browse Countries</p>
+              </CountriesTitle>
+              <CountriesList>
+                <p>Brazil</p>
+                <p>Argentina</p>
+                <p>Chile</p>
+                <p>Ecuador</p>
+                <p>Peru</p>
+                <p>Bolivia</p>
+              </CountriesList>
+            </CountriesDetails>
+          </CountryContainer>
+          <MapBody>
+            <MapGl continent="southAmerica" />
+          </MapBody>
+        </AppBody>
+      </ThemeProvider>
     </>
   );
 }

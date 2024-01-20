@@ -1,36 +1,46 @@
 "use client";
-import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import MapGl from "../../components/Map";
 import { device } from "../../styles/breakpoints";
+import React, { useState } from "react";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
 export default function Europe() {
+  const [theme, setTheme] = useState("dark");
+
+  const isDarkTheme = theme === "dark";
+
   return (
     <>
       <Header />
-      <AppBody>
-        <CountryContainer>
-          <CountriesDetails>
-            <CountriesTitle>
-              <h1>Europe</h1>
-              <p>Browse Countries</p>
-            </CountriesTitle>
-            <CountriesList>
-              <p>UK</p>
-              <p>France</p>
-              <p>Spain</p>
-              <p>The Netherlands</p>
-              <p>Portugal</p>
-              <p>Austria</p>
-              <p>Germany</p>
-            </CountriesList>
-          </CountriesDetails>
-        </CountryContainer>
-        <MapBody>
-          <MapGl continent="europe" />
-        </MapBody>
-      </AppBody>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <GlobalStyles />
+
+        <AppBody>
+          <CountryContainer>
+            <CountriesDetails>
+              <CountriesTitle>
+                <h1>Europe</h1>
+                <p>Browse Countries</p>
+              </CountriesTitle>
+              <CountriesList>
+                <p>UK</p>
+                <p>France</p>
+                <p>Spain</p>
+                <p>The Netherlands</p>
+                <p>Portugal</p>
+                <p>Austria</p>
+                <p>Germany</p>
+              </CountriesList>
+            </CountriesDetails>
+          </CountryContainer>
+          <MapBody>
+            <MapGl continent="europe" />
+          </MapBody>
+        </AppBody>
+      </ThemeProvider>
     </>
   );
 }

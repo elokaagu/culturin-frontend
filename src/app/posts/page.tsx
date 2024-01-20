@@ -5,7 +5,6 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
 import { ThemeProvider } from "styled-components";
-
 import { device } from "../styles/breakpoints";
 import { CldImage } from "next-cloudinary";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";

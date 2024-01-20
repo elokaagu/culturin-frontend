@@ -1,37 +1,47 @@
 "use client";
-import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import MapGl from "../../components/Map";
 import { device } from "../../styles/breakpoints";
+import React, { useState } from "react";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
 export default function Africa() {
+  const [theme, setTheme] = useState("dark");
+
+  const isDarkTheme = theme === "dark";
+
   return (
     <>
       <Header />
-      <AppBody>
-        <CountryContainer>
-          <CountriesDetails>
-            <CountriesTitle>
-              <h1>Africa</h1>
-              <p>Browse Countries</p>
-            </CountriesTitle>
-            <CountriesList>
-              <p>Nigeria</p>
-              <p>Niger</p>
-              <p>Kenya</p>
-              <p>Ethiopia</p>
-              <p>Uganda</p>
-              <p>Rwanda</p>
-              <p>Zambia</p>
-              <p>Zimbabwe</p>
-            </CountriesList>
-          </CountriesDetails>
-        </CountryContainer>
-        <MapBody>
-          <MapGl continent="africa" />
-        </MapBody>
-      </AppBody>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <GlobalStyles />
+
+        <AppBody>
+          <CountryContainer>
+            <CountriesDetails>
+              <CountriesTitle>
+                <h1>Africa</h1>
+                <p>Browse Countries</p>
+              </CountriesTitle>
+              <CountriesList>
+                <p>Nigeria</p>
+                <p>Niger</p>
+                <p>Kenya</p>
+                <p>Ethiopia</p>
+                <p>Uganda</p>
+                <p>Rwanda</p>
+                <p>Zambia</p>
+                <p>Zimbabwe</p>
+              </CountriesList>
+            </CountriesDetails>
+          </CountryContainer>
+          <MapBody>
+            <MapGl continent="africa" />
+          </MapBody>
+        </AppBody>
+      </ThemeProvider>
     </>
   );
 }
