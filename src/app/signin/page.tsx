@@ -1,40 +1,49 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
 import Image from "next/image";
 import { HomeSigninButton } from "../components/AuthButtons";
 import dynamic from "next/dynamic";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 
 export default function Signin() {
+  const [theme, setTheme] = useState("dark");
+
+  const isDarkTheme = theme === "dark";
   return (
     <>
       <AppBody>
-        <AppLeft>
-          <Link href="/">
-            <Image
-              src="/culturin_logo.svg"
-              width={200}
-              height={200}
-              draggable={false}
-              alt="culturin logo"
-              priority={true}
-            />
-          </Link>
-        </AppLeft>
-        <AppRight>
-          <Title>
-            <h1>Explore the art of Culturin</h1>
-            <p>Join today.</p>
-          </Title>
-          <SignInSection>
-            <SigninButton>
-              <p>Sign up</p>
-            </SigninButton>
-            <HomeSigninButton />
-          </SignInSection>
-        </AppRight>
+        <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+          <GlobalStyles />
+
+          <AppLeft>
+            <Link href="/">
+              <Image
+                src="/culturin_logo.svg"
+                width={200}
+                height={200}
+                draggable={false}
+                alt="culturin logo"
+                priority={true}
+              />
+            </Link>
+          </AppLeft>
+          <AppRight>
+            <Title>
+              <h1>Explore the art of Culturin</h1>
+              <p>Join today.</p>
+            </Title>
+            <SignInSection>
+              <SigninButton>
+                <p>Sign up</p>
+              </SigninButton>
+              <HomeSigninButton />
+            </SignInSection>
+          </AppRight>
+        </ThemeProvider>
       </AppBody>
     </>
   );
