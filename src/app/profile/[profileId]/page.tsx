@@ -7,11 +7,13 @@ import { device } from "../../styles/breakpoints";
 import ProfileCard from "../../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
+import { useSession } from "next-auth/react";
 
-export default function Profile() {
+export default function Profile({ params }: { params: { profileId: string } }) {
   const [theme, setTheme] = useState("dark");
 
   const isDarkTheme = theme === "dark";
+  const { data: session } = useSession();
   return (
     <>
       <Header />
@@ -19,7 +21,7 @@ export default function Profile() {
         <GlobalStyles />
         <AppBody>
           <ProfileTitle>
-            <h1>My Profile</h1>
+            <h1> {session?.user?.name?.split(" ")[0] || "Your"}'s Profile</h1>
           </ProfileTitle>
           <Row>
             <ProfileCard />
