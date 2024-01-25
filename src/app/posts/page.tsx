@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
@@ -10,9 +10,38 @@ import { CldImage } from "next-cloudinary";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 
 export default function Posts() {
+  //API
+
   const [theme, setTheme] = useState("dark");
 
   const isDarkTheme = theme === "dark";
+
+  const [heading, setHeading] = useState([]);
+  const [message, setMessage] = useState("Loading");
+
+  // ...
+
+  useEffect(() => {
+    fetch(
+      "http://localhost:4000/api/pages/65b25faecac4c3b01971d7d2?locale=undefined&draft=false&depth=1"
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setHeading(data.layout[0].heading);
+        setMessage(data.layout[0].text);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  // ...
 
   return (
     <>
@@ -42,10 +71,10 @@ export default function Posts() {
           </Link>
 
           <Title>
-            <h1>Enugu, Nigeria</h1>
+            <h1>{heading}</h1>
           </Title>
           <Subtitle>
-            <h3>Unveiling Enugu's Rich Cultural Heritage</h3>
+            <h3>{message}</h3>
           </Subtitle>
           <ImageContainer>
             {" "}
