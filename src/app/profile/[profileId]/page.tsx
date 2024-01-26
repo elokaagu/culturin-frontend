@@ -21,7 +21,7 @@ export default function Profile({ params }: { params: { profileId: string } }) {
         <GlobalStyles />
         <AppBody>
           <ProfileTitle>
-            <h1> {session?.user?.name?.split(" ")[0] || "Your"}'s Profile</h1>
+            <h1> {session?.user?.name?.split(" ")[0] || "Your"} Profile</h1>
           </ProfileTitle>
           <Row>
             <ProfileCard />
