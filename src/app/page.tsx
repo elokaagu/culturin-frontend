@@ -75,6 +75,7 @@ export default function Home() {
               <HeroTitle>
                 <h1>Your curated travel partner</h1>
                 <p>Discover a world of travel</p>
+                <HeroButton>Explore</HeroButton>
               </HeroTitle>
             </HeroSection>
             <Row>
@@ -212,5 +213,31 @@ const SidebarMobile = styled.div`
   display: none;
   @media ${device.mobile} {
     display: block;
+  }
+`;
+
+const HeroButton = styled.div`
+  margin-top: 20px;
+  border-radius: 5px;
+  width: 100px;
+  ${"" /* border: 1px solid white; */}
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
   }
 `;
