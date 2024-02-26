@@ -195,7 +195,7 @@ const Head = styled.div`
   height: 60px;
   position: fixed;
   width: calc(100% - 60px);
-  z-index: 100;
+  z-index: 1000;
   background: black;
   padding-top: 40px;
   padding-bottom: 40px;
@@ -261,14 +261,17 @@ const Head = styled.div`
   }
 `;
 
-const StyledHeader = styled.header`
+type StyledHeaderProps = {
+  isScrolled: boolean;
+};
+
+const StyledHeader = styled.header<StyledHeaderProps>`
   transition: background-color 0.3s ease;
   background-color: ${(props) =>
     props.isScrolled ? "#ffffff" : "transparent"};
-  /* Other styles here. Adjust the properties as needed */
   position: fixed;
   width: 100%;
-  /* Adjust padding, display, and other properties as needed */
+  z-index: 1000;
 `;
 
 const HeaderLeft = styled.div`
