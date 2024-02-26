@@ -18,3 +18,24 @@
   src: url("./fonts/NewSpirit-Light-Condensed.otf");
   font-synthesis: none;
 }
+
+@font-face {
+  font-family: "Maison Neue Book";
+  src: url("./fonts/MaisonNeue-Book.otf");
+  font-synthesis: none;
+}
+@font-face {
+  font-family: "Maison Neue Demi";
+  src: url("./fonts/MaisonNeue-Demi.otf");
+  font-synthesis: none;
+}
+@font-face {
+  font-family: "Maison Neue Bold";
+  src: url("./fonts/MaisonNeue-Bold.otf");
+  font-synthesis: none;
+}
+@font-face {
+  font-family: "Maison Neue Light";
+  src: url("./fonts/MaisonNeue-Light.otf");
+  font-synthesis: none;
+}

@@ -10,6 +10,7 @@ import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { Toggle } from "styled-icons/ionicons-outline";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
+
 // import dynamic from "next/dynamic";
 
 // import prisma from "../app/api/auth/[...nextauth]/prisma";
@@ -72,7 +73,7 @@ export default function Home() {
           <Body>
             <Row>
               <Title>
-                <h1>Explore</h1>
+                <h1>Recommendations</h1>
                 <p>Discover a world of travel, inspiration and culture</p>
               </Title>
 
@@ -86,7 +87,19 @@ export default function Home() {
               <Hero />
             </Row>
             <Row>
+              <Title>
+                <h1>Wellness</h1>
+                <p>Discover the best in regenerative travel</p>
+              </Title>
+            </Row>
+            <Row>
               <Hero />
+            </Row>
+            <Row>
+              <Title>
+                <h1>A global taste</h1>
+                <p>Indulge in foods from all around the world</p>
+              </Title>
             </Row>
             <Row>
               <Hero />

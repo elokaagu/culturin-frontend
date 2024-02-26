@@ -14,8 +14,8 @@ import { getSession } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Culturin",
-  description: "Where Inspiration Meets Exploration",
+  title: "Culturin | Where Inspiration Meets Exploration",
+  description: "Travel, Culture, and Inspiration Platform",
 };
 
 export default async function RootLayout({
