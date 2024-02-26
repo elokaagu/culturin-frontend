@@ -100,7 +100,7 @@ export default function Hero() {
     <AppBody>
       {data.map((cardData, index) => (
         <Card key={index}>
-          <Link href="/posts">
+          <Link href={`/blog/${cardData.currentSlug}`}>
             <CardBody>
               <Image
                 src={urlFor(cardData.titleImage).url()}
@@ -203,11 +203,13 @@ const CardText = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
+
   color: ${(props) => props.theme.title};
 
   h1 {
     cursor: pointer;
     font-size: 16px;
+    padding-bottom: 10px;
 
     @media ${device.laptop} {
       font-size: 16px;
@@ -221,6 +223,8 @@ const CardText = styled.div`
   p {
     cursor: pointer;
     font-size: 14px;
+    -webkit-line-clamp: 2;
+
     color: ${(props) => props.theme.subtitle};
 
     @media ${device.laptop} {
