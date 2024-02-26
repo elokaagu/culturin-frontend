@@ -6,6 +6,8 @@ import Link from "next/link";
 import { CldImage } from "next-cloudinary";
 import { client } from "../lib/sanity";
 import { simpleBlogCard } from "../../../lib/interface";
+import { urlFor } from "../lib/sanity";
+import { useState, useEffect } from "react";
 
 const imageStyle = {
   borderRadius: "50%",
@@ -21,10 +23,20 @@ async function getData() {
     "currentSlug":slug.current,
 }
  `;
-  const data = await client.fetch(query);
 
-  return data;
+  try {
+    const data = await client.fetch(query);
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch data from Sanity:", error);
+    return []; // Return an empty array or appropriate error response
+  }
 }
+
+//   const data = await client.fetch(query);
+
+//   return data;
+// }
 
 // Data From Cloudinary
 
@@ -71,8 +83,16 @@ async function getData() {
 //   // Add more data objects as needed
 // ];
 
-export default async function Hero() {
-  const data: simpleBlogCard[] = await getData();
+export default function Hero() {
+  const [data, setData] = useState<simpleBlogCard[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const fetchedData = await getData();
+      setData(fetchedData);
+    }
+    fetchData();
+  }, []);
 
   console.log(data);
 
@@ -82,13 +102,15 @@ export default async function Hero() {
         <Card key={index}>
           <Link href="/posts">
             <CardBody>
-              <CldImage
-                src={cardData.titleImage}
+              <Image
+                src={urlFor(cardData.titleImage).url()}
                 alt={cardData.title}
-                placeholder="blur"
-                fill
+                // placeholder="blur"
+                // fill
+                height={300}
+                width={200}
                 style={{ objectFit: "cover" }}
-                blurDataURL={cardData.titleImage}
+                // blurDataURL={urlFor(cardData.titleImage).url()}
                 priority={true}
               />
             </CardBody>
