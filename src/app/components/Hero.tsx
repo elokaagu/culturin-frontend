@@ -100,7 +100,7 @@ export default function Hero() {
     <AppBody>
       {data.map((cardData, index) => (
         <Card key={index}>
-          <Link href={`/blog/${cardData.currentSlug}`}>
+          <Link href={`/articles/${cardData.currentSlug}`}>
             <CardBody>
               <Image
                 src={urlFor(cardData.titleImage).url()}
