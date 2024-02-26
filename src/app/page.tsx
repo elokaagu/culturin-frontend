@@ -52,11 +52,11 @@ export default function Home() {
 
   // Sign up or Sign in
 
-  if (!session) {
-    // Redirect or show a message if there is no session
-    // Or handle the unauthenticated state as needed
-    redirect("/signin");
-  }
+  // if (!session) {
+  //   // Redirect or show a message if there is no session
+  //   // Or handle the unauthenticated state as needed
+  //   redirect("/signin");
+  // }
 
   // Dymamic imports
   const [showMore, setShowMore] = useState(false);
