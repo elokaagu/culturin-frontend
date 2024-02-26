@@ -71,6 +71,12 @@ export default function Home() {
           <GlobalStyles />
 
           <Body>
+            <HeroSection>
+              <HeroTitle>
+                <h1>Your curated travel partner</h1>
+                <p>Discover a world of travel</p>
+              </HeroTitle>
+            </HeroSection>
             <Row>
               <Title>
                 <h1>Recommendations</h1>
@@ -120,6 +126,34 @@ const Body = styled.div`
 
   @media ${device.mobile} {
     padding-top: 100px;
+  }
+`;
+
+const HeroSection = styled.div`
+  height: 50vh;
+  display: flex;
+  padding: 20px;
+  flex direction: column;
+  flex: 1;
+`;
+
+const HeroTitle = styled.div`
+  margin: auto 10px;
+  padding-left: auto;
+  padding-top: 20px;
+  padding-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+  @media ${device.mobile} {
+    padding-left: 0px;
   }
 `;
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Plus, Search } from "styled-icons/boxicons-regular";
 import { ChevronDown } from "styled-icons/boxicons-regular";
@@ -13,8 +13,37 @@ import { Dispatch, SetStateAction } from "react";
 
 export default function Header() {
   const [theme, setTheme] = useState("light");
+  const [headerClass, setHeaderClass] = useState("transparentHeader");
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const isDarkTheme = theme === "dark";
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrollCheck = window.scrollY > 0;
+      setIsScrolled(scrollCheck);
+    };
+
+    // Attach scroll event listener
+    window.addEventListener("scroll", onScroll);
+
+    // Clean up event listener on component unmount
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Listen for scroll events
+  useEffect(() => {
+    const handleScroll = () => {
+      const show = window.scrollY > 0;
+      setHeaderClass(show ? "solidHeader" : "transparentHeader");
+    };
+
+    // Attach the handler on component mount
+    window.addEventListener("scroll", handleScroll);
+
+    // Detach the handler on component unmount
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []); // Empty dependency array means this runs once on mount
 
   // Toggle Theme
 
@@ -47,111 +76,113 @@ export default function Header() {
 
   return (
     <>
-      <Head>
-        <HeaderLeft>
-          <ul>
-            <li>
-              <Link href="/">
-                <Image
-                  src="/culturin_logo.svg"
-                  width={100}
-                  height={100}
-                  draggable={false}
-                  alt="culturin logo"
-                />
-              </Link>
-            </li>
-          </ul>
-        </HeaderLeft>
-        <HeaderCenter>
-          <SearchBar />
-        </HeaderCenter>
-        <HeaderRight>
-          {/* <li>
+      <StyledHeader isScrolled={isScrolled}>
+        <Head>
+          <HeaderLeft>
+            <ul>
+              <li>
+                <Link href="/">
+                  <Image
+                    src="/culturin_logo.svg"
+                    width={100}
+                    height={100}
+                    draggable={false}
+                    alt="culturin logo"
+                  />
+                </Link>
+              </li>
+            </ul>
+          </HeaderLeft>
+          <HeaderCenter>
+            <SearchBar />
+          </HeaderCenter>
+          <HeaderRight>
+            {/* <li>
             <Switch>
               <Toggle size={20} onClick={toggleTheme} />
             </Switch>
           </li> */}
-          <ul>
-            <Link href="/create">
+            <ul>
+              <Link href="/create">
+                <li>
+                  <Plus size="20" /> <span />
+                  Create
+                </li>
+              </Link>
+
+              {/* <Link href="/search">Upload</Link> */}
               <li>
-                <Plus size="20" /> <span />
-                Create
+                <DropdownContainer>
+                  <DropdownHeader onClick={toggling}>
+                    Destinations
+                    <ChevronDown size="20" />
+                  </DropdownHeader>
+                  {isOpen && (
+                    <DropdownListContainer>
+                      <DropdownList>
+                        <DropdownItem>
+                          <Link href="/countries/africa">Africa</Link>
+                        </DropdownItem>
+                        <DropdownItem>
+                          <Link href="/countries/asia">Asia</Link>
+                        </DropdownItem>
+                        <DropdownItem>
+                          <Link href="/countries/europe">Europe</Link>
+                        </DropdownItem>
+                        <DropdownItem>
+                          <Link href="/countries/north-america">
+                            North America
+                          </Link>
+                        </DropdownItem>
+                        <DropdownItem>
+                          <Link href="/countries/south-america">
+                            South America
+                          </Link>
+                        </DropdownItem>
+                      </DropdownList>
+                    </DropdownListContainer>
+                  )}
+                </DropdownContainer>
               </li>
-            </Link>
 
-            {/* <Link href="/search">Upload</Link> */}
-            <li>
-              <DropdownContainer>
-                <DropdownHeader onClick={toggling}>
-                  Destinations
-                  <ChevronDown size="20" />
-                </DropdownHeader>
-                {isOpen && (
-                  <DropdownListContainer>
-                    <DropdownList>
-                      <DropdownItem>
-                        <Link href="/countries/africa">Africa</Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link href="/countries/asia">Asia</Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link href="/countries/europe">Europe</Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link href="/countries/north-america">
-                          North America
-                        </Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link href="/countries/south-america">
-                          South America
-                        </Link>
-                      </DropdownItem>
-                    </DropdownList>
-                  </DropdownListContainer>
-                )}
-              </DropdownContainer>
-            </li>
+              <Link href="/spotlight">
+                <li>News</li>
+              </Link>
 
-            <Link href="/spotlight">
-              <li>News</li>
-            </Link>
-
-            <li>
-              <GoogleSignInButton />
-              {/* <SigninButton
+              <li>
+                <GoogleSignInButton />
+                {/* <SigninButton
               onClick={async () => {
                 await signIn();
               }}
             >
               Sign In
             </SigninButton> */}
-            </li>
-          </ul>
-        </HeaderRight>
-        <HeaderRightMobile>
-          <ul>
-            <HamburgerMenu>
-              <Hamburger
-                rounded
-                toggled={isMobileSidebarOpen} // Use isMobileSidebarOpen state to control the hamburger menu
-                toggle={handleMobileSidebarToggle} // Toggle the mobile sidebar state
-                size={20}
-                // onToggle={() => {
-                //   console.log("toggle");
-                //   <Sidebar />;
-                // }}
-                onToggle={() => setIsNavOpen(!isNavOpen)}
-              />
-              {isMobileSidebarOpen && ( // Render the Sidebar component based on mobile sidebar state
-                <Sidebar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
-              )}
-            </HamburgerMenu>
-          </ul>
-        </HeaderRightMobile>
-      </Head>
+              </li>
+            </ul>
+          </HeaderRight>
+          <HeaderRightMobile>
+            <ul>
+              <HamburgerMenu>
+                <Hamburger
+                  rounded
+                  toggled={isMobileSidebarOpen} // Use isMobileSidebarOpen state to control the hamburger menu
+                  toggle={handleMobileSidebarToggle} // Toggle the mobile sidebar state
+                  size={20}
+                  // onToggle={() => {
+                  //   console.log("toggle");
+                  //   <Sidebar />;
+                  // }}
+                  onToggle={() => setIsNavOpen(!isNavOpen)}
+                />
+                {isMobileSidebarOpen && ( // Render the Sidebar component based on mobile sidebar state
+                  <Sidebar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
+                )}
+              </HamburgerMenu>
+            </ul>
+          </HeaderRightMobile>
+        </Head>
+      </StyledHeader>
     </>
   );
 }
@@ -228,6 +259,16 @@ const Head = styled.div`
     color: grey;
     transition: 0.3s ease-in-out;
   }
+`;
+
+const StyledHeader = styled.header`
+  transition: background-color 0.3s ease;
+  background-color: ${(props) =>
+    props.isScrolled ? "#ffffff" : "transparent"};
+  /* Other styles here. Adjust the properties as needed */
+  position: fixed;
+  width: 100%;
+  /* Adjust padding, display, and other properties as needed */
 `;
 
 const HeaderLeft = styled.div`
