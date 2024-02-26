@@ -105,12 +105,10 @@ export default function Hero() {
               <Image
                 src={urlFor(cardData.titleImage).url()}
                 alt={cardData.title}
-                // placeholder="blur"
-                // fill
-                height={300}
-                width={200}
+                placeholder="blur"
+                fill
                 style={{ objectFit: "cover" }}
-                // blurDataURL={urlFor(cardData.titleImage).url()}
+                blurDataURL={urlFor(cardData.titleImage).url()}
                 priority={true}
               />
             </CardBody>
