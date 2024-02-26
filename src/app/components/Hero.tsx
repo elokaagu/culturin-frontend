@@ -4,56 +4,78 @@ import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
 import { CldImage } from "next-cloudinary";
+import { client } from "../lib/sanity";
+import { simpleBlogCard } from "../../../lib/interface";
 
 const imageStyle = {
   borderRadius: "50%",
   // border: "1px solid grey",
 };
 
-const data = [
-  {
-    city: "Enugu, Nigeria",
-    author: "elokaagu",
-    // imageSrc: "/images/eloka1.jpg",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg",
-  },
-  {
-    city: "Lisbon, Portugal",
-    author: "louisleonidas",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
-  },
-  {
-    city: "LA, California",
-    author: "cynthiabahati",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/xss8yv2irwwxsxndwqr9.jpg",
-  },
-  {
-    city: "Berlin, Germany",
-    author: "elokaagu",
-    // imageSrc: "/images/eloka1.jpg",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890835/mnvamvov5orwyqcum4mo.jpg",
-  },
-  {
-    city: "Tokyo, Japan",
-    author: "louisleonidas",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg",
-  },
+async function getData() {
+  const query = `
+ *[_type== 'blog'] | order(_createdAt desc) {
+  title,
+    titleImage,
+    summary,
+    "currentSlug":slug.current,
+}
+ `;
+  const data = await client.fetch(query);
 
-  {
-    city: "Dubai, Middle East",
-    author: "unikernest",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
-  },
-  // Add more data objects as needed
-];
+  return data;
+}
 
-export default function Hero() {
+// Data From Cloudinary
+
+// const data = [
+//   {
+//     city: "Enugu, Nigeria",
+//     author: "elokaagu",
+//     // imageSrc: "/images/eloka1.jpg",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg",
+//   },
+//   {
+//     city: "Lisbon, Portugal",
+//     author: "louisleonidas",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
+//   },
+//   {
+//     city: "LA, California",
+//     author: "cynthiabahati",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/xss8yv2irwwxsxndwqr9.jpg",
+//   },
+//   {
+//     city: "Berlin, Germany",
+//     author: "elokaagu",
+//     // imageSrc: "/images/eloka1.jpg",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890835/mnvamvov5orwyqcum4mo.jpg",
+//   },
+//   {
+//     city: "Tokyo, Japan",
+//     author: "louisleonidas",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg",
+//   },
+
+//   {
+//     city: "Dubai, Middle East",
+//     author: "unikernest",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
+//   },
+//   // Add more data objects as needed
+// ];
+
+export default async function Hero() {
+  const data: simpleBlogCard[] = await getData();
+
+  console.log(data);
+
   return (
     <AppBody>
       {data.map((cardData, index) => (
@@ -61,19 +83,19 @@ export default function Hero() {
           <Link href="/posts">
             <CardBody>
               <CldImage
-                src={cardData.imageSrc}
-                alt={cardData.city}
+                src={cardData.titleImage}
+                alt={cardData.title}
                 placeholder="blur"
                 fill
                 style={{ objectFit: "cover" }}
-                blurDataURL={cardData.imageSrc}
+                blurDataURL={cardData.titleImage}
                 priority={true}
               />
             </CardBody>
           </Link>
 
           <CardText>
-            <h1>{cardData.city}</h1>
+            <h1>{cardData.title}</h1>
             <CardAuthor>
               {/* <AvatarContainer>
             <Image
@@ -85,7 +107,7 @@ export default function Hero() {
               style={imageStyle}
             />
           </AvatarContainer> */}
-              <p>{cardData.author}</p>
+              <p>{cardData.summary}</p>
             </CardAuthor>
           </CardText>
         </Card>

@@ -29,6 +29,7 @@
     "next": "^14.0.4",
     "next-auth": "^4.24.5",
     "next-cloudinary": "^5.18.0",
+    "next-sanity": "^8.0.2",
     "next-themes": "^0.2.1",
     "next-video": "^0.11.2",
     "openai": "^4.24.4",
