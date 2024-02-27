@@ -16,12 +16,12 @@ const imageStyle = {
 
 async function getData() {
   const query = `
- *[_type== 'blog'] | order(_createdAt desc) {
-  title,
-    titleImage,
-    summary,
-    "currentSlug":slug.current,
-}
+  *[_type== 'blog'] | order(_createdAt desc) {
+    title,
+      titleImage,
+      summary,
+      "currentSlug":slug.current,
+  }
  `;
 
   try {
@@ -32,56 +32,6 @@ async function getData() {
     return []; // Return an empty array or appropriate error response
   }
 }
-
-//   const data = await client.fetch(query);
-
-//   return data;
-// }
-
-// Data From Cloudinary
-
-// const data = [
-//   {
-//     city: "Enugu, Nigeria",
-//     author: "elokaagu",
-//     // imageSrc: "/images/eloka1.jpg",
-//     imageSrc:
-//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg",
-//   },
-//   {
-//     city: "Lisbon, Portugal",
-//     author: "louisleonidas",
-//     imageSrc:
-//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
-//   },
-//   {
-//     city: "LA, California",
-//     author: "cynthiabahati",
-//     imageSrc:
-//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/xss8yv2irwwxsxndwqr9.jpg",
-//   },
-//   {
-//     city: "Berlin, Germany",
-//     author: "elokaagu",
-//     // imageSrc: "/images/eloka1.jpg",
-//     imageSrc:
-//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890835/mnvamvov5orwyqcum4mo.jpg",
-//   },
-//   {
-//     city: "Tokyo, Japan",
-//     author: "louisleonidas",
-//     imageSrc:
-//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg",
-//   },
-
-//   {
-//     city: "Dubai, Middle East",
-//     author: "unikernest",
-//     imageSrc:
-//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
-//   },
-//   // Add more data objects as needed
-// ];
 
 export default function Hero() {
   const [data, setData] = useState<simpleBlogCard[]>([]);

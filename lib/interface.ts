@@ -12,3 +12,19 @@ export interface fullBlog {
   titleImage: any;
   body: any;
 }
+
+export interface videoCard {
+  title: string;
+  currentSlug: string;
+  uploader: string;
+  videoThumbnail: any;
+  description: string;
+}
+
+export interface fullVideo {
+  title: string;
+  currentSlug: string;
+  uploader: string;
+  videoThumbnail: any;
+  description: string;
+}

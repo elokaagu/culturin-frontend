@@ -5,78 +5,114 @@ import { device } from "../styles/breakpoints";
 import Link from "next/link";
 import { CldImage } from "next-cloudinary";
 import { client } from "../lib/sanity";
-import { simpleBlogCard } from "../../../lib/interface";
+import { simpleBlogCard, videoCard } from "../../../lib/interface";
 import { urlFor } from "../lib/sanity";
 import { useState, useEffect } from "react";
-// Data From Cloudinary
 
-const data = [
-  {
-    city: "Enugu, Nigeria",
-    author: "elokaagu",
-    // imageSrc: "/images/eloka1.jpg",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg",
-  },
-  {
-    city: "Lisbon, Portugal",
-    author: "louisleonidas",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
-  },
-  {
-    city: "LA, California",
-    author: "cynthiabahati",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/xss8yv2irwwxsxndwqr9.jpg",
-  },
-  {
-    city: "Berlin, Germany",
-    author: "elokaagu",
-    // imageSrc: "/images/eloka1.jpg",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890835/mnvamvov5orwyqcum4mo.jpg",
-  },
-  {
-    city: "Tokyo, Japan",
-    author: "louisleonidas",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg",
-  },
+async function getData() {
+  const query = `
+    *[_type== 'video'] | order(_createdAt desc) {
+        title,
+        uploader,
+        videoThumbnail,
+        description,
+        "currentSlug":slug.current,
+      }
+    
+   `;
 
-  {
-    city: "Dubai, Middle East",
-    author: "unikernest",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
-  },
-  // Add more data objects as needed
-];
+  try {
+    const data = await client.fetch(query);
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch data from Sanity:", error);
+    return []; // Return an empty array or appropriate error response
+  }
+}
+
+// // Data From Cloudinary
+
+// const data = [
+//   {
+//     city: "Enugu, Nigeria",
+//     author: "elokaagu",
+//     // imageSrc: "/images/eloka1.jpg",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg",
+//   },
+//   {
+//     city: "Lisbon, Portugal",
+//     author: "louisleonidas",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
+//   },
+//   {
+//     city: "LA, California",
+//     author: "cynthiabahati",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/xss8yv2irwwxsxndwqr9.jpg",
+//   },
+//   {
+//     city: "Berlin, Germany",
+//     author: "elokaagu",
+//     // imageSrc: "/images/eloka1.jpg",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890835/mnvamvov5orwyqcum4mo.jpg",
+//   },
+//   {
+//     city: "Tokyo, Japan",
+//     author: "louisleonidas",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg",
+//   },
+
+//   {
+//     city: "Dubai, Middle East",
+//     author: "unikernest",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
+//   },
+//   // Add more data objects as needed
+// ];
 
 export default function VideoHero() {
+  const [data, setData] = useState<videoCard[]>([]);
+  useEffect(() => {
+    async function fetchData() {
+      const fetchedData = await getData();
+      setData(fetchedData);
+    }
+    fetchData();
+  }, []);
+
+  console.log(data);
+
   return (
     <AppBody>
-      <VideoCard>
-        <Link href="/stream">
-          <VideoCardBody>
-            <CldImage
-              src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg"
-              alt="Picture of the author"
-              placeholder="blur"
-              fill
-              style={{ objectFit: "cover" }}
-              blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg"
-              priority={true}
-            />
-          </VideoCardBody>
-        </Link>
-        <VideoCardText>
-          <h1>Munchies</h1>
-          <VideoCardAuthor>
-            <p>Anthony Bourdain</p>
-          </VideoCardAuthor>
-        </VideoCardText>
-      </VideoCard>
+      {data.map((videoData, index) => (
+        <VideoCard key={index}>
+          <Link href={`/stream/${videoData.currentSlug}`}>
+            <VideoCardBody>
+              <Image
+                src={urlFor(videoData.videoThumbnail).url()}
+                alt={videoData.title}
+                placeholder="blur"
+                fill
+                style={{ objectFit: "cover" }}
+                blurDataURL={urlFor(videoData.videoThumbnail).url()}
+                priority={true}
+              />
+            </VideoCardBody>
+          </Link>
+          <VideoCardText>
+            <h1>{videoData.title}</h1>
+            <VideoCardAuthor>
+              {" "}
+              <p>{videoData.uploader}</p>
+            </VideoCardAuthor>
+          </VideoCardText>
+        </VideoCard>
+      ))}
     </AppBody>
   );
 }
