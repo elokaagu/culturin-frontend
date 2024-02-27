@@ -57,7 +57,7 @@ export default function VideoHero() {
   return (
     <AppBody>
       <VideoCard>
-        <Link href="/videos">
+        <Link href="/stream">
           <VideoCardBody>
             <CldImage
               src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg"

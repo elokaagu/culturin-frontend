@@ -9,9 +9,11 @@ import { device } from "../styles/breakpoints";
 import { CldImage } from "next-cloudinary";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import MuxPlayer from "@mux/mux-player-react";
+import { getBlurHash } from "../lib/mux";
 
 export default function Videos() {
   const [theme, setTheme] = useState("dark");
+  const [blurHash, setBlurHash] = useState(""); // State to hold the blur hash
 
   const isDarkTheme = theme === "dark";
 
@@ -43,7 +45,6 @@ export default function Videos() {
           <VideoContainer>
             <MuxPlayer
               playbackId="Hf9691bovUrlcAHV2CIqHm1uwUGmZJAg00tUvz2geu8s"
-              placeholder="{blurHashBase64}"
               style={{ borderRadius: "20px" }}
               accent-color="black"
               metadata={{
