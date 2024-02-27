@@ -10,6 +10,7 @@ import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { Toggle } from "styled-icons/ionicons-outline";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
+import VideoHero from "./components/VideoHero";
 
 // import dynamic from "next/dynamic";
 
@@ -101,6 +102,17 @@ export default function Home() {
             </Row>
             <Row>
               <Hero />
+            </Row>
+            <Row>
+              <Title>
+                <h1>Culturin TV</h1>
+                <p>Watch highlights from the world</p>
+              </Title>
+            </Row>
+            <Row>
+              <VideoHero />
+              <VideoHero />
+              <VideoHero />
             </Row>
             <Row>
               <Title>
