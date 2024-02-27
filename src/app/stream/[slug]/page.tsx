@@ -77,15 +77,15 @@ export default function Videos({ params }: { params: { slug: string } }) {
               style={{ borderRadius: "20px" }}
               accent-color="black"
               metadata={{
-                video_id: "video-id-54321",
-                video_title: "Munchies",
-                viewer_user_id: "user-id-007",
+                video_id: data?._id,
+                video_title: data?.title,
+                viewer_user_id: "user-id-dynamic",
               }}
             />
           </VideoContainer>
           <Title>
             <h1>{data?.title}</h1>
-            <p>{data?.uploader}</p>
+            <span>{data?.uploader}</span>
           </Title>
           <Subtitle>
             <p>{data?.description}</p>
@@ -170,9 +170,13 @@ const VideoWrapper = styled.div`
   align-items: left;
   cursor: pointer;
 
+  span {
+    font-size: 18px;
+    color: grey;
+  }
+
   p {
     font-size: 18px;
-    padding-bottom: 36px;
     color: white;
   }
 
