@@ -57,17 +57,19 @@ export default function VideoHero() {
   return (
     <AppBody>
       <VideoCard>
-        <VideoCardBody>
-          <CldImage
-            src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg"
-            alt="Picture of the author"
-            placeholder="blur"
-            fill
-            style={{ objectFit: "cover" }}
-            blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg"
-            priority={true}
-          />
-        </VideoCardBody>
+        <Link href="/videos">
+          <VideoCardBody>
+            <CldImage
+              src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg"
+              alt="Picture of the author"
+              placeholder="blur"
+              fill
+              style={{ objectFit: "cover" }}
+              blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg"
+              priority={true}
+            />
+          </VideoCardBody>
+        </Link>
         <VideoCardText>
           <h1>Munchies</h1>
           <VideoCardAuthor>
