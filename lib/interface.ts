@@ -27,4 +27,5 @@ export interface fullVideo {
   uploader: string;
   videoThumbnail: any;
   description: string;
+  playbackId: string;
 }

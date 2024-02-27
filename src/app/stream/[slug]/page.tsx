@@ -22,6 +22,7 @@ async function getData(slug: string) {
         uploader,
         videoThumbnail,
         description,
+        "playbackId": video.asset->playbackId
     }[0]`;
 
   const data = await client.fetch(query);
@@ -72,7 +73,7 @@ export default function Videos({ params }: { params: { slug: string } }) {
         <VideoWrapper>
           <VideoContainer>
             <MuxPlayer
-              playbackId="Hf9691bovUrlcAHV2CIqHm1uwUGmZJAg00tUvz2geu8s"
+              playbackId={data?.playbackId}
               style={{ borderRadius: "20px" }}
               accent-color="black"
               metadata={{
