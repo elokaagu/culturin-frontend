@@ -109,11 +109,9 @@ export default function Home() {
                 <p>Watch highlights from the world</p>
               </Title>
             </Row>
-            <Row>
+            <VideoRow>
               <VideoHero />
-              <VideoHero />
-              <VideoHero />
-            </Row>
+            </VideoRow>
             <Row>
               <Title>
                 <h1>A global taste</h1>
@@ -171,6 +169,18 @@ const HeroTitle = styled.div`
 `;
 
 const Row = styled.div`
+display: flex;
+padding: 20px;
+flex direction: column;
+flex: 1;
+overflow: scroll;
+@media ${device.mobile} {
+  padding: 10px;
+  overflow: scroll;
+  }
+`;
+
+const VideoRow = styled.div`
 display: flex;
 padding: 20px;
 flex direction: column;
