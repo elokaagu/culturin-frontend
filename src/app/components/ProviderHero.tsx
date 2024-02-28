@@ -102,8 +102,13 @@ export default function ProviderHero() {
                 <Image
                   src={providerData?.bannerImage?.image?.url} // Provide a fallback image URL
                   alt={providerData?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
-                  width={400}
-                  height={200}
+                  width={300}
+                  height={300}
+                  quality={90} // Adjust quality as needed, defaults to 75
+                  style={{
+                    objectFit: "cover",
+                    position: "relative",
+                  }}
                 />
               </ProviderCardBody>
             </Link>

@@ -101,6 +101,7 @@ export default function Provider({ params }: { params: { slug: string } }) {
                       placeholder="blur"
                       width={600}
                       height={400}
+                      quality={90} // Adjust quality as needed, defaults to 75
                       blurDataURL={urlFor(data.images[0].url).url()}
                       style={{
                         // width: "100%",
@@ -123,6 +124,7 @@ export default function Provider({ params }: { params: { slug: string } }) {
                       placeholder="blur"
                       width={300}
                       height={195}
+                      quality={90} // Adjust quality as needed, defaults to 75
                       blurDataURL={urlFor(data.images[1].url).url()}
                       style={{
                         // width: "100%",
@@ -142,6 +144,7 @@ export default function Provider({ params }: { params: { slug: string } }) {
                       placeholder="blur"
                       width={300}
                       height={195}
+                      quality={90} // Adjust quality as needed, defaults to 75
                       blurDataURL={urlFor(data.images[2].url).url()}
                       style={{
                         // width: "100%",
