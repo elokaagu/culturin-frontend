@@ -69,7 +69,6 @@ export default function Posts() {
               back
             </BackLink>
           </Link>
-
           <Title>
             <h1>{heading}</h1>
           </Title>

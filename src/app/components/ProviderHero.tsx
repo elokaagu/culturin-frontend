@@ -9,66 +9,76 @@ import { simpleBlogCard, videoCard } from "../../../lib/interface";
 import { urlFor } from "../lib/sanity";
 import { useState, useEffect } from "react";
 
-async function getData() {
-  const query = `
-    *[_type== 'video'] | order(_createdAt desc) {
-        title,
-        uploader,
-        videoThumbnail,
-        description,
-        "currentSlug":slug.current,
-      }
-    
-   `;
+// Data From Cloudinary
 
-  try {
-    const data = await client.fetch(query);
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch data from Sanity:", error);
-    return []; // Return an empty array or appropriate error response
-  }
-}
+const data = [
+  {
+    city: "Enugu, Nigeria",
+    author: "elokaagu",
+    // imageSrc: "/images/eloka1.jpg",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg",
+  },
+  {
+    city: "Lisbon, Portugal",
+    author: "louisleonidas",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
+  },
+  {
+    city: "LA, California",
+    author: "cynthiabahati",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/xss8yv2irwwxsxndwqr9.jpg",
+  },
+  {
+    city: "Berlin, Germany",
+    author: "elokaagu",
+    // imageSrc: "/images/eloka1.jpg",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890835/mnvamvov5orwyqcum4mo.jpg",
+  },
+  {
+    city: "Tokyo, Japan",
+    author: "louisleonidas",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg",
+  },
 
-export default function VideoHero() {
-  const [data, setData] = useState<videoCard[]>([]);
-  useEffect(() => {
-    async function fetchData() {
-      const fetchedData = await getData();
-      setData(fetchedData);
-    }
-    fetchData();
-  }, []);
+  {
+    city: "Dubai, Middle East",
+    author: "unikernest",
+    imageSrc:
+      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
+  },
+  // Add more data objects as needed
+];
 
-  console.log(data);
-
+export default function ProviderHero() {
   return (
-    <AppBody>
-      {data.map((videoData, index) => (
-        <VideoCard key={index}>
-          <Link href={`/stream/${videoData.currentSlug}`}>
-            <VideoCardBody>
-              <Image
-                src={urlFor(videoData.videoThumbnail).url()}
-                alt={videoData.title}
-                placeholder="blur"
-                fill
-                style={{ objectFit: "cover" }}
-                blurDataURL={urlFor(videoData.videoThumbnail).url()}
-                priority={true}
+    <>
+      <AppBody>
+        <ProviderCard>
+          <Link href="/providers">
+            <ProviderCardBody>
+              <CldImage
+                src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg"
+                alt="Picture of the author"
+                width={400}
+                height={200}
               />
-            </VideoCardBody>
+            </ProviderCardBody>
           </Link>
-          <VideoCardText>
-            <h1>{videoData.title}</h1>
-            <VideoCardAuthor>
-              {" "}
-              <p>{videoData.uploader}</p>
-            </VideoCardAuthor>
-          </VideoCardText>
-        </VideoCard>
-      ))}
-    </AppBody>
+          <ProviderCardText>
+            <h1>Dogpound Welness Retreat</h1>
+          </ProviderCardText>
+          <ProviderCardAuthor>
+            {" "}
+            <p>Dogpound</p>
+          </ProviderCardAuthor>
+        </ProviderCard>
+      </AppBody>
+    </>
   );
 }
 
@@ -91,19 +101,19 @@ const AppBody = styled.div`
   }
 `;
 
-const VideoCard = styled.div`
+const ProviderCard = styled.div`
   padding-bottom: 20px;
   padding-right: 20px;
 `;
 
-const VideoCardBody = styled.div`
+const ProviderCardBody = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
   justify-content: left;
-  height: 200px;
-  width: 400px;
-  padding: 20px;
+  height: 300px;
+  width: 300px;
+
   border-radius: 8px;
   drop-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background: #1a1a1a;
@@ -135,7 +145,7 @@ const VideoCardBody = styled.div`
   }
 `;
 
-const VideoCardText = styled.div`
+const ProviderCardText = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
@@ -182,7 +192,7 @@ const VideoCardText = styled.div`
   }
 `;
 
-const VideoCardAuthor = styled.div`
+const ProviderCardAuthor = styled.div`
   display: flex;
   pointer: cursor;
   flex-direction: row;

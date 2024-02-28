@@ -11,6 +11,7 @@ import { Toggle } from "styled-icons/ionicons-outline";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import VideoHero from "./components/VideoHero";
+import ProviderHero from "./components/ProviderHero";
 
 // import dynamic from "next/dynamic";
 
@@ -111,7 +112,7 @@ export default function Home() {
               </Title>
             </Row>
             <Row>
-              <Hero />
+              <ProviderHero />
             </Row>
 
             <Row>

@@ -18,18 +18,18 @@ export default function Header() {
 
   const isDarkTheme = theme === "dark";
 
-  useEffect(() => {
-    const onScroll = () => {
-      const scrollCheck = window.scrollY > 0;
-      setIsScrolled(scrollCheck);
-    };
+  // useEffect(() => {
+  //   const onScroll = () => {
+  //     const scrollCheck = window.scrollY > 0;
+  //     setIsScrolled(scrollCheck);
+  //   };
 
-    // Attach scroll event listener
-    window.addEventListener("scroll", onScroll);
+  //   // Attach scroll event listener
+  //   window.addEventListener("scroll", onScroll);
 
-    // Clean up event listener on component unmount
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  //   // Clean up event listener on component unmount
+  //   return () => window.removeEventListener("scroll", onScroll);
+  // }, []);
 
   // Listen for scroll events
   useEffect(() => {
@@ -197,6 +197,8 @@ const Head = styled.div`
   width: calc(100% - 60px);
   z-index: 1000;
   background: black;
+  // background: linear-gradient(to bottom, #000000 20%, transparent 100%);
+
   padding-top: 40px;
   padding-bottom: 40px;
   padding-left: 30px;
@@ -267,8 +269,10 @@ type StyledHeaderProps = {
 
 const StyledHeader = styled.header<StyledHeaderProps>`
   transition: background-color 0.3s ease;
-  background-color: ${(props) =>
-    props.isScrolled ? "#ffffff" : "transparent"};
+  background: ${(props) =>
+    props.isScrolled
+      ? "linear-gradient(to right, #000000, #434343)"
+      : "transparent"};
   position: fixed;
   width: 100%;
   z-index: 1000;
