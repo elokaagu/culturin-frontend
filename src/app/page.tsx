@@ -81,7 +81,7 @@ export default function Home() {
             </HeroSection>
             <Row>
               <Title>
-                <h1>Recommendations</h1>
+                <h1>Trending Stories</h1>
                 <p>Discover a world of travel, inspiration and culture</p>
               </Title>
 
@@ -96,7 +96,7 @@ export default function Home() {
             </Row>
             <Row>
               <Title>
-                <h1>Culturin TV</h1>
+                <h1>Top Videos</h1>
                 <p>Watch highlights from the world</p>
               </Title>
             </Row>
