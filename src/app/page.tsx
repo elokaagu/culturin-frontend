@@ -225,7 +225,7 @@ const Title = styled.div`
   cursor: pointer;
 
   h1 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   @media ${device.mobile} {
