@@ -14,7 +14,7 @@ import { PortableText } from "@portabletext/react";
 
 async function getData(slug: string) {
   const query = `
-  *[_type == "providers"] {
+  *[_type == "providers" && slug.current == '${slug}'] {
     name,
     eventName,
     "slug": slug.current,
@@ -101,6 +101,7 @@ export default function Provider({ params }: { params: { slug: string } }) {
                       placeholder="blur"
                       width={600}
                       height={400}
+                      priority={true}
                       quality={90} // Adjust quality as needed, defaults to 75
                       blurDataURL={urlFor(data.images[0].url).url()}
                       style={{
