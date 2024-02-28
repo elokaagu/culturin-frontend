@@ -41,13 +41,29 @@ export interface providerCard {
 export interface fullProvider {
   name: string;
   eventName: string;
-  slug: { current: string };
-  bannerImage: any;
+  slug: string;
+  bannerImage: BannerImage;
   description: string;
   location: string;
-  contact: any;
-  website: string;
+  contactEmail: string;
+  contactPhone: string;
+  contactWebsite: string;
   prices: number[];
-  images: any[];
+  images: imageAsset[];
+}
+
+export interface BannerImage {
+  image: {
+    url: string;
+    alt: string;
+  };
+}
+
+export interface imageAsset {
   _id: string;
+  url: string; // URL resolved from the asset reference ID
+  dimensions: {
+    width: number;
+    height: number;
+  };
 }

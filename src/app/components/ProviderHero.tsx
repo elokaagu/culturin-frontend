@@ -100,10 +100,7 @@ export default function ProviderHero() {
             <Link href={`/providers/${providerData.slug}`}>
               <ProviderCardBody>
                 <Image
-                  src={
-                    providerData?.bannerImage?.image?.url ||
-                    "/default-fallback-image.jpg"
-                  } // Provide a fallback image URL
+                  src={providerData?.bannerImage?.image?.url} // Provide a fallback image URL
                   alt={providerData?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
                   width={400}
                   height={200}

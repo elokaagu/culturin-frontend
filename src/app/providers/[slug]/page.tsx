@@ -14,30 +14,30 @@ import { PortableText } from "@portabletext/react";
 
 async function getData(slug: string) {
   const query = `
-    *[_type == "providers"] {
-        name,
-        eventName,
-        "slug": slug.current,
-        "bannerImage": {
-          "image": {
-            "url": bannerImage.image.asset->url,
-            "alt": bannerImage.caption
-          }
-        },
-        description,
-        location,
-          "contactEmail": contact.email,
-        "contactPhone": contact.phone,
-        "contactWebsite": contact.website,
-      
-      
-        prices[],
-        "images": images[].asset->{
-          _id,
-          url,
-          "dimensions": metadata.dimensions
-        }
-      }[0]
+  *[_type == "providers"] {
+    name,
+    eventName,
+    "slug": slug.current,
+    "bannerImage": {
+      "image": {
+        "url": bannerImage.image.asset->url,
+        "alt": bannerImage.caption
+      }
+    },     
+    description,
+    location,
+    "contactEmail": contact.email,
+    "contactPhone": contact.phone,
+    "contactWebsite": contact.website,
+    
+    prices[],
+    "images": images[].asset->{
+      _id,
+      url,
+      "dimensions": metadata.dimensions
+    }
+  }[0]
+  
       `;
 
   const data = await client.fetch(query);
@@ -93,78 +93,66 @@ export default function Provider({ params }: { params: { slug: string } }) {
             </Subtitle>
             <ImageContainer>
               <ImageColumnLeft>
-                <ImageWrap>
-                  <Image
-                    src={
-                      data?.bannerImage?.image?.url ||
-                      "/default-fallback-image.jpg"
-                    } // Provide a fallback image URL
-                    alt={data?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
-                    placeholder="blur"
-                    width={600}
-                    height={400}
-                    blurDataURL={
-                      data?.bannerImage?.image?.url ||
-                      "/default-fallback-image.jpg"
-                    }
-                    style={{
-                      // width: "100%",
-                      // height: "auto",
-                      objectFit: "cover",
-                      position: "relative",
-                    }}
-                    draggable="false"
-                  />
-                </ImageWrap>
+                {data?.bannerImage?.image && (
+                  <ImageWrap>
+                    <Image
+                      src={urlFor(data.bannerImage.image.url).url()} // Access the URL directly from the image object
+                      alt={data.bannerImage.image.alt || "Default Alt Text"} // Use alt text from data or fallback to default
+                      placeholder="blur"
+                      width={300}
+                      height={195}
+                      blurDataURL={urlFor(data.bannerImage.image.url).url()} // Assuming urlFor can handle this operation for blurDataURL
+                      style={{
+                        // width: "100%",
+                        // height: "auto",
+                        objectFit: "cover",
+                        position: "relative",
+                      }}
+                      draggable="false"
+                    />
+                  </ImageWrap>
+                )}
               </ImageColumnLeft>
-              <ImageColumnRight>
-                <ImageWrap>
-                  <Image
-                    src={
-                      data?.bannerImage?.image?.url ||
-                      "/default-fallback-image.jpg"
-                    } // Provide a fallback image URL
-                    alt={data?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
-                    placeholder="blur"
-                    width={300}
-                    height={195}
-                    blurDataURL={
-                      data?.bannerImage?.image?.url ||
-                      "/default-fallback-image.jpg"
-                    }
-                    style={{
-                      // width: "100%",
-                      // height: "auto",
-                      objectFit: "cover",
-                      position: "relative",
-                    }}
-                    draggable="false"
-                  />
-                </ImageWrap>
-                <ImageWrap>
-                  <Image
-                    src={
-                      data?.bannerImage?.image?.url ||
-                      "/default-fallback-image.jpg"
-                    } // Provide a fallback image URL
-                    alt={data?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
-                    placeholder="blur"
-                    width={300}
-                    height={195}
-                    blurDataURL={
-                      data?.bannerImage?.image?.url ||
-                      "/default-fallback-image.jpg"
-                    }
-                    style={{
-                      // width: "100%",
-                      // height: "auto",
-                      objectFit: "cover",
-                      position: "relative",
-                    }}
-                    draggable="false"
-                  />
-                </ImageWrap>
-              </ImageColumnRight>
+              {/* <ImageColumnRight>
+                {data?.bannerImage && (
+                  <ImageWrap>
+                    <Image
+                      src={urlFor(data?.bannerImage).url()}
+                      alt="Default Alt Text"
+                      placeholder="blur"
+                      width={300}
+                      height={195}
+                      blurDataURL={urlFor(data?.bannerImage).url()}
+                      style={{
+                        // width: "100%",
+                        // height: "auto",
+                        objectFit: "cover",
+                        position: "relative",
+                      }}
+                      draggable="false"
+                    />
+                  </ImageWrap>
+                )}
+                {data?.bannerImage && (
+                  <ImageWrap>
+                    <Image
+                      src={urlFor(data?.bannerImage).url()}
+                      alt="Default Alt Text"
+                      placeholder="blur"
+                      width={300}
+                      height={195}
+                      blurDataURL={urlFor(data?.bannerImage).url()}
+                      style={{
+                        // width: "100%",
+                        // height: "auto",
+                        objectFit: "cover",
+                        position: "relative",
+                      }}
+                      draggable="false"
+                    />
+                  </ImageWrap>
+                )}
+              </ImageColumnRight> */}
             </ImageContainer>
             <About>
               <h1>About</h1>
@@ -172,12 +160,12 @@ export default function Provider({ params }: { params: { slug: string } }) {
             </About>
             <Banner>
               <p>Location: {data?.location}</p>
-              <p>Contact: {data?.contact}</p>
-              <p>Website: {data?.website}</p>
+              <p>Contact: {data?.contactEmail} </p>
+              <p>Website: {data?.contactWebsite} </p>
             </Banner>
             <Banner>
               <Link
-                href={data?.website || ""}
+                href={data?.contactWebsite || ""}
                 passHref
                 target="_blank"
                 rel="noopener noreferrer"
