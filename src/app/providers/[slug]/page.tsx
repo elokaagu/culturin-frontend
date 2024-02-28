@@ -92,16 +92,16 @@ export default function Provider({ params }: { params: { slug: string } }) {
               <h3>{data?.name}</h3>
             </Subtitle>
             <ImageContainer>
-              <ImageColumnLeft>
-                {data?.bannerImage?.image && (
+              {data?.images && data.images.length > 0 && (
+                <ImageColumnLeft>
                   <ImageWrap>
                     <Image
-                      src={urlFor(data.bannerImage.image.url).url()} // Access the URL directly from the image object
-                      alt={data.bannerImage.image.alt || "Default Alt Text"} // Use alt text from data or fallback to default
+                      src={urlFor(data.images[0].url).url()}
+                      alt={`Image ${data.images[0]._id}`} // Assuming no alt text in imageAsset, using _id as fallback
                       placeholder="blur"
                       width={600}
                       height={400}
-                      blurDataURL={urlFor(data.bannerImage.image.url).url()} // Assuming urlFor can handle this operation for blurDataURL
+                      blurDataURL={urlFor(data.images[0].url).url()}
                       style={{
                         // width: "100%",
                         // height: "auto",
@@ -111,18 +111,19 @@ export default function Provider({ params }: { params: { slug: string } }) {
                       draggable="false"
                     />
                   </ImageWrap>
-                )}
-              </ImageColumnLeft>
+                </ImageColumnLeft>
+              )}
+
               <ImageColumnRight>
-                {data?.bannerImage?.image && (
+                {data?.images && data.images.length > 1 && (
                   <ImageWrap>
                     <Image
-                      src={urlFor(data.bannerImage.image.url).url()}
-                      alt={data.bannerImage.image.alt || "Default Alt Text"}
+                      src={urlFor(data.images[1].url).url()}
+                      alt={`Image ${data.images[1]._id}`}
                       placeholder="blur"
                       width={300}
                       height={195}
-                      blurDataURL={urlFor(data.bannerImage.image.url).url()}
+                      blurDataURL={urlFor(data.images[1].url).url()}
                       style={{
                         // width: "100%",
                         // height: "auto",
@@ -133,15 +134,15 @@ export default function Provider({ params }: { params: { slug: string } }) {
                     />
                   </ImageWrap>
                 )}
-                {data?.bannerImage?.image && (
+                {data?.images && data.images.length > 2 && (
                   <ImageWrap>
                     <Image
-                      src={urlFor(data.bannerImage.image.url).url()}
-                      alt={data.bannerImage.image.alt || "Default Alt Text"}
+                      src={urlFor(data.images[2].url).url()}
+                      alt={`Image ${data.images[2]._id}`}
                       placeholder="blur"
                       width={300}
                       height={195}
-                      blurDataURL={urlFor(data.bannerImage.image.url).url()}
+                      blurDataURL={urlFor(data.images[2].url).url()}
                       style={{
                         // width: "100%",
                         // height: "auto",
