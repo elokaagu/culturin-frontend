@@ -190,7 +190,6 @@ const VideoCardText = styled.div`
   h1 {
     cursor: pointer;
     font-size: 16px;
-    padding-bottom: 10px;
 
     @media ${device.laptop} {
       font-size: 16px;
