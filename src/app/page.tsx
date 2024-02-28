@@ -96,15 +96,6 @@ export default function Home() {
             </Row>
             <Row>
               <Title>
-                <h1>Wellness</h1>
-                <p>Discover the best in regenerative travel</p>
-              </Title>
-            </Row>
-            <Row>
-              <Hero />
-            </Row>
-            <Row>
-              <Title>
                 <h1>Culturin TV</h1>
                 <p>Watch highlights from the world</p>
               </Title>
@@ -112,6 +103,17 @@ export default function Home() {
             <VideoRow>
               <VideoHero />
             </VideoRow>
+
+            <Row>
+              <Title>
+                <h1>Wellness</h1>
+                <p>Discover the best in regenerative travel</p>
+              </Title>
+            </Row>
+            <Row>
+              <Hero />
+            </Row>
+
             <Row>
               <Title>
                 <h1>A global taste</h1>
