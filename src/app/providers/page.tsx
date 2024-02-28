@@ -48,6 +48,79 @@ export default function Providers() {
             <Subtitle>
               <h3>Fitness Company</h3>
             </Subtitle>
+            <ImageContainer>
+              <ImageColumnLeft>
+                <ImageWrap>
+                  <CldImage
+                    src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
+                    alt="mainImage"
+                    placeholder="blur"
+                    width={600}
+                    height={400}
+                    blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+                    style={{
+                      // width: "100%",
+                      // height: "auto",
+                      objectFit: "cover",
+                      position: "relative",
+                    }}
+                    draggable="false"
+                  />
+                </ImageWrap>
+              </ImageColumnLeft>
+              <ImageColumnRight>
+                <ImageWrap>
+                  <CldImage
+                    src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
+                    alt="mainImage"
+                    placeholder="blur"
+                    width={300}
+                    height={195}
+                    blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+                    style={{
+                      // width: "100%",
+                      // height: "auto",
+                      objectFit: "cover",
+                      position: "relative",
+                    }}
+                    draggable="false"
+                  />
+                </ImageWrap>
+                <ImageWrap>
+                  <CldImage
+                    src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
+                    alt="mainImage"
+                    placeholder="blur"
+                    width={300}
+                    height={195}
+                    blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+                    style={{
+                      // width: "100%",
+                      // height: "auto",
+                      objectFit: "cover",
+                      position: "relative",
+                    }}
+                    draggable="false"
+                  />
+                </ImageWrap>
+              </ImageColumnRight>
+            </ImageContainer>
+            <About>
+              <h1>About</h1>
+              <p>
+                Dogpound is a fitness company that offers a variety of services.
+                They offer personal training, group classes, and nutrition
+                coaching. Dogpound is known for its high energy workouts and its
+                celebrity clientele. The gym is located in New York City and Los
+                Angeles.
+              </p>
+            </About>
+            <Banner>
+              <p>Location: London</p>
+              <p>Contact: Eloka Agu</p>
+              <p>Website: www.eloka@satellitelabs.xyz</p>
+            </Banner>
+            <HeroButton>Book</HeroButton>
           </ProviderWrapper>
         </AppBody>
       </ThemeProvider>
@@ -74,8 +147,6 @@ const AppBody = styled.div`
 `;
 
 const Title = styled.div`
-  margin: auto 10px;
-  padding-left: 30px;
   padding-top: 20px;
   padding-right: 20px;
   display: flex;
@@ -98,8 +169,6 @@ const Title = styled.div`
 `;
 
 const Subtitle = styled.div`
-  margin: auto 10px;
-  padding-left: 30px;
   padding-right: 20px;
   display: flex;
   flex-direction: column;
@@ -115,6 +184,22 @@ const Subtitle = styled.div`
   @media ${device.mobile} {
     padding-left: 10px;
     align-items: left;
+  }
+`;
+
+const About = styled.div`
+  margin: auto;
+  align-items: left;
+
+  h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: grey;
+  }
+  p {
+    font-size: 18px;
+    padding-bottom: 36px;
+    color: white;
   }
 `;
 
@@ -172,9 +257,12 @@ const BackLink = styled.a`
 
 const ImageContainer = styled.div`
   padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
   cursor: pointer;
   img {
     border-radius: 10px;
+    margin-right: 20px;
   }
 
   @media ${device.mobile} {
@@ -243,5 +331,37 @@ const ProviderWrapper = styled.div`
     width: 300px;
     height: 50%;
     overflow: hidden;
+  }
+`;
+
+const ImageColumnLeft = styled.div``;
+
+const ImageColumnRight = styled.div``;
+
+const Banner = styled.div``;
+
+const HeroButton = styled.div`
+  margin-top: 20px;
+  border-radius: 5px;
+  width: 100px;
+  ${"" /* border: 1px solid white; */}
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
   }
 `;
