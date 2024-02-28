@@ -30,3 +30,24 @@ export interface fullVideo {
   playbackId: string;
   _id: string;
 }
+
+export interface providerCard {
+  name: string;
+  eventName: string;
+  slug: { current: string };
+  bannerImage: any;
+}
+
+export interface fullProvider {
+  name: string;
+  eventName: string;
+  slug: { current: string };
+  bannerImage: any;
+  description: string;
+  location: string;
+  contact: any;
+  website: string;
+  prices: number[];
+  images: any[];
+  _id: string;
+}

@@ -5,78 +5,120 @@ import { device } from "../styles/breakpoints";
 import Link from "next/link";
 import { CldImage } from "next-cloudinary";
 import { client } from "../lib/sanity";
-import { simpleBlogCard, videoCard } from "../../../lib/interface";
+import {
+  providerCard,
+  simpleBlogCard,
+  videoCard,
+} from "../../../lib/interface";
 import { urlFor } from "../lib/sanity";
 import { useState, useEffect } from "react";
 
+async function getData() {
+  const query = `
+  *[_type == "providers"] {
+    name,
+    eventName,
+    "slug": slug.current,
+    "bannerImage": {
+      "image": {
+        "url": bannerImage.image.asset->url,
+        "alt": bannerImage.caption
+      }
+    },
+  }
+   `;
+
+  try {
+    const data = await client.fetch(query);
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch data from Sanity:", error);
+    return []; // Return an empty array or appropriate error response
+  }
+}
+
 // Data From Cloudinary
 
-const data = [
-  {
-    city: "Enugu, Nigeria",
-    author: "elokaagu",
-    // imageSrc: "/images/eloka1.jpg",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg",
-  },
-  {
-    city: "Lisbon, Portugal",
-    author: "louisleonidas",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
-  },
-  {
-    city: "LA, California",
-    author: "cynthiabahati",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/xss8yv2irwwxsxndwqr9.jpg",
-  },
-  {
-    city: "Berlin, Germany",
-    author: "elokaagu",
-    // imageSrc: "/images/eloka1.jpg",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890835/mnvamvov5orwyqcum4mo.jpg",
-  },
-  {
-    city: "Tokyo, Japan",
-    author: "louisleonidas",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg",
-  },
+// const data = [
+//   {
+//     city: "Enugu, Nigeria",
+//     author: "elokaagu",
+//     // imageSrc: "/images/eloka1.jpg",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705760936/bot7b62mf5uwjjhfxj5z.jpg",
+//   },
+//   {
+//     city: "Lisbon, Portugal",
+//     author: "louisleonidas",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
+//   },
+//   {
+//     city: "LA, California",
+//     author: "cynthiabahati",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/xss8yv2irwwxsxndwqr9.jpg",
+//   },
+//   {
+//     city: "Berlin, Germany",
+//     author: "elokaagu",
+//     // imageSrc: "/images/eloka1.jpg",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890835/mnvamvov5orwyqcum4mo.jpg",
+//   },
+//   {
+//     city: "Tokyo, Japan",
+//     author: "louisleonidas",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg",
+//   },
 
-  {
-    city: "Dubai, Middle East",
-    author: "unikernest",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
-  },
-  // Add more data objects as needed
-];
+//   {
+//     city: "Dubai, Middle East",
+//     author: "unikernest",
+//     imageSrc:
+//       "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
+//   },
+//   // Add more data objects as needed
+// ];
 
 export default function ProviderHero() {
+  const [data, setData] = useState<providerCard[]>([]);
+  useEffect(() => {
+    async function fetchData() {
+      const fetchedData = await getData();
+      setData(fetchedData);
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <AppBody>
-        <ProviderCard>
-          <Link href="/providers">
-            <ProviderCardBody>
-              <CldImage
-                src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704890832/a6lbnlsgijnutpufvjxu.jpg"
-                alt="Picture of the author"
-                width={400}
-                height={200}
-              />
-            </ProviderCardBody>
-          </Link>
-          <ProviderCardText>
-            <h1>Dogpound Welness Retreat</h1>
-          </ProviderCardText>
-          <ProviderCardAuthor>
-            {" "}
-            <p>Dogpound</p>
-          </ProviderCardAuthor>
-        </ProviderCard>
+        {data.map((providerData, index) => (
+          <ProviderCard key={index}>
+            <Link href={`/providers/${providerData.slug}`}>
+              <ProviderCardBody>
+                <Image
+                  src={
+                    providerData?.bannerImage?.image?.url ||
+                    "/default-fallback-image.jpg"
+                  } // Provide a fallback image URL
+                  alt={providerData?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
+                  width={400}
+                  height={200}
+                />
+              </ProviderCardBody>
+            </Link>
+            <ProviderCardText>
+              <h1>{providerData?.eventName}</h1>
+            </ProviderCardText>
+            <ProviderCardAuthor>
+              {" "}
+              <p>{providerData?.name}</p>
+            </ProviderCardAuthor>
+          </ProviderCard>
+        ))}
       </AppBody>
     </>
   );

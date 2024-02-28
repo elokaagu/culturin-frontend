@@ -1,19 +1,62 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../components/Header";
-import Link from "next/link";
+import Header from "../../components/Header";
 import { ThemeProvider } from "styled-components";
-import { device } from "../styles/breakpoints";
-import { CldImage } from "next-cloudinary";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
+import Link from "next/link";
+import { device } from "../../styles/breakpoints";
+import { client, urlFor } from "../../lib/sanity";
+import { fullBlog, fullProvider } from "../../../../lib/interface";
+import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
+import Image from "next/image";
+import { url } from "inspector";
+import { PortableText } from "@portabletext/react";
 
-export default function Providers() {
+async function getData(slug: string) {
+  const query = `
+    *[_type == "providers"] {
+        name,
+        eventName,
+        "slug": slug.current,
+        "bannerImage": {
+          "image": {
+            "url": bannerImage.image.asset->url,
+            "alt": bannerImage.caption
+          }
+        },
+        description,
+        location,
+          "contactEmail": contact.email,
+        "contactPhone": contact.phone,
+        "contactWebsite": contact.website,
+      
+      
+        prices[],
+        "images": images[].asset->{
+          _id,
+          url,
+          "dimensions": metadata.dimensions
+        }
+      }[0]
+      `;
+
+  const data = await client.fetch(query);
+  return data;
+}
+
+export default function Provider({ params }: { params: { slug: string } }) {
+  const [data, setData] = useState<fullProvider | null>(null);
   const [theme, setTheme] = useState("dark");
-
   const isDarkTheme = theme === "dark";
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedData = await getData(params.slug);
+      setData(fetchedData);
+    };
+
+    fetchData();
+  }, [params.slug]);
   return (
     <>
       <Header />
@@ -43,21 +86,27 @@ export default function Providers() {
           </Link>
           <ProviderWrapper>
             <Title>
-              <h1>Dogpound</h1>
+              <h1>{data?.eventName}</h1>
             </Title>
             <Subtitle>
-              <h3>Fitness Company</h3>
+              <h3>{data?.name}</h3>
             </Subtitle>
             <ImageContainer>
               <ImageColumnLeft>
                 <ImageWrap>
-                  <CldImage
-                    src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
-                    alt="mainImage"
+                  <Image
+                    src={
+                      data?.bannerImage?.image?.url ||
+                      "/default-fallback-image.jpg"
+                    } // Provide a fallback image URL
+                    alt={data?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
                     placeholder="blur"
                     width={600}
                     height={400}
-                    blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+                    blurDataURL={
+                      data?.bannerImage?.image?.url ||
+                      "/default-fallback-image.jpg"
+                    }
                     style={{
                       // width: "100%",
                       // height: "auto",
@@ -70,13 +119,19 @@ export default function Providers() {
               </ImageColumnLeft>
               <ImageColumnRight>
                 <ImageWrap>
-                  <CldImage
-                    src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
-                    alt="mainImage"
+                  <Image
+                    src={
+                      data?.bannerImage?.image?.url ||
+                      "/default-fallback-image.jpg"
+                    } // Provide a fallback image URL
+                    alt={data?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
                     placeholder="blur"
                     width={300}
                     height={195}
-                    blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+                    blurDataURL={
+                      data?.bannerImage?.image?.url ||
+                      "/default-fallback-image.jpg"
+                    }
                     style={{
                       // width: "100%",
                       // height: "auto",
@@ -87,13 +142,19 @@ export default function Providers() {
                   />
                 </ImageWrap>
                 <ImageWrap>
-                  <CldImage
-                    src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
-                    alt="mainImage"
+                  <Image
+                    src={
+                      data?.bannerImage?.image?.url ||
+                      "/default-fallback-image.jpg"
+                    } // Provide a fallback image URL
+                    alt={data?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
                     placeholder="blur"
                     width={300}
                     height={195}
-                    blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+                    blurDataURL={
+                      data?.bannerImage?.image?.url ||
+                      "/default-fallback-image.jpg"
+                    }
                     style={{
                       // width: "100%",
                       // height: "auto",
@@ -107,22 +168,16 @@ export default function Providers() {
             </ImageContainer>
             <About>
               <h1>About</h1>
-              <p>
-                Dogpound is a fitness company that offers a variety of services.
-                They offer personal training, group classes, and nutrition
-                coaching. Dogpound is known for its high energy workouts and its
-                celebrity clientele. The gym is located in New York City and Los
-                Angeles.
-              </p>
+              <p>{data?.description} </p>
             </About>
             <Banner>
-              <p>Location: London</p>
-              <p>Contact: Eloka Agu</p>
-              <p>Website: www.eloka@satellitelabs.xyz</p>
+              <p>Location: {data?.location}</p>
+              <p>Contact: {data?.contact}</p>
+              <p>Website: {data?.website}</p>
             </Banner>
             <Banner>
               <Link
-                href="https://www.thedogpound.com/"
+                href={data?.website || ""}
                 passHref
                 target="_blank"
                 rel="noopener noreferrer"
