@@ -28,6 +28,8 @@ type Session = {
   // Add any other properties you expect 'session' to have
 };
 
+// Scroll Component
+
 // Theme Provider
 
 // Dynamic imports
@@ -39,6 +41,15 @@ type Session = {
 // });
 
 export default function Home() {
+  // Scroll Component
+
+  // Scroll to the target section
+  const scrollToSection = () => {
+    const section = document.getElementById("target-section");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   // States
   const { data: session } = useSession();
 
@@ -46,6 +57,8 @@ export default function Home() {
   const [isNavOpen, setIsNavOpen] = useState(false); // Define isNavOpen state
 
   const isDarkTheme = theme === "dark";
+
+  // Scroll Component
 
   // Toggle Theme
 
@@ -77,13 +90,15 @@ export default function Home() {
               <HeroTitle>
                 <h1>Your curated travel partner</h1>
                 <p>Discover a world of travel</p>
-                <HeroButton>Explore</HeroButton>
+                <HeroButton onClick={scrollToSection}>Explore</HeroButton>
               </HeroTitle>
             </HeroSection>
             <Row>
               <Title>
-                <h1>Trending Stories</h1>
-                <p>Discover a world of travel, inspiration and culture</p>
+                <div id="target-section">
+                  <h1>Trending Stories</h1>
+                  <p>Discover a world of travel, inspiration and culture</p>
+                </div>
               </Title>
 
               <Switch>
