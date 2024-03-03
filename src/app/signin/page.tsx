@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
 import Image from "next/image";
-import { HomeSigninButton } from "../components/AuthButtons";
+import { GoogleSignInButton } from "../components/AuthButtons";
 import dynamic from "next/dynamic";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
@@ -41,7 +41,7 @@ export default function Signin() {
               <SigninButton>
                 <p>Sign up</p>
               </SigninButton>
-              <HomeSigninButton />
+              <GoogleSignInButton />
             </SignInSection>
           </AppRight>
         </ThemeProvider>
