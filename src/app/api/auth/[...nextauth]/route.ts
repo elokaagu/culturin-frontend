@@ -1,7 +1,5 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
-import { connect } from "http2";
 import { connectMongoDB } from "../../../../../lib/mongodb";
 import User from "../../../models/User";
 
@@ -11,10 +9,6 @@ const authOptions: AuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
-    // GitHubProvider({
-    //   clientId: process.env.GITHUB_ID ?? "",
-    //   clientSecret: process.env.GITHUB_SECRET ?? "",
-    // }),
   ],
   callbacks: {
     async signIn({ user, account }) {
