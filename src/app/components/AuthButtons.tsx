@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import styled from "styled-components";
 import { device } from "../styles/breakpoints";
@@ -52,7 +51,10 @@ export function GoogleSignInButton() {
   return (
     <SigninButton
       onClick={async () => {
-        await signIn("google");
+        await signIn("google", {
+          redirect: true,
+          callbackUrl: "/",
+        });
       }}
     >
       Sign in
