@@ -11,15 +11,7 @@ const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({
-      account,
-      // email,
-      profile,
-    }: {
-      account: any;
-      // email: any;
-      profile: any;
-    }) {
+    async signIn({ account, profile }: { account: any; profile: any }) {
       if (account.provider === "google") {
         try {
           await connectMongoDB();
