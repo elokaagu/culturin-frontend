@@ -16,6 +16,10 @@ const authOptions = {
         try {
           await connectMongoDB();
 
+          const fullName = profile.name.split(" ");
+          const firstName = fullName.shift(); // First name is the first part
+          const lastName = fullName.join(" "); // Last name is the rest
+
           const existingUser = await User.findOne({ email: profile.email });
           if (!existingUser) {
             // Create a new user if they don't exist
