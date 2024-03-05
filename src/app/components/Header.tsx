@@ -103,12 +103,12 @@ export default function Header() {
             </Switch>
           </li> */}
             <ul>
-              <Link href="/create">
+              {/* <Link href="/create">
                 <li>
                   <Plus size="20" /> <span />
                   Create
                 </li>
-              </Link>
+              </Link> */}
 
               {/* <Link href="/search">Upload</Link> */}
               <li>
