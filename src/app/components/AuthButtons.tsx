@@ -66,7 +66,7 @@ export function GoogleSignInButton() {
                 <Link href="/settings">Settings</Link>
               </DropdownItem> */}
               <DropdownItem>
-                <Link href="/assistant">AI Planner</Link>
+                <Link href="/assistant">Culturin AI</Link>
               </DropdownItem>
               <DropdownItem
                 onClick={async () => {
