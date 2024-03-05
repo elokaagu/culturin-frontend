@@ -52,7 +52,7 @@ export function GoogleSignInButton() {
           onClick={toggleDropdown}
         >
           {session?.user?.name?.split(" ")[0] || "Guest"}
-          <ChevronDown size="20" />
+          {/* <ChevronDown size="20" /> */}
         </SigninButton>
         {showDropdown && (
           <DropdownListContainer>
@@ -62,9 +62,9 @@ export function GoogleSignInButton() {
                   <a>Profile</a>
                 </Link>
               </DropdownItem>
-              <DropdownItem>
+              {/* <DropdownItem>
                 <Link href="/settings">Settings</Link>
-              </DropdownItem>
+              </DropdownItem> */}
               <DropdownItem>
                 <Link href="/assistant">AI Planner</Link>
               </DropdownItem>
@@ -77,7 +77,7 @@ export function GoogleSignInButton() {
                   setShowDropdown(false);
                 }}
               >
-                Sign out
+                <a>Sign out</a>
               </DropdownItem>
             </DropdownList>
           </DropdownListContainer>
@@ -219,7 +219,7 @@ const DropdownContainer = styled("div")`
 
 const DropdownList = styled("ul")`
   margin: 30px;
-  margin-left: -10px;
+  margin-left: 10px;
   color: black;
   background: white;
   z-index: 100;
