@@ -264,6 +264,7 @@ const DropdownListContainer = styled.div`
   color: black;
   width: 200px;
   z-index: 100;
+  right: 0;
 
   ul:hover {
     list-style: none;
