@@ -3,13 +3,6 @@ import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import OpenAI from "openai";
 
-// Create an OpenAI API client
-// const config = new Configuration({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
-
-// const openai = new OpenAIApi(config);
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });

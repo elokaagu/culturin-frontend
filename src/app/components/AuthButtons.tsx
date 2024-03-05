@@ -2,6 +2,9 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import styled from "styled-components";
 import { device } from "../styles/breakpoints";
+import { useState } from "react";
+import { ChevronDown } from "styled-icons/boxicons-regular";
+import Link from "next/link";
 
 // export function HomeSigninButton() {
 //   const { data: session } = useSession();
@@ -33,19 +36,53 @@ import { device } from "../styles/breakpoints";
 
 export function GoogleSignInButton() {
   const { data: session } = useSession();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   if (session) {
     return (
-      <SigninButton
-        onClick={async () => {
-          await signOut({
-            redirect: false,
-            callbackUrl: "/",
-          });
-        }}
-      >
-        {session?.user?.name?.split(" ")[0] || "Guest"}
-      </SigninButton>
+      <>
+        <SigninButton
+          // onClick={async () => {
+          //   await signOut({
+          //     redirect: false,
+          //     callbackUrl: "/",
+          //   });
+          // }}
+          onClick={toggleDropdown}
+        >
+          {session?.user?.name?.split(" ")[0] || "Guest"}
+          <ChevronDown size="20" />
+        </SigninButton>
+        {showDropdown && (
+          <DropdownListContainer>
+            <DropdownList>
+              <DropdownItem>
+                <Link href="/profile">
+                  <a>Profile</a>
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link href="/settings">Settings</Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link href="/assistant">AI Planner</Link>
+              </DropdownItem>
+              <DropdownItem
+                onClick={async () => {
+                  await signOut({
+                    redirect: false,
+                    callbackUrl: "/",
+                  });
+                  setShowDropdown(false);
+                }}
+              >
+                Sign out
+              </DropdownItem>
+            </DropdownList>
+          </DropdownListContainer>
+        )}
+      </>
     );
   }
   return (
@@ -164,5 +201,77 @@ const SigninButton = styled.div`
 
   @media ${device.mobile} {
     width: 100px;
+  }
+`;
+
+const DropdownHeader = styled.div`
+  /* width: 100%;
+  border: black;
+  display: flex;
+  flex-direction: row; */
+`;
+
+const DropdownContainer = styled("div")`
+  @media ${device.mobile} {
+    display: none;
+  }
+`;
+
+const DropdownList = styled("ul")`
+  margin: 30px;
+  margin-left: -10px;
+  color: black;
+  background: white;
+  z-index: 100;
+  border-radius: 10px;
+  animation: fadeIn 0.3s;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.5;
+    }
+  }
+`;
+
+const DropdownItem = styled("li")`
+  list-style: none;
+  color: black;
+  width: 100%;
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  a:hover {
+    color: #4444;
+  }
+`;
+
+const DropdownListContainer = styled.div`
+  position: absolute;
+  color: black;
+  width: 200px;
+  z-index: 100;
+
+  ul:hover {
+    list-style: none;
+    color: black;
+  }
+
+  ul li {
+    text-decoration: none;
+    color: black;
   }
 `;
