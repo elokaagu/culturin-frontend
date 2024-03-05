@@ -89,7 +89,7 @@ export default function Home() {
             <HeroSection>
               <HeroTitle>
                 <h1>Your curated travel partner</h1>
-                <p>Discover a world of travel</p>
+                <p>Discover a world of travel and culture</p>
                 <HeroButton onClick={scrollToSection}>Explore</HeroButton>
               </HeroTitle>
             </HeroSection>
