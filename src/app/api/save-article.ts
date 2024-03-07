@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
-import { connectMongoDB } from "../../../../lib/mongodb";
-import User from "../../models/User";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { connectMongoDB } from "../../../lib/mongodb";
+import User from "../models/User";
 import { getSession } from "next-auth/react";
 // This is a simplified example. Ensure proper authentication and error handling.
-export default async function handler(req: any, res: any) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
