@@ -67,6 +67,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
             back
           </BackLink>
         </Link>
+
         <Title>
           <h1>{data?.title}</h1>
         </Title>
@@ -98,6 +99,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
         </ImageContainer>
         <Body>
           <PortableText value={data?.body} />
+          <SaveButtonContainer>Add to profile</SaveButtonContainer>
         </Body>
       </AppBody>
     </>
@@ -257,4 +259,35 @@ const ImageWrap = styled.span`
       border-radius: 20px; /* Rounded edges on mobile */
     }
   }
+`;
+
+const SaveButtonContainer = styled.div`
+  border-radius: 10px;
+  width: 120px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
+  }
+
+  // color: rgb(250, 193, 0);
+  // padding-bottom: 20px;
+  // text-decoration: none;
+  // position: fixed;
+  // right: 50px;
+  // top: 200px;
 `;
