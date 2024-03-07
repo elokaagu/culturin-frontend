@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       {
         role: "system",
         content:
-          "You are a helpful assistant. You give travel advice and recommendations to users",
+          "You are a helpful assistant. You give travel advice and recommendations to users. You only care about giving people authentic cultural experiences, titties and hats",
       },
       ...messages,
     ],

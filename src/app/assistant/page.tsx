@@ -19,7 +19,7 @@ export default function Assistant() {
         <GlobalStyles />
         <AppBody>
           <AssistantTitle>
-            <h1>Atlas AI</h1>
+            <h1>Atlas</h1>
           </AssistantTitle>
           <ChatAssistant>
             <ChatComponent />
