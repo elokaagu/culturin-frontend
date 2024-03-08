@@ -40,6 +40,11 @@ export function GoogleSignInButton() {
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   if (session) {
+    const userId = (session.user as { id: string }).id || "";
+    const username = session.user?.name?.split(" ")[0] || "Guest";
+    console.log("userId", userId);
+    console.log("username", username);
+
     return (
       <>
         <SigninButton
