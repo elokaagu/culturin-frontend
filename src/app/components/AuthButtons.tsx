@@ -41,7 +41,7 @@ export function GoogleSignInButton() {
 
   if (session) {
     const userId = session.user?.id;
-    const username = session.user?.name?.split(" ")[0] || "Guest";
+    const username = session.user?.name || "Guest";
     console.log("userId", userId);
     console.log("username", username);
 
@@ -66,7 +66,7 @@ export function GoogleSignInButton() {
                 {/* {session &&
                   session.user &&
                   (session.user as { id: string })?.id && ( */}
-                <Link href={`/profile/${session.user.id}`} passHref>
+                <Link href={`/profile/${session.user.username}`} passHref>
                   <a>Profile</a>
                 </Link>
                 {/* )} */}
