@@ -58,9 +58,11 @@ export function GoogleSignInButton() {
           <DropdownListContainer>
             <DropdownList>
               <DropdownItem>
-                <Link href="/[profileid]">
-                  <a>Profile</a>
-                </Link>
+                {session && session.user && "id" in session.user && (
+                  <Link href={`/profile/${session.user.id}`}>
+                    <a>Profile</a>
+                  </Link>
+                )}
               </DropdownItem>
               {/* <DropdownItem>
                 <Link href="/settings">Settings</Link>
