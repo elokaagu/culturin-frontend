@@ -1,6 +1,7 @@
 require("dotenv").config();
 import mongoose from "mongoose";
 import User from "../app/models/User";
+import { v4 as uuidv4 } from "uuid";
 
 // Create a connection to the database
 mongoose.connect(
@@ -16,8 +17,8 @@ async function updateExistingUsers() {
 
   const userUpdates = users.map((user) => {
     // Avoid overwriting if username already exists
-    if (!user.username) {
-      user.username = user.email.split("@")[0].replace(/\./g, "_");
+    if (!user.userId) {
+      user.userId = uuidv4();
       return user.save();
     }
   });
