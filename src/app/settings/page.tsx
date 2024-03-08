@@ -25,7 +25,16 @@ export default function Settings() {
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    setActiveSection(window.location.hash);
+    // Update the active section when the hash changes
+    const handleHashChange = () => {
+      setActiveSection(window.location.hash);
+    };
+
+    // Listen for hash changes
+    window.addEventListener("hashchange", handleHashChange);
+
+    // Clean up the event listener when the component unmounts
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
   const renderSection = () => {
@@ -56,9 +65,17 @@ export default function Settings() {
             <Section>
               {/* <SubNavigation /> */}
               <SubNavigationRow>
-                <SectionTitle>Account</SectionTitle>
-                <SectionTitle>Notifications</SectionTitle>
-                <SectionTitle>Payments</SectionTitle>
+                <SectionTitle onClick={() => setActiveSection("#account")}>
+                  Account
+                </SectionTitle>
+                <SectionTitle
+                  onClick={() => setActiveSection("#notifications")}
+                >
+                  Notifications
+                </SectionTitle>
+                <SectionTitle onClick={() => setActiveSection("#payments")}>
+                  Payments
+                </SectionTitle>
               </SubNavigationRow>
               {renderSection()}
               <Label>Email address</Label>

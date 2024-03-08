@@ -5,6 +5,7 @@ import { device } from "../styles/breakpoints";
 import { useState } from "react";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import Link from "next/link";
+import React from "react";
 
 // export function HomeSigninButton() {
 //   const { data: session } = useSession();
@@ -43,9 +44,7 @@ export function GoogleSignInButton() {
     : "/profile/guest";
 
   if (session) {
-    const userId = session.user?.id;
     const username = session.user?.name || "Guest";
-    console.log("userId", userId);
     console.log("username", username);
     console.log("session", session);
 
