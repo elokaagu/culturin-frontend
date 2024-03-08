@@ -32,9 +32,22 @@ const authOptions = {
       }
       return true; // Return true to sign the user in
     },
+    session: async ({ session, token }: { session: any; token: any }) => {
+      if (token._id) {
+        session.user.id = token._id;
+      }
+      return session;
+    },
+  },
+  async jwt(token: any, user: any) {
+    if (user?._id) {
+      token.id = user._id;
+    }
+    return token;
   },
 };
 
-const handler = NextAuth(authOptions as NextAuthOptions);
+const handler = (req: any, res: any) =>
+  NextAuth(req, res, authOptions as NextAuthOptions);
 
 export { handler as GET, handler as POST };
