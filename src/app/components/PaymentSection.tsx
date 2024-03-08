@@ -27,28 +27,30 @@ export default function PaymentSection() {
 
   return (
     <>
-      <Label>Payment</Label>
-      <Input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") handleReset();
-        }}
-        autoComplete="off"
-      />
-      <Label>Card Details</Label>
-      <Input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") handleReset();
-        }}
-        autoComplete="off"
-      />
-      <Label>Upgrade to Culturin Premium</Label>
-      <p>Subscribe for unlimited access to curated events and experiences.</p>
+      <LabelContainer>
+        <Label>Payment</Label>
+        <Input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleReset();
+          }}
+          autoComplete="off"
+        />
+        <Label>Card Details</Label>
+        <Input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleReset();
+          }}
+          autoComplete="off"
+        />
+        <Label>Upgrade to Culturin Premium</Label>
+        <p>Subscribe for unlimited access to curated events and experiences.</p>
+      </LabelContainer>
     </>
   );
 }
@@ -109,6 +111,11 @@ const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 4px;
   outline: none;
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const Label = styled.label`

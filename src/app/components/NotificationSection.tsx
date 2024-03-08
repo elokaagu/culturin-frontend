@@ -27,21 +27,23 @@ export default function NotificationSection() {
 
   return (
     <>
-      <Label>Recommended Reading</Label>
-      <p>
-        Featured stories, vidoes and packages that we think you’ll enjoy based
-        on your reading history.
-      </p>{" "}
-      <Label>Mobile</Label>
-      <Input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") handleReset();
-        }}
-        autoComplete="off"
-      />
+      <LabelContainer>
+        <Label>Recommended Reading</Label>
+        <p>
+          Featured stories, vidoes and packages that we think you’ll enjoy based
+          on your reading history.
+        </p>{" "}
+        <Label>Mobile</Label>
+        <Input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleReset();
+          }}
+          autoComplete="off"
+        />
+      </LabelContainer>
     </>
   );
 }
@@ -63,6 +65,11 @@ const AppBody = styled.div`
     padding-top: 80px;
     align-items: left;
   }
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const SettingsTitle = styled.div`
