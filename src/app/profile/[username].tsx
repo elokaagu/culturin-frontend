@@ -1,14 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../../components/Header";
+import Header from "../components/Header";
 import Link from "next/link";
-import { device } from "../../styles/breakpoints";
-import ProfileCard from "../../components/ProfileCard";
+import { device } from "../styles/breakpoints";
+import ProfileCard from "../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
+import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
-import { fullBlog } from "../../../../lib/interface";
+import { fullBlog } from "../../../lib/interface";
 import { set } from "mongoose";
 
 export default function Profile({ params }: { params: { profileId: string } }) {
