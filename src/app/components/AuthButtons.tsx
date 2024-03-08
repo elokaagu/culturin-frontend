@@ -65,7 +65,7 @@ export function GoogleSignInButton() {
                       href={`/profile/${(session.user as { id: string }).id}`}
                       passHref
                     >
-                      <a>Profile</a>
+                      Profile
                     </Link>
                   )}
               </DropdownItem>
