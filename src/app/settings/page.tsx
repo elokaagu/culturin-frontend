@@ -54,7 +54,7 @@ export default function Profile() {
             </Section>
             <SubSection>
               <p>Appearance</p>
-              <button
+              <Button
                 onClick={() =>
                   setTheme((prevTheme) =>
                     prevTheme === "dark" ? "light" : "dark"
@@ -62,7 +62,7 @@ export default function Profile() {
                 }
               >
                 {isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme"}
-              </button>
+              </Button>
             </SubSection>
           </SettingsContainer>
         </AppBody>
@@ -121,23 +121,11 @@ const SubSectionTitle = styled.h3`
 `;
 
 const Input = styled.input`
-  // width: 100%;
+  width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  // border: 1px solid #ccc;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  background: transparent;
-  margin-left: 10px;
-  outline: none;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex: 2;
-  border: none;
-  height: 100%;
-  color: white;
-  font-weight: 600;
-  font-size: 18px;
 `;
 
 const Label = styled.label`
