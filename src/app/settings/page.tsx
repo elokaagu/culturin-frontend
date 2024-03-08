@@ -10,10 +10,15 @@ import { useSession } from "next-auth/react";
 
 export default function Profile() {
   const [theme, setTheme] = useState("dark");
-  const [email, setEmail] = useState("eloka@culturin.com"); // Replace with user's email from session
-  const [username, setUsername] = useState("@elokaagu"); // Replace with user's username from session
+  const [email, setEmail] = useState(""); // Replace with user's email from session
+  const [username, setUsername] = useState(""); // Replace with user's username from session
   const isDarkTheme = theme === "dark";
+  const [formInput, setFormInput] = useState<undefined>(); // Update the type of formInput to undefined
   const { data: session } = useSession();
+  function handleReset() {
+    setFormInput(undefined); // Set formInput state to undefined
+  }
+
   return (
     <>
       <Header />
@@ -31,14 +36,34 @@ export default function Profile() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleReset();
+                }}
+                autoComplete="off"
               />
               <Label>Username</Label>
               <Input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleReset();
+                }}
+                autoComplete="off"
               />
             </Section>
+            <SubSection>
+              <p>Appearance</p>
+              <button
+                onClick={() =>
+                  setTheme((prevTheme) =>
+                    prevTheme === "dark" ? "light" : "dark"
+                  )
+                }
+              >
+                {isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme"}
+              </button>
+            </SubSection>
           </SettingsContainer>
         </AppBody>
       </ThemeProvider>
@@ -67,7 +92,6 @@ const AppBody = styled.div`
 
 const SettingsTitle = styled.div`
   cursor: pointer;
-  padding: 10px;
 `;
 
 const Row = styled.div`
@@ -97,11 +121,23 @@ const SubSectionTitle = styled.h3`
 `;
 
 const Input = styled.input`
-  width: 100%;
+  // width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  // border: 1px solid #ccc;
   border-radius: 4px;
+  background: transparent;
+  margin-left: 10px;
+  outline: none;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex: 2;
+  border: none;
+  height: 100%;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
 `;
 
 const Label = styled.label`

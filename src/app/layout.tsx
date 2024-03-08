@@ -4,12 +4,12 @@ import "./styles/globals.css";
 import SessionProvider from "./components/SessionProvider";
 import { getServerSession } from "next-auth";
 import { Metadata } from "next";
-import React from "react";
 import ThemeClient from "./styles/ThemeClient";
 import Navbar from "./components/Navbar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { redirect } from "next/navigation";
 import { getSession } from "next-auth/react";
+import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 

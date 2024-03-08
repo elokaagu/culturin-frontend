@@ -2,6 +2,7 @@
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "./theme";
 import React, { useState } from "react";
+import Header from "../components/Header";
 
 export default function ThemeClient({
   children,
@@ -21,6 +22,7 @@ export default function ThemeClient({
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <GlobalStyles />
+      {/* <Header toggleTheme={toggleTheme} /> */}
       {children}
     </ThemeProvider>
   );
