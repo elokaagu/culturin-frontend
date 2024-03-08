@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
@@ -9,8 +9,22 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
 import { fullBlog } from "../../../lib/interface";
+import { GetServerSideProps } from "next";
 
-export default function Profile({ username }: { username: string }) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Get the username from the URL
+  const { username } = context.params || {};
+
+  // Fetch data for that username
+  // Note: Include error handling as necessary
+  const res = await fetch(`/api/profile/${username}`);
+  const data = await res.json();
+
+  // Pass data to the page via props
+  return { props: { data } };
+};
+
+export default function Profile({ data }: { data: string }) {
   const [theme, setTheme] = useState("dark");
 
   const isDarkTheme = theme === "dark";
