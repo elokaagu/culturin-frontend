@@ -32,6 +32,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<fullBlog | null>(null);
   const [theme, setTheme] = useState("dark");
   const isDarkTheme = theme === "dark";
+  const [showModal, setShowModal] = useState(false); // State to manage modal visibility
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,6 +66,10 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
 
       // Optionally, fetch updated list of saved articles or trigger a state update
       console.log("Article saved successfully!");
+      setShowModal(true); // Show the modal on success
+      setTimeout(() => {
+        setShowModal(false);
+      }, 3000);
     } catch (error) {
       console.error("Error saving article:", error);
     }
@@ -76,7 +81,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <GlobalStyles />
       </ThemeProvider>
-      <AppBody>
+      <AppBody className={showModal ? "blurred" : ""}>
         <Link href="/" passHref>
           <BackLink>
             <svg
@@ -132,6 +137,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
           <SaveButtonContainer onClick={handleSaveArticle}>
             Add to profile
           </SaveButtonContainer>
+          {showModal && <Modal>Article Saved to Profile</Modal>}
         </Body>
       </AppBody>
     </>
@@ -148,6 +154,9 @@ const AppBody = styled.div`
   height: 100%;
   line-height: 2;
   color: white;
+  &.blurred {
+    filter: blur(5px);
+  }
 
   @media ${device.mobile} {
     padding-left: 0px;
@@ -322,4 +331,18 @@ const SaveButtonContainer = styled.div`
   // position: fixed;
   // right: 50px;
   // top: 200px;
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  color: black;
+  font-size: 18px;
 `;
