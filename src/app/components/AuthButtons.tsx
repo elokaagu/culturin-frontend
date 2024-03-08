@@ -38,12 +38,16 @@ export function GoogleSignInButton() {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
+  const userProfileLink = session?.user?.username
+    ? `/profile/${session.user.username}`
+    : "/profile/guest";
 
   if (session) {
     const userId = session.user?.id;
     const username = session.user?.name || "Guest";
     console.log("userId", userId);
     console.log("username", username);
+    console.log("session", session);
 
     return (
       <>
@@ -63,13 +67,9 @@ export function GoogleSignInButton() {
           <DropdownListContainer>
             <DropdownList>
               <DropdownItem>
-                {/* {session &&
-                  session.user &&
-                  (session.user as { id: string })?.id && ( */}
-                <Link href={`/profile/${session.user.username}`} passHref>
+                <Link href={userProfileLink} passHref>
                   <a>Profile</a>
                 </Link>
-                {/* )} */}
               </DropdownItem>
 
               <DropdownItem>
