@@ -60,10 +60,10 @@ export default function Profile({ params }: { params: { profileId: string } }) {
           {/* <Row>
             <ProfileCard />
           </Row> */}
-          <Row>
+          {/* <Row>
             {savedArticles.map(
               (article: {
-                _id: string; // Add the _id property to the type
+                _id: string;
                 title: string;
                 description: string;
                 imageSrc: string;
@@ -72,7 +72,8 @@ export default function Profile({ params }: { params: { profileId: string } }) {
                 <ProfileCard key={article._id} article={article} />
               )
             )}
-          </Row>
+          </Row> */}
+          <p>Hello</p>
         </AppBody>
       </ThemeProvider>
     </>

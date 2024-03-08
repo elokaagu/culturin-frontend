@@ -9,7 +9,6 @@ import { client, urlFor } from "../../lib/sanity";
 import { fullBlog } from "../../../../lib/interface";
 import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 import Image from "next/image";
-import { url } from "inspector";
 import { PortableText } from "@portabletext/react";
 import { useSession } from "next-auth/react";
 
@@ -134,9 +133,10 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
         </ImageContainer>
         <Body>
           <PortableText value={data?.body} />
-          {/* <SaveButtonContainer onClick={handleSaveArticle}> */}
-          <SaveButtonContainer>Add to profile</SaveButtonContainer>
-          {/* {showModal && <Modal>Article Saved to Profile</Modal>} */}
+          <SaveButtonContainer onClick={handleSaveArticle}>
+            {/* <SaveButtonContainer>Add to profile</SaveButtonContainer> */}
+            {showModal && <Modal>Article Saved to Profile</Modal>}
+          </SaveButtonContainer>
         </Body>
       </AppBody>
     </>
