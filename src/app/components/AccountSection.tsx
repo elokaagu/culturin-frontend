@@ -47,6 +47,10 @@ export default function AccountSection() {
         }}
         autoComplete="off"
       />
+      <Label>Profile information</Label>
+      <p>Edit your photo, name, bio, etc.</p>
+      <Label>Delete account</Label>
+      <p>Edit your photo, name, bio, etc.</p>
     </>
   );
 }

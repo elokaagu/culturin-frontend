@@ -27,16 +27,11 @@ export default function NotificationSection() {
 
   return (
     <>
-      <Label>Notification</Label>
-      <Input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") handleReset();
-        }}
-        autoComplete="off"
-      />
+      <Label>Recommended Reading</Label>
+      <p>
+        Featured stories, vidoes and packages that we think you’ll enjoy based
+        on your reading history.
+      </p>{" "}
       <Label>Mobile</Label>
       <Input
         type="text"

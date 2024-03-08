@@ -85,7 +85,7 @@ export default function Settings() {
                 </SectionTitle>
               </SubNavigationRow>
               {renderSection()}
-              <Label>Email address</Label>
+              {/* <Label>Email address</Label>
               <Input
                 type="email"
                 value={email}
@@ -104,7 +104,7 @@ export default function Settings() {
                   if (e.key === "Enter") handleReset();
                 }}
                 autoComplete="off"
-              />
+              /> */}
             </Section>
             <SubSection>
               <p>Appearance</p>

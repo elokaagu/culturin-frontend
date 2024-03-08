@@ -47,6 +47,8 @@ export default function PaymentSection() {
         }}
         autoComplete="off"
       />
+      <Label>Upgrade to Culturin Premium</Label>
+      <p>Subscribe for unlimited access to curated events and experiences.</p>
     </>
   );
 }
