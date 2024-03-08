@@ -9,8 +9,13 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     name: {
+      type: String,
+      required: true,
+    },
+    username: {
       type: String,
       required: true,
     },
@@ -26,6 +31,15 @@ const userSchema = new Schema(
     timestamps: true,
   }
 );
+
+userSchema.pre("save", function (next) {
+  if (!this.isNew) {
+    next();
+    return;
+  }
+  this.username = this.email.split("@")[0].replace(/\./g, "");
+  next();
+});
 
 const User = models.User || mongoose.model("User", userSchema);
 

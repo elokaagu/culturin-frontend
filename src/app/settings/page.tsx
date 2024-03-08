@@ -8,7 +8,7 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
 
-export default function Profile() {
+export default function Settings() {
   const [theme, setTheme] = useState("dark");
   const [email, setEmail] = useState(""); // Replace with user's email from session
   const [username, setUsername] = useState(""); // Replace with user's username from session
@@ -30,7 +30,7 @@ export default function Profile() {
               {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Settings
             </SettingsTitle>
             <Section>
-              <SectionTitle>Account Settings</SectionTitle>
+              <SectionTitle>Account</SectionTitle>
               <Label>Email address</Label>
               <Input
                 type="email"
