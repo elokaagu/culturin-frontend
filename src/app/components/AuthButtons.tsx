@@ -35,12 +35,16 @@ import React from "react";
 //   );
 // }
 
+const createUsernameSlug = (name: any) => {
+  return name.toLowerCase().replace(/\s+/g, "-"); // This replaces all spaces with dashes
+};
+
 export function GoogleSignInButton() {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
   const userProfileLink = session?.user?.name
-    ? `/profile/${session.user.name}`
+    ? `/profile/${createUsernameSlug(session.user.name)}`
     : "/profile/guest";
 
   if (session) {

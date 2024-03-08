@@ -65,15 +65,22 @@ export default function Settings() {
             <Section>
               {/* <SubNavigation /> */}
               <SubNavigationRow>
-                <SectionTitle onClick={() => setActiveSection("#account")}>
+                <SectionTitle
+                  active={activeSection === "#account"}
+                  onClick={() => setActiveSection("#account")}
+                >
                   Account
                 </SectionTitle>
                 <SectionTitle
+                  active={activeSection === "#notifications"}
                   onClick={() => setActiveSection("#notifications")}
                 >
                   Notifications
                 </SectionTitle>
-                <SectionTitle onClick={() => setActiveSection("#payments")}>
+                <SectionTitle
+                  active={activeSection === "#payments"}
+                  onClick={() => setActiveSection("#payments")}
+                >
                   Payments
                 </SectionTitle>
               </SubNavigationRow>
@@ -153,9 +160,16 @@ const Section = styled.div`
   margin-bottom: 20px;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled.h2<{ active?: boolean }>`
   font-size: 18px;
   margin-bottom: 10px;
+  cursor: pointer;
+  &:hover {
+    color: #0077cc;
+  }
+  margin-right: 20px;
+  color: ${({ active }) => (active ? "#0077cc" : "white")};
+  text-decoration: ${({ active }) => (active ? "underline" : "none")};
 `;
 
 const SubSection = styled.div`
