@@ -32,9 +32,17 @@ const authOptions = {
       }
       return true; // Return true to sign the user in
     },
-    session: async ({ session, token }: { session: any; token: any }) => {
-      if (token._id) {
-        session.user.id = token._id;
+    session: async ({
+      session,
+      token,
+      user,
+    }: {
+      session: any;
+      token: any;
+      user: any;
+    }) => {
+      if (user) {
+        session.user.id = user.id; // Or user._id or token.sub based on the provider and database
       }
       return session;
     },
