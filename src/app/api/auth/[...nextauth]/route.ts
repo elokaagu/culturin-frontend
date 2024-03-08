@@ -52,6 +52,18 @@ const authOptions = {
 };
 
 const handler = (req: any, res: any) =>
-  NextAuth(req, res, authOptions as unknown as NextAuthOptions);
+  NextAuth(req, res, {
+    ...authOptions,
+    callbacks: {
+      ...authOptions.callbacks,
+      jwt: async (params: any) => {
+        const { token, user } = params;
+        if (user?.username) {
+          token.username = user.username;
+        }
+        return token;
+      },
+    },
+  } as NextAuthOptions);
 
 export { handler as GET, handler as POST };
