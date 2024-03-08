@@ -1,9 +1,8 @@
-import { NextResponse } from "next/server";
 import { connectMongoDB } from "../../../lib/mongodb";
 import User from "../models/User";
 import { getSession } from "next-auth/react";
 
-export default async function handler(res: any, req: any) {
+export default async function handler(req: any, res: any) {
   await connectMongoDB();
 
   const session = await getSession({ req }); // get the session
