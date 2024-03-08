@@ -137,7 +137,7 @@ const Section = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 24px;
+  font-size: 18px;
   margin-bottom: 10px;
 `;
 
@@ -177,6 +177,6 @@ const Button = styled.button`
 
 const SubNavigationRow = styled.div`
   display: flex;
-  justify-content: space-evenly;
+
   flex-direction: row;
 `;
