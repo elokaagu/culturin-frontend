@@ -7,6 +7,7 @@ import { device } from "../styles/breakpoints";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
+import SubNavigation from "../components/SubNavigation";
 
 export default function Settings() {
   const [theme, setTheme] = useState("dark");
@@ -18,6 +19,7 @@ export default function Settings() {
   function handleReset() {
     setFormInput(undefined); // Set formInput state to undefined
   }
+  const [activeSection, setActiveSection] = useState("");
 
   return (
     <>
@@ -25,6 +27,7 @@ export default function Settings() {
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <GlobalStyles />
         <AppBody>
+          <SubNavigation />
           <SettingsContainer>
             <SettingsTitle>
               {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Settings
