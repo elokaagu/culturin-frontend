@@ -96,11 +96,12 @@ const SubSectionTitle = styled.h3`
 `;
 
 const Input = styled.input`
-  width: 100%;
+  width: 50%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  outline: none;
 `;
 
 const Label = styled.label`

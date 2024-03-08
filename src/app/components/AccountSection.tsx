@@ -47,10 +47,12 @@ export default function AccountSection() {
         }}
         autoComplete="off"
       />
-      <Label>Profile information</Label>
-      <p>Edit your photo, name, bio, etc.</p>
-      <Label>Delete account</Label>
-      <p>Edit your photo, name, bio, etc.</p>
+      <LabelSection>
+        <Label>Profile information</Label>
+        <p>Edit your photo, name, bio, etc.</p>
+        <Label>Delete account</Label>
+        <p>Edit your photo, name, bio, etc.</p>
+      </LabelSection>
     </>
   );
 }
@@ -105,11 +107,12 @@ const SubSectionTitle = styled.h3`
 `;
 
 const Input = styled.input`
-  width: 100%;
+  width: 50%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  outline: none;
 `;
 
 const Label = styled.label`
@@ -133,4 +136,11 @@ const SubNavigationRow = styled.div`
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
+`;
+
+const LabelSection = styled.div`
+  p {
+    margin-bottom: 10px;
+    color: grey;
+  }
 `;

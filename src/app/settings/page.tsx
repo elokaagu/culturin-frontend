@@ -166,9 +166,10 @@ const SectionTitle = styled.h2<{ active?: boolean }>`
   cursor: pointer;
   &:hover {
     color: #0077cc;
+    transition: 0.2s;
   }
   margin-right: 20px;
-  color: ${({ active }) => (active ? "#0077cc" : "white")};
+  color: ${({ active }) => (active ? "grey" : "white")};
   text-decoration: ${({ active }) => (active ? "underline" : "none")};
 `;
 
