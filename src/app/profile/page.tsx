@@ -24,7 +24,9 @@ export default function Profile() {
             <h1> {session?.user?.name?.split(" ")[0] || "Your"} Profile</h1>
           </ProfileTitle>
           <Row>
-            <ProfileCard />
+            <ProfileCard
+              article={{ title: "", description: "", imageSrc: "", author: "" }}
+            />
           </Row>
         </AppBody>
       </ThemeProvider>
