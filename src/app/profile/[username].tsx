@@ -9,16 +9,14 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
 import { fullBlog } from "../../../lib/interface";
-import { set } from "mongoose";
 
-export default function Profile({ params }: { params: { profileId: string } }) {
+export default function Profile({ username }: { username: string }) {
   const [theme, setTheme] = useState("dark");
 
   const isDarkTheme = theme === "dark";
   const [savedArticles, setSavedArticles] = useState([]);
-
   const { data: session } = useSession();
-
+  console.log("session", session);
   useEffect(() => {
     const fetchSavedArticles = async () => {
       if (session) {
@@ -53,14 +51,13 @@ export default function Profile({ params }: { params: { profileId: string } }) {
         <AppBody>
           <ProfileTitle>
             <h1>
-              {" "}
               {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile
             </h1>
           </ProfileTitle>
           {/* <Row>
             <ProfileCard />
           </Row> */}
-          {/* <Row>
+          <Row>
             {savedArticles.map(
               (article: {
                 _id: string;
@@ -72,8 +69,7 @@ export default function Profile({ params }: { params: { profileId: string } }) {
                 <ProfileCard key={article._id} article={article} />
               )
             )}
-          </Row> */}
-          <p>Hello</p>
+          </Row>
         </AppBody>
       </ThemeProvider>
     </>
