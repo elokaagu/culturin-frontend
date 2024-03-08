@@ -3,60 +3,37 @@ import styled from "styled-components";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
 import Image from "next/image";
-import { CldImage } from "next-cloudinary";
 
-const data = [
-  {
-    city: "Enugu, Nigeria",
-    author: "elokaagu",
-    // imageSrc: "/images/eloka1.jpg",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705237659/b3qbbycol9tucoa5ch67.jpg",
-  },
-  {
-    city: "Lisbon, Portugal",
-    author: "louisleonidas",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705237915/qlyxrqmfvjjboaqlynhq.jpg",
-  },
-  {
-    city: "LA, California",
-    author: "cynthiabahati",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705237659/zzz86nb43x1p8q4bxhoo.jpg",
-  },
-  {
-    city: "Berlin, Germany",
-    author: "elokaagu",
-    // imageSrc: "/images/eloka1.jpg",
-    imageSrc:
-      "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705237658/vuiz1dvvxd4n7fl5eztf.jpg",
-  }, // Add more data objects as needed
-];
-
-export default function ProfileCard({ article }: { article?: any }) {
+export default function ProfileCard({
+  article,
+}: {
+  article: {
+    title: string;
+    description: string;
+    imageSrc: string;
+    author: string;
+  };
+}) {
   return (
     <AppBody>
-      {data.map((cardData, index) => (
-        <Card key={index}>
-          <CardBody>
-            <CldImage
-              src={cardData.imageSrc}
-              alt={cardData.city}
-              placeholder="blur"
-              fill
-              style={{ objectFit: "cover" }}
-              blurDataURL={cardData.imageSrc}
-            />
-          </CardBody>
-          <CardText>
-            <p>saved pin</p>
-            <CardAuthor>
-              <p>elokaagu</p>
-            </CardAuthor>
-          </CardText>
-        </Card>
-      ))}
+      <Card>
+        <CardBody>
+          <Image
+            src={article.imageSrc}
+            alt={article.title}
+            placeholder="blur"
+            fill
+            style={{ objectFit: "cover" }}
+            blurDataURL={article.imageSrc}
+          />
+        </CardBody>
+        <CardText>
+          <p>{article?.title}</p>
+          <CardAuthor>
+            <p>{article?.description}</p>
+          </CardAuthor>
+        </CardText>
+      </Card>
     </AppBody>
   );
 }

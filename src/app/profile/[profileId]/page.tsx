@@ -42,7 +42,8 @@ export default function Profile({ params }: { params: { profileId: string } }) {
         }
       }
     };
-  });
+    fetchSavedArticles();
+  }, [session]);
 
   return (
     <>
@@ -53,13 +54,21 @@ export default function Profile({ params }: { params: { profileId: string } }) {
           <ProfileTitle>
             <h1> {session?.user?.name?.split(" ")[0] || "Your"} Profile</h1>
           </ProfileTitle>
-          <Row>
+          {/* <Row>
             <ProfileCard />
-          </Row>
+          </Row> */}
           <Row>
-            {savedArticles.map((article: fullBlog) => (
-              <ProfileCard key={article._id} article={article} />
-            ))}
+            {savedArticles.map(
+              (article: {
+                _id: string; // Add the _id property to the type
+                title: string;
+                description: string;
+                imageSrc: string;
+                author: string;
+              }) => (
+                <ProfileCard key={article._id} article={article} />
+              )
+            )}
           </Row>
         </AppBody>
       </ThemeProvider>
