@@ -27,35 +27,42 @@ export default function AccountSection() {
 
   return (
     <>
-      <Label>Email address</Label>
-      <Input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") handleReset();
-        }}
-        autoComplete="off"
-      />
-      <Label>Username</Label>
-      <Input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") handleReset();
-        }}
-        autoComplete="off"
-      />
-      <LabelSection>
-        <Label>Profile information</Label>
-        <p>Edit your photo, name, bio, etc.</p>
-        <Label>Delete account</Label>
-        <p>Edit your photo, name, bio, etc.</p>
-      </LabelSection>
+      <LabelContainer>
+        <Label>Email address</Label>
+        <Input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleReset();
+          }}
+          autoComplete="off"
+        />
+        <Label>Username</Label>
+        <Input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleReset();
+          }}
+          autoComplete="off"
+        />
+        <LabelSection>
+          <Label>Profile information</Label>
+          <p>Edit your photo, name, bio, etc.</p>
+          <Label>Delete account</Label>
+          <p>Edit your photo, name, bio, etc.</p>
+        </LabelSection>
+      </LabelContainer>
     </>
   );
 }
+
+const LabelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const AppBody = styled.div`
   padding: 40px;

@@ -8,7 +8,6 @@ import ProfileCard from "../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
-import { fullBlog } from "../../../lib/interface";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -17,14 +16,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   // Fetch data for that username
   // Note: Include error handling as necessary
-  const res = await fetch(`/api/profile/${username}`);
+  // const res = await fetch(`/api/profile/${username}`);
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/profile/${username}`;
+
+  const res = await fetch(apiUrl);
+
   const data = await res.json();
 
   // Pass data to the page via props
   return { props: { data } };
 };
 
-export default function Profile({ data }: { data: string }) {
+export default function Profile({ data }: { data: any }) {
   const [theme, setTheme] = useState("dark");
 
   const isDarkTheme = theme === "dark";
@@ -68,9 +71,6 @@ export default function Profile({ data }: { data: string }) {
               {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile
             </h1>
           </ProfileTitle>
-          {/* <Row>
-            <ProfileCard />
-          </Row> */}
           <Row>
             {savedArticles.map(
               (article: {
