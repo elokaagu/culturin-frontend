@@ -8,11 +8,8 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
 import SubNavigation from "../components/SubNavigation";
-import AccountSection from "../components/AccountSection";
-import NotificationSection from "../components/NotificationSection";
-import PaymentSection from "../components/PaymentSection";
 
-export default function Settings() {
+export default function PaymentSection() {
   const [theme, setTheme] = useState("dark");
   const [email, setEmail] = useState(""); // Replace with user's email from session
   const [username, setUsername] = useState(""); // Replace with user's username from session
@@ -28,75 +25,28 @@ export default function Settings() {
     setActiveSection(window.location.hash);
   }, []);
 
-  const renderSection = () => {
-    switch (activeSection) {
-      case "#account":
-        return <AccountSection />;
-      case "#notifications":
-        return <NotificationSection />;
-
-      case "#payments":
-        return <PaymentSection />;
-      // ... handle other cases
-      default:
-        return <AccountSection />; // Default section
-    }
-  };
-
   return (
     <>
-      <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
-          <SettingsContainer>
-            <SettingsTitle>
-              {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Settings
-            </SettingsTitle>
-            <Section>
-              {/* <SubNavigation /> */}
-              <SubNavigationRow>
-                <SectionTitle>Account</SectionTitle>
-                <SectionTitle>Notifications</SectionTitle>
-                <SectionTitle>Payments</SectionTitle>
-              </SubNavigationRow>
-              {renderSection()}
-              <Label>Email address</Label>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleReset();
-                }}
-                autoComplete="off"
-              />
-              <Label>Username</Label>
-              <Input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleReset();
-                }}
-                autoComplete="off"
-              />
-            </Section>
-            <SubSection>
-              <p>Appearance</p>
-              <Button
-                onClick={() =>
-                  setTheme((prevTheme) =>
-                    prevTheme === "dark" ? "light" : "dark"
-                  )
-                }
-              >
-                {isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme"}
-              </Button>
-            </SubSection>
-          </SettingsContainer>
-        </AppBody>
-      </ThemeProvider>
+      <Label>Payment</Label>
+      <Input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleReset();
+        }}
+        autoComplete="off"
+      />
+      <Label>Card Details</Label>
+      <Input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleReset();
+        }}
+        autoComplete="off"
+      />
     </>
   );
 }
