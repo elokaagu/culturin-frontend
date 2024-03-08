@@ -134,10 +134,9 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
         </ImageContainer>
         <Body>
           <PortableText value={data?.body} />
-          <SaveButtonContainer onClick={handleSaveArticle}>
-            Add to profile
-          </SaveButtonContainer>
-          {showModal && <Modal>Article Saved to Profile</Modal>}
+          {/* <SaveButtonContainer onClick={handleSaveArticle}> */}
+          <SaveButtonContainer>Add to profile</SaveButtonContainer>
+          {/* {showModal && <Modal>Article Saved to Profile</Modal>} */}
         </Body>
       </AppBody>
     </>
