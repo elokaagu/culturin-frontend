@@ -50,9 +50,9 @@ export default function ProfileCard({ article }: { article?: any }) {
             />
           </CardBody>
           <CardText>
-            <p>{article.title}</p>
+            <p>saved pin</p>
             <CardAuthor>
-              <p>{article.summary}</p>
+              <p>elokaagu</p>
             </CardAuthor>
           </CardText>
         </Card>
