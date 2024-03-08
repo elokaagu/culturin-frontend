@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
@@ -21,6 +21,22 @@ export default function Settings() {
   }
   const [activeSection, setActiveSection] = useState("");
 
+  // useEffect(() => {
+  //   setActiveSection(window.location.hash);
+  // }, []);
+
+  // const renderSection = () => {
+  //   switch (activeSection) {
+  //     case "#account":
+  //       return <AccountSection />;
+  //     case "#publishing":
+  //       return <PublishingSection />;
+  //     // ... handle other cases
+  //     default:
+  //       return <AccountSection />; // Default section
+  //   }
+  // };
+
   return (
     <>
       <Header />
@@ -28,6 +44,8 @@ export default function Settings() {
         <GlobalStyles />
         <AppBody>
           <SubNavigation />
+          {/* {renderSection()} */}
+
           <SettingsContainer>
             <SettingsTitle>
               {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Settings
