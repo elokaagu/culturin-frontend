@@ -70,7 +70,7 @@ export function GoogleSignInButton() {
           <DropdownListContainer>
             <DropdownList>
               <DropdownItem>
-                <Link href={userProfileLink} passHref>
+                <Link href={userProfileLink}>
                   <a>Profile</a>
                 </Link>
               </DropdownItem>
