@@ -1,12 +1,12 @@
 // "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import Link from "next/link";
-import { device } from "../styles/breakpoints";
-import ProfileCard from "../components/ProfileCard";
+import { device } from "../../styles/breakpoints";
+import ProfileCard from "../../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
+import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 import { useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 
@@ -72,7 +72,7 @@ export default function Profile({ data }: { data: any }) {
             </h1>
           </ProfileTitle>
           <Row>
-            {savedArticles.map(
+            {/* {savedArticles.map(
               (article: {
                 _id: string;
                 title: string;
@@ -82,7 +82,7 @@ export default function Profile({ data }: { data: any }) {
               }) => (
                 <ProfileCard key={article._id} article={article} />
               )
-            )}
+            )} */}
           </Row>
         </AppBody>
       </ThemeProvider>
