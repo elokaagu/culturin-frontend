@@ -1,12 +1,12 @@
 // "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../../../app/components/Header";
+import Header from "../components/Header";
 import Link from "next/link";
-import { device } from "../../../app/styles/breakpoints";
-import ProfileCard from "../../../app/components/ProfileCard";
+import { device } from "../styles/breakpoints";
+import ProfileCard from "../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../../../app/styles/theme";
+import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 
@@ -20,10 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   try {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/profile/${username}`;
-    console.log("API URL:", apiUrl); // Log the API URL for debugging
-
-    const res = await fetch(apiUrl);
+    const res = await fetch(`http://localhost:3000/api/profile/${username}`);
 
     if (!res.ok) {
       // If the response is not okay, return a 404 page
