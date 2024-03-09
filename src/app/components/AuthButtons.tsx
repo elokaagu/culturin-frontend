@@ -35,8 +35,8 @@ import React from "react";
 //   );
 // }
 
-const createUsernameSlug = (name: any) => {
-  return name.toLowerCase().replace(/\s+/g, "-"); // This replaces all spaces with dashes
+const createUsernameSlug = (name: string) => {
+  return name.toLowerCase().replace(/\s+/g, ""); // This removes all spaces
 };
 
 export function GoogleSignInButton() {
