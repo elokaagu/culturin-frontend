@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
-import { CldImage } from "next-cloudinary";
 import { client } from "../lib/sanity";
 import { simpleBlogCard } from "../../../lib/interface";
 import { urlFor } from "../lib/sanity";
