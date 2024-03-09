@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { getSession } from "next-auth/react";
-import Home from "../page";
+import Home from "../../page";
 
 export default function Index({ session }) {
   return <Home session={session} />;

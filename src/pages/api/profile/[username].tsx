@@ -1,12 +1,12 @@
 // "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../../components/Header";
+import Header from "../../../app/components/Header";
 import Link from "next/link";
-import { device } from "../../styles/breakpoints";
-import ProfileCard from "../../components/ProfileCard";
+import { device } from "../../../app/styles/breakpoints";
+import ProfileCard from "../../../app/components/ProfileCard";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
+import { lightTheme, darkTheme, GlobalStyles } from "../../../app/styles/theme";
 import { useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 
