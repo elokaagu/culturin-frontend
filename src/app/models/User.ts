@@ -44,7 +44,11 @@ userSchema.pre("save", function (next) {
     next();
     return;
   }
-  this.username = this.email.split("@")[0].replace(/\./g, "");
+  let names = this.name.split(" "); // This splits the name into an array of words
+  let firstName = names[0];
+  let lastName = names.length > 1 ? names[names.length - 1] : ""; // Gets the last element as last name
+  this.username = `${firstName}${lastName}`.replace(/[.\s]/g, "").toLowerCase();
+
   next();
 });
 
