@@ -14,17 +14,33 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get the username from the URL
   const { username } = context.params || {};
 
-  // Fetch data for that username
-  // Note: Include error handling as necessary
-  // const res = await fetch(`/api/profile/${username}`);
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/profile/${username}`;
+  if (!username) {
+    // If username isn't found in the URL, return a 404 page
+    return { notFound: true };
+  }
 
-  const res = await fetch(apiUrl);
+  try {
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/profile/${username}`;
+    console.log("API URL:", apiUrl); // Log the API URL for debugging
 
-  const data = await res.json();
+    const res = await fetch(apiUrl);
 
-  // Pass data to the page via props
-  return { props: { data } };
+    if (!res.ok) {
+      // If the response is not okay, return a 404 page
+      console.log(`API call failed with status: ${res.status}`); // Log for debugging
+
+      return { notFound: true };
+    }
+
+    const data = await res.json();
+    console.log("Profile data:", data); // Log the response data for debugging
+
+    return { props: { data } };
+  } catch (error) {
+    // If there's an error during fetch, log it and return a 404 page
+    console.error("Error fetching profile data:", error);
+    return { notFound: true };
+  }
 };
 
 export default function Profile({ data }: { data: any }) {
@@ -59,6 +75,10 @@ export default function Profile({ data }: { data: any }) {
     };
     fetchSavedArticles();
   }, [session]);
+
+  if (!data) {
+    return <div>Data not found</div>;
+  }
 
   return (
     <>
