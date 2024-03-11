@@ -7,19 +7,8 @@ import { device } from "../../styles/breakpoints";
 import ProfileCard from "../../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
-
-export async function handler(req: any, res: any) {
-  const session = await getSession({ req });
-  if (!session) {
-    return res.status(401).json({
-      message: "You must be signed in to view the protected content.",
-    });
-  }
-  const { username } = req.query;
-}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -34,15 +23,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   // Get the username from the URL
-  const { username } = context.params || {};
+
+  const username = context.params?.username;
 
   if (!username) {
-    // If username isn't found in the URL, return a 404 page
     return { notFound: true };
   }
 
   try {
-    const res = await fetch(`http://localhost:3000/api/profile/${username}`);
+    const apiUrl = `${
+      process.env.NEXT_PUBLIC_API_BASE_URL
+    }/profile/${encodeURIComponent(username.toString())}`;
+
+    const res = await fetch(apiUrl);
 
     if (!res.ok) {
       // If the response is not okay, return a 404 page
@@ -62,66 +55,75 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 };
 
-const fetchUserProfile = async () => {
-  try {
-    const userProfileApiUrl = "http://localhost:3000/api/profile/${username}"; // Replace with the actual API URL
+// const fetchUserProfile = async (username: string) => {
+//   try {
+//     const userProfileApiUrl = `http://localhost:3000/profile/${encodeURIComponent(
+//       username
+//     )}`;
 
-    const response = await fetch(userProfileApiUrl, {
-      method: "GET", // or 'POST', depending on your API method
-      headers: {
-        "Content-Type": "application/json",
-        // Include authorization headers if needed:
-        // 'Authorization': 'Bearer your-auth-token-here'
-      },
-    });
+//     const response = await fetch(userProfileApiUrl, {
+//       method: "GET", // or 'POST', depending on your API method
+//       headers: {
+//         "Content-Type": "application/json",
+//         // Include authorization headers if needed:
+//         // 'Authorization': 'Bearer your-auth-token-here'
+//       },
+//     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
 
-    const profileData = await response.json();
-    // Do something with the profile data
-    console.log(profileData);
-  } catch (error) {
-    console.error("Failed to fetch user profile:", error);
-    // Handle errors here
-  }
-};
-
-// useEffect(() => {
-//   if (session?.user?.name) {
-//     fetchUserProfile();
+//     const profileData = await response.json();
+//     // Do something with the profile data
+//     console.log(profileData);
+//   } catch (error) {
+//     console.error("Failed to fetch user profile:", error);
+//     // Handle errors here
 //   }
-// }, [session?.user?.name]);
+// };
 
 export default function Profile({ data }: { data: any }) {
   const [theme, setTheme] = useState("dark");
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const isDarkTheme = theme === "dark";
   const [savedArticles, setSavedArticles] = useState([]);
   const { data: session } = useSession();
   console.log("session", session);
+
+  // Fetching User Profile
+
+  // Fetching saved articles
   useEffect(() => {
     const fetchSavedArticles = async () => {
-      if (session) {
-        try {
-          const res = await fetch("/api/user-saved-articles", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              // Include authorization if your API requires it
-              Authorization: `Bearer ${(session as any).token}`,
-            },
-          });
+      if (!session) return;
 
-          if (!res.ok) {
-            throw new Error("Failed to fetch saved articles");
-          }
-          const { savedArticles } = await res.json();
-          setSavedArticles(savedArticles);
-        } catch (error) {
-          console.error("Error fetching saved articles", error);
+      setIsLoading(true);
+
+      setError("");
+
+      try {
+        const res = await fetch("/api/user-saved-articles", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // Include authorization if your API requires it
+            Authorization: `Bearer ${(session as any).token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch saved articles");
         }
+
+        const { savedArticles } = await res.json();
+        setSavedArticles(savedArticles);
+      } catch (error) {
+        console.error("Failed to fetch saved articles:", error);
+        setError("Failed to fetch saved articles");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchSavedArticles();
@@ -131,6 +133,10 @@ export default function Profile({ data }: { data: any }) {
     return <div>Data not found</div>;
   }
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data) return <div>Data not found</div>;
+
   return (
     <>
       <Header />
@@ -138,12 +144,11 @@ export default function Profile({ data }: { data: any }) {
         <GlobalStyles />
         <AppBody>
           <ProfileTitle>
-            <h1>
-              {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile
-            </h1>
+            <h1>{data?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile</h1>
           </ProfileTitle>
+          <p>Rendering something</p>
           <Row>
-            {/* {savedArticles.map(
+            {savedArticles.map(
               (article: {
                 _id: string;
                 title: string;
@@ -153,7 +158,7 @@ export default function Profile({ data }: { data: any }) {
               }) => (
                 <ProfileCard key={article._id} article={article} />
               )
-            )} */}
+            )}
           </Row>
         </AppBody>
       </ThemeProvider>
