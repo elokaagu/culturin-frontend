@@ -1,14 +1,25 @@
 // "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import Link from "next/link";
-import { device } from "../styles/breakpoints";
-import ProfileCard from "../components/ProfileCard";
+import { device } from "../../styles/breakpoints";
+import ProfileCard from "../../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
+import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 import { useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
+
+export async function handler(req: any, res: any) {
+  const session = await getSession({ req });
+  if (!session) {
+    return res.status(401).json({
+      message: "You must be signed in to view the protected content.",
+    });
+  }
+  const { username } = req.query;
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get the username from the URL
@@ -39,6 +50,38 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true };
   }
 };
+
+const fetchUserProfile = async () => {
+  try {
+    const userProfileApiUrl = "http://localhost:3000/api/profile/${username}"; // Replace with the actual API URL
+
+    const response = await fetch(userProfileApiUrl, {
+      method: "GET", // or 'POST', depending on your API method
+      headers: {
+        "Content-Type": "application/json",
+        // Include authorization headers if needed:
+        // 'Authorization': 'Bearer your-auth-token-here'
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const profileData = await response.json();
+    // Do something with the profile data
+    console.log(profileData);
+  } catch (error) {
+    console.error("Failed to fetch user profile:", error);
+    // Handle errors here
+  }
+};
+
+// useEffect(() => {
+//   if (session?.user?.name) {
+//     fetchUserProfile();
+//   }
+// }, [session?.user?.name]);
 
 export default function Profile({ data }: { data: any }) {
   const [theme, setTheme] = useState("dark");

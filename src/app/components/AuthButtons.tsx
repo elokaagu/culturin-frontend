@@ -43,9 +43,12 @@ export function GoogleSignInButton() {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
-  const userProfileLink = session?.user?.name
-    ? `/profile/${createUsernameSlug(session.user.name)}`
-    : "/profile/guest";
+  // const userProfileLink = session?.user?.name
+  //   ? `/profile/${createUsernameSlug(session.user.name)}`
+  //   : "/profile/guest";
+  const userProfileApiUrl = session?.user?.name
+    ? `/api/profile/${createUsernameSlug(session.user.name)}`
+    : `/api/profile/guest`;
 
   if (session) {
     const username = session.user?.name || "Guest";
@@ -70,7 +73,7 @@ export function GoogleSignInButton() {
           <DropdownListContainer>
             <DropdownList>
               <DropdownItem>
-                <Link href={userProfileLink}>
+                <Link href={userProfileApiUrl}>
                   <a>Profile</a>
                 </Link>
               </DropdownItem>
