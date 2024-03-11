@@ -47,8 +47,8 @@ export function GoogleSignInButton() {
   //   ? `/profile/${createUsernameSlug(session.user.name)}`
   //   : "/profile/guest";
   const userProfileApiUrl = session?.user?.name
-    ? `/api/profile/${createUsernameSlug(session.user.name)}`
-    : `/api/profile/guest`;
+    ? `/profile/${createUsernameSlug(session.user.name)}`
+    : `/profile/guest`;
 
   if (session) {
     const username = session.user?.name || "Guest";
