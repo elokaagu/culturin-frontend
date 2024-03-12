@@ -9,6 +9,7 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession, getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -114,7 +115,17 @@ export default function Profile({ data }: { data: any }) {
         });
 
         if (!res.ok) {
-          throw new Error("Failed to fetch saved articles");
+          const errMessage = await res.text(); // Assuming the server responds with a plain text error message
+          switch (res.status) {
+            case 404:
+              throw new Error("Articles not found.");
+            case 401:
+              throw new Error("Unauthorized. Please log in again.");
+            case 500:
+              throw new Error("Server error. Please try again later.");
+            default:
+              throw new Error(errMessage || "An unknown error occurred.");
+          }
         }
 
         const { savedArticles } = await res.json();

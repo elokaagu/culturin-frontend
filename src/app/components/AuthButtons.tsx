@@ -38,9 +38,8 @@ import React from "react";
 const createUsernameSlug = (name: string) => {
   const normalized = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   const lowerCase = normalized.toLowerCase();
-  const noSpaces = lowerCase.replace(/\s+/g, "-");
+  const noSpaces = lowerCase.replace(/\s+/g, "");
   const urlFriendly = noSpaces.replace(/[^a-z0-9-]/g, "");
-  const singleDashes = urlFriendly.replace(/-+/g, "-");
   return urlFriendly;
 };
 
