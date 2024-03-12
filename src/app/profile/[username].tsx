@@ -10,78 +10,86 @@ import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession, getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const session = await getSession(context);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
 
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: "/api/auth/signin",
-//         permanent: false,
-//       },
-//     };
-//   }
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/api/auth/signin",
+        permanent: false,
+      },
+    };
+  }
 
-//   // Get the username from the URL
+  // Get the username from the URL
 
-//   const username = context.params?.username;
+  const username = session?.user?.name || "Guest";
 
-//   if (!username) {
-//     return { notFound: true };
-//   }
+  if (!username) {
+    return {
+      props: {
+        error: "Username not found", // Pass a custom error message or code
+      },
+    };
+  }
 
-//   try {
-//     const apiUrl = `${
-//       process.env.NEXT_PUBLIC_API_BASE_URL
-//     }/profile/${encodeURIComponent(username.toString())}`;
+  try {
+    const apiUrl = `${
+      process.env.NEXT_PUBLIC_API_BASE_URL
+    }/profile/${encodeURIComponent(username.toString())}`;
 
-//     const res = await fetch(apiUrl);
+    const res = await fetch(apiUrl);
 
-//     if (!res.ok) {
-//       // If the response is not okay, return a 404 page
-//       console.log(`API call failed with status: ${res.status}`); // Log for debugging
+    if (!res.ok) {
+      // If the response is not okay, return a 404 page
+      console.log(`API call failed with status: ${res.status}`); // Log for debugging
 
-//       return { notFound: true };
-//     }
+      return { notFound: true };
+    }
 
-//     const data = await res.json();
-//     console.log("Profile data:", data); // Log the response data for debugging
+    const data = await res.json();
+    console.log("Profile data:", data); // Log the response data for debugging
 
-//     return { props: { data } };
-//   } catch (error) {
-//     // If there's an error during fetch, log it and return a 404 page
-//     console.error("Error fetching profile data:", error);
-//     return { notFound: true };
-//   }
-// };
+    return { props: { data } };
+  } catch (error) {
+    // If there's an error during fetch, log it and return a 404 page
+    console.error("Error fetching profile data:", error);
+    return { notFound: true };
+  }
 
-// const fetchUserProfile = async (username: string) => {
-//   try {
-//     const userProfileApiUrl = `http://localhost:3000/profile/${encodeURIComponent(
-//       username
-//     )}`;
+  return {
+    props: { username, session },
+  };
+};
 
-//     const response = await fetch(userProfileApiUrl, {
-//       method: "GET", // or 'POST', depending on your API method
-//       headers: {
-//         "Content-Type": "application/json",
-//         // Include authorization headers if needed:
-//         // 'Authorization': 'Bearer your-auth-token-here'
-//       },
-//     });
+const fetchUserProfile = async (username: string) => {
+  try {
+    const userProfileApiUrl = `http://localhost:3000/profile/${encodeURIComponent(
+      username
+    )}`;
 
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
+    const response = await fetch(userProfileApiUrl, {
+      method: "GET", // or 'POST', depending on your API method
+      headers: {
+        "Content-Type": "application/json",
+        // Include authorization headers if needed:
+        // 'Authorization': 'Bearer your-auth-token-here'
+      },
+    });
 
-//     const profileData = await response.json();
-//     // Do something with the profile data
-//     console.log(profileData);
-//   } catch (error) {
-//     console.error("Failed to fetch user profile:", error);
-//     // Handle errors here
-//   }
-// };
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const profileData = await response.json();
+    // Do something with the profile data
+    console.log(profileData);
+  } catch (error) {
+    console.error("Failed to fetch user profile:", error);
+    // Handle errors here
+  }
+};
 
 export default function Profile({ data }: { data: any }) {
   const [theme, setTheme] = useState("dark");
