@@ -144,11 +144,11 @@ export default function Profile({ data }: { data: any }) {
         <GlobalStyles />
         <AppBody>
           <ProfileTitle>
-            <h1>{data?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile</h1>
+            {/* <h1>{data?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile</h1> */}
           </ProfileTitle>
           <p>Rendering something</p>
           <Row>
-            {savedArticles.map(
+            {/* {savedArticles.map(
               (article: {
                 _id: string;
                 title: string;
@@ -158,7 +158,7 @@ export default function Profile({ data }: { data: any }) {
               }) => (
                 <ProfileCard key={article._id} article={article} />
               )
-            )}
+            )} */}
           </Row>
         </AppBody>
       </ThemeProvider>

@@ -41,16 +41,14 @@ const createUsernameSlug = (name: string) => {
   const noSpaces = lowerCase.replace(/\s+/g, "-");
   const urlFriendly = noSpaces.replace(/[^a-z0-9-]/g, "");
   const singleDashes = urlFriendly.replace(/-+/g, "-");
-  return singleDashes;
+  return urlFriendly;
 };
 
 export function GoogleSignInButton() {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
-  // const userProfileLink = session?.user?.name
-  //   ? `/profile/${createUsernameSlug(session.user.name)}`
-  //   : "/profile/guest";
+
   const userProfileApiUrl = session?.user?.name
     ? `/profile/${createUsernameSlug(session.user.name)}`
     : `/profile/guest`;
