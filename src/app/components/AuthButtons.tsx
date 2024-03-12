@@ -78,9 +78,7 @@ export function GoogleSignInButton() {
           <DropdownListContainer>
             <DropdownList>
               <DropdownItem>
-                <Link href={userProfileApiUrl}>
-                  <a>Profile</a>
-                </Link>
+                <Link href={userProfileApiUrl}>Profile</Link>
               </DropdownItem>
 
               <DropdownItem>
