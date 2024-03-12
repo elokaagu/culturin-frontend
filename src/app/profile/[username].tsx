@@ -25,9 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get the username from the URL
 
   const username = session?.user?.name || "Guest";
-  const apiUrl = `${
-    process.env.NEXT_PUBLIC_API_BASE_URL
-  }/profile/${encodeURIComponent(username)}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/profile/${username}`;
 
   // if (!username) {
   //   return {
@@ -54,38 +52,55 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 };
 
-const fetchUserProfile = async (username: string) => {
-  try {
-    const userProfileApiUrl = `http://localhost:3000/profile/${encodeURIComponent(
-      username
-    )}`;
+// const fetchUserProfile = async (username: string, session: any) => {
+//   if (!session) {
+//     console.error("Session not found. User is likely not logged in.");
+//     return;
+//   }
 
-    const response = await fetch(userProfileApiUrl, {
-      method: "GET", // or 'POST', depending on your API method
-      headers: {
-        "Content-Type": "application/json",
-        // Include authorization headers if needed:
-        // 'Authorization': 'Bearer your-auth-token-here'
-      },
-    });
+//   try {
+//     // const userProfileApiUrl = `http://localhost:3000/profile/${encodeURIComponent(
+//     //   username
+//     // )}`;
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+//     const userProfileApiUrl = `${
+//       process.env.NEXT_PUBLIC_API_BASE_URL
+//     }/profile/${encodeURIComponent(session?.user?.name)}`;
 
-    const profileData = await response.json();
-    // Do something with the profile data
-    console.log(profileData);
-  } catch (error) {
-    console.error("Failed to fetch user profile:", error);
-    // Handle errors here
-  }
-};
+//     const response = await fetch(userProfileApiUrl, {
+//       method: "GET", // or 'POST', depending on your API method
+//       headers: {
+//         "Content-Type": "application/json",
+//         // Include authorization headers if needed:
+//         // 'Authorization': 'Bearer your-auth-token-here'
+//       },
+//     });
 
-export default function Profile({ data }: { data: any }) {
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+
+//     const profileData = await response.json();
+//     console.log("Fetched profile data", profileData);
+//     return profileData;
+//   } catch (error) {
+//     console.error("Failed to fetch user profile data:", error);
+//     return null;
+//   }
+// };
+
+export default function Profile({
+  profileData,
+  error,
+  message,
+}: {
+  profileData: any;
+  error: any;
+  message: any;
+}) {
   const [theme, setTheme] = useState("dark");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const isDarkTheme = theme === "dark";
   const [savedArticles, setSavedArticles] = useState([]);
   const { data: session } = useSession();
@@ -151,7 +166,9 @@ export default function Profile({ data }: { data: any }) {
         <GlobalStyles />
         <AppBody>
           <ProfileTitle>
-            <h1>{data?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile</h1>
+            <h1>
+              {profileData?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile
+            </h1>
           </ProfileTitle>
           <p>Profile Page</p>
           <Row>

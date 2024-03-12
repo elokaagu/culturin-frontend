@@ -43,18 +43,35 @@ import React from "react";
 //   return urlFriendly;
 // };
 
+// function createSlugFromUsername(username: string) {
+//   // Remove spaces and convert to lowercase
+//   return username.replace(/\s+/g, "").toLowerCase();
+// }
+
+const createUsernameSlug = (name: string) => {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, "");
+};
+
 export function GoogleSignInButton() {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
+  const userProfileApiUrl = session?.user?.name
+    ? `/profile/${createUsernameSlug(session.user.name)}`
+    : "/profile/guest";
+
   const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  const userProfileApiUrl = session?.user?.name
-    ? `${NEXT_PUBLIC_API_BASE_URL}/profile/${encodeURIComponent(
-        session.user.name
-      )}`
-    : `${NEXT_PUBLIC_API_BASE_URL}/profile/guest`;
+  // const userProfileApiUrl = session?.user?.name
+  //   ? `${NEXT_PUBLIC_API_BASE_URL}/profile/${encodeURIComponent(
+  //       session.user.name
+  //     )}`
+  //   : `${NEXT_PUBLIC_API_BASE_URL}/profile/guest`;
 
   if (session) {
     const username = session.user?.name || "Guest";
