@@ -35,22 +35,26 @@ import React from "react";
 //   );
 // }
 
-const createUsernameSlug = (name: string) => {
-  const normalized = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  const lowerCase = normalized.toLowerCase();
-  const noSpaces = lowerCase.replace(/\s+/g, "");
-  const urlFriendly = noSpaces.replace(/[^a-z0-9-]/g, "");
-  return urlFriendly;
-};
+// const createUsernameSlug = (name: string) => {
+//   const normalized = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+//   const lowerCase = normalized.toLowerCase();
+//   const noSpaces = lowerCase.replace(/\s+/g, "");
+//   const urlFriendly = noSpaces.replace(/[^a-z0-9-]/g, "");
+//   return urlFriendly;
+// };
 
 export function GoogleSignInButton() {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
+  const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const userProfileApiUrl = session?.user?.name
-    ? `/profile/${createUsernameSlug(session.user.name)}`
-    : `/profile/guest`;
+    ? `${NEXT_PUBLIC_API_BASE_URL}/profile/${encodeURIComponent(
+        session.user.name
+      )}`
+    : `${NEXT_PUBLIC_API_BASE_URL}/profile/guest`;
 
   if (session) {
     const username = session.user?.name || "Guest";

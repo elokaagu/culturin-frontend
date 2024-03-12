@@ -45,7 +45,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       // If the response is not okay, return a 404 page
       console.log(`API call failed with status: ${res.status}`); // Log for debugging
 
-      return { notFound: true };
+      return {
+        props: {
+          error: "API call failed", // Pass a custom error message or code
+        },
+      };
     }
 
     const data = await res.json();
