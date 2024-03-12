@@ -25,46 +25,33 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get the username from the URL
 
   const username = session?.user?.name || "Guest";
+  const apiUrl = `${
+    process.env.NEXT_PUBLIC_API_BASE_URL
+  }/profile/${encodeURIComponent(username)}`;
 
-  if (!username) {
-    return {
-      props: {
-        error: "Username not found", // Pass a custom error message or code
-      },
-    };
-  }
+  // if (!username) {
+  //   return {
+  //     props: {
+  //       error: "Username not found", // Pass a custom error message or code
+  //     },
+  //   };
+  // }
 
   try {
-    const apiUrl = `${
-      process.env.NEXT_PUBLIC_API_BASE_URL
-    }/profile/${encodeURIComponent(username.toString())}`;
+    // const apiUrl = `${
+    //   process.env.NEXT_PUBLIC_API_BASE_URL
+    // }/profile/${encodeURIComponent(username.toString())}`;
 
     const res = await fetch(apiUrl);
 
-    if (!res.ok) {
-      // If the response is not okay, return a 404 page
-      console.log(`API call failed with status: ${res.status}`); // Log for debugging
-
-      return {
-        props: {
-          error: "API call failed", // Pass a custom error message or code
-        },
-      };
-    }
-
+    if (!res.ok) throw new Error(`API call failed with status: ${res.status}`);
     const data = await res.json();
     console.log("Profile data:", data); // Log the response data for debugging
-
     return { props: { data } };
   } catch (error) {
-    // If there's an error during fetch, log it and return a 404 page
     console.error("Error fetching profile data:", error);
-    return { notFound: true };
+    return { props: { error: "Profile data could not be fetched." } };
   }
-
-  return {
-    props: { username, session },
-  };
 };
 
 const fetchUserProfile = async (username: string) => {
@@ -103,8 +90,6 @@ export default function Profile({ data }: { data: any }) {
   const [savedArticles, setSavedArticles] = useState([]);
   const { data: session } = useSession();
   console.log("session", session);
-
-  // Fetching User Profile
 
   // Fetching saved articles
   // useEffect(() => {
@@ -166,7 +151,7 @@ export default function Profile({ data }: { data: any }) {
         <GlobalStyles />
         <AppBody>
           <ProfileTitle>
-            {/* <h1>{data?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile</h1> */}
+            <h1>{data?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile</h1>
           </ProfileTitle>
           <p>Profile Page</p>
           <Row>
