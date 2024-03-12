@@ -9,52 +9,51 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession, getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const session = await getSession(context);
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/api/auth/signin",
-        permanent: false,
-      },
-    };
-  }
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: "/api/auth/signin",
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  // Get the username from the URL
+//   // Get the username from the URL
 
-  const username = context.params?.username;
+//   const username = context.params?.username;
 
-  if (!username) {
-    return { notFound: true };
-  }
+//   if (!username) {
+//     return { notFound: true };
+//   }
 
-  try {
-    const apiUrl = `${
-      process.env.NEXT_PUBLIC_API_BASE_URL
-    }/profile/${encodeURIComponent(username.toString())}`;
+//   try {
+//     const apiUrl = `${
+//       process.env.NEXT_PUBLIC_API_BASE_URL
+//     }/profile/${encodeURIComponent(username.toString())}`;
 
-    const res = await fetch(apiUrl);
+//     const res = await fetch(apiUrl);
 
-    if (!res.ok) {
-      // If the response is not okay, return a 404 page
-      console.log(`API call failed with status: ${res.status}`); // Log for debugging
+//     if (!res.ok) {
+//       // If the response is not okay, return a 404 page
+//       console.log(`API call failed with status: ${res.status}`); // Log for debugging
 
-      return { notFound: true };
-    }
+//       return { notFound: true };
+//     }
 
-    const data = await res.json();
-    console.log("Profile data:", data); // Log the response data for debugging
+//     const data = await res.json();
+//     console.log("Profile data:", data); // Log the response data for debugging
 
-    return { props: { data } };
-  } catch (error) {
-    // If there's an error during fetch, log it and return a 404 page
-    console.error("Error fetching profile data:", error);
-    return { notFound: true };
-  }
-};
+//     return { props: { data } };
+//   } catch (error) {
+//     // If there's an error during fetch, log it and return a 404 page
+//     console.error("Error fetching profile data:", error);
+//     return { notFound: true };
+//   }
+// };
 
 // const fetchUserProfile = async (username: string) => {
 //   try {
@@ -96,57 +95,57 @@ export default function Profile({ data }: { data: any }) {
   // Fetching User Profile
 
   // Fetching saved articles
-  useEffect(() => {
-    const fetchSavedArticles = async () => {
-      if (!session) return;
+  // useEffect(() => {
+  //   const fetchSavedArticles = async () => {
+  //     if (!session) return;
 
-      setIsLoading(true);
+  //     setIsLoading(true);
 
-      setError("");
+  //     setError("");
 
-      try {
-        const res = await fetch("/api/user-saved-articles", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            // Include authorization if your API requires it
-            Authorization: `Bearer ${(session as any).token}`,
-          },
-        });
+  //     try {
+  //       const res = await fetch("/api/user-saved-articles", {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           // Include authorization if your API requires it
+  //           Authorization: `Bearer ${(session as any).token}`,
+  //         },
+  //       });
 
-        if (!res.ok) {
-          const errMessage = await res.text(); // Assuming the server responds with a plain text error message
-          switch (res.status) {
-            case 404:
-              throw new Error("Articles not found.");
-            case 401:
-              throw new Error("Unauthorized. Please log in again.");
-            case 500:
-              throw new Error("Server error. Please try again later.");
-            default:
-              throw new Error(errMessage || "An unknown error occurred.");
-          }
-        }
+  //       if (!res.ok) {
+  //         const errMessage = await res.text(); // Assuming the server responds with a plain text error message
+  //         switch (res.status) {
+  //           case 404:
+  //             throw new Error("Articles not found.");
+  //           case 401:
+  //             throw new Error("Unauthorized. Please log in again.");
+  //           case 500:
+  //             throw new Error("Server error. Please try again later.");
+  //           default:
+  //             throw new Error(errMessage || "An unknown error occurred.");
+  //         }
+  //       }
 
-        const { savedArticles } = await res.json();
-        setSavedArticles(savedArticles);
-      } catch (error) {
-        console.error("Failed to fetch saved articles:", error);
-        setError("Failed to fetch saved articles");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchSavedArticles();
-  }, [session]);
+  //       const { savedArticles } = await res.json();
+  //       setSavedArticles(savedArticles);
+  //     } catch (error) {
+  //       console.error("Failed to fetch saved articles:", error);
+  //       setError("Failed to fetch saved articles");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchSavedArticles();
+  // }, [session]);
 
-  if (!data) {
-    return <div>Data not found</div>;
-  }
+  // if (!data) {
+  //   return <div>Data not found</div>;
+  // }
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!data) return <div>Data not found</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error}</div>;
+  // if (!data) return <div>Data not found</div>;
 
   return (
     <>
@@ -157,7 +156,7 @@ export default function Profile({ data }: { data: any }) {
           <ProfileTitle>
             {/* <h1>{data?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile</h1> */}
           </ProfileTitle>
-          <p>Rendering something</p>
+          <p>Profile Page</p>
           <Row>
             {/* {savedArticles.map(
               (article: {
