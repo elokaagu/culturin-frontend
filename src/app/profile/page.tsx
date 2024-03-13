@@ -8,12 +8,15 @@ import ProfileCard from "../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
+import { fetchUsers } from "../lib/data";
 
-export default function Profile() {
+const Profile = async () => {
   const [theme, setTheme] = useState("dark");
 
   const isDarkTheme = theme === "dark";
   const { data: session } = useSession();
+  const users = await fetchUsers();
+  console.log(users);
   return (
     <>
       <Header />
@@ -32,7 +35,7 @@ export default function Profile() {
       </ThemeProvider>
     </>
   );
-}
+};
 
 const AppBody = styled.div`
   padding: 40px;
