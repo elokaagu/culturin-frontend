@@ -10,13 +10,12 @@ import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
 import { fetchUsers } from "../lib/data";
 
-const Profile = async () => {
+export default function Profile() {
   const [theme, setTheme] = useState("dark");
 
   const isDarkTheme = theme === "dark";
   const { data: session } = useSession();
-  const users = (await fetchUsers()) ?? []; // Add nullish coalescing operator to handle undefined users array
-  console.log(users);
+
   return (
     <>
       <Header />
@@ -26,24 +25,12 @@ const Profile = async () => {
           <ProfileTitle>
             <h1> {session?.user?.name?.split(" ")[0] || "Your"} Profile</h1>
           </ProfileTitle>
-          <Row>
-            {users.map((user) => (
-              <ProfileCard
-                key={user.id}
-                article={{
-                  title: user.name,
-                  description: user.email,
-                  imageSrc: user.image,
-                  author: user.name,
-                }} // Add closing parenthesis here
-              />
-            ))}
-          </Row>
+          <Row></Row>
         </AppBody>
       </ThemeProvider>
     </>
   );
-};
+}
 
 const AppBody = styled.div`
   padding: 40px;
