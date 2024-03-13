@@ -9,6 +9,10 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession, getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
+import useSWR from "swr";
+import { useRouter } from "next/router";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const createUsernameSlug = (name: string) => {
   return name
@@ -94,37 +98,21 @@ const fetchUserProfile = async (username: string, session: any) => {
   }
 };
 
-export default function Profile({
-  profileData,
-  error,
-}: {
-  profileData: any;
-  error: string | null;
-  message: any;
-}) {
+export default function Profile() {
   const [theme, setTheme] = useState("dark");
   const [isLoading, setIsLoading] = useState(false);
   const isDarkTheme = theme === "dark";
   const [savedArticles, setSavedArticles] = useState([]);
   const { data: session } = useSession();
   console.log("session", session);
-
-  if (error) {
-    return (
-      <div
-        style={{
-          padding: "20px",
-          backgroundColor: "#ffdddd",
-          border: "1px solid #dd0000",
-          color: "#dd0000",
-          margin: "20px",
-          borderRadius: "5px",
-        }}
-      >
-        <strong>Error:</strong> {error}
-      </div>
-    );
-  }
+  const router = useRouter();
+  const { userId } = router.query; // Assuming your dynamic path is [userId]
+  const { data: profileData, error } = useSWR(
+    userId ? `/api/user/${userId}` : null,
+    fetcher
+  );
+  if (error) return <div>Failed to load</div>;
+  if (!profileData) return <div>Loading...</div>;
 
   // useEffect(() => {
   //   const fetchSavedArticles = async () => {
@@ -182,6 +170,7 @@ export default function Profile({
             </h1>
           </ProfileTitle>
           <p>Profile Page</p>
+          <p>Email: {profileData?.email}</p>
           <Row>
             {/* {savedArticles.map(
               (article: {

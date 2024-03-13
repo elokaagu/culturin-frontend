@@ -16,7 +16,8 @@ const authOptions = {
         try {
           await connectMongoDB();
 
-          const username = profile.email.split("@")[0].replace(/\./g, "");
+          // const username = profile.email.split("@")[0].replace(/\./g, "");
+          const username = profile.name;
 
           const existingUser = await User.findOne({ email: profile.email });
           if (!existingUser) {

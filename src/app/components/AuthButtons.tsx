@@ -61,6 +61,8 @@ export function GoogleSignInButton() {
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
+  const userId = session?.user?.id || "guest"; // Fallback to "guest" if not signed in
+
   const userProfileApiUrl = session?.user?.id
     ? `/profile/${session.user.id}`
     : "/profile/guest";
@@ -97,6 +99,7 @@ export function GoogleSignInButton() {
             <DropdownList>
               <DropdownItem>
                 <Link href="profile">Profile</Link>
+                <Link href={`/profile/${userId}`}>Profile</Link>
               </DropdownItem>
 
               <DropdownItem>
