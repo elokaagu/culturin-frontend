@@ -30,10 +30,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const userId = session.user.id; // Adjust according to how you store the ID in the session
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/${userId}`;
+
   // Get the username from the URL
 
-  const usernameSlug = createUsernameSlug(session?.user?.name || "Guest");
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/profile/${usernameSlug}`;
+  // const usernameSlug = createUsernameSlug(session?.user?.name || "Guest");
+  // const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/profile/${usernameSlug}`;
 
   // if (!username) {
   //   return {

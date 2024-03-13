@@ -61,8 +61,8 @@ export function GoogleSignInButton() {
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
-  const userProfileApiUrl = session?.user?.name
-    ? `/profile/${createUsernameSlug(session.user.name)}`
+  const userProfileApiUrl = session?.user?.id
+    ? `/profile/${session.user.id}`
     : "/profile/guest";
 
   const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
