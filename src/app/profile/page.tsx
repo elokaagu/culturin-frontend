@@ -15,7 +15,7 @@ const Profile = async () => {
 
   const isDarkTheme = theme === "dark";
   const { data: session } = useSession();
-  const users = await fetchUsers();
+  const users = (await fetchUsers()) ?? []; // Add nullish coalescing operator to handle undefined users array
   console.log(users);
   return (
     <>
@@ -27,9 +27,17 @@ const Profile = async () => {
             <h1> {session?.user?.name?.split(" ")[0] || "Your"} Profile</h1>
           </ProfileTitle>
           <Row>
-            <ProfileCard
-              article={{ title: "", description: "", imageSrc: "", author: "" }}
-            />
+            {users.map((user) => (
+              <ProfileCard
+                key={user.id}
+                article={{
+                  title: user.name,
+                  description: user.email,
+                  imageSrc: user.image,
+                  author: user.name,
+                }} // Add closing parenthesis here
+              />
+            ))}
           </Row>
         </AppBody>
       </ThemeProvider>
@@ -63,4 +71,4 @@ const ProfileTitle = styled.div`
 
 const Row = styled.div`
   overflow: scroll;
-`;
+};`;
