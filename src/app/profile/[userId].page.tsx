@@ -170,7 +170,7 @@ export default function Profile() {
             </h1>
           </ProfileTitle>
           <p>Profile Page</p>
-          <p>Email: {profileData?.email}</p>
+          <p>Email: {profileData?.user?.email}</p>
           <Row>
             {/* {savedArticles.map(
               (article: {
