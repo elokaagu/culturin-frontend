@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   await connectMongoDB();
 
-  const { username } = req.query;
+  const username = (req.query.username as string).toLowerCase();
 
   const profile = await User.findOne({ username: username });
   if (!profile) {
