@@ -12,6 +12,8 @@ import { GetServerSideProps } from "next";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 
+import axios from "axios";
+
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const createUsernameSlug = (name: string) => {
@@ -99,6 +101,19 @@ const fetchUserProfile = async (username: string, session: any) => {
 };
 
 export default function Profile() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    // Fetch user profile data from your API
+    axios
+      .get("/api/user/65f20bf3784e8b2673191863") // Replace with actual user ID
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user profile:", error);
+      });
+  }, []);
+
   const [theme, setTheme] = useState("dark");
   const [isLoading, setIsLoading] = useState(false);
   const isDarkTheme = theme === "dark";
@@ -166,10 +181,19 @@ export default function Profile() {
         <AppBody>
           <ProfileTitle>
             <h1>
-              {profileData?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile
+              {/* {profileData?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile */}
+              User Profile
             </h1>
           </ProfileTitle>
-          <p>Profile Page</p>
+          {user ? (
+            <div>
+              <p>Profile Page</p>
+              <p>Name: {profileData?.user?.name}</p>
+            </div>
+          ) : (
+            <p>No profile found...</p>
+          )}
+          )<p>Profile Page</p>
           <p>Email: {profileData?.user?.email}</p>
           <Row>
             {/* {savedArticles.map(
