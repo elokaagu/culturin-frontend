@@ -98,7 +98,6 @@ export function GoogleSignInButton() {
           <DropdownListContainer>
             <DropdownList>
               <DropdownItem>
-                <Link href="profile">Profile</Link>
                 <Link href={`/profile/${userId}`}>Profile</Link>
               </DropdownItem>
 
