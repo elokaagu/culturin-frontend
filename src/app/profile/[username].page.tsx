@@ -10,6 +10,14 @@ import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession, getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 
+const createUsernameSlug = (name: string) => {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, "");
+};
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
@@ -24,8 +32,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   // Get the username from the URL
 
-  const username = session?.user?.name || "Guest";
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/profile/${username}`;
+  const usernameSlug = createUsernameSlug(session?.user?.name || "Guest");
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/profile/${usernameSlug}`;
 
   // if (!username) {
   //   return {
@@ -52,68 +60,74 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 };
 
-// const fetchUserProfile = async (username: string, session: any) => {
-//   if (!session) {
-//     console.error("Session not found. User is likely not logged in.");
-//     return;
-//   }
+const fetchUserProfile = async (username: string, session: any) => {
+  if (!session) {
+    console.error("Session not found. User is likely not logged in.");
+    return;
+  }
 
-//   try {
-//     // const userProfileApiUrl = `http://localhost:3000/profile/${encodeURIComponent(
-//     //   username
-//     // )}`;
+  try {
+    const userProfileApiUrl = `${
+      process.env.NEXT_PUBLIC_API_BASE_URL
+    }/profile/${encodeURIComponent(session?.user?.name)}`;
 
-//     const userProfileApiUrl = `${
-//       process.env.NEXT_PUBLIC_API_BASE_URL
-//     }/profile/${encodeURIComponent(session?.user?.name)}`;
+    const response = await fetch(userProfileApiUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-//     const response = await fetch(userProfileApiUrl, {
-//       method: "GET", // or 'POST', depending on your API method
-//       headers: {
-//         "Content-Type": "application/json",
-//         // Include authorization headers if needed:
-//         // 'Authorization': 'Bearer your-auth-token-here'
-//       },
-//     });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-
-//     const profileData = await response.json();
-//     console.log("Fetched profile data", profileData);
-//     return profileData;
-//   } catch (error) {
-//     console.error("Failed to fetch user profile data:", error);
-//     return null;
-//   }
-// };
+    const profileData = await response.json();
+    console.log("Fetched profile data", profileData);
+    return profileData;
+  } catch (error) {
+    console.error("Failed to fetch user profile data:", error);
+    return null;
+  }
+};
 
 export default function Profile({
   profileData,
   error,
-  message,
 }: {
   profileData: any;
-  error: any;
+  error: string | null;
   message: any;
 }) {
   const [theme, setTheme] = useState("dark");
   const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState("");
   const isDarkTheme = theme === "dark";
   const [savedArticles, setSavedArticles] = useState([]);
   const { data: session } = useSession();
   console.log("session", session);
 
-  // Fetching saved articles
+  if (error) {
+    return (
+      <div
+        style={{
+          padding: "20px",
+          backgroundColor: "#ffdddd",
+          border: "1px solid #dd0000",
+          color: "#dd0000",
+          margin: "20px",
+          borderRadius: "5px",
+        }}
+      >
+        <strong>Error:</strong> {error}
+      </div>
+    );
+  }
+
   // useEffect(() => {
   //   const fetchSavedArticles = async () => {
   //     if (!session) return;
 
   //     setIsLoading(true);
-
-  //     setError("");
 
   //     try {
   //       const res = await fetch("/api/user-saved-articles", {
@@ -143,7 +157,6 @@ export default function Profile({
   //       setSavedArticles(savedArticles);
   //     } catch (error) {
   //       console.error("Failed to fetch saved articles:", error);
-  //       setError("Failed to fetch saved articles");
   //     } finally {
   //       setIsLoading(false);
   //     }
@@ -151,13 +164,8 @@ export default function Profile({
   //   fetchSavedArticles();
   // }, [session]);
 
-  // if (!data) {
-  //   return <div>Data not found</div>;
-  // }
-
   // if (isLoading) return <div>Loading...</div>;
   // if (error) return <div>Error: {error}</div>;
-  // if (!data) return <div>Data not found</div>;
 
   return (
     <>
