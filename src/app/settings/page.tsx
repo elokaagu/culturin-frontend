@@ -172,8 +172,7 @@ const SectionTitle = styled.h2<{ active?: boolean }>`
     // transition: 0.2s;
   }
   margin-right: 20px;
-  color: ${({ active }) => (active ? "#0077cc" : "white")};
-  color: ${(props) => props.theme.title};
+  color: ${({ active, theme }) => (active ? theme.title : "#0077cc")};
   text-decoration: ${({ active }) => (active ? "underline" : "none")};
 `;
 
