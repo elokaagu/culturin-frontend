@@ -6,7 +6,9 @@ import Header from "../components/Header";
 
 export default function ThemeClient({
   children,
-}: {
+}: // theme,
+// toggleTheme,
+{
   children: React.ReactNode;
 }) {
   const [theme, setTheme] = useState("light");

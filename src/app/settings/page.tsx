@@ -52,6 +52,10 @@ export default function Settings() {
     }
   };
 
+  const toggleTheme = () => {
+    setTheme(isDarkTheme ? "light" : "dark");
+  };
+
   return (
     <>
       <Header />
@@ -109,11 +113,8 @@ export default function Settings() {
             <SubSection>
               <p>Appearance</p>
               <Button
-                onClick={() =>
-                  setTheme((prevTheme) =>
-                    prevTheme === "dark" ? "light" : "dark"
-                  )
-                }
+                onClick={toggleTheme}
+                style={{ marginBottom: "20px", marginTop: "10px" }}
               >
                 {isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme"}
               </Button>
@@ -126,6 +127,7 @@ export default function Settings() {
 }
 
 const AppBody = styled.div`
+  background: ${(props) => props.theme.body};
   padding: 40px;
   display: flex;
   padding-top: 150px;

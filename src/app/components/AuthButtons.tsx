@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import Link from "next/link";
 import React from "react";
+import { useRouter } from "next/router";
 
 // export function HomeSigninButton() {
 //   const { data: session } = useSession();

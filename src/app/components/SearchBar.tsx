@@ -3,7 +3,17 @@ import React from "react";
 import styled from "styled-components";
 import { Search } from "styled-icons/boxicons-regular";
 import { useState } from "react";
+import algoliasearch from "algoliasearch/lite";
 import { useRouter, useSearchParams } from "next/navigation";
+
+// Initialize Algolia search client
+const searchClient = algoliasearch(
+  "MJMYIDXYNZ",
+  "f36a3d2fd0819dad18ec9ec9e814097b"
+);
+
+// Initialize Algolia search index
+const searchIndex = searchClient.initIndex("YourIndexName");
 
 export default function SearchBar() {
   const search = useSearchParams();
@@ -12,10 +22,16 @@ export default function SearchBar() {
   );
   const router = useRouter();
 
-  const onSearch = (event: React.FormEvent) => {
+  const onSearch = async (event: any) => {
     event.preventDefault();
-    const encodedSearchQuery = encodeURI(searchQuery || "");
-    router.push(`/search?q=${encodedSearchQuery}`);
+    try {
+      const result = await searchIndex.search(searchQuery || ""); // Provide a default value of an empty string for searchQuery
+      console.log(result); // You can process and use the search result as needed
+      // For example, redirect to a search results page with the query or display results directly
+      router.push(`/search?q=${searchQuery}`);
+    } catch (error) {
+      console.error("Algolia search error: ", error);
+    }
   };
 
   function handleReset() {

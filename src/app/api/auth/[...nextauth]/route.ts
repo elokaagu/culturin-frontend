@@ -23,9 +23,10 @@ const authOptions = {
           if (!existingUser) {
             // Create a new user if they don't exist
             await User.create({
-              name: profile.name,
               email: profile.email,
+              name: profile.name,
               username,
+              id: profile.id,
             });
           }
         } catch (error) {
