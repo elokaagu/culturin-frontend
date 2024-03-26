@@ -212,6 +212,6 @@ const Button = styled.button`
 
 const SubNavigationRow = styled.div`
   display: flex;
-
+  color: ${(props) => props.theme.title};
   flex-direction: row;
 `;
