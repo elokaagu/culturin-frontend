@@ -9,6 +9,7 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession, getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -105,6 +106,8 @@ export default function Profile({
   const [savedArticles, setSavedArticles] = useState([]);
   const { data: session } = useSession();
   console.log("session", session);
+  const router = useRouter();
+  const { username } = router.query;
 
   // Fetching saved articles
   // useEffect(() => {
@@ -171,6 +174,7 @@ export default function Profile({
             </h1>
           </ProfileTitle>
           <p>Profile Page</p>
+          <h1>Const Profile: {username}</h1>
           <Row>
             {/* {savedArticles.map(
               (article: {
