@@ -132,11 +132,12 @@ const AppBody = styled.div`
   display: flex;
   padding-top: 150px;
   align-items: left;
-  background: black;
+  // background: black;
   flex-direction: column;
   height: 100%;
   line-height: 2;
-  color: white;
+  // color: white;
+  color: ${(props) => props.theme.title};
   overflow: none;
 
   @media ${device.mobile} {
