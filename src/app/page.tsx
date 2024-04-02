@@ -287,8 +287,8 @@ const HeroButton = styled.div`
   color: black;
   font-weight: 600;
   cursor: pointer;
-  background: ${(props) => props.theme.body};
-  color: ${(props) => props.theme.title};
+  background: ${(props) => props.theme.title};
+  color: ${(props) => props.theme.body};
 
   &:hover {
     background: grey;
