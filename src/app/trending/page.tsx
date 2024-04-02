@@ -46,11 +46,7 @@ export default function Trending() {
           <h1>Trending</h1>
         </Title>
         <Subtitle>
-          <p>
-            Join Anthony Bourdain as he explores New York's culinary culture and
-            shares it with the world in a gritty documentation of No
-            Reservations.
-          </p>
+          <p>Trending on Culturin </p>
         </Subtitle>
       </AppBody>
     </>

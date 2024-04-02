@@ -11,6 +11,7 @@ import Hamburger from "hamburger-react";
 import Sidebar from "./Sidebar";
 import { Dispatch, SetStateAction } from "react";
 import { Toggle } from "styled-icons/ionicons-outline";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   const [theme, setTheme] = useState("light");
@@ -100,7 +101,8 @@ export default function Header() {
           <HeaderRight>
             <li>
               <Switch>
-                <Toggle size={20} onClick={toggleTheme} />
+                {/* <Toggle size={20} onClick={toggleTheme} /> */}
+                <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
               </Switch>
             </li>
             <ul>
