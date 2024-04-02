@@ -7,15 +7,10 @@ import Hero from "./components/Hero";
 import { device } from "./styles/breakpoints";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
-import { Toggle } from "styled-icons/ionicons-outline";
 import { useSession } from "next-auth/react";
 import VideoHero from "./components/VideoHero";
 import ProviderHero from "./components/ProviderHero";
 import Link from "next/link";
-
-// import dynamic from "next/dynamic";
-
-// import prisma from "../app/api/auth/[...nextauth]/prisma";
 
 //Session Data
 
@@ -23,26 +18,10 @@ type Session = {
   user: {
     name: string;
     email: string;
-    // Add any other properties you expect 'user' to have
   };
-  // Add any other properties you expect 'session' to have
 };
 
-// Scroll Component
-
-// Theme Provider
-
-// Dynamic imports
-
-// const Hero = dynamic(() => import("./components/Hero"));
-
-// const DynamicHero = dynamic(() => import("./components/Hero"), {
-//   loading: () => <p>Loading...</p>,
-// });
-
 export default function Home() {
-  // Scroll Component
-
   // Scroll to the target section
   const scrollToSection = () => {
     const section = document.getElementById("target-section");
@@ -58,10 +37,7 @@ export default function Home() {
 
   const isDarkTheme = theme === "dark";
 
-  // Scroll Component
-
   // Toggle Theme
-
   const toggleTheme = () => {
     setTheme(isDarkTheme ? "light" : "dark");
   };
@@ -75,7 +51,6 @@ export default function Home() {
   // }
 
   // Dymamic imports
-  const [showMore, setShowMore] = useState(false);
 
   // Return
   return (
@@ -92,17 +67,6 @@ export default function Home() {
                 <p>Discover a world of culture</p>
                 <HeroButton onClick={scrollToSection}>Explore</HeroButton>
               </HeroTitle>
-              {/* <HeroVideoSection>
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    style={{ width: "100%", height: "auto" }}
-                  >
-                    <source src="/path/to/your/video.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </HeroVideoSection> */}
             </HeroSection>
             <Row>
               <Title>
@@ -113,17 +77,6 @@ export default function Home() {
                   <p>Discover a world of travel, inspiration and culture</p>
                 </div>
               </Title>
-              {/* <ViewAll>
-                <Link href="/trending" passHref>
-                  View All
-                </Link>
-              </ViewAll> */}
-
-              <Switch>
-                <SwitchItem>
-                  <Toggle size={20} onClick={toggleTheme} />
-                </SwitchItem>
-              </Switch>
             </Row>
             <Row>
               <Hero />
@@ -137,11 +90,10 @@ export default function Home() {
             <VideoRow>
               <VideoHero />
             </VideoRow>
-
             <Row>
               <Title>
-                <h1>Wellness</h1>
-                <p>Discover the best in regenerative travel</p>
+                <h1>Curated Experiences</h1>
+                <p>Browse our hand picked selection of experiences</p>
               </Title>
             </Row>
             <Row>
@@ -174,13 +126,6 @@ const Body = styled.div`
   @media ${device.mobile} {
     padding-top: 100px;
   }
-`;
-
-const HeroVideoSection = styled.div`
-  width: 100%;
-  height: auto; // Adjust based on your design needs
-  overflow: hidden; // Ensures the video doesn't exceed the container's bounds
-  position: relative; // Allows for positioning the title or other elements on top of the video
 `;
 
 const HeroSection = styled.div`
@@ -274,6 +219,7 @@ const Title = styled.div`
   h1 {
     background: #111111;
     padding: 10px;
+    font-size: 30px;
     border-radius: 10px;
     width: fit-content;
     margin-bottom: 15px;

@@ -10,14 +10,15 @@ import SearchBar from "./SearchBar";
 import Hamburger from "hamburger-react";
 import Sidebar from "./Sidebar";
 import { Dispatch, SetStateAction } from "react";
-import { Toggle } from "styled-icons/ionicons-outline";
 import ThemeToggle from "./ThemeToggle";
 import { Sun, Moon } from "styled-icons/boxicons-regular";
+import { useTheme } from "../styles/ThemeContext";
 
 export default function Header() {
-  const [theme, setTheme] = useState("light");
+  // const [theme, setTheme] = useState("light");
   const [headerClass, setHeaderClass] = useState("transparentHeader");
   const [isScrolled, setIsScrolled] = useState(false);
+  const { theme, toggleTheme } = useTheme(); // Use the theme and toggleTheme from context
 
   const isDarkTheme = theme === "dark";
 
@@ -50,9 +51,9 @@ export default function Header() {
 
   // Toggle Theme
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
-  };
+  // const toggleTheme = () => {
+  //   setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
+  // };
 
   const [isOpen, setIsOpen] = useState(false);
   const toggling = () => setIsOpen(!isOpen);
@@ -101,18 +102,18 @@ export default function Header() {
           </HeaderCenter>
           <HeaderRight>
             <li>
-              <Switch>
+              {/* <Switch>
                 <Sun size={20} onClick={toggleTheme} />
-              </Switch>
+              </Switch> */}
             </li>
             <ul>
-              <Link href="/create">
+              {/* <Link href="/create">
                 <li>
                   <Plus size="20" />
                   <span />
                   Create
                 </li>
-              </Link>
+              </Link> */}
 
               {/* <Link href="/search">Upload</Link> */}
               <li>
