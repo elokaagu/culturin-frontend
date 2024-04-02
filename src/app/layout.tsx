@@ -10,7 +10,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { redirect } from "next/navigation";
 import { getSession } from "next-auth/react";
 import React from "react";
-import { ClerkProvider } from "@clerk/clerk-react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,16 +32,14 @@ export default async function RootLayout({
   // Toggle Theme
 
   return (
-    <ClerkProvider frontendApi="YOUR_FRONTEND_API_KEY">
-      <html lang="en">
-        <body className={inter.className}>
-          <SessionProvider session={session}>
-            <ThemeClient>
-              {children} <Analytics /> <SpeedInsights />
-            </ThemeClient>
-          </SessionProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <SessionProvider session={session}>
+          <ThemeClient>
+            {children} <Analytics /> <SpeedInsights />
+          </ThemeClient>
+        </SessionProvider>
+      </body>
+    </html>
   );
 }
