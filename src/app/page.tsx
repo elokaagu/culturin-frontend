@@ -111,8 +111,8 @@ export default function Home() {
                   <p>Discover a world of travel, inspiration and culture</p>
                 </div>
               </Title>
-              <Link href="/ArticlesPage" passHref>
-                All Stories
+              <Link href="/trending" passHref>
+                <p>View All </p>
               </Link>
 
               {/* <Switch>
@@ -211,6 +211,7 @@ const Row = styled.div`
 display: flex;
 padding: 20px;
 flex direction: column;
+justify: space-between;
 flex: 1;
 overflow: scroll;
 @media ${device.mobile} {
