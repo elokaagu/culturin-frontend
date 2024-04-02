@@ -10,6 +10,7 @@ import SearchBar from "./SearchBar";
 import Hamburger from "hamburger-react";
 import Sidebar from "./Sidebar";
 import { Dispatch, SetStateAction } from "react";
+import { Toggle } from "styled-icons/ionicons-outline";
 
 export default function Header() {
   const [theme, setTheme] = useState("light");
@@ -48,7 +49,7 @@ export default function Header() {
   // Toggle Theme
 
   const toggleTheme = () => {
-    setTheme(isDarkTheme ? "light" : "dark");
+    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -97,6 +98,10 @@ export default function Header() {
             <SearchBar />
           </HeaderCenter>
           <HeaderRight>
+            <Switch>
+              <Toggle size={20} onClick={toggleTheme} />
+            </Switch>
+
             {/* <li>
             <Switch>
               <Toggle size={20} onClick={toggleTheme} />

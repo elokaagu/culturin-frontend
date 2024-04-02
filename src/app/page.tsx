@@ -111,11 +111,11 @@ export default function Home() {
                 </div>
               </Title>
 
-              <Switch>
+              {/* <Switch>
                 <SwitchItem>
                   <Toggle size={20} onClick={toggleTheme} />
                 </SwitchItem>
-              </Switch>
+              </Switch> */}
             </Row>
             <Row>
               <Hero />
