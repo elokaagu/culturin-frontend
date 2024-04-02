@@ -107,13 +107,17 @@ export default function Home() {
             <Row>
               <Title>
                 <div id="target-section">
-                  <h1>Trending Stories</h1>
+                  <Link href="/trending" passHref>
+                    <h1>Trending Stories</h1>
+                  </Link>
                   <p>Discover a world of travel, inspiration and culture</p>
                 </div>
               </Title>
-              <Link href="/trending" passHref>
-                <p>View All </p>
-              </Link>
+              {/* <ViewAll>
+                <Link href="/trending" passHref>
+                  View All
+                </Link>
+              </ViewAll> */}
 
               <Switch>
                 <SwitchItem>
@@ -216,7 +220,7 @@ flex: 1;
 overflow: scroll;
 a {
   text-decoration: none;
-  color: black;
+  color: ${(props) => props.theme.title};
 }
 
 @media ${device.mobile} {
@@ -263,12 +267,21 @@ const Title = styled.div`
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   width: 100%;
   cursor: pointer;
 
   h1 {
-    margin-bottom: 10px;
+    background: #111111;
+    padding: 10px;
+    border-radius: 10px;
+    width: fit-content;
+    margin-bottom: 15px;
+    transition: background-color 0.3s; /* Smooth transition for background color */
+
+    &:hover {
+      background-color: #222222; /* Darker grey on hover */
+    }
   }
 
   @media ${device.mobile} {
@@ -308,4 +321,10 @@ const HeroButton = styled.div`
   @media ${device.mobile} {
     width: 100px;
   }
+`;
+
+const ViewAll = styled.div`
+  display: flex;
+  flex-direction: row;
+  color: ${(props) => props.theme.body};
 `;

@@ -12,6 +12,7 @@ import Sidebar from "./Sidebar";
 import { Dispatch, SetStateAction } from "react";
 import { Toggle } from "styled-icons/ionicons-outline";
 import ThemeToggle from "./ThemeToggle";
+import { Sun, Moon } from "styled-icons/boxicons-regular";
 
 export default function Header() {
   const [theme, setTheme] = useState("light");
@@ -101,8 +102,7 @@ export default function Header() {
           <HeaderRight>
             <li>
               <Switch>
-                {/* <Toggle size={20} onClick={toggleTheme} /> */}
-                <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+                <Sun size={20} onClick={toggleTheme} />
               </Switch>
             </li>
             <ul>

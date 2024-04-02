@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sun, Moon } from "styled-icons/boxicons-regular";
 import styled from "styled-components";
+import { device } from "../styles/breakpoints";
 
-const ThemeToggle = ({
-  theme,
-  toggleTheme,
-}: {
-  theme: string;
-  toggleTheme: () => void;
-}) => {
+export default function ThemeToggle() {
+  const [theme, setTheme] = useState("light");
+  const isDarkTheme = theme === "dark";
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
+  };
+
   return (
-    <ToggleContainer onClick={toggleTheme}>
-      {theme === "dark" ? <Sun size="24" /> : <Moon size="24" />}
-    </ToggleContainer>
+    <>
+      <ToggleContainer onClick={toggleTheme}>
+        {theme === "dark" ? <Sun size="24" /> : <Moon size="24" />}
+      </ToggleContainer>
+    </>
   );
-};
+}
 
 const ToggleContainer = styled.button`
   background: transparent;
@@ -35,6 +39,31 @@ const ToggleContainer = styled.button`
   &:hover svg {
     transform: scale(1.1);
   }
-`;
 
-export default ThemeToggle;
+  li {
+    list-style: none;
+    display: inline-block;
+    color: white;
+    padding: 20px;
+    cursor: pointer;
+
+    @media ${device.mobile} {
+      padding: 10px;
+    }
+  }
+
+  ul {
+    list-style: none;
+    display: inline-block;
+    color: white;
+  }
+
+  ul li {
+    text-decoration: none;
+    color: white;
+  }
+  ul li:hover {
+    color: grey;
+    transition: 0.3s ease-in-out;
+  }
+`;
