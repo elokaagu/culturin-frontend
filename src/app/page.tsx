@@ -11,6 +11,7 @@ import { Toggle } from "styled-icons/ionicons-outline";
 import { useSession } from "next-auth/react";
 import VideoHero from "./components/VideoHero";
 import ProviderHero from "./components/ProviderHero";
+import Link from "next/link";
 
 // import dynamic from "next/dynamic";
 
@@ -110,6 +111,9 @@ export default function Home() {
                   <p>Discover a world of travel, inspiration and culture</p>
                 </div>
               </Title>
+              <Link href="/ArticlesPage" passHref>
+                All Stories
+              </Link>
 
               {/* <Switch>
                 <SwitchItem>
