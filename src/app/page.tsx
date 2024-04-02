@@ -8,12 +8,9 @@ import { device } from "./styles/breakpoints";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { Toggle } from "styled-icons/ionicons-outline";
-import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import VideoHero from "./components/VideoHero";
-import { SWRConfig } from "swr";
 import ProviderHero from "./components/ProviderHero";
-import { UserButton } from "@clerk/nextjs";
 
 // import dynamic from "next/dynamic";
 
@@ -85,66 +82,74 @@ export default function Home() {
       <Header />
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <>
-          <SWRConfig>
-            <GlobalStyles />
+          <GlobalStyles />
 
-            <Body>
-              <HeroSection>
-                <HeroTitle>
-                  <h1>Think global, travel local</h1>
-                  <p>Discover a world of culture</p>
-                  <HeroButton onClick={scrollToSection}>Explore</HeroButton>
-                </HeroTitle>
-              </HeroSection>
-              <Row>
-                <Title>
-                  <div id="target-section">
-                    <h1>Trending Stories</h1>
-                    <p>Discover a world of travel, inspiration and culture</p>
-                  </div>
-                </Title>
-                <UserButton />
+          <Body>
+            <HeroSection>
+              <HeroTitle>
+                <h1>Think global, travel local</h1>
+                <p>Discover a world of culture</p>
+                <HeroButton onClick={scrollToSection}>Explore</HeroButton>
+              </HeroTitle>
+              {/* <HeroVideoSection>
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    style={{ width: "100%", height: "auto" }}
+                  >
+                    <source src="/path/to/your/video.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </HeroVideoSection> */}
+            </HeroSection>
+            <Row>
+              <Title>
+                <div id="target-section">
+                  <h1>Trending Stories</h1>
+                  <p>Discover a world of travel, inspiration and culture</p>
+                </div>
+              </Title>
 
-                <Switch>
-                  <SwitchItem>
-                    <Toggle size={20} onClick={toggleTheme} />
-                  </SwitchItem>
-                </Switch>
-              </Row>
-              <Row>
-                <Hero />
-              </Row>
-              <Row>
-                <Title>
-                  <h1>Top Videos</h1>
-                  <p>Watch highlights from the world</p>
-                </Title>
-              </Row>
-              <VideoRow>
-                <VideoHero />
-              </VideoRow>
+              <Switch>
+                <SwitchItem>
+                  <Toggle size={20} onClick={toggleTheme} />
+                </SwitchItem>
+              </Switch>
+            </Row>
+            <Row>
+              <Hero />
+            </Row>
+            <Row>
+              <Title>
+                <h1>Top Videos</h1>
+                <p>Watch highlights from the world</p>
+              </Title>
+            </Row>
+            <VideoRow>
+              <VideoHero />
+            </VideoRow>
 
-              <Row>
-                <Title>
-                  <h1>Wellness</h1>
-                  <p>Discover the best in regenerative travel</p>
-                </Title>
-              </Row>
-              <Row>
-                <ProviderHero />
-              </Row>
+            <Row>
+              <Title>
+                <h1>Wellness</h1>
+                <p>Discover the best in regenerative travel</p>
+              </Title>
+            </Row>
+            <Row>
+              <ProviderHero />
+            </Row>
 
-              <Row>
-                <Title>
-                  <h1>A global taste</h1>
-                  <p>Indulge in foods from all around the world</p>
-                </Title>
-              </Row>
-              <Row>
-                <Hero />
-              </Row>
-            </Body>
-          </SWRConfig>
+            <Row>
+              <Title>
+                <h1>A global taste</h1>
+                <p>Indulge in foods from all around the world</p>
+              </Title>
+            </Row>
+            <Row>
+              <Hero />
+            </Row>
+          </Body>
         </>
       </ThemeProvider>
     </>
@@ -161,6 +166,13 @@ const Body = styled.div`
   @media ${device.mobile} {
     padding-top: 100px;
   }
+`;
+
+const HeroVideoSection = styled.div`
+  width: 100%;
+  height: auto; // Adjust based on your design needs
+  overflow: hidden; // Ensures the video doesn't exceed the container's bounds
+  position: relative; // Allows for positioning the title or other elements on top of the video
 `;
 
 const HeroSection = styled.div`
