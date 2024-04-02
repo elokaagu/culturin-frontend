@@ -115,11 +115,11 @@ export default function Home() {
                 <p>View All </p>
               </Link>
 
-              {/* <Switch>
+              <Switch>
                 <SwitchItem>
                   <Toggle size={20} onClick={toggleTheme} />
                 </SwitchItem>
-              </Switch> */}
+              </Switch>
             </Row>
             <Row>
               <Hero />

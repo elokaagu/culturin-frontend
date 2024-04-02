@@ -98,22 +98,19 @@ export default function Header() {
             <SearchBar />
           </HeaderCenter>
           <HeaderRight>
-            <Switch>
-              <Toggle size={20} onClick={toggleTheme} />
-            </Switch>
-
-            {/* <li>
-            <Switch>
-              <Toggle size={20} onClick={toggleTheme} />
-            </Switch>
-          </li> */}
+            <li>
+              <Switch>
+                <Toggle size={20} onClick={toggleTheme} />
+              </Switch>
+            </li>
             <ul>
-              {/* <Link href="/create">
+              <Link href="/create">
                 <li>
-                  <Plus size="20" /> <span />
+                  <Plus size="20" />
+                  <span />
                   Create
                 </li>
-              </Link> */}
+              </Link>
 
               {/* <Link href="/search">Upload</Link> */}
               <li>
