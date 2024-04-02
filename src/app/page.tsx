@@ -214,6 +214,11 @@ flex direction: column;
 justify: space-between;
 flex: 1;
 overflow: scroll;
+a {
+  text-decoration: none;
+  color: black;
+}
+
 @media ${device.mobile} {
   padding: 10px;
   overflow: scroll;
