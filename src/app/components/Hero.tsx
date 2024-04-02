@@ -56,6 +56,7 @@ export default function Hero() {
                 alt={cardData.title}
                 placeholder="blur"
                 fill
+                draggable={false}
                 style={{ objectFit: "cover" }}
                 blurDataURL={urlFor(cardData.titleImage).url()}
                 priority={true}
