@@ -61,6 +61,7 @@ export function GoogleSignInButton() {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
+  const router = useRouter();
 
   const userId = session?.user?.id || "guest"; // Fallback to "guest" if not signed in
 
@@ -80,8 +81,7 @@ export function GoogleSignInButton() {
     const username = session.user?.name || "Guest";
     console.log("username", username);
     console.log("session", session);
-    console.log("session.user", session.user);
-    console.log(userId);
+    console.log(session.user.id); // Now you should have the Google user ID
 
     return (
       <>

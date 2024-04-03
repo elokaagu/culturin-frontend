@@ -37,14 +37,14 @@ const authOptions = {
       return true; // Return true to sign the user in
     },
 
-    async jwt(token: any, user: any) {
-      if (user?.username) {
-        token.username = user.username;
+    async jwt(token: any, account: any) {
+      if (account?.provider === "google") {
+        token.userId = account.providerAccountId;
       }
       return token;
     },
     session: async ({ session, token }: { session: any; token: any }) => {
-      session.user.username = token.username as string;
+      session.user.id = token.userId;
       return session;
     },
   },
