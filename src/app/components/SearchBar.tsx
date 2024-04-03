@@ -71,7 +71,7 @@ const SearchBox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-radius: 20px;
+  border-radius: 10px;
   width: 80%;
   ${"" /* border: 1px solid white; */}
   padding: 12px;

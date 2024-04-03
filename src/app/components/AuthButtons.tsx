@@ -225,7 +225,7 @@ export function GoogleSignInButton() {
 // }
 
 const SigninButton = styled.div`
-  border-radius: 999px;
+  border-radius: 10px;
   width: 100%;
   ${"" /* border: 1px solid white; */}
   padding: 10px;
