@@ -14,15 +14,13 @@ import { simpleBlogCard } from "../../../lib/interface";
 
 async function getData() {
   const query = `
-  *[_type == "article"] | order(publishedAt desc) {
+  *[_type== 'blog'] | order(_createdAt desc) {
     title,
-    slug,
-    summary,
-    publishedAt,
-    "imageUrl": titleImage.asset->url,
-    body
+      titleImage,
+      summary,
+      "currentSlug":slug.current,
   }
-`;
+ `;
   try {
     const data = await client.fetch(query);
     return data;
@@ -99,7 +97,6 @@ export default function Trending() {
                   />
                 </CardBody>
               </Link>
-
               <CardText>
                 <h1>{cardData.title}</h1>
                 <CardAuthor>
@@ -227,31 +224,30 @@ const VideoWrapper = styled.div`
 
 const ArticlesContainer = styled.div`
   margin: auto;
-  width: 50%;
-  padding-left: 30px;
-  padding-top: 20px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
+  width: 80%;
+  padding: 20px 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-items: center;
+  align-items: start;
+
+  h1 {
+    font-size: 25px;
+    color: white;
+    width: 100%;
+  }
 
   p {
     font-size: 18px;
-    padding-bottom: 36px;
     color: white;
+    width: 100%;
   }
 
   @media ${device.mobile} {
-    padding-left: 20px;
-    align-items: left;
     width: 100%;
-
-    p {
-      font-size: 18px;
-      padding-bottom: 36px;
-      color: white;
-    }
+    padding: 20px;
+    grid-template-columns: 1fr; /* Stacks items in a single column on smaller screens */
   }
 `;
 
@@ -308,7 +304,7 @@ const CardBody = styled.div`
   flex-direction: column;
   justify-content: left;
   height: 300px;
-  width: 200px;
+  width: 300px;
   padding: 20px;
   border-radius: 8px;
   drop-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -346,7 +342,7 @@ const CardText = styled.div`
   flex-direction: column;
   padding-top: 20px;
 
-  color: ${(props) => props.theme.title};
+  color: ${(props) => props.theme.body};
 
   h1 {
     cursor: pointer;
