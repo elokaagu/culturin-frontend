@@ -81,7 +81,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
         <GlobalStyles />
       </ThemeProvider>
       <AppBody className={showModal ? "blurred" : ""}>
-        <Link href="/" passHref>
+        {/* <Link href="/" passHref>
           <BackLink>
             <svg
               width="16"
@@ -100,7 +100,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
             {"   "}
             back
           </BackLink>
-        </Link>
+        </Link> */}
 
         <Title>
           <h1>{data?.title}</h1>
@@ -133,10 +133,16 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
         </ImageContainer>
         <Body>
           <PortableText value={data?.body} />
-          <SaveButtonContainer onClick={handleSaveArticle}>
-            Add to profile
-            {showModal && <Modal>Article Saved to Profile</Modal>}
-          </SaveButtonContainer>
+          <ButtonsContainer>
+            <SaveButtonContainer onClick={handleSaveArticle}>
+              Add to profile
+              {showModal && <Modal>Article Saved to Profile</Modal>}
+            </SaveButtonContainer>
+            <SaveButtonContainer onClick={handleSaveArticle}>
+              Share article
+              {showModal && <Modal>Article Shared</Modal>}
+            </SaveButtonContainer>
+          </ButtonsContainer>
         </Body>
       </AppBody>
     </>
@@ -227,7 +233,7 @@ const Body = styled.div`
   p {
     font-size: 18px;
     padding-top: 5px;
-    padding-bottom: 36px;
+    padding-bottom: 10px;
     color: white;
   }
 
@@ -306,6 +312,7 @@ const SaveButtonContainer = styled.div`
   width: 120px;
   padding: 10px;
   display: flex;
+  margin-right: 20px;
   flex-direction: column;
   align-items: center;
   padding-left: 10px;
@@ -344,4 +351,11 @@ const Modal = styled.div`
   z-index: 1000;
   color: black;
   font-size: 18px;
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: left;
+  flex-direction: row;
 `;
