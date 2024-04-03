@@ -344,6 +344,7 @@ const SaveButtonContainer = styled.div`
 
   @media ${device.mobile} {
     width: 100px;
+    font-size: 14px;
   }
 
   // color: rgb(250, 193, 0);
@@ -376,6 +377,7 @@ const ShareButtonContainer = styled.div`
 
   @media ${device.mobile} {
     width: 100px;
+    font-size: 14px;
   }
 
   // color: rgb(250, 193, 0);

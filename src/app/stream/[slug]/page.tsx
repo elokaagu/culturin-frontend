@@ -177,16 +177,20 @@ const VideoWrapper = styled.div`
     width: 100%;
 
     p {
-      font-size: 18px;
-      padding-bottom: 36px;
+      font-size: 16px;
       color: white;
+      // display: -webkit-box;
+      // -webkit-line-clamp: 2;
+      // -webkit-box-orient: vertical;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
     }
   }
 
   @media ${device.mobile} {
     margin-left: 0px;
     border-radius: 10px;
-    width: 350px;
+    width: 100%;
     height: 50%;
     overflow: hidden;
   }
@@ -200,14 +204,9 @@ const VideoContainer = styled.div`
   }
 
   @media ${device.mobile} {
-    margin: 0 auto;
-    padding-left: 10px;
-    border-radius: 20px;
-
+    width: 100%;
     img {
       margin-left: 0;
-      border-radius: 10px;
-      width: 360px;
     }
   }
 `;

@@ -51,35 +51,38 @@ export default function Trending() {
   return (
     <>
       <Header />
-      <AppBody>
-        <Title>
-          <h1>Trending</h1>
-        </Title>
-        <Subtitle>
-          <p>Trending on Culturin </p>
-        </Subtitle>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <>
+          <GlobalStyles />
+          <AppBody>
+            <Title>
+              <h1>Trending</h1>
+            </Title>
+            <Subtitle>
+              <p>Trending on Culturin </p>
+            </Subtitle>
 
-        <ArticlesContainer>
-          {data.map((cardData, index) => (
-            <Card key={index}>
-              <Link href={`/articles/${cardData.currentSlug}`}>
-                <CardBody>
-                  <Image
-                    src={urlFor(cardData.titleImage).url()}
-                    alt={cardData.title}
-                    placeholder="blur"
-                    fill
-                    draggable={false}
-                    style={{ objectFit: "cover" }}
-                    blurDataURL={urlFor(cardData.titleImage).url()}
-                    priority={true}
-                  />
-                </CardBody>
-              </Link>
-              <CardText>
-                <h1>{cardData.title}</h1>
-                <CardAuthor>
-                  {/* <AvatarContainer>
+            <ArticlesContainer>
+              {data.map((cardData, index) => (
+                <Card key={index}>
+                  <Link href={`/articles/${cardData.currentSlug}`}>
+                    <CardBody>
+                      <Image
+                        src={urlFor(cardData.titleImage).url()}
+                        alt={cardData.title}
+                        placeholder="blur"
+                        fill
+                        draggable={false}
+                        style={{ objectFit: "cover" }}
+                        blurDataURL={urlFor(cardData.titleImage).url()}
+                        priority={true}
+                      />
+                    </CardBody>
+                  </Link>
+                  <CardText>
+                    <h1>{cardData.title}</h1>
+                    <CardAuthor>
+                      {/* <AvatarContainer>
             <Image
               src="/eloka.jpeg"
               alt="elokaagu"
@@ -89,13 +92,15 @@ export default function Trending() {
               style={imageStyle}
             />
           </AvatarContainer> */}
-                  <p>{cardData.summary}</p>
-                </CardAuthor>
-              </CardText>
-            </Card>
-          ))}
-        </ArticlesContainer>
-      </AppBody>
+                      <p>{cardData.summary}</p>
+                    </CardAuthor>
+                  </CardText>
+                </Card>
+              ))}
+            </ArticlesContainer>
+          </AppBody>
+        </>
+      </ThemeProvider>
     </>
   );
 }

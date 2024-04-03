@@ -48,7 +48,6 @@ export default function Home() {
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <>
           <GlobalStyles />
-
           <Body>
             <HeroSection>
               <HeroTitle>
@@ -225,7 +224,6 @@ const HeroButton = styled.div`
   margin-top: 20px;
   border-radius: 5px;
   width: 100px;
-  ${"" /* border: 1px solid white; */}
   padding: 10px;
   display: flex;
   flex-direction: column;
