@@ -6,11 +6,9 @@ import { ThemeProvider } from "styled-components";
 import Link from "next/link";
 import { device } from "../../styles/breakpoints";
 import { client, urlFor } from "../../lib/sanity";
-import { fullBlog, fullProvider } from "../../../../lib/interface";
+import { fullProvider } from "../../../../lib/interface";
 import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 import Image from "next/image";
-import { url } from "inspector";
-import { PortableText } from "@portabletext/react";
 
 async function getData(slug: string) {
   const query = `

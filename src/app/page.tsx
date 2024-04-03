@@ -94,7 +94,9 @@ export default function Home() {
             </VideoRow>
             <Row>
               <Title>
-                <h1>Curated Experiences</h1>
+                <Link href="/curated-experiences" passHref>
+                  <h1>Curated Experiences</h1>
+                </Link>
                 <p>Browse our hand picked selection of experiences</p>
               </Title>
             </Row>
@@ -102,7 +104,7 @@ export default function Home() {
               <ProviderHero />
             </Row>
 
-            <Row>
+            {/* <Row>
               <Title>
                 <h1>A global taste</h1>
                 <p>Indulge in foods from all around the world</p>
@@ -110,7 +112,7 @@ export default function Home() {
             </Row>
             <Row>
               <Hero />
-            </Row>
+            </Row> */}
           </Body>
         </>
       </ThemeProvider>
