@@ -83,7 +83,9 @@ export default function Home() {
             </Row>
             <Row>
               <Title>
-                <h1>Top Videos</h1>
+                <Link href="/videos" passHref>
+                  <h1>Top Videos</h1>
+                </Link>
                 <p>Watch highlights from the world</p>
               </Title>
             </Row>

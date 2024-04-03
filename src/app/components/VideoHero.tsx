@@ -3,9 +3,8 @@ import styled from "styled-components";
 import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
-import { CldImage } from "next-cloudinary";
 import { client } from "../lib/sanity";
-import { simpleBlogCard, videoCard } from "../../../lib/interface";
+import { videoCard } from "../../../lib/interface";
 import { urlFor } from "../lib/sanity";
 import { useState, useEffect } from "react";
 
@@ -187,9 +186,4 @@ const VideoCardAuthor = styled.div`
   pointer: cursor;
   flex-direction: row;
   align-items: center;
-`;
-
-const AvatarContainer = styled.div`
-  display: flex;
-  margin-right: 6px;
 `;
