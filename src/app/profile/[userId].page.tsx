@@ -24,10 +24,14 @@ const createUsernameSlug = (name: string) => {
     .replace(/\s+/g, "");
 };
 
+// profile/[userId].page.tsx
+
+// ... other imports
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
-  if (!session) {
+  if (!session || !session.user) {
     return {
       redirect: {
         destination: "/api/auth/signin",
@@ -37,34 +41,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const userId = session.user.id; // Adjust according to how you store the ID in the session
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/${userId}`;
-
-  // Get the username from the URL
-
-  // const usernameSlug = createUsernameSlug(session?.user?.name || "Guest");
-  // const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/profile/${usernameSlug}`;
-
-  // if (!username) {
-  //   return {
-  //     props: {
-  //       error: "Username not found", // Pass a custom error message or code
-  //     },
-  //   };
-  // }
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/profile/${userId}`;
 
   try {
-    // const apiUrl = `${
-    //   process.env.NEXT_PUBLIC_API_BASE_URL
-    // }/profile/${encodeURIComponent(username.toString())}`;
-
     const res = await fetch(apiUrl);
-
     if (!res.ok) throw new Error(`API call failed with status: ${res.status}`);
-    const data = await res.json();
-    console.log("Profile data:", data); // Log the response data for debugging
-    return { props: { data } };
+    const profileData = await res.json();
+    return { props: { profileData } };
   } catch (error) {
-    console.error("Error fetching profile data:", error);
     return { props: { error: "Profile data could not be fetched." } };
   }
 };
@@ -100,34 +84,26 @@ const fetchUserProfile = async (username: string, session: any) => {
   }
 };
 
-export default function Profile() {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    // Fetch user profile data from your API
-    axios
-      .get("/api/user/65f20bf3784e8b2673191863") // Replace with actual user ID
-      .then((response) => {
-        setUser(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user profile:", error);
-      });
-  }, []);
-
+export default function Profile({
+  profileData,
+  error,
+}: {
+  profileData: any;
+  error: any;
+}) {
+  const { data: session } = useSession();
   const [theme, setTheme] = useState("dark");
   const [isLoading, setIsLoading] = useState(false);
   const isDarkTheme = theme === "dark";
   const [savedArticles, setSavedArticles] = useState([]);
-  const { data: session } = useSession();
-  console.log("session", session);
-  const router = useRouter();
-  const { userId } = router.query; // Assuming your dynamic path is [userId]
-  const { data: profileData, error } = useSWR(
-    userId ? `/api/user/${userId}` : null,
-    fetcher
-  );
-  if (error) return <div>Failed to load</div>;
-  if (!profileData) return <div>Loading...</div>;
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
+  if (!profileData) {
+    return <p>Loading...</p>;
+  }
 
   // useEffect(() => {
   //   const fetchSavedArticles = async () => {
@@ -185,16 +161,9 @@ export default function Profile() {
               User Profile
             </h1>
           </ProfileTitle>
-          {user ? (
-            <div>
-              <p>Profile Page</p>
-              <p>Name: {profileData?.user?.name}</p>
-            </div>
-          ) : (
-            <p>No profile found...</p>
-          )}
-          )<p>Profile Page</p>
-          <p>Email: {profileData?.user?.email}</p>
+          <p>Name: {profileData.name}</p>
+          <p>Email: {profileData.email}</p>
+
           <Row>
             {/* {savedArticles.map(
               (article: {
