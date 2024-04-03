@@ -6,7 +6,6 @@ import { useState } from "react";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import Link from "next/link";
 import React from "react";
-import { useRouter } from "next/router";
 
 // export function HomeSigninButton() {
 //   const { data: session } = useSession();
@@ -61,7 +60,6 @@ export function GoogleSignInButton() {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
-  const router = useRouter();
 
   const userId = session?.user?.id || "guest"; // Fallback to "guest" if not signed in
 
