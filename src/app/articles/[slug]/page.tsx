@@ -32,6 +32,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
   const [theme, setTheme] = useState("dark");
   const isDarkTheme = theme === "dark";
   const [showModal, setShowModal] = useState(false); // State to manage modal visibility
+  const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,13 +75,44 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
     }
   };
 
+  const handleShareArticle = async () => {
+    const articleUrl = window.location.href; // Gets the current page URL
+
+    if (navigator.share) {
+      // Web Share API is available
+      try {
+        await navigator.share({
+          title: data?.title, // Use your article's title here
+          text: "Check out this article!", // Custom text for the share
+          url: articleUrl,
+        });
+        console.log("Article shared successfully!");
+      } catch (error) {
+        console.error("Error sharing the article:", error);
+      }
+    } else {
+      // Fallback to copying the URL to the clipboard
+      try {
+        await navigator.clipboard.writeText(articleUrl);
+        console.log("Article URL copied to clipboard!");
+        setModalMessage("Article URL copied to clipboard!"); // Set message for the modal
+        setShowModal(true); // Show the modal
+        setTimeout(() => {
+          setShowModal(false); // Optionally hide the modal after a few seconds
+        }, 3000);
+      } catch (error) {
+        console.error("Failed to copy the article URL:", error);
+      }
+    }
+  };
+
   return (
     <>
       <Header />
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <GlobalStyles />
       </ThemeProvider>
-      <AppBody className={showModal ? "blurred" : ""}>
+      <AppBody>
         {/* <Link href="/" passHref>
           <BackLink>
             <svg
@@ -138,10 +170,10 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
               Add to profile
               {showModal && <Modal>Article Saved to Profile</Modal>}
             </SaveButtonContainer>
-            <SaveButtonContainer onClick={handleSaveArticle}>
+            <ShareButtonContainer onClick={handleShareArticle}>
               Share article
-              {showModal && <Modal>Article Shared</Modal>}
-            </SaveButtonContainer>
+              {showModal && <Modal>{modalMessage}</Modal>}
+            </ShareButtonContainer>
           </ButtonsContainer>
         </Body>
       </AppBody>
@@ -160,7 +192,7 @@ const AppBody = styled.div`
   line-height: 2;
   color: white;
   &.blurred {
-    filter: blur(5px);
+    filter: blur(2px);
   }
 
   @media ${device.mobile} {
@@ -339,9 +371,41 @@ const SaveButtonContainer = styled.div`
   // top: 200px;
 `;
 
+const ShareButtonContainer = styled.div`
+  border-radius: 10px;
+  width: 120px;
+  padding: 10px;
+  display: flex;
+  margin-right: 20px;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
+  }
+
+  // color: rgb(250, 193, 0);
+  // padding-bottom: 20px;
+  // text-decoration: none;
+  // position: fixed;
+  // right: 50px;
+  // top: 200px;
+`;
+
 const Modal = styled.div`
   position: fixed;
-  top: 20%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
