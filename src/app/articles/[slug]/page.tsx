@@ -11,6 +11,7 @@ import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import { useSession } from "next-auth/react";
+import { createGlobalStyle } from "styled-components";
 
 async function getData(slug: string) {
   const query = `
@@ -111,6 +112,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
       <Header />
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <GlobalStyles />
+        <GlobalTransitionStyle />
       </ThemeProvider>
       <AppBody>
         <Title>
@@ -167,6 +169,7 @@ const AppBody = styled.div`
   flex-direction: column;
   height: 100%;
   line-height: 2;
+  transition: all 0.25s ease;
   color: white;
   &.blurred {
     filter: blur(2px);
@@ -190,6 +193,7 @@ const Title = styled.div`
   flex-direction: column;
   align-items: left;
   cursor: pointer;
+  transition: background-color 0.3s;
 
   @media ${device.mobile} {
     align-items: left;
@@ -401,4 +405,10 @@ const ButtonsContainer = styled.div`
   width: 100%;
   align-items: left;
   flex-direction: row;
+`;
+
+const GlobalTransitionStyle = createGlobalStyle`
+  * {
+    transition: all 0.25s ease;
+  }
 `;

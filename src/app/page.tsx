@@ -209,10 +209,10 @@ const Title = styled.div`
     border-radius: 10px;
     width: fit-content;
     margin-bottom: 15px;
-    transition: background-color 0.3s; /* Smooth transition for background color */
+    transition: background-color 0.3s;
 
     &:hover {
-      background-color: #222222; /* Darker grey on hover */
+      background-color: #222222;
     }
   }
 
