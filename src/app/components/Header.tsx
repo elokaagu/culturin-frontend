@@ -171,16 +171,12 @@ export default function Header() {
               <HamburgerMenu>
                 <Hamburger
                   rounded
-                  toggled={isMobileSidebarOpen} // Use isMobileSidebarOpen state to control the hamburger menu
-                  toggle={handleMobileSidebarToggle} // Toggle the mobile sidebar state
+                  toggled={isMobileSidebarOpen}
+                  toggle={handleMobileSidebarToggle}
                   size={20}
-                  // onToggle={() => {
-                  //   console.log("toggle");
-                  //   <Sidebar />;
-                  // }}
                   onToggle={() => setIsNavOpen(!isNavOpen)}
                 />
-                {isMobileSidebarOpen && ( // Render the Sidebar component based on mobile sidebar state
+                {isMobileSidebarOpen && (
                   <Sidebar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
                 )}
               </HamburgerMenu>
@@ -406,18 +402,16 @@ const HeaderCenter = styled.div`
   }
 `;
 
-const Switch = styled.div``;
-
 const HamburgerMenu = styled.div`
   display: none;
   @media ${device.mobile} {
     display: flex;
-    z-index: 600;
   }
 `;
 
 const HeaderRightMobile = styled.div`
   /* flex: 0.33;
+
   align-items: right; */
   display: none;
   @media ${device.mobile} {

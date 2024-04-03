@@ -32,12 +32,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavOpen, setIsNavOpen }) => {
         </SidebarItem>
 
         <SidebarItem>
-          <Link href="/create">
-            <li>Create</li>
-          </Link>
-        </SidebarItem>
-
-        <SidebarItem>
           <li>
             <DropdownHeader onClick={toggling}>
               Destinations
@@ -66,23 +60,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavOpen, setIsNavOpen }) => {
             )}
           </li>
         </SidebarItem>
-        <SidebarItem>
-          <Link href="/spotlight">
-            {" "}
-            <li>Spotlight </li>
-          </Link>
-        </SidebarItem>
 
         <SidebarItem>
           <li>
             <GoogleSignInButton />
-            {/* <SigninButton
-              onClick={async () => {
-                await signIn();
-              }}
-            >
-              Sign In
-            </SigninButton> */}
           </li>
         </SidebarItem>
       </SidebarText>

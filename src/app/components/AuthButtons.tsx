@@ -75,15 +75,6 @@ export function GoogleSignInButton() {
   //     )}`
   //   : `${NEXT_PUBLIC_API_BASE_URL}/profile/guest`;
 
-  useEffect(() => {
-    if (status === "authenticated" && session?.user?.id) {
-      console.log("User ID:", session.user.id); // This should now log a defined ID
-    }
-  }, [session, status]);
-  if (status === "loading") {
-    return <div>Loading...</div>; // Or some loading spinner
-  }
-
   if (session) {
     const username = session.user?.name || "Guest";
     console.log("username", username);

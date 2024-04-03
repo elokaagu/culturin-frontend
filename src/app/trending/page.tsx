@@ -134,12 +134,13 @@ const Title = styled.div`
   @media ${device.mobile} {
     align-items: left;
     margin-left: 0;
+    margin-top: 20px;
     width: 100%;
 
     h1 {
       font-size: 25px;
       align-items: left;
-      margin-left: 40px;
+      margin-left: 30px;
       width: 100%;
     }
   }
@@ -159,45 +160,8 @@ const Subtitle = styled.div`
   }
 
   @media ${device.mobile} {
-    padding-left: 10px;
-    align-items: left;
-  }
-`;
-
-const VideoWrapper = styled.div`
-  margin: auto;
-  width: 60%;
-  padding-top: 30px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  cursor: pointer;
-
-  p {
-    font-size: 18px;
-    padding-bottom: 36px;
-    color: white;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 20px;
-    align-items: left;
+    margin-left: 60px;
     width: 100%;
-
-    p {
-      font-size: 18px;
-      padding-bottom: 36px;
-      color: white;
-    }
-  }
-
-  @media ${device.mobile} {
-    margin-left: -100px;
-    border-radius: 10px;
-    width: 300px;
-    height: 50%;
-    overflow: hidden;
   }
 `;
 
@@ -226,7 +190,18 @@ const ArticlesContainer = styled.div`
   @media ${device.mobile} {
     width: 100%;
     padding: 20px;
-    grid-template-columns: 1fr; /* Stacks items in a single column on smaller screens */
+    grid-template-columns: 1fr;
+
+    h1 {
+      font-size: 25px;
+      color: white;
+      width: 70%;
+    }
+    p {
+      font-size: 18px;
+      color: white;
+      width: 70%;
+    }
   }
 `;
 
@@ -249,26 +224,6 @@ const BackLink = styled.a`
     // left: 20px;
     // top: 105px;
     display: none;
-  }
-`;
-
-const VideoContainer = styled.div`
-  padding-bottom: 20px;
-  cursor: pointer;
-  img {
-    border-radius: 10px;
-  }
-
-  @media ${device.mobile} {
-    margin: 0 auto;
-    padding-left: 10px;
-    border-radius: 20px;
-
-    img {
-      margin-left: 0;
-      border-radius: 10px;
-      width: 360px;
-    }
   }
 `;
 
@@ -308,11 +263,12 @@ const CardBody = styled.div`
 
   @media ${device.laptop} {
     height: 200px;
+    width: 200px;
   }
 
   @media ${device.mobile} {
     height: 200px;
-    width: 150px;
+    width: 200px;
   }
 `;
 
