@@ -53,43 +53,51 @@ export default function Videos() {
   return (
     <>
       <Header />
-      <AppBody>
-        <Title>
-          <h1>Curated experiences</h1>
-        </Title>
-        <Subtitle>
-          <p>Handpicked by the Culturin team </p>
-        </Subtitle>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <>
+          <GlobalStyles />
 
-        <ProviderContainer>
-          {data.map((providerData, index) => (
-            <ProviderCard key={index}>
-              <Link href={`/providers/${providerData.slug}`}>
-                <ProviderCardBody>
-                  <Image
-                    src={providerData?.bannerImage?.image?.url} // Provide a fallback image URL
-                    alt={providerData?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
-                    width={300}
-                    height={300}
-                    quality={90} // Adjust quality as needed, defaults to 75
-                    style={{
-                      objectFit: "cover",
-                      position: "relative",
-                    }}
-                  />
-                </ProviderCardBody>
-              </Link>
-              <ProviderCardText>
-                <h1>{providerData?.eventName}</h1>
-              </ProviderCardText>
-              <ProviderCardAuthor>
-                {" "}
-                <p>{providerData?.name}</p>
-              </ProviderCardAuthor>
-            </ProviderCard>
-          ))}
-        </ProviderContainer>
-      </AppBody>
+          <AppBody>
+            <Title>
+              <h1>Curated experiences</h1>
+            </Title>
+            <Subtitle>
+              <p>Handpicked by the Culturin team </p>
+            </Subtitle>
+
+            <ProviderContainer>
+              {data.map((providerData, index) => (
+                <ProviderCard key={index}>
+                  <Link href={`/providers/${providerData.slug}`}>
+                    <ProviderCardBody>
+                      <Image
+                        src={providerData?.bannerImage?.image?.url} // Provide a fallback image URL
+                        alt={
+                          providerData?.bannerImage?.alt || "Default Alt Text"
+                        } // Provide default alt text
+                        width={300}
+                        height={300}
+                        quality={90} // Adjust quality as needed, defaults to 75
+                        style={{
+                          objectFit: "cover",
+                          position: "relative",
+                        }}
+                      />
+                    </ProviderCardBody>
+                  </Link>
+                  <ProviderCardText>
+                    <h1>{providerData?.eventName}</h1>
+                  </ProviderCardText>
+                  <ProviderCardAuthor>
+                    {" "}
+                    <p>{providerData?.name}</p>
+                  </ProviderCardAuthor>
+                </ProviderCard>
+              ))}
+            </ProviderContainer>
+          </AppBody>
+        </>
+      </ThemeProvider>
     </>
   );
 }
@@ -128,7 +136,7 @@ const Title = styled.div`
     h1 {
       font-size: 25px;
       align-items: left;
-      margin-left: 30px;
+      margin-left: 40px;
       width: 100%;
     }
   }
@@ -148,7 +156,7 @@ const Subtitle = styled.div`
   }
 
   @media ${device.mobile} {
-    margin-left: 60px;
+    margin-left: 80px;
     width: 100%;
   }
 `;
@@ -177,7 +185,6 @@ const ProviderContainer = styled.div`
 
   @media ${device.mobile} {
     width: 100%;
-    padding: 10px;
     grid-template-columns: 1fr;
 
     h1 {
@@ -233,7 +240,7 @@ const ProviderCardBody = styled.div`
 
   @media ${device.mobile} {
     height: 200px;
-    width: 150px;
+    width: 300px;
   }
 `;
 

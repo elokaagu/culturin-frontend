@@ -52,41 +52,47 @@ export default function Videos() {
   return (
     <>
       <Header />
-      <AppBody>
-        <Title>
-          <h1>Top Videos</h1>
-        </Title>
-        <Subtitle>
-          <p>Only on Culturin </p>
-        </Subtitle>
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <>
+          <GlobalStyles />
 
-        <VideoContainer>
-          {data.map((videoData, index) => (
-            <VideoCard key={index}>
-              <Link href={`/stream/${videoData.currentSlug}`}>
-                <VideoCardBody>
-                  <Image
-                    src={urlFor(videoData.videoThumbnail).url()}
-                    alt={videoData.title}
-                    placeholder="blur"
-                    fill
-                    style={{ objectFit: "cover" }}
-                    blurDataURL={urlFor(videoData.videoThumbnail).url()}
-                    priority={true}
-                  />
-                </VideoCardBody>
-              </Link>
-              <VideoCardText>
-                <h1>{videoData.title}</h1>
-                <VideoCardAuthor>
-                  {" "}
-                  <p>{videoData.uploader}</p>
-                </VideoCardAuthor>
-              </VideoCardText>
-            </VideoCard>
-          ))}
-        </VideoContainer>
-      </AppBody>
+          <AppBody>
+            <Title>
+              <h1>Top Videos</h1>
+            </Title>
+            <Subtitle>
+              <p>Only on Culturin </p>
+            </Subtitle>
+
+            <VideoContainer>
+              {data.map((videoData, index) => (
+                <VideoCard key={index}>
+                  <Link href={`/stream/${videoData.currentSlug}`}>
+                    <VideoCardBody>
+                      <Image
+                        src={urlFor(videoData.videoThumbnail).url()}
+                        alt={videoData.title}
+                        placeholder="blur"
+                        fill
+                        style={{ objectFit: "cover" }}
+                        blurDataURL={urlFor(videoData.videoThumbnail).url()}
+                        priority={true}
+                      />
+                    </VideoCardBody>
+                  </Link>
+                  <VideoCardText>
+                    <h1>{videoData.title}</h1>
+                    <VideoCardAuthor>
+                      {" "}
+                      <p>{videoData.uploader}</p>
+                    </VideoCardAuthor>
+                  </VideoCardText>
+                </VideoCard>
+              ))}
+            </VideoContainer>
+          </AppBody>
+        </>
+      </ThemeProvider>
     </>
   );
 }
@@ -286,9 +292,4 @@ const VideoCardAuthor = styled.div`
   pointer: cursor;
   flex-direction: row;
   align-items: center;
-`;
-
-const AvatarContainer = styled.div`
-  display: flex;
-  margin-right: 6px;
 `;
