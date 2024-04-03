@@ -5,7 +5,7 @@ import { device } from "../styles/breakpoints";
 import { useState } from "react";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 // export function HomeSigninButton() {
 //   const { data: session } = useSession();
@@ -75,11 +75,23 @@ export function GoogleSignInButton() {
   //     )}`
   //   : `${NEXT_PUBLIC_API_BASE_URL}/profile/guest`;
 
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.id) {
+      console.log("User ID:", session.user.id); // This should now log a defined ID
+    }
+  }, [session, status]);
+  if (status === "loading") {
+    return <div>Loading...</div>; // Or some loading spinner
+  }
+
   if (session) {
     const username = session.user?.name || "Guest";
     console.log("username", username);
     console.log("session", session);
     console.log(session.user.id); // Now you should have the Google user ID
+    const profileUrl = session.user.id
+      ? `/profile/${session.user.id}`
+      : "/profile/guest";
 
     return (
       <>
@@ -101,7 +113,7 @@ export function GoogleSignInButton() {
               <DropdownItem>
                 {/* <Link href={`/profile/${userId}`}>Profile</Link> */}
                 {/* <Link href={`/profile/${createUsernameSlug(userId)}`}> */}
-                <Link href={`/profile/${session.user.id}`}>Profile</Link>
+                <Link href={profileUrl}>Profile</Link>
               </DropdownItem>
 
               <DropdownItem>
