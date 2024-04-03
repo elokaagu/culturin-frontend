@@ -233,7 +233,7 @@ const Body = styled.div`
   p {
     font-size: 18px;
     padding-top: 5px;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
     color: white;
   }
 
