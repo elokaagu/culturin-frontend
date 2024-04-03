@@ -167,20 +167,18 @@ export default function Header() {
             </ul>
           </HeaderRight>
           <HeaderRightMobile>
-            <ul>
-              <HamburgerMenu>
-                <Hamburger
-                  rounded
-                  toggled={isMobileSidebarOpen}
-                  toggle={handleMobileSidebarToggle}
-                  size={20}
-                  onToggle={() => setIsNavOpen(!isNavOpen)}
-                />
-                {isMobileSidebarOpen && (
-                  <Sidebar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
-                )}
-              </HamburgerMenu>
-            </ul>
+            <HamburgerMenu>
+              <Hamburger
+                rounded
+                toggled={isMobileSidebarOpen}
+                toggle={handleMobileSidebarToggle}
+                size={20}
+                onToggle={() => setIsNavOpen(!isNavOpen)}
+              />
+              {isMobileSidebarOpen && (
+                <Sidebar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
+              )}
+            </HamburgerMenu>
           </HeaderRightMobile>
         </Head>
       </StyledHeader>
@@ -292,6 +290,7 @@ const HeaderLeft = styled.div`
 const HeaderRight = styled.div`
   /* flex: 0.33;
   align-items: right; */
+
   justify-content: space-between;
   @media ${device.mobile} {
     display: none;
@@ -404,6 +403,7 @@ const HeaderCenter = styled.div`
 
 const HamburgerMenu = styled.div`
   display: none;
+
   @media ${device.mobile} {
     display: flex;
   }
@@ -416,6 +416,10 @@ const HeaderRightMobile = styled.div`
   display: none;
   @media ${device.mobile} {
     display: flex;
+    .hamburger-react {
+      display: block;
+      z-index: 2000;
+    }
   }
   justify-content: space-between;
 `;

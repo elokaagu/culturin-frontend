@@ -82,9 +82,9 @@ const SidebarContainer = styled.div`
   left: 0;
   overflow-x: hidden;
   background-color: black;
-  z-index: 200;
+  z-index: 100;
   height: 100%;
-  width: 80%;
+  width: 100%;
   padding-top: 60px;
   transition: all 0.25s ease;
   animation: fadeIn 0.3s;
@@ -128,12 +128,6 @@ const DropdownHeader = styled.div`
   border: black;
   display: flex;
   flex-direction: row; */
-`;
-
-const DropdownContainer = styled("div")`
-  @media ${device.mobile} {
-    display: none;
-  }
 `;
 
 const DropdownList = styled("ul")`
