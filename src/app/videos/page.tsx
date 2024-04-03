@@ -55,7 +55,6 @@ export default function Videos() {
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <>
           <GlobalStyles />
-
           <AppBody>
             <Title>
               <h1>Top Videos</h1>
@@ -63,7 +62,6 @@ export default function Videos() {
             <Subtitle>
               <p>Only on Culturin </p>
             </Subtitle>
-
             <VideoContainer>
               {data.map((videoData, index) => (
                 <VideoCard key={index}>

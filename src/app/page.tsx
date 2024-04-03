@@ -1,5 +1,4 @@
 "use client";
-
 import styled from "styled-components";
 import React, { useState } from "react";
 import Header from "./components/Header";
@@ -12,17 +11,7 @@ import VideoHero from "./components/VideoHero";
 import ProviderHero from "./components/ProviderHero";
 import Link from "next/link";
 
-//Session Data
-
-type Session = {
-  user: {
-    name: string;
-    email: string;
-  };
-};
-
 export default function Home() {
-  // Scroll to the target section
   const scrollToSection = () => {
     const section = document.getElementById("target-section");
     if (section) {
@@ -202,13 +191,6 @@ const Switch = styled.div`
   margin-right: 30px;
 `;
 
-const SwitchItem = styled.div`
-  padding-right: 8px;
-  position: fixed;
-  right: 40px;
-  bottom: 20px;
-`;
-
 const Title = styled.div`
   margin: auto 10px;
   padding-left: 30px;
@@ -239,13 +221,6 @@ const Title = styled.div`
   }
 `;
 
-const SidebarMobile = styled.div`
-  display: none;
-  @media ${device.mobile} {
-    display: block;
-  }
-`;
-
 const HeroButton = styled.div`
   margin-top: 20px;
   border-radius: 5px;
@@ -271,10 +246,4 @@ const HeroButton = styled.div`
   @media ${device.mobile} {
     width: 100px;
   }
-`;
-
-const ViewAll = styled.div`
-  display: flex;
-  flex-direction: row;
-  color: ${(props) => props.theme.body};
 `;
