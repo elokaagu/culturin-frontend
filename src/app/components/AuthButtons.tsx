@@ -80,6 +80,8 @@ export function GoogleSignInButton() {
     const username = session.user?.name || "Guest";
     console.log("username", username);
     console.log("session", session);
+    console.log("session.user", session.user);
+    console.log(userId);
 
     return (
       <>
