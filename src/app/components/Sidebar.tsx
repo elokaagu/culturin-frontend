@@ -63,7 +63,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavOpen, setIsNavOpen }) => {
 
         <SidebarItem>
           <li>
-            <GoogleSignInButton />
+            <GoogleSignInButton
+              showDropdown={true}
+              toggleDropdownButton={() => {}}
+            />
           </li>
         </SidebarItem>
       </SidebarText>

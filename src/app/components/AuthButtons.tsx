@@ -56,7 +56,13 @@ const createUsernameSlug = (name: string) => {
     .replace(/\s+/g, "");
 };
 
-export function GoogleSignInButton() {
+export function GoogleSignInButton({
+  showDropdown: dropdownVisible,
+  toggleDropdownButton,
+}: {
+  showDropdown: boolean;
+  toggleDropdownButton: () => void;
+}) {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);

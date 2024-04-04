@@ -14,7 +14,10 @@ export default function Login() {
       <Header />
       <AppBody>
         <h1>Sign In</h1>
-        <GoogleSignInButton />
+        <GoogleSignInButton
+          showDropdown={true}
+          toggleDropdownButton={() => {}}
+        />
         <CredentialsForm />
       </AppBody>
     </>

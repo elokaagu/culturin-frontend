@@ -19,6 +19,13 @@ export default function Header() {
   const [headerClass, setHeaderClass] = useState("transparentHeader");
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme(); // Use the theme and toggleTheme from context
+  // Replace the isOpen state
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const handleDropdownToggle = (dropdownId: string) => {
+    setActiveDropdown((current) =>
+      current === dropdownId ? null : dropdownId
+    );
+  };
 
   const isDarkTheme = theme === "dark";
 
@@ -118,11 +125,13 @@ export default function Header() {
               {/* <Link href="/search">Upload</Link> */}
               <li>
                 <DropdownContainer>
-                  <DropdownHeader onClick={toggling}>
+                  <DropdownHeader
+                    onClick={() => handleDropdownToggle("destinations")}
+                  >
                     Destinations
                     <ChevronDown size="20" />
                   </DropdownHeader>
-                  {isOpen && (
+                  {activeDropdown === "destinations" && (
                     <DropdownListContainer>
                       <DropdownList>
                         <DropdownItem>
@@ -155,14 +164,17 @@ export default function Header() {
               </Link> */}
 
               <li>
-                <GoogleSignInButton />
+                <GoogleSignInButton
+                  showDropdown={activeDropdown === "signIn"}
+                  toggleDropdownButton={() => handleDropdownToggle("signIn")}
+                />
                 {/* <SigninButton
-              onClick={async () => {
-                await signIn();
-              }}
-            >
-              Sign In
-            </SigninButton> */}
+                onClick={async () => {
+                  await signIn();
+                }}
+              >
+                Sign In
+              </SigninButton> */}
               </li>
             </ul>
           </HeaderRight>

@@ -41,7 +41,10 @@ export default function Signin() {
               <SigninButton>
                 <p>Sign up</p>
               </SigninButton>
-              <GoogleSignInButton />
+              <GoogleSignInButton
+                showDropdown={true}
+                toggleDropdownButton={() => {}}
+              />
             </SignInSection>
           </AppRight>
         </ThemeProvider>

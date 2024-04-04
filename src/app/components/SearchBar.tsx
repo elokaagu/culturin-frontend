@@ -1,38 +1,20 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Search } from "styled-icons/boxicons-regular";
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import algoliasearch from "algoliasearch/lite";
-import { SearchBox } from "react-instantsearch";
-import { InstantSearchNext } from "react-instantsearch-nextjs";
-
-// Initialize Algolia search client
-const searchClient = algoliasearch(
-  "MJMYIDXYNZ",
-  "f36a3d2fd0819dad18ec9ec9e814097b"
-);
-
-// Initialize Algolia search index
+import { client } from "../lib/sanity";
+import { useRouter } from "next/navigation";
 
 export default function SearchBar() {
-  // const search = useSearchParams();
-  // const [searchQuery, setSearchQuery] = useState(
-  //   search ? search.get("q") : null
-  // );
+  // const [searchQuery, setSearchQuery] = useState("");
   // const router = useRouter();
 
-  // const onSearch = async (event: any) => {
+  // const onSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
-  //   try {
-  //     const result = await searchIndex.search(searchQuery || ""); // Provide a default value of an empty string for searchQuery
-  //     console.log(result); // You can process and use the search result as needed
-  //     // For example, redirect to a search results page with the query or display results directly
-  //     router.push(`/search?q=${searchQuery}`);
-  //   } catch (error) {
-  //     console.error("Algolia search error: ", error);
-  //   }
+  //   // Redirect to the search results page with the query parameter
+  //   router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
   // };
 
   // function handleReset() {
@@ -44,25 +26,25 @@ export default function SearchBar() {
       <SearchContainer>
         <Search size="20" />
         <SearchField>
-          <InstantSearchNext
+          {/* <InstantSearchNext
             indexName="countries"
             searchClient={searchClient}
             routing
-          >
-            {/* <SearchBox searchAsYouType /> */}
-
+          > */}
+          {/* <SearchBox searchAsYouType /> */}
+          {/* <SearchForm onSubmit={onSearchSubmit}>
             <SearchInput
               type="text"
               name="search"
               placeholder="Search"
-              // value={searchQuery || ""}
-              // onChange={(event) => setSearchQuery(event.target.value)}
-              // onKeyDown={(e) => {
-              //   if (e.key === "Enter") handleReset();
-              // }}
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleReset();
+              }}
               autoComplete="off"
             />
-          </InstantSearchNext>
+          </SearchForm> */}
         </SearchField>
       </SearchContainer>
     </Body>
@@ -136,4 +118,18 @@ const SearchField = styled.div`
   color: white;
   font-weight: 600;
   font-size: 18px;
+`;
+
+const SearchResultsContainer = styled.div`
+  margin-top: 20px;
+  padding: 20px;
+  color: white;
+`;
+
+const ResultItem = styled.div`
+  margin-bottom: 10px;
+`;
+
+const NoResults = styled.div`
+  color: red;
 `;
