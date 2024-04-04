@@ -2,12 +2,26 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Search } from "styled-icons/boxicons-regular";
-import { useSearchParams } from "next/navigation";
 import algoliasearch from "algoliasearch/lite";
 import { client } from "../lib/sanity";
-import { useRouter } from "next/navigation";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export default function SearchBar() {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  function handleSearch(term: string) {
+    const params = new URLSearchParams(searchParams);
+    console.log(term);
+    if (term) {
+      params.set("query", term);
+    } else {
+      params.delete("query");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }
+
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
@@ -17,7 +31,9 @@ export default function SearchBar() {
   };
 
   function handleReset() {
-    setSearchQuery("");
+    const params = new URLSearchParams(searchParams);
+    params.delete("query");
+    replace(`${pathname}?${params.toString()}`);
   }
 
   return (
@@ -30,8 +46,12 @@ export default function SearchBar() {
               type="text"
               name="search"
               placeholder="Search"
-              value={searchQuery}
-              onChange={(event) => setSearchQuery(event.target.value)}
+              // value={searchQuery}
+              // onChange={(event) => setSearchQuery(event.target.value)}
+              onChange={(e) => {
+                handleSearch(e.target.value);
+              }}
+              defaultValue={searchParams.get("query")?.toString()}
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleReset();
               }}
