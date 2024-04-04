@@ -141,10 +141,11 @@ const HeroSection = styled.div`
 `;
 
 const HeroContainer = styled.div`
-  height: 60vh;
+  height: 50vh;
   display: flex;
-  // padding: 20px;
+  padding: 20px;
   width: 95%;
+
   border-radius: 10px;
   flex-direction: column;
   position: relative; // To position elements within it absolutely
