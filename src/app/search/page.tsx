@@ -80,8 +80,13 @@ const AppBody = styled.div`
   height: 100vh;
   width: 100%;
   line-height: 2;
+  color: white;
 `;
 
 const SearchResults = styled.div`
   margin-top: 100px;
+  padding: 20px;
+  h1 {
+    color: white;
+  }
 `;
