@@ -8,11 +8,6 @@ import { simpleBlogCard } from "../../../lib/interface";
 import { urlFor } from "../lib/sanity";
 import { useState, useEffect } from "react";
 
-const imageStyle = {
-  borderRadius: "50%",
-  // border: "1px solid grey",
-};
-
 async function getData() {
   const query = `
   *[_type== 'blog'] | order(_createdAt desc) {
@@ -202,9 +197,4 @@ const CardAuthor = styled.div`
   pointer: cursor;
   flex-direction: row;
   align-items: center;
-`;
-
-const AvatarContainer = styled.div`
-  display: flex;
-  margin-right: 6px;
 `;

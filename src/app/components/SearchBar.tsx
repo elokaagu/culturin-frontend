@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Search } from "styled-icons/boxicons-regular";
-import algoliasearch from "algoliasearch/lite";
-import { client } from "../lib/sanity";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export default function SearchBar() {
@@ -27,7 +25,7 @@ export default function SearchBar() {
 
   const onSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+    router.push(`/search?query=${searchQuery}`);
   };
 
   function handleReset() {
@@ -77,7 +75,6 @@ const SearchContainer = styled.div`
   align-items: center;
   border-radius: 10px;
   width: 80%;
-  ${"" /* border: 1px solid white; */}
   padding: 12px;
   padding-left: 20px;
   padding-right: 20px;
@@ -131,18 +128,4 @@ const SearchField = styled.div`
   color: white;
   font-weight: 600;
   font-size: 18px;
-`;
-
-const SearchResultsContainer = styled.div`
-  margin-top: 20px;
-  padding: 20px;
-  color: white;
-`;
-
-const ResultItem = styled.div`
-  margin-bottom: 10px;
-`;
-
-const NoResults = styled.div`
-  color: red;
 `;
