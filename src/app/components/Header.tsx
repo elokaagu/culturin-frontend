@@ -21,6 +21,7 @@ export default function Header() {
   const { theme, toggleTheme } = useTheme(); // Use the theme and toggleTheme from context
   // Replace the isOpen state
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
   const handleDropdownToggle = (dropdownId: string) => {
     setActiveDropdown((current) =>
@@ -408,7 +409,7 @@ const DropdownListContainer = styled.div`
 `;
 
 const HeaderCenter = styled.div`
-  // flex: 1;
+  flex: 1;
   @media ${device.mobile} {
     display: flex;
   }
