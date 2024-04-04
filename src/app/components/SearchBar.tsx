@@ -8,31 +8,24 @@ import { client } from "../lib/sanity";
 import { useRouter } from "next/navigation";
 
 export default function SearchBar() {
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
-  // const onSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   // Redirect to the search results page with the query parameter
-  //   router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
-  // };
+  const onSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+  };
 
-  // function handleReset() {
-  //   setSearchQuery("");
-  // }
+  function handleReset() {
+    setSearchQuery("");
+  }
 
   return (
     <Body>
       <SearchContainer>
         <Search size="20" />
         <SearchField>
-          {/* <InstantSearchNext
-            indexName="countries"
-            searchClient={searchClient}
-            routing
-          > */}
-          {/* <SearchBox searchAsYouType /> */}
-          {/* <SearchForm onSubmit={onSearchSubmit}>
+          <SearchForm onSubmit={onSearchSubmit}>
             <SearchInput
               type="text"
               name="search"
@@ -44,7 +37,7 @@ export default function SearchBar() {
               }}
               autoComplete="off"
             />
-          </SearchForm> */}
+          </SearchForm>
         </SearchField>
       </SearchContainer>
     </Body>
