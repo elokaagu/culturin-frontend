@@ -50,11 +50,15 @@ export default function Home() {
           <GlobalStyles />
           <Body>
             <HeroSection>
-              <HeroTitle>
-                <h1>Think global, travel local</h1>
-                <p>Discover a world of culture</p>
-                <HeroButton onClick={scrollToSection}>Explore</HeroButton>
-              </HeroTitle>
+              <HeroContainer>
+                <HeroTitle>
+                  {/* <h1>Think global, travel local</h1> */}
+
+                  <h1>Travel global, live local</h1>
+                  <p>Discover a world of culture</p>
+                  <HeroButton onClick={scrollToSection}>Explore</HeroButton>
+                </HeroTitle>
+              </HeroContainer>
             </HeroSection>
             <Row>
               <Title>
@@ -121,11 +125,36 @@ const Body = styled.div`
 `;
 
 const HeroSection = styled.div`
+  // height: 50vh;
+  // display: flex;
+  // padding: 20px;
+  // background-color: black;
+  // flex direction: column;
+  // flex: 1;
   height: 50vh;
   display: flex;
+  justify-content: center; // This will center the child horizontally
+  align-items: center; // This will center the child vertically
   padding: 20px;
-  flex direction: column;
-  flex: 1;
+  background-color: black;
+  flex-direction: column;
+  position: relative; // Only necessary if you are absolutely positioning any children
+`;
+
+const HeroContainer = styled.div`
+  height: 60vh;
+  display: flex;
+  // padding: 20px;
+  width: 95%;
+  border-radius: 10px;
+  flex-direction: column;
+  position: relative; // To position elements within it absolutely
+  justify-content: center; // Center the content vertically
+  align-items: center; // Center the content horizontally
+  background-image: url("https://www.forbes.com/advisor/wp-content/uploads/2021/03/traveling-based-on-fare-deals.jpg"); // Add your background image path here
+  background-size: cover; // Cover the entire area of the div
+  background-position: center; // Center the background image
+  color: white; // Assuming you want a light text over a dark image
 `;
 
 const HeroTitle = styled.div`
@@ -138,6 +167,7 @@ const HeroTitle = styled.div`
   align-items: center;
   width: 100%;
   cursor: pointer;
+  z-index: 2;
 
   h1 {
     margin-bottom: 20px;
@@ -243,5 +273,19 @@ const HeroButton = styled.div`
 
   @media ${device.mobile} {
     width: 100px;
+  }
+`;
+
+const ImageWrapper = styled.div`
+  position: absolute;
+  background-color: red;
+  width: 100%; // Ensure it spans the full width or adjust as necessary
+  height: 50vh; // Adjust height as needed
+  top: /* Adjust this based on your header's height to position it right below the header */ ;
+  z-index: 0; // Ensures that text and buttons with higher z-index values appear above the image
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
