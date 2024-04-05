@@ -5,15 +5,9 @@ import { connectMongoDB } from "../../../../libs/mongodb";
 import User from "../../../models/User";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "../../../../libs/prismadb";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
-// export const { handlers, auth, signIn, signOut } = NextAuth({
-//   adapter: PrismaAdapter(prisma),
-//   providers: [Google],
-// });
-
-export const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(prisma) as import("next-auth/adapters").Adapter,
+const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
@@ -25,7 +19,7 @@ export const authOptions: AuthOptions = {
         email: {
           label: "Email:",
           type: "email",
-          placeholder: "Enter your email",
+          placeholder: "Enter your email please",
         },
         password: {
           label: "Password:",
@@ -56,6 +50,7 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  adapter: PrismaAdapter(prisma) as import("next-auth/adapters").Adapter,
   pages: {
     signIn: "/login",
   },
@@ -109,16 +104,9 @@ export const authOptions: AuthOptions = {
 const handler = (req: any, res: any) =>
   NextAuth(req, res, {
     ...authOptions,
-    callbacks: {
-      ...authOptions.callbacks,
-      jwt: async (params: any) => {
-        const { token, user } = params;
-        if (user?.username) {
-          token.username = user.username;
-        }
-        return token;
-      },
-    },
   } as NextAuthOptions);
 
 export { handler as GET, handler as POST };
+
+// // eslint-disable-next-line import/no-anonymous-default-export
+// export default (req: any, res: any) => NextAuth(req, res, authOptions);

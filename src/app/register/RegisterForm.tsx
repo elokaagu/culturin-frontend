@@ -2,8 +2,6 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Link from "next/link";
-import styled from "styled-components";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import Input from "../components/inputs/Input";

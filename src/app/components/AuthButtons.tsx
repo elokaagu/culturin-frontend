@@ -7,47 +7,6 @@ import { ChevronDown } from "styled-icons/boxicons-regular";
 import Link from "next/link";
 import React, { useEffect } from "react";
 
-// export function HomeSigninButton() {
-//   const { data: session } = useSession();
-
-//   if (session) {
-//     return (
-//       <SigninButton
-//         onClick={async () => {
-//           await signOut();
-//         }}
-//       >
-//         {session?.user?.name?.split(" ")[0] || "Guest"}
-//       </SigninButton>
-//     );
-//   }
-//   return (
-//     <SigninButton
-//       onClick={async () => {
-//         await signIn("credentials", {
-//           redirect: true,
-//           callbackUrl: "/",
-//         });
-//       }}
-//     >
-//       Sign in
-//     </SigninButton>
-//   );
-// }
-
-// const createUsernameSlug = (name: string) => {
-//   const normalized = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-//   const lowerCase = normalized.toLowerCase();
-//   const noSpaces = lowerCase.replace(/\s+/g, "");
-//   const urlFriendly = noSpaces.replace(/[^a-z0-9-]/g, "");
-//   return urlFriendly;
-// };
-
-// function createSlugFromUsername(username: string) {
-//   // Remove spaces and convert to lowercase
-//   return username.replace(/\s+/g, "").toLowerCase();
-// }
-
 const createUsernameSlug = (name: string) => {
   return name
     .normalize("NFD")

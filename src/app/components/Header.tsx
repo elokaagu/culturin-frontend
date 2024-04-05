@@ -14,7 +14,7 @@ import ThemeToggle from "./ThemeToggle";
 import { Sun, Moon } from "styled-icons/boxicons-regular";
 import { useTheme } from "../styles/ThemeContext";
 
-export default function Header() {
+export default async function Header() {
   // const [theme, setTheme] = useState("light");
   const [headerClass, setHeaderClass] = useState("transparentHeader");
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,19 +30,6 @@ export default function Header() {
   };
 
   const isDarkTheme = theme === "dark";
-
-  // useEffect(() => {
-  //   const onScroll = () => {
-  //     const scrollCheck = window.scrollY > 0;
-  //     setIsScrolled(scrollCheck);
-  //   };
-
-  //   // Attach scroll event listener
-  //   window.addEventListener("scroll", onScroll);
-
-  //   // Clean up event listener on component unmount
-  //   return () => window.removeEventListener("scroll", onScroll);
-  // }, []);
 
   // Listen for scroll events
   useEffect(() => {
@@ -161,22 +148,11 @@ export default function Header() {
                 </DropdownContainer>
               </li>
 
-              {/* <Link href="/spotlight">
-                <li>News</li>
-              </Link> */}
-
               <li>
                 <GoogleSignInButton
                   showDropdown={activeDropdown === "signIn"}
                   toggleDropdownButton={() => handleDropdownToggle("signIn")}
                 />
-                {/* <SigninButton
-                onClick={async () => {
-                  await signIn();
-                }}
-              >
-                Sign In
-              </SigninButton> */}
               </li>
             </ul>
           </HeaderRight>

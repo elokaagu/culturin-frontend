@@ -23,8 +23,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession();
-  const currentUser = await getCurrentUser();
-  console.log("user prisma", currentUser);
+  // const currentUser = await getCurrentUser();
+  // console.log("user prisma", currentUser);
   // Toggle Theme
 
   return (
