@@ -31,6 +31,9 @@ export function GoogleSignInButton({
     console.log("username", username);
     console.log("session", session);
     console.log(session.user.id); // Now you should have the Google user ID
+    if (!session.user.id) {
+      ("No user ID found");
+    }
 
     return (
       <>

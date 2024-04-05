@@ -14,7 +14,7 @@ import ThemeToggle from "./ThemeToggle";
 import { Sun, Moon } from "styled-icons/boxicons-regular";
 import { useTheme } from "../styles/ThemeContext";
 
-export default async function Header() {
+export default function Header() {
   // const [theme, setTheme] = useState("light");
   const [headerClass, setHeaderClass] = useState("transparentHeader");
   const [isScrolled, setIsScrolled] = useState(false);

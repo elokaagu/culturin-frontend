@@ -54,7 +54,6 @@ const authOptions: AuthOptions = {
   pages: {
     signIn: "/login",
   },
-  debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
   },
