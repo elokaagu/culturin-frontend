@@ -2,6 +2,15 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { connectMongoDB } from "../../../../../lib/mongodb";
 import User from "../../../models/User";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+// export const { handlers, auth, signIn, signOut } = NextAuth({
+//   adapter: PrismaAdapter(prisma),
+//   providers: [Google],
+// });
 
 const authOptions = {
   providers: [

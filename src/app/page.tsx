@@ -60,6 +60,7 @@ export default function Home() {
                 </HeroTitle>
               </HeroContainer>
             </HeroSection>
+
             <Row>
               <Title>
                 <div id="target-section">
