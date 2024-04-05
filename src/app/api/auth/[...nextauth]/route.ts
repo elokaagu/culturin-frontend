@@ -50,7 +50,7 @@ const authOptions: AuthOptions = {
     //   },
     // }),
   ],
-  adapter: PrismaAdapter(prisma) as import("next-auth/adapters").Adapter,
+  // adapter: PrismaAdapter(prisma) as import("next-auth/adapters").Adapter,
   session: {
     strategy: "jwt",
   },
@@ -58,7 +58,9 @@ const authOptions: AuthOptions = {
   callbacks: {
     async session({ session }) {
       const sessionUser = await User.findOne({ email: session.user.email });
+
       session.user.id = sessionUser._id;
+
       console.log("session id", session.user.id);
       return session;
     },
