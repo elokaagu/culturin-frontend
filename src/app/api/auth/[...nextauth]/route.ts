@@ -59,7 +59,7 @@ const authOptions: AuthOptions = {
     async session({ session }) {
       const sessionUser = await User.findOne({ email: session.user.email });
 
-      session.user.id = sessionUser._id;
+      session.user.id = sessionUser?._id;
 
       console.log("session id", session.user.id);
       return session;
