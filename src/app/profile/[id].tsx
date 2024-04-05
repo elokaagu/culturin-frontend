@@ -10,6 +10,7 @@ import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import mongoose from "mongoose";
 import { connectMongoDB } from "../../libs/mongodb";
 import { ObjectId } from "mongodb";
+import { useSession } from "next-auth/react";
 
 interface ProfileProps {
   // Define the shape of your props
@@ -36,8 +37,9 @@ const createUsernameSlug = (name: string) => {
 
 // ... other imports
 
-const ProfilePage: NextPage<ProfileProps> = ({ name, email }) => {
-  // const { data: session } = useSession();
+export default function ProfilePage() {
+  const { data: session } = useSession();
+  console.log("session", session);
   const [theme, setTheme] = useState("dark");
   const isDarkTheme = theme === "dark";
   // const [savedArticles, setSavedArticles] = useState<Article[]>([]);
@@ -95,11 +97,10 @@ const ProfilePage: NextPage<ProfileProps> = ({ name, email }) => {
           <ProfileTitle>
             <h1>
               {/* {profileData?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile */}
-              <ProfileTitle>{`${name}'s Profile`}</ProfileTitle>
+              Hello
             </h1>
           </ProfileTitle>
-          <p>Name: {name}</p>
-          <p>Email: {email}</p>
+          <p>Name </p>
           <Row>
             {/* {savedArticles.map((article) => (
               <ProfileCard key={article._id} article={article} />
@@ -109,7 +110,7 @@ const ProfilePage: NextPage<ProfileProps> = ({ name, email }) => {
       </ThemeProvider>
     </>
   );
-};
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const userId = context.params?.id;
@@ -137,8 +138,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
-
-export default ProfilePage;
 
 const AppBody = styled.div`
   padding: 40px;
