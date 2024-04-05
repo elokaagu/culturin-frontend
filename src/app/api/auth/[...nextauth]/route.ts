@@ -59,8 +59,14 @@ const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async session({ session }) {
+      const sessionUser = await User.findOne({ email: session.user.email });
+      session.user.id = sessionUser._id;
+      return session;
+    },
+    async signIn({ profile }) {
       // This is an example. You should adjust the logic to your requirement.
+      console.log("profile", profile);
       const isAllowedToSignIn = true;
       if (isAllowedToSignIn) {
         return true;
