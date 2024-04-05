@@ -26,20 +26,6 @@ export function GoogleSignInButton({
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
-  const userId = session?.user?.id || "guest"; // Fallback to "guest" if not signed in
-
-  const userProfileApiUrl = session?.user?.id
-    ? `/profile/${session.user.id}`
-    : "/profile/guest";
-
-  const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-  // const userProfileApiUrl = session?.user?.name
-  //   ? `${NEXT_PUBLIC_API_BASE_URL}/profile/${encodeURIComponent(
-  //       session.user.name
-  //     )}`
-  //   : `${NEXT_PUBLIC_API_BASE_URL}/profile/guest`;
-
   if (session) {
     const username = session.user?.name || "Guest";
     console.log("username", username);
@@ -67,9 +53,8 @@ export function GoogleSignInButton({
           <DropdownListContainer>
             <DropdownList>
               <DropdownItem>
-                {/* <Link href={`/profile/${userId}`}>Profile</Link> */}
                 {/* <Link href={`/profile/${createUsernameSlug(userId)}`}> */}
-                <Link href={profileUrl}>Profile</Link>
+                <Link href={`/profile/${session.user.id}`}>Profile</Link>
               </DropdownItem>
 
               <DropdownItem>
