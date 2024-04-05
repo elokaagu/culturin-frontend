@@ -9,7 +9,7 @@ import { device } from "../styles/breakpoints";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { client } from "../lib/sanity";
 import Image from "next/image";
-import { providerCard } from "../../../lib/interface";
+import { providerCard } from "../../../libs/interface";
 
 async function getData() {
   const query = `

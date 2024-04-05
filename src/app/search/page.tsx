@@ -5,11 +5,11 @@ import Image from "next/image";
 import Header from "../components/Header";
 import { usePathname, useSearchParams } from "next/navigation";
 import { client } from "../lib/sanity";
-import { simpleBlogCard } from "../../../lib/interface";
+import { simpleBlogCard } from "../../../libs/interface";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
 import { urlFor } from "../lib/sanity";
-import { videoCard } from "../../../lib/interface";
+import { videoCard } from "../../../libs/interface";
 import { Video } from "styled-icons/boxicons-regular";
 
 // const fetchArticlesByCategory = async (categoryName: string) => {

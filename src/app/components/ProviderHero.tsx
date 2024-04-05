@@ -4,7 +4,7 @@ import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
 import { client } from "../lib/sanity";
-import { providerCard } from "../../../lib/interface";
+import { providerCard } from "../../../libs/interface";
 import { useState, useEffect } from "react";
 
 async function getData() {

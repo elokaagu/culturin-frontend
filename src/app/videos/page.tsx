@@ -10,7 +10,7 @@ import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { client } from "../lib/sanity";
 import { urlFor } from "../lib/sanity";
 import Image from "next/image";
-import { videoCard } from "../../../lib/interface";
+import { videoCard } from "../../../libs/interface";
 
 async function getData() {
   const query = `

@@ -1,11 +1,11 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { connectMongoDB } from "../../../../../libs/mongodb";
 import User from "../../../models/User";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "../../../../../libs/prismadb";
-import bcrypt from "bcrypt";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 // export const { handlers, auth, signIn, signOut } = NextAuth({
 //   adapter: PrismaAdapter(prisma),
@@ -13,57 +13,12 @@ import bcrypt from "bcrypt";
 // });
 
 const authOptions = {
-  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: {
-          label: "Email:",
-          type: "email",
-          placeholder: "Enter your email",
-        },
-        password: {
-          label: "Password:",
-          type: "password",
-          placeholder: "Password",
-        },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Invalid email or password");
-        }
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
-        if (!user || !user?.hashedPassword) {
-          throw new Error("Invalid email or password");
-        }
-        const isCorrectPassword = await bcrypt.compare(
-          credentials.password,
-          user.hashedPassword
-        );
-        if (!isCorrectPassword) {
-          throw new Error("Invalid email or password");
-        }
-        return { id: user.id, email: user.email };
-      },
-    }),
   ],
-  pages: {
-    signin: "/login",
-  },
-  debug: process.env.NODE_ENV === "development",
-  session: {
-    strategy: "jwt",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ account, profile }: { account: any; profile: any }) {
       if (account.provider === "google") {

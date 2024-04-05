@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { connectMongoDB } from "../../../lib/mongodb";
+import { connectMongoDB } from "../../../libs/mongodb";
 import User from "../models/User";
 import { getSession } from "next-auth/react";
 // This is a simplified example. Ensure proper authentication and error handling.

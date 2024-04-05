@@ -4,7 +4,7 @@ import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
 import { client } from "../lib/sanity";
-import { videoCard } from "../../../lib/interface";
+import { videoCard } from "../../../libs/interface";
 import { urlFor } from "../lib/sanity";
 import { useState, useEffect } from "react";
 
