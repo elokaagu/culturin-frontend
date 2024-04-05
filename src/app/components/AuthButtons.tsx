@@ -48,7 +48,6 @@ export function GoogleSignInButton({
           onClick={toggleDropdown}
         >
           {session?.user?.name?.split(" ")[0] || "Guest"}
-          console.log(session.user.id);
           {/* <ChevronDown size="20" /> */}
         </SigninButton>
         {showDropdown && (
