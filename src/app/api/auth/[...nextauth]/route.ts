@@ -1,10 +1,10 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { AuthOptions, NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectMongoDB } from "../../../../../libs/mongodb";
+import { connectMongoDB } from "../../../../libs/mongodb";
 import User from "../../../models/User";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "../../../../../libs/prismadb";
+import prisma from "../../../../libs/prismadb";
 import bcrypt from "bcrypt";
 
 // export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -12,8 +12,8 @@ import bcrypt from "bcrypt";
 //   providers: [Google],
 // });
 
-const authOptions = {
-  adapter: PrismaAdapter(prisma),
+export const authOptions: AuthOptions = {
+  adapter: PrismaAdapter(prisma) as import("next-auth/adapters").Adapter,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
@@ -57,52 +57,54 @@ const authOptions = {
     }),
   ],
   pages: {
-    signin: "/login",
+    signIn: "/login",
   },
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  callbacks: {
-    async signIn({ account, profile }: { account: any; profile: any }) {
-      if (account.provider === "google") {
-        try {
-          await connectMongoDB();
-
-          // const username = profile.email.split("@")[0].replace(/\./g, "");
-          const username = profile.name;
-
-          const existingUser = await User.findOne({ email: profile.email });
-          if (!existingUser) {
-            // Create a new user if they don't exist
-            await User.create({
-              email: profile.email,
-              name: profile.name,
-              username,
-              id: profile.id,
-            });
-          }
-        } catch (error) {
-          console.error("SignIn error:", error);
-          return false;
-        }
-      }
-      return true; // Return true to sign the user in
-    },
-
-    async jwt(token: any, account: any) {
-      if (account?.provider === "google") {
-        token.userId = account.providerAccountId;
-      }
-      return token;
-    },
-    session: async ({ session, token }: { session: any; token: any }) => {
-      session.user.id = token.userId;
-      return session;
-    },
-  },
 };
+// export default NextAuth(authOptions);
+// callbacks: {
+//   async signin({ account, profile }: { account: any; profile: any }) {
+//     if (account.provider === "google") {
+//       try {
+//         await connectMongoDB();
+
+//         // const username = profile.email.split("@")[0].replace(/\./g, "");
+//         const username = profile.name;
+
+//         const existingUser = await User.findOne({ email: profile.email });
+//         if (!existingUser) {
+//           // Create a new user if they don't exist
+//           await User.create({
+//             email: profile.email,
+//             name: profile.name,
+//             username,
+//             id: profile.id,
+//           });
+//         }
+//       } catch (error) {
+//         console.error("SignIn error:", error);
+//         return false;
+//       }
+//     }
+//     return true; // Return true to sign the user in
+//   },
+
+//     async jwt(token: any, account: any) {
+//       if (account?.provider === "google") {
+//         token.userId = account.providerAccountId;
+//       }
+//       return token;
+//     },
+//     session: async ({ session, token }: { session: any; token: any }) => {
+//       session.user.id = token.userId;
+//       return session;
+//     },
+//   },
+// };
 
 const handler = (req: any, res: any) =>
   NextAuth(req, res, {

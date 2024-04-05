@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { connectMongoDB } from "../../../../../libs/mongodb";
+import { connectMongoDB } from "../../../../libs/mongodb";
 import User from "../../../models/User";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";

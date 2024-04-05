@@ -8,6 +8,7 @@ import { Metadata } from "next";
 import ThemeClient from "./styles/ThemeClient";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "./styles/ThemeContext";
+import { getCurrentUser } from "../actions/getCurrentUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession();
-
+  const currentUser = await getCurrentUser();
+  console.log("user prisma", currentUser);
   // Toggle Theme
 
   return (

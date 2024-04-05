@@ -1,4 +1,4 @@
-import { connectMongoDB } from "../../../libs/mongodb";
+import { connectMongoDB } from "../../libs/mongodb";
 import User from "../models/User";
 import { getSession } from "next-auth/react";
 

@@ -6,7 +6,7 @@ import { ThemeProvider } from "styled-components";
 import Link from "next/link";
 import { device } from "../../styles/breakpoints";
 import { client, urlFor } from "../../lib/sanity";
-import { fullBlog, fullVideo } from "../../../../libs/interface";
+import { fullBlog, fullVideo } from "../../../libs/interface";
 import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 import Image from "next/image";
 import { url } from "inspector";
