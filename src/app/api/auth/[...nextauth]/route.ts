@@ -80,6 +80,7 @@ const authOptions: AuthOptions = {
             email: profile.email,
             name: profile.name,
             username,
+            id: profile.sub, // Fix: Replace 'profile.id' with 'profile.sub'
           });
         }
         return true;
