@@ -10595,7 +10595,7 @@ mongodb@^6, mongodb@^6.4.0, mongodb@6.5.0:
     bson "^6.4.0"
     mongodb-connection-string-url "^3.0.0"
 
-mongoose@^8.2.1:
+mongoose@^8.3.0:
   version "8.3.0"
   resolved "https://registry.npmjs.org/mongoose/-/mongoose-8.3.0.tgz"
   integrity sha512-Y5QNnuA38CEin8hnA+q//nUVztIi4Xklu9xlmbkd1KdWHnIlemSwf5IL/evcI+e2zplL4g5Y6PMkO+nPSAnIdA==

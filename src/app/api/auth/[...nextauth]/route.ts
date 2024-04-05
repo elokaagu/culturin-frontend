@@ -67,6 +67,7 @@ const authOptions: AuthOptions = {
     async signIn({ profile }) {
       // This is an example. You should adjust the logic to your requirement.
       console.log("profile", profile);
+
       const isAllowedToSignIn = true;
       if (isAllowedToSignIn) {
         return true;
