@@ -23,6 +23,7 @@ export function GoogleSignInButton({
   toggleDropdownButton: () => void;
 }) {
   const { data: session } = useSession();
+  console.log("session", session);
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
