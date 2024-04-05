@@ -31,9 +31,6 @@ export function GoogleSignInButton({
     console.log("username", username);
     console.log("session", session);
     console.log(session.user.id); // Now you should have the Google user ID
-    const profileUrl = session.user.id
-      ? `/profile/${session.user.id}`
-      : "/profile/guest";
 
     return (
       <>
