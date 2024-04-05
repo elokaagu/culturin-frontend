@@ -59,7 +59,31 @@ const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      // This is an example. You should adjust the logic to your requirement.
+      const isAllowedToSignIn = true;
+      if (isAllowedToSignIn) {
+        return true;
+      } else {
+        // Return false to display a default error message
+        return false;
+      }
+    },
+    async redirect({ url, baseUrl }) {
+      // You can use this callback to redirect the user to different URLs
+      return baseUrl;
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      // This is called whenever a JWT is created. You can add custom claims
+      if (user) {
+        token.uid = user.id;
+      }
+      return token;
+    },
+  },
 };
+
 // export default NextAuth(authOptions);
 // callbacks: {
 //   async signin({ account, profile }: { account: any; profile: any }) {

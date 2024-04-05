@@ -8,7 +8,22 @@ import { device } from "../styles/breakpoints";
 import ProfileCard from "../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
-import { useSession, getSession } from "next-auth/react";
+import mongoose from "mongoose";
+import { connectMongoDB } from "../../libs/mongodb";
+import { ObjectId } from "mongodb";
+
+interface ProfileProps {
+  // Define the shape of your props
+  name: string;
+  email: string;
+}
+interface Article {
+  _id: string;
+  title: string;
+  description: string;
+  imageSrc: string;
+  author: string;
+}
 
 const createUsernameSlug = (name: string) => {
   return name
@@ -22,12 +37,11 @@ const createUsernameSlug = (name: string) => {
 
 // ... other imports
 
-export default function Profile({}) {
-  const { data: session } = useSession();
+const ProfilePage: NextPage<ProfileProps> = ({ name, email }) => {
+  // const { data: session } = useSession();
   const [theme, setTheme] = useState("dark");
-  const [isLoading, setIsLoading] = useState(false);
   const isDarkTheme = theme === "dark";
-  const [savedArticles, setSavedArticles] = useState([]);
+  // const [savedArticles, setSavedArticles] = useState<Article[]>([]);
 
   // useEffect(() => {
   //   const fetchSavedArticles = async () => {
@@ -82,30 +96,50 @@ export default function Profile({}) {
           <ProfileTitle>
             <h1>
               {/* {profileData?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile */}
-              User Profile
+              <ProfileTitle>{`${name}'s Profile`}</ProfileTitle>
             </h1>
           </ProfileTitle>
-          <p>Name:</p>
-          <p>Email:</p>
-
+          <p>Name: {name}</p>
+          <p>Email: {email}</p>
           <Row>
-            {/* {savedArticles.map(
-              (article: {
-                _id: string;
-                title: string;
-                description: string;
-                imageSrc: string;
-                author: string;
-              }) => (
-                <ProfileCard key={article._id} article={article} />
-              )
-            )} */}
+            {/* {savedArticles.map((article) => (
+              <ProfileCard key={article._id} article={article} />
+            ))} */}
           </Row>
         </AppBody>
       </ThemeProvider>
     </>
   );
-}
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const userId = context.params?.id;
+
+  if (!userId) {
+    return { notFound: true };
+  }
+
+  const { db } = await connectMongoDB();
+
+  const user = await db
+    .collection("users")
+    .findOne({ _id: new ObjectId(userId as string) });
+
+  if (!user) {
+    return { notFound: true };
+  }
+
+  mongoose.connection.close();
+
+  return {
+    props: {
+      name: user.name,
+      email: user.email,
+    },
+  };
+};
+
+export default ProfilePage;
 
 const AppBody = styled.div`
   padding: 40px;
