@@ -73,9 +73,11 @@ const authOptions: AuthOptions = {
         await connectMongoDB();
         const userExist = await User.findOne({ email: profile.email });
         if (!userExist) {
+          const username = (profile.email ?? "").split("@")[0];
           await User.create({
             email: profile.email,
             name: profile.name,
+            username,
           });
         }
         return true;
