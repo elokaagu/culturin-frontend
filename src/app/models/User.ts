@@ -1,18 +1,7 @@
-import mongoose, { Schema, models } from "mongoose";
-import { v4 as uuidv4 } from "uuid";
-
-mongoose.connect(process.env.MONGODB_URI as string);
-
-mongoose.Promise = global.Promise;
+import mongoose, { Schema, models, model } from "mongoose";
 
 const userSchema = new Schema(
   {
-    userId: {
-      type: String,
-      default: uuidv4,
-      required: true,
-      unique: true,
-    },
     email: {
       type: String,
       required: true,

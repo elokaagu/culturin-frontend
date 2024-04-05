@@ -13,47 +13,44 @@ const authOptions: AuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: {
-          label: "Email:",
-          type: "email",
-          placeholder: "Enter your email please",
-        },
-        password: {
-          label: "Password:",
-          type: "password",
-          placeholder: "Password",
-        },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Invalid email or password");
-        }
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
-        if (!user || !user?.hashedPassword) {
-          throw new Error("Invalid email or password");
-        }
-        const isCorrectPassword = await bcrypt.compare(
-          credentials.password,
-          user.hashedPassword
-        );
-        if (!isCorrectPassword) {
-          throw new Error("Invalid email or password");
-        }
-        return { id: user.id, email: user.email };
-      },
-    }),
+    // CredentialsProvider({
+    //   name: "Credentials",
+    //   credentials: {
+    //     email: {
+    //       label: "Email:",
+    //       type: "email",
+    //       placeholder: "Enter your email please",
+    //     },
+    //     password: {
+    //       label: "Password:",
+    //       type: "password",
+    //       placeholder: "Password",
+    //     },
+    //   },
+    //   async authorize(credentials) {
+    //     if (!credentials?.email || !credentials?.password) {
+    //       throw new Error("Invalid email or password");
+    //     }
+    //     const user = await prisma.user.findUnique({
+    //       where: {
+    //         email: credentials.email,
+    //       },
+    //     });
+    //     if (!user || !user?.hashedPassword) {
+    //       throw new Error("Invalid email or password");
+    //     }
+    //     const isCorrectPassword = await bcrypt.compare(
+    //       credentials.password,
+    //       user.hashedPassword
+    //     );
+    //     if (!isCorrectPassword) {
+    //       throw new Error("Invalid email or password");
+    //     }
+    //     return { id: user.id, email: user.email };
+    //   },
+    // }),
   ],
   adapter: PrismaAdapter(prisma) as import("next-auth/adapters").Adapter,
-  pages: {
-    signIn: "/login",
-  },
   session: {
     strategy: "jwt",
   },
@@ -67,25 +64,14 @@ const authOptions: AuthOptions = {
     async signIn({ profile }) {
       // This is an example. You should adjust the logic to your requirement.
       console.log("profile", profile);
-
-      const isAllowedToSignIn = true;
-      if (isAllowedToSignIn) {
-        return true;
-      } else {
-        // Return false to display a default error message
+      try {
+        await connectMongoDB();
+      } catch (error) {
+        console.error("SignIn error:", error);
         return false;
       }
-    },
-    async redirect({ url, baseUrl }) {
-      // You can use this callback to redirect the user to different URLs
-      return baseUrl;
-    },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      // This is called whenever a JWT is created. You can add custom claims
-      if (user) {
-        token.uid = user.id;
-      }
-      return token;
+
+      return true;
     },
   },
 };
