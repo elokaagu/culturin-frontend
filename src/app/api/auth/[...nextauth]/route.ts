@@ -62,16 +62,26 @@ const authOptions: AuthOptions = {
       return session;
     },
     async signIn({ profile }) {
-      // This is an example. You should adjust the logic to your requirement.
+      if (!profile) {
+        console.error("No profile found");
+        return false;
+      }
       console.log("profile", profile);
+
       try {
         await connectMongoDB();
+        const userExist = await User.findOne({ email: profile.email });
+        if (!userExist) {
+          await User.create({
+            email: profile.email,
+            name: profile.name,
+          });
+        }
+        return true;
       } catch (error) {
         console.error("SignIn error:", error);
         return false;
       }
-
-      return true;
     },
   },
 };
