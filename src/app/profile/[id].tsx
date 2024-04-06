@@ -36,11 +36,28 @@ const createUsernameSlug = (name: string) => {
 
 // ... other imports
 
-export default async function ProfilePage() {
+export default function ProfilePage({ name, email }: ProfileProps) {
   const { data: session } = useSession();
   console.log("session", session);
   const [theme, setTheme] = useState("dark");
   const isDarkTheme = theme === "dark";
+  const [userData, setUserData] = useState({ name, email });
+
+  useEffect(() => {
+    async function fetchUserData() {
+      // Check if we have a session and session contains a user ID
+      if (session && session.user.id) {
+        const res = await fetch(`/api/user/${session.user.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setUserData(data);
+        }
+      }
+    }
+
+    fetchUserData();
+  }, [session]);
+
   // const [savedArticles, setSavedArticles] = useState<Article[]>([]);
 
   // useEffect(() => {
@@ -96,7 +113,7 @@ export default async function ProfilePage() {
           <ProfileTitle>
             <h1>
               {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile
-              Hello
+              Welcome back {userData.name}
             </h1>
           </ProfileTitle>
           <p>Name </p>
