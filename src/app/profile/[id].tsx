@@ -36,7 +36,7 @@ const createUsernameSlug = (name: string) => {
 
 // ... other imports
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
   const { data: session } = useSession();
   console.log("session", session);
   const [theme, setTheme] = useState("dark");
@@ -95,7 +95,7 @@ export default function ProfilePage() {
         <AppBody>
           <ProfileTitle>
             <h1>
-              {/* {profileData?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile */}
+              {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile
               Hello
             </h1>
           </ProfileTitle>
