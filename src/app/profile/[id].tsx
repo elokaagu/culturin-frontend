@@ -7,7 +7,6 @@ import { device } from "../styles/breakpoints";
 import ProfileCard from "../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
-import mongoose from "mongoose";
 import { connectMongoDB } from "../../libs/mongodb";
 import { ObjectId } from "mongodb";
 import { useSession } from "next-auth/react";
@@ -129,12 +128,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       return { notFound: true };
     }
 
-    user._id = new ObjectId(user._id.toString());
+    // user._id = new ObjectId(user._id.toString());
+    const userForProps = JSON.parse(JSON.stringify(user));
 
     return {
       props: {
-        name: user.name,
-        email: user.email,
+        name: userForProps.name,
+        email: userForProps.email,
       },
     };
   } catch (error) {
