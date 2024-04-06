@@ -50,7 +50,7 @@ const authOptions: AuthOptions = {
     //   },
     // }),
   ],
-  // adapter: PrismaAdapter(prisma) as import("next-auth/adapters").Adapter,
+  adapter: PrismaAdapter(prisma) as import("next-auth/adapters").Adapter,
   session: {
     strategy: "jwt",
   },
