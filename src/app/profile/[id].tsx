@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps } from "next";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
@@ -113,30 +113,34 @@ export default function ProfilePage() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const userId = context.params?.id;
+  try {
+    const userId = context.params?.id;
+    if (!userId) {
+      return { notFound: true };
+    }
 
-  if (!userId) {
+    const { db } = await connectMongoDB();
+
+    const user = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(userId as string) });
+
+    if (!user) {
+      return { notFound: true };
+    }
+
+    user._id = new ObjectId(user._id.toString());
+
+    return {
+      props: {
+        name: user.name,
+        email: user.email,
+      },
+    };
+  } catch (error) {
+    console.error("Server side error:", error);
     return { notFound: true };
   }
-
-  const { db } = await connectMongoDB();
-
-  const user = await db
-    .collection("users")
-    .findOne({ _id: new ObjectId(userId as string) });
-
-  if (!user) {
-    return { notFound: true };
-  }
-
-  mongoose.connection.close();
-
-  return {
-    props: {
-      name: user.name,
-      email: user.email,
-    },
-  };
 };
 
 const AppBody = styled.div`
