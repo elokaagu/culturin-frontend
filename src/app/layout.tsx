@@ -9,6 +9,7 @@ import ThemeClient from "./styles/ThemeClient";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "./styles/ThemeContext";
 import { getCurrentUser } from "../actions/getCurrentUser";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,15 +30,17 @@ export default async function RootLayout({
 
   return (
     <ThemeProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <SessionProvider session={session}>
-            <ThemeClient>
-              {children} <Analytics /> <SpeedInsights />
-            </ThemeClient>
-          </SessionProvider>
-        </body>
-      </html>
+      <ClerkProvider>
+        <html lang="en">
+          <body className={inter.className}>
+            <SessionProvider session={session}>
+              <ThemeClient>
+                {children} <Analytics /> <SpeedInsights />
+              </ThemeClient>
+            </SessionProvider>
+          </body>
+        </html>
+      </ClerkProvider>
     </ThemeProvider>
   );
 }

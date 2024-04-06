@@ -12,7 +12,7 @@
   "dependencies": {
     "@auth/mongodb-adapter": "^2.5.0",
     "@auth/prisma-adapter": "^1.5.2",
-    "@clerk/nextjs": "^4.29.9",
+    "@clerk/nextjs": "^4.29.12",
     "@mux/blurhash": "^0.1.2",
     "@mux/mux-player": "^2.3.3",
     "@mux/mux-player-react": "^2.3.3",
