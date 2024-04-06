@@ -91,7 +91,8 @@ const HeroContainer = styled.div`
   position: relative; // To position elements within it absolutely
   justify-content: center; // Center the content vertically
   align-items: center; // Center the content horizontally
-  background-image: url("https://www.forbes.com/advisor/wp-content/uploads/2021/03/traveling-based-on-fare-deals.jpg"); // Add your background image path here
+  background-color: black;
+  // background-image: url("https://www.forbes.com/advisor/wp-content/uploads/2021/03/traveling-based-on-fare-deals.jpg");
   background-size: cover; // Cover the entire area of the div
   background-position: center; // Center the background image
   color: white; // Assuming you want a light text over a dark image
