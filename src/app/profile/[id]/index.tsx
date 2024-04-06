@@ -12,6 +12,7 @@ import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 import { connectMongoDB } from "../../../libs/mongodb";
 import { ObjectId } from "mongodb";
 import { useSession } from "next-auth/react";
+import prisma from "../../../libs/prisma";
 
 interface ProfileProps {
   // Define the shape of your props
@@ -37,6 +38,45 @@ const createUsernameSlug = (name: string) => {
 // profile/[userId].page.tsx
 
 // ... other imports
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id = "" } = context.params ?? {};
+
+  const user = await prisma.user.findUnique({
+    where: { id: id as string },
+  });
+  if (!user) {
+    return { notFound: true };
+  }
+
+  const userData = { ...user };
+
+  return { props: { userData } };
+
+  //   const { db } = await connectMongoDB();
+
+  //   const user = await db
+  //     .collection("users")
+  //     .findOne({ _id: new ObjectId(userId as string) });
+
+  //   if (!user) {
+  //     return { notFound: true };
+  //   }
+
+  //   // user._id = new ObjectId(user._id.toString());
+  //   const userForProps = JSON.parse(JSON.stringify(user));
+
+  //   return {
+  //     props: {
+  //       name: userForProps.name,
+  //       email: userForProps.email,
+  //     },
+  //   };
+  // } catch (error) {
+  //   console.error("Server side error:", error);
+  //   return { notFound: true };
+  // }
+};
 
 export default function ProfilePage({ name, email }: ProfileProps) {
   const { data: session } = useSession();
@@ -112,7 +152,7 @@ export default function ProfilePage({ name, email }: ProfileProps) {
         <AppBody>
           <ProfileTitle>
             <h1>
-              {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile
+              {/* {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile */}
               Welcome back {userData.name}
             </h1>
           </ProfileTitle>
@@ -127,38 +167,6 @@ export default function ProfilePage({ name, email }: ProfileProps) {
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  try {
-    const userId = context.params?.id;
-    if (!userId) {
-      return { notFound: true };
-    }
-
-    const { db } = await connectMongoDB();
-
-    const user = await db
-      .collection("users")
-      .findOne({ _id: new ObjectId(userId as string) });
-
-    if (!user) {
-      return { notFound: true };
-    }
-
-    // user._id = new ObjectId(user._id.toString());
-    const userForProps = JSON.parse(JSON.stringify(user));
-
-    return {
-      props: {
-        name: userForProps.name,
-        email: userForProps.email,
-      },
-    };
-  } catch (error) {
-    console.error("Server side error:", error);
-    return { notFound: true };
-  }
-};
 
 const AppBody = styled.div`
   padding: 40px;

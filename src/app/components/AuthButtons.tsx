@@ -23,7 +23,6 @@ export function GoogleSignInButton({
   toggleDropdownButton: () => void;
 }) {
   const { data: session } = useSession();
-  console.log("session", session);
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
@@ -38,26 +37,14 @@ export function GoogleSignInButton({
 
     return (
       <>
-        <SigninButton
-          // onClick={async () => {
-          //   await signOut({
-          //     redirect: false,
-          //     callbackUrl: "/",
-          //   });
-          // }}
-          onClick={toggleDropdown}
-        >
+        <SigninButton onClick={toggleDropdown}>
           {session?.user?.name?.split(" ")[0] || "Guest"}
-          {/* <ChevronDown size="20" /> */}
         </SigninButton>
         {showDropdown && (
           <DropdownListContainer>
             <DropdownList>
               <DropdownItem>
                 {/* <Link href={`/profile/${createUsernameSlug(userId)}`}> */}
-                {/* <Link href={`/profile/${session.user.id}`}>
-                  <a> Profile</a>
-                </Link> */}
                 <Link href={`/profile/${session.user.id}`}>Profile</Link>
               </DropdownItem>
 
