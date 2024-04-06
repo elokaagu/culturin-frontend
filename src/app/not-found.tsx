@@ -8,7 +8,7 @@ import { lightTheme, darkTheme, GlobalStyles } from "./styles/theme";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-export default function ErrorPage() {
+export default function NotFoundPage() {
   // States
   const { data: session } = useSession();
 
