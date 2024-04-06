@@ -44,18 +44,16 @@ export default function ProfilePage({ name, email }: ProfileProps) {
   const [userData, setUserData] = useState({ name, email });
 
   useEffect(() => {
-    async function fetchUserData() {
-      // Check if we have a session and session contains a user ID
-      if (session && session.user.id) {
-        const res = await fetch(`/api/user/${session.user.id}`);
-        if (res.ok) {
-          const data = await res.json();
-          setUserData(data);
-        }
-      }
+    // If session is available, fetch user data client-side
+    if (session?.user?.id) {
+      fetch(`/api/user/${session.user.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          // Update user data state
+          setUserData({ name: data.name, email: data.email });
+        })
+        .catch((error) => console.error("Error fetching user data:", error));
     }
-
-    fetchUserData();
   }, [session]);
 
   // const [savedArticles, setSavedArticles] = useState<Article[]>([]);
@@ -127,38 +125,6 @@ export default function ProfilePage({ name, email }: ProfileProps) {
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  try {
-    const userId = context.params?.id;
-    if (!userId) {
-      return { notFound: true };
-    }
-
-    const { db } = await connectMongoDB();
-
-    const user = await db
-      .collection("users")
-      .findOne({ _id: new ObjectId(userId as string) });
-
-    if (!user) {
-      return { notFound: true };
-    }
-
-    // user._id = new ObjectId(user._id.toString());
-    const userForProps = JSON.parse(JSON.stringify(user));
-
-    return {
-      props: {
-        name: userForProps.name,
-        email: userForProps.email,
-      },
-    };
-  } catch (error) {
-    console.error("Server side error:", error);
-    return { notFound: true };
-  }
-};
 
 const AppBody = styled.div`
   padding: 40px;

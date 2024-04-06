@@ -1,28 +1,38 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 import { connectMongoDB } from "../../../libs/mongodb";
 import { ObjectId } from "mongodb";
 
-export default async function handler(req: any, res: any) {
-  // Connect to the database
-  const { db } = await connectMongoDB();
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  // Check for the GET method
+  if (req.method !== "GET") {
+    res.setHeader("Allow", ["GET"]);
+    return res.status(405).json({ message: "Method Not Allowed" });
+  }
 
-  // Get the user ID from the request params
   const { id } = req.query;
 
   try {
-    // Convert the id to an ObjectId, and fetch the user from the database
+    const { db } = await connectMongoDB();
+
+    // Ensure the id is a valid ObjectId
+    if (!ObjectId.isValid(id as string)) {
+      return res.status(400).json({ message: "Invalid user ID format" });
+    }
+
     const user = await db
       .collection("users")
-      .findOne({ _id: new ObjectId(id) });
+      .findOne({ _id: new ObjectId(id as string) });
 
     if (!user) {
-      // If no user is found, return a 404 error
       return res.status(404).json({ message: "User not found" });
     }
 
-    // If a user is found, return the user data
-    res.status(200).json(user);
+    res.status(200).json({ data: user });
   } catch (error) {
-    // If there's an error, return a 500 error
-    res.status(500).json({ message: "Error fetching user data" });
+    console.error(error);
+    res.status(500).json({ error: "Error fetching user data" });
   }
 }
