@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import VideoHero from "./components/VideoHero";
 import ProviderHero from "./components/ProviderHero";
 import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   const scrollToSection = () => {

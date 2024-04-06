@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import Link from "next/link";
 import React, { useEffect } from "react";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 const createUsernameSlug = (name: string) => {
   return name
@@ -23,6 +24,7 @@ export function GoogleSignInButton({
   toggleDropdownButton: () => void;
 }) {
   const { data: session } = useSession();
+  const { isLoaded, user } = useUser();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 

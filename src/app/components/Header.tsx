@@ -13,8 +13,10 @@ import { Dispatch, SetStateAction } from "react";
 import ThemeToggle from "./ThemeToggle";
 import { Sun, Moon } from "styled-icons/boxicons-regular";
 import { useTheme } from "../styles/ThemeContext";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 export default function Header() {
+  const { isLoaded, user } = useUser();
   // const [theme, setTheme] = useState("light");
   const [headerClass, setHeaderClass] = useState("transparentHeader");
   const [isScrolled, setIsScrolled] = useState(false);
@@ -146,6 +148,9 @@ export default function Header() {
                     </DropdownListContainer>
                   )}
                 </DropdownContainer>
+              </li>
+              <li>
+                <UserButton afterSignOutUrl="/" />
               </li>
 
               <li>
