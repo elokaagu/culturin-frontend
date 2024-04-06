@@ -1,13 +1,13 @@
 import { GetServerSideProps } from "next";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import Link from "next/link";
-import { device } from "../styles/breakpoints";
-import ProfileCard from "../components/ProfileCard";
+import { device } from "../../styles/breakpoints";
+import ProfileCard from "../../components/ProfileCard";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
-import { connectMongoDB } from "../../libs/mongodb";
+import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
+import { connectMongoDB } from "../../../libs/mongodb";
 import { ObjectId } from "mongodb";
 import { useSession } from "next-auth/react";
 
@@ -125,6 +125,38 @@ export default function ProfilePage({ name, email }: ProfileProps) {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  try {
+    const userId = context.params?.id;
+    if (!userId) {
+      return { notFound: true };
+    }
+
+    const { db } = await connectMongoDB();
+
+    const user = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(userId as string) });
+
+    if (!user) {
+      return { notFound: true };
+    }
+
+    // user._id = new ObjectId(user._id.toString());
+    const userForProps = JSON.parse(JSON.stringify(user));
+
+    return {
+      props: {
+        name: userForProps.name,
+        email: userForProps.email,
+      },
+    };
+  } catch (error) {
+    console.error("Server side error:", error);
+    return { notFound: true };
+  }
+};
 
 const AppBody = styled.div`
   padding: 40px;
