@@ -40,7 +40,7 @@ export default function NotFoundPage() {
                   <h1>Uh Oh!</h1>
                   <p>You have hit the error page</p>
                   <Link href="/">
-                    <HeroButton>Go back to Culturin</HeroButton>
+                    <HeroButton>Home</HeroButton>
                   </Link>
                 </HeroTitle>
               </HeroContainer>
