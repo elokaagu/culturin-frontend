@@ -103,9 +103,7 @@ export default function ProfilePage() {
             </h1>
           </ProfileTitle>
           <Row>
-            <ProfileCardBody>
-              <p>This is the profile section where you save</p>
-            </ProfileCardBody>
+            <p>This is the profile section where you save</p>
             {/* {savedArticles.map((article) => (
               <ProfileCard key={article._id} article={article} />
             ))} */}
