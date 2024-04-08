@@ -74,10 +74,10 @@ const SearchContainer = styled.div`
   flex-direction: row;
   align-items: center;
   border-radius: 10px;
-  width: 80%;
+  width: 85%;
   padding: 12px;
-  padding-left: 20px;
-  padding-right: 20px;
+  // padding-left: 20px;
+  // padding-right: 20px;
   background-color: #262627;
   color: white;
   font-weight: 600;

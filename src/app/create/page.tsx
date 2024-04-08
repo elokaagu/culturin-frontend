@@ -22,8 +22,8 @@ export default function Create() {
         <GlobalStyles />
         <AppBody>
           <CreateTitle>
-            <h1>Create</h1>
-            <p>Upload a pin from your favourite locations</p>
+            <h1>Get started</h1>
+            <p>This will be where the partnerships start</p>
           </CreateTitle>
           <Link
             href="/create/upload"

@@ -94,6 +94,42 @@ export default function Header() {
                 </Link>
               </li>
             </ul>
+
+            <li>
+              <DropdownContainer>
+                <DropdownHeader
+                  onClick={() => handleDropdownToggle("destinations")}
+                >
+                  Destinations
+                  <ChevronDown size="20" />
+                </DropdownHeader>
+                {activeDropdown === "destinations" && (
+                  <DropdownListContainer>
+                    <DropdownList>
+                      <DropdownItem>
+                        <Link href="/countries/africa">Africa</Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link href="/countries/asia">Asia</Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link href="/countries/europe">Europe</Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link href="/countries/north-america">
+                          North America
+                        </Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link href="/countries/south-america">
+                          South America
+                        </Link>
+                      </DropdownItem>
+                    </DropdownList>
+                  </DropdownListContainer>
+                )}
+              </DropdownContainer>
+            </li>
           </HeaderLeft>
           <HeaderCenter>
             <SearchBar />
@@ -114,44 +150,17 @@ export default function Header() {
               </Link> */}
 
               {/* <Link href="/search">Upload</Link> */}
-              <li>
-                <DropdownContainer>
-                  <DropdownHeader
-                    onClick={() => handleDropdownToggle("destinations")}
-                  >
-                    Destinations
-                    <ChevronDown size="20" />
-                  </DropdownHeader>
-                  {activeDropdown === "destinations" && (
-                    <DropdownListContainer>
-                      <DropdownList>
-                        <DropdownItem>
-                          <Link href="/countries/africa">Africa</Link>
-                        </DropdownItem>
-                        <DropdownItem>
-                          <Link href="/countries/asia">Asia</Link>
-                        </DropdownItem>
-                        <DropdownItem>
-                          <Link href="/countries/europe">Europe</Link>
-                        </DropdownItem>
-                        <DropdownItem>
-                          <Link href="/countries/north-america">
-                            North America
-                          </Link>
-                        </DropdownItem>
-                        <DropdownItem>
-                          <Link href="/countries/south-america">
-                            South America
-                          </Link>
-                        </DropdownItem>
-                      </DropdownList>
-                    </DropdownListContainer>
-                  )}
-                </DropdownContainer>
-              </li>
-              <li>
+
+              {/* <li>
                 <UserButton afterSignOutUrl="/" />
-              </li>
+              </li> */}
+              <Link href="/create">
+                <li>
+                  {" "}
+                  <Plus size="20" />
+                  <span>Become an advisor</span>{" "}
+                </li>
+              </Link>
 
               <li>
                 <GoogleSignInButton
@@ -273,6 +282,9 @@ const StyledHeader = styled.header<StyledHeaderProps>`
 `;
 
 const HeaderLeft = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   cursor: pointer;
   &:hover {
     opacity: 0.8;
@@ -318,7 +330,9 @@ const SearchIcon = styled(Search)`
 `;
 
 const DropdownHeader = styled.div`
-  /* width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
   border: black;
   display: flex;
   flex-direction: row; */
