@@ -154,7 +154,7 @@ export default function Header() {
               {/* <li>
                 <UserButton afterSignOutUrl="/" />
               </li> */}
-              <Link href="/create">
+              <Link href="/join-us/advisors">
                 <li>
                   {" "}
                   <Plus size="20" />
