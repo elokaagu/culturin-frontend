@@ -1,5 +1,4 @@
 "use client";
-
 import { GetServerSideProps } from "next";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
@@ -14,19 +13,6 @@ import { ObjectId } from "mongodb";
 import { useSession } from "next-auth/react";
 import prisma from "../../../libs/prisma";
 
-interface ProfileProps {
-  // Define the shape of your props
-  name: string;
-  email: string;
-}
-interface Article {
-  _id: string;
-  title: string;
-  description: string;
-  imageSrc: string;
-  author: string;
-}
-
 const createUsernameSlug = (name: string) => {
   return name
     .normalize("NFD")
@@ -39,51 +25,12 @@ const createUsernameSlug = (name: string) => {
 
 // ... other imports
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id = "" } = context.params ?? {};
-
-  const user = await prisma.user.findUnique({
-    where: { id: id as string },
-  });
-  if (!user) {
-    return { notFound: true };
-  }
-
-  const userData = { ...user };
-
-  return { props: { userData } };
-
-  //   const { db } = await connectMongoDB();
-
-  //   const user = await db
-  //     .collection("users")
-  //     .findOne({ _id: new ObjectId(userId as string) });
-
-  //   if (!user) {
-  //     return { notFound: true };
-  //   }
-
-  //   // user._id = new ObjectId(user._id.toString());
-  //   const userForProps = JSON.parse(JSON.stringify(user));
-
-  //   return {
-  //     props: {
-  //       name: userForProps.name,
-  //       email: userForProps.email,
-  //     },
-  //   };
-  // } catch (error) {
-  //   console.error("Server side error:", error);
-  //   return { notFound: true };
-  // }
-};
-
-export default function ProfilePage({ name, email }: ProfileProps) {
+export default function ProfilePage() {
   const { data: session } = useSession();
   console.log("session", session);
   const [theme, setTheme] = useState("dark");
   const isDarkTheme = theme === "dark";
-  const [userData, setUserData] = useState({ name, email });
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     // If session is available, fetch user data client-side
@@ -152,8 +99,7 @@ export default function ProfilePage({ name, email }: ProfileProps) {
         <AppBody>
           <ProfileTitle>
             <h1>
-              {/* {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile */}
-              Welcome back {userData.name}
+              {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile
             </h1>
           </ProfileTitle>
           <p>Name </p>
