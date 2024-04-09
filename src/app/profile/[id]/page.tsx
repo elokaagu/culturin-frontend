@@ -121,8 +121,11 @@ export default function ProfilePage() {
           <Row>
             <p>This is the profile section where you save</p>
             <p>your favorite articles</p>
-            <span>{userData.email}</span>
+            <p>{userData.email}</p>
           </Row>
+          <ProfileCardBody>
+            <p>Browse your library</p>
+          </ProfileCardBody>
         </AppBody>
       </ThemeProvider>
     </>

@@ -55,8 +55,6 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Include authorization if your API requires it
-          // 'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ articleId: data?._id }),
       });
