@@ -30,10 +30,10 @@ export default function ProfilePage() {
   console.log("session", session);
   const [theme, setTheme] = useState("dark");
   const isDarkTheme = theme === "dark";
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({ name: "", email: "" });
   const fetchDataFromApri = async () => {
     try {
-      const response = await fetch("/api/user", {
+      const response = await fetch("/api/users", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -50,9 +50,8 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
-    // If session is available, fetch user data client-side
     if (session?.user?.id) {
-      fetch(`/api/user/${session.user.id}`)
+      fetch(`/api/users/${session.user.id}`)
         .then((res) => res.json())
         .then((data) => {
           // Update user data state
@@ -121,9 +120,8 @@ export default function ProfilePage() {
           </ProfileTitle>
           <Row>
             <p>This is the profile section where you save</p>
-            {/* {savedArticles.map((article) => (
-              <ProfileCard key={article._id} article={article} />
-            ))} */}
+            <p>your favorite articles</p>
+            <span>{userData.email}</span>
           </Row>
         </AppBody>
       </ThemeProvider>
