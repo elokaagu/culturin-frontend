@@ -5,9 +5,9 @@ import User from "../../../models/User";
 export async function GET(request: Request, params: { id: string }) {
   try {
     await connectMongoDB();
-    const user = await User.findOne({ _id: params.id });
+    const user = await User.findOne();
     return NextResponse.json({
-      message: "ok finding the user: ",
+      message: "ok finding the user:",
       user,
     });
   } catch (error) {
