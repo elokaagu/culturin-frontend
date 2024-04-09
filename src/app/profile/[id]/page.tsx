@@ -31,6 +31,23 @@ export default function ProfilePage() {
   const [theme, setTheme] = useState("dark");
   const isDarkTheme = theme === "dark";
   const [userData, setUserData] = useState({});
+  const fetchDataFromApri = async () => {
+    try {
+      const response = await fetch("/api/user", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("data", data);
+        setUserData(data);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   useEffect(() => {
     // If session is available, fetch user data client-side
