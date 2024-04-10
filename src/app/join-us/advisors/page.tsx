@@ -2,10 +2,7 @@
 import styled from "styled-components";
 import React, { useState } from "react";
 import Header from "../../components/Header";
-import SearchBar from "../../components/SearchBar";
 import { ChevronDown } from "styled-icons/boxicons-regular";
-import { Plus } from "styled-icons/boxicons-regular";
-import { Share } from "styled-icons/boxicons-regular";
 import Link from "next/link";
 import { device } from "../../styles/breakpoints";
 import { ThemeProvider } from "styled-components";
@@ -54,6 +51,29 @@ export default function Advisors() {
               to a successful and fulfilling future in the travel industry.
             </p>
             <HeroButton onClick={scrollToSection}>Apply</HeroButton>
+
+            <OfferBody>
+              <h1>Community</h1>
+              <p>
+                Our diverse, inclusive & engaged global community is designed to
+                make you feel welcome.
+              </p>
+              <OfferBenefit></OfferBenefit>
+            </OfferBody>
+            <Features>
+              <Feature>
+                <p>Live networking events across the country</p>
+              </Feature>
+              <Feature>
+                <p>Community app for collaboration and support</p>
+              </Feature>
+              <Feature>
+                <p>Weekly online community & partner events</p>
+              </Feature>
+              <Feature>
+                <p>Mentorship, FAM trips & site visits</p>
+              </Feature>
+            </Features>
           </Body>
         </AppBody>
       </ThemeProvider>
@@ -305,5 +325,86 @@ const HeroButton = styled.div`
 
   @media ${device.mobile} {
     width: 100px;
+  }
+`;
+
+const OfferBody = styled.div`
+  margin: auto;
+  margin-top: 20px;
+  width: 95%;
+  align-items: left;
+  padding-left: 30px;
+  padding-top: 20px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  cursor: pointer;
+  background: #111111;
+  border-radius: 10px;
+
+  p {
+    font-size: 18px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    color: white;
+  }
+
+  @media ${device.mobile} {
+    padding-left: 20px;
+    align-items: left;
+    width: 100%;
+
+    p {
+      font-size: 18px;
+      padding-bottom: 36px;
+      color: white;
+    }
+  }
+`;
+
+const OfferBenefit = styled.div``;
+
+const Features = styled.div`
+  margin-top: 40px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+`;
+
+const Feature = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid #111111;
+  border-radius: 10px;
+  background: black;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const LearnMoreButton = styled.button`
+  margin-top: 50px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #f1f1f1;
   }
 `;
