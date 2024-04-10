@@ -223,7 +223,7 @@ const AppBody = styled.div`
 
 const ProfileTitle = styled.div`
   cursor: pointer;
-  padding: 10px;
+  padding-bottom: 10px;
 `;
 
 const Row = styled.div`
