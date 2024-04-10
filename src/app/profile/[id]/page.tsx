@@ -225,7 +225,21 @@ const ProfileTitle = styled.div`
 `;
 
 const Row = styled.div`
+display: flex;
+padding: 20px;
+flex direction: column;
+justify: space-between;
+flex: 1;
+overflow: scroll;
+a {
+  text-decoration: none;
+  color: white;
+}
+
+@media ${device.mobile} {
+  padding: 10px;
   overflow: scroll;
+  }
 `;
 
 const ProfileCardBody = styled.div`
