@@ -155,29 +155,30 @@ export default function ProfilePage() {
           </ProfileTitle>
           <Row>
             <h1>Articles</h1>
-            <p>{userData.name} favorite articles</p>
-          </Row>{" "}
-          {articleData.map((cardData, index) => (
-            <Card key={index}>
-              <Link href={`/articles/${cardData.currentSlug}`}>
-                <CardBody>
-                  <Image
-                    src={urlFor(cardData.titleImage).url()}
-                    alt={cardData.title}
-                    placeholder="blur"
-                    fill
-                    draggable={false}
-                    style={{ objectFit: "cover" }}
-                    blurDataURL={urlFor(cardData.titleImage).url()}
-                    priority={true}
-                  />
-                </CardBody>
-              </Link>
+            <p>Your saved articles</p>
+          </Row>
+          <ProfileCardBody>
+            {articleData.map((cardData, index) => (
+              <Card key={index}>
+                <Link href={`/articles/${cardData.currentSlug}`}>
+                  <CardBody>
+                    <Image
+                      src={urlFor(cardData.titleImage).url()}
+                      alt={cardData.title}
+                      placeholder="blur"
+                      fill
+                      draggable={false}
+                      style={{ objectFit: "cover" }}
+                      blurDataURL={urlFor(cardData.titleImage).url()}
+                      priority={true}
+                    />
+                  </CardBody>
+                </Link>
 
-              <CardText>
-                <h1>{cardData.title}</h1>
-                <CardAuthor>
-                  {/* <AvatarContainer>
+                <CardText>
+                  <h1>{cardData.title}</h1>
+                  <CardAuthor>
+                    {/* <AvatarContainer>
             <Image
               src="/eloka.jpeg"
               alt="elokaagu"
@@ -187,11 +188,12 @@ export default function ProfilePage() {
               style={imageStyle}
             />
           </AvatarContainer> */}
-                  <p>{cardData.summary}</p>
-                </CardAuthor>
-              </CardText>
-            </Card>
-          ))}
+                    <p>{cardData.summary}</p>
+                  </CardAuthor>
+                </CardText>
+              </Card>
+            ))}
+          </ProfileCardBody>
         </AppBody>
       </ThemeProvider>
     </>
