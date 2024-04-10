@@ -129,6 +129,18 @@ export default function Advisors() {
                 <ApplyButton onClick={scrollToSection}>APPLY</ApplyButton>
               </PricingCard>
             </MembershipSection>
+            <CTASection>
+              <CTATitle>
+                Apply to join Culturin today & get everything you need to
+                succeed
+              </CTATitle>
+              <CTASubtitle>
+                Book just $360/month in travel and you will cover your
+                subscription fees. Everything after that is your profit to keep.
+              </CTASubtitle>
+              <EmailInput placeholder="Enter your email" />
+              <GetStartedButton>Apply</GetStartedButton>
+            </CTASection>
           </Body>
         </AppBody>
       </ThemeProvider>
@@ -467,7 +479,6 @@ const LearnMoreButton = styled.button`
 const MembershipSection = styled.section`
   width: 100%;
   padding: 60px 0;
-  background: #111111;
   color: black;
   display: flex;
   justify-content: space-around;
@@ -478,6 +489,7 @@ const MembershipSection = styled.section`
 const MembershipTitle = styled.h2`
   font-size: 2em;
   text-align: center;
+  line-height: 1.2;
   margin-bottom: 20px;
   color: white;
 `;
@@ -575,5 +587,66 @@ const ApplyButton = styled.button`
 
   &:hover {
     background: #333;
+  }
+`;
+
+const CTASection = styled.section`
+  background-color: black;
+  padding: 50px 0;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  border-radius: 10px;
+  color: #000;
+`;
+
+const CTATitle = styled.h2`
+  font-size: 2em;
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  color: white;
+`;
+
+const CTASubtitle = styled.p`
+  font-size: 1em;
+  margin-bottom: 30px;
+  color: white;
+`;
+
+const EmailInput = styled.input`
+  font-size: 1em;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 2px solid #000;
+  background-color: white;
+  color: #000;
+  width: 280px;
+  align-self: center;
+  border-radius: 10px;
+  outline: none;
+  text-align: left;
+
+  &::placeholder {
+    color: #000;
+  }
+`;
+
+const GetStartedButton = styled.button`
+  font-size: 1em;
+  color: #000;
+  background-color: #fff;
+  padding: 10px 20px;
+  width: 300px;
+  align-self: center;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 2px solid #000; /* or another color for the border */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    opacity: 0.8;
   }
 `;
