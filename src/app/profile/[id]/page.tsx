@@ -157,7 +157,7 @@ export default function ProfilePage() {
             <h1>Articles</h1>
             <p>Your saved articles</p>
           </Row>
-          <ProfileCardBody>
+          <Row>
             {articleData.map((cardData, index) => (
               <Card key={index}>
                 <Link href={`/articles/${cardData.currentSlug}`}>
@@ -193,7 +193,7 @@ export default function ProfilePage() {
                 </CardText>
               </Card>
             ))}
-          </ProfileCardBody>
+          </Row>
         </AppBody>
       </ThemeProvider>
     </>
