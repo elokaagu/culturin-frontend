@@ -8,6 +8,10 @@ import { device } from "../../styles/breakpoints";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
+interface ToggleOptionProps {
+  active: boolean;
+}
+
 export default function Advisors() {
   const scrollToSection = () => {
     const section = document.getElementById("target-section");
@@ -17,6 +21,8 @@ export default function Advisors() {
   };
   // States
   const [theme, setTheme] = useState("dark");
+  const [billingCycle, setBillingCycle] = useState("monthly");
+  const [activeSection, setActiveSection] = useState("");
 
   const isDarkTheme = theme === "dark";
   return (
@@ -58,7 +64,6 @@ export default function Advisors() {
                 Our diverse, inclusive & engaged global community is designed to
                 make you feel welcome.
               </p>
-              <OfferBenefit></OfferBenefit>
             </OfferBody>
             <Features>
               <Feature>
@@ -74,6 +79,56 @@ export default function Advisors() {
                 <p>Mentorship, FAM trips & site visits</p>
               </Feature>
             </Features>
+            <MembershipSection>
+              <MembershipTitle>
+                Apply to join Culturin & get everything you need to succeed
+              </MembershipTitle>
+              <MembershipInfo>
+                Our advisors typically make back their membership fee within
+                their first month.
+              </MembershipInfo>
+              <PricingCard>
+                <PricingToggle>
+                  <ToggleOption
+                    active={billingCycle === "annual"}
+                    onClick={() => setBillingCycle("annual")}
+                  >
+                    ANNUAL
+                  </ToggleOption>
+                  <ToggleOption
+                    active={billingCycle === "monthly"}
+                    onClick={() => setBillingCycle("monthly")}
+                  >
+                    MONTHLY
+                  </ToggleOption>
+                </PricingToggle>
+                {billingCycle === "annual" ? (
+                  <>
+                    <PriceAmount>$299</PriceAmount>
+                    <PricePer>per year</PricePer>
+                    <BilledDetail>billed every 12 months</BilledDetail>
+                  </>
+                ) : (
+                  <>
+                    <PriceAmount>$49</PriceAmount>
+                    <PricePer>per month</PricePer>
+                    <BilledDetail>billed every month</BilledDetail>
+                  </>
+                )}
+                <BestValueLabel>
+                  {billingCycle === "annual" ? "BEST VALUE: Save 50%" : ""}
+                </BestValueLabel>
+
+                <BenefitsList>
+                  <Benefit>Start at 70% commission split</Benefit>
+                  <Benefit>Live training and mentorship</Benefit>
+                  <Benefit>Access to 4,500+ preferred partners</Benefit>
+                  <Benefit>Custom marketing tools</Benefit>
+                  <Benefit>Global community of travel pros</Benefit>
+                </BenefitsList>
+                <ApplyButton onClick={scrollToSection}>APPLY</ApplyButton>
+              </PricingCard>
+            </MembershipSection>
           </Body>
         </AppBody>
       </ThemeProvider>
@@ -406,5 +461,119 @@ const LearnMoreButton = styled.button`
 
   &:hover {
     background-color: #f1f1f1;
+  }
+`;
+
+const MembershipSection = styled.section`
+  width: 100%;
+  padding: 60px 0;
+  background: #111111;
+  color: black;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const MembershipTitle = styled.h2`
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 20px;
+  color: white;
+`;
+
+const MembershipInfo = styled.p`
+  font-size: 1.2em;
+  text-align: center;
+  margin-bottom: 40px;
+`;
+
+const PricingCard = styled.div`
+  width: 350px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const PricingToggle = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  margin-bottom: 30px;
+`;
+
+const ToggleOption = styled.span<ToggleOptionProps>`
+  font-weight: bold;
+  cursor: pointer;
+  background-color: ${(props) =>
+    props.active
+      ? "#DDEEFF"
+      : "transparent"}; // Example active color, adjust as needed
+  padding: 10px;
+  border-radius: 10px;
+  &:first-child {
+    margin-right: 5px;
+  }
+  &:last-child {
+    margin-left: 5px;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const PriceAmount = styled.span`
+  font-size: 3em;
+  font-weight: bold;
+`;
+
+const PricePer = styled.span`
+  font-size: 1em;
+`;
+
+const BilledDetail = styled.span`
+  font-size: 0.8em;
+  color: #666;
+`;
+
+const BestValueLabel = styled.span`
+  font-size: 0.9em;
+  color: green;
+  margin: 10px 0;
+`;
+
+const BenefitsList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+`;
+
+const Benefit = styled.li`
+  font-size: 1em;
+  margin: 10px 0;
+  &:before {
+    content: "✔";
+    color: green;
+    margin-right: 10px;
+  }
+`;
+
+const ApplyButton = styled.button`
+  padding: 10px 20px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: #333;
   }
 `;
