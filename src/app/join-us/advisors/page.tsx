@@ -12,6 +12,13 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
 export default function Advisors() {
+  const scrollToSection = () => {
+    const section = document.getElementById("target-section");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  // States
   const [theme, setTheme] = useState("dark");
 
   const isDarkTheme = theme === "dark";
@@ -21,20 +28,33 @@ export default function Advisors() {
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <GlobalStyles />
         <AppBody>
-          <AdvisorTitle>
-            <h1>Get started</h1>
-            <p>This will be where the partnerships start</p>
-          </AdvisorTitle>
-          <Link
-            href="/assistant"
-            style={{
-              textDecoration: "none",
-            }}
-          >
-            <AdvisorResults>
-              <p>Make your itinerary</p> <Share size="20" />
-            </AdvisorResults>
-          </Link>
+          <Title>
+            <h1>Become a Culturin advisor</h1>
+          </Title>
+          <Subtitle>
+            <p>
+              {" "}
+              Culturin is designed for the innovative and entrepreneurial travel
+              advisor of tomorrow. Our core mission is to empower those with a
+              deep-rooted passion for exploration and travel to generate a
+              flexible income by curating and booking unforgettable journeys. At
+              Culturin, we believe that travel is more than just visiting new
+              destinations; its about creating experiences that last a lifetime.
+            </p>
+          </Subtitle>
+
+          <Body>
+            <p>
+              Whether you are just starting out or looking to elevate your
+              existing travel advisory business, Culturin offers the tools,
+              resources, and community support needed to thrive in the dynamic
+              world of travel planning. Join us and become part of a vibrant
+              community of travel enthusiasts who are transforming their love
+              for exploration into rewarding careers. Let Culturin be your guide
+              to a successful and fulfilling future in the travel industry.
+            </p>
+            <HeroButton onClick={scrollToSection}>Apply</HeroButton>
+          </Body>
         </AppBody>
       </ThemeProvider>
     </div>
@@ -54,28 +74,55 @@ const AppBody = styled.div`
   color: white;
 `;
 
-const AdvisorResults = styled.div`
-  flex-direction: row;
-  align-items: center;
-  border-radius: 15px;
-  justify-content: space-between;
-  padding: 20px;
-  border: 2px solid #262627;
-  background-color: transparent;
-  font-weight: 300;
-  cursor: pointer;
+const Title = styled.div`
+  margin: auto;
+  width: 50%;
+  margin: auto 10px;
+  padding-left: 30px;
+  padding-top: 20px;
+  padding-right: 20px;
   display: flex;
-  color: white;
-  width: 350px;
-  margin: 20px;
-  &:hover {
-    background: #222222;
-    transition: 0.3s ease-in-out;
+  flex-direction: column;
+  align-items: left;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 0;
+    width: 100%;
+
+    h1 {
+      font-size: 25px;
+      align-items: left;
+      margin-left: 20px;
+      width: 100%;
+    }
+  }
+`;
+
+const Subtitle = styled.div`
+  margin: auto;
+  width: 50%;
+  margin: auto 10px;
+  padding-left: 30px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  cursor: pointer;
+
+  h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: grey;
   }
 
-  a {
-    text-decoration: none;
-    color: black;
+  @media ${device.mobile} {
+    margin-left: 60px;
+    padding-left: 10px;
+    align-items: left;
+    width: 100%;
   }
 `;
 
@@ -86,5 +133,177 @@ const AdvisorTitle = styled.div`
     align-items: left;
     margin-left: 0;
     width: 100%;
+  }
+`;
+
+const Body = styled.div`
+  margin: auto;
+  width: 50%;
+  padding-left: 30px;
+  padding-top: 20px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  cursor: pointer;
+
+  p {
+    font-size: 18px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    color: white;
+  }
+
+  @media ${device.mobile} {
+    padding-left: 20px;
+    align-items: left;
+    width: 100%;
+
+    p {
+      font-size: 18px;
+      padding-bottom: 36px;
+      color: white;
+    }
+  }
+`;
+
+const ImageContainer = styled.div`
+  padding-bottom: 20px;
+  cursor: pointer;
+  img {
+    border-radius: 10px;
+  }
+
+  @media ${device.mobile} {
+    margin: 0 auto;
+    padding-left: 10px;
+    border-radius: 20px;
+
+    img {
+      margin-left: 0;
+      border-radius: 10px;
+      width: 360px;
+    }
+  }
+`;
+
+const ImageWrap = styled.span`
+  & > span {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 20px;
+    object-fit: cover;
+  }
+
+  @media ${device.mobile} {
+    & > span {
+      object-fit: cover;
+      border-radius: 20px; /* Rounded edges on mobile */
+    }
+  }
+`;
+
+const SaveButtonContainer = styled.div`
+  border-radius: 10px;
+  width: 120px;
+  padding: 10px;
+  display: flex;
+  margin-right: 20px;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
+    font-size: 14px;
+  }
+`;
+
+const ShareButtonContainer = styled.div`
+  border-radius: 10px;
+  width: 120px;
+  padding: 10px;
+  display: flex;
+  margin-right: 20px;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
+    font-size: 14px;
+  }
+
+  // color: rgb(250, 193, 0);
+  // padding-bottom: 20px;
+  // text-decoration: none;
+  // position: fixed;
+  // right: 50px;
+  // top: 200px;
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  color: black;
+  font-size: 18px;
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: left;
+  flex-direction: row;
+`;
+
+const HeroButton = styled.div`
+  margin-top: 20px;
+  border-radius: 5px;
+  width: 100px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  background: ${(props) => props.theme.title};
+  color: ${(props) => props.theme.body};
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
   }
 `;
