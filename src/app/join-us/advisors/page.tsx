@@ -129,18 +129,21 @@ export default function Advisors() {
                 <ApplyButton onClick={scrollToSection}>APPLY</ApplyButton>
               </PricingCard>
             </MembershipSection>
-            <CTASection>
-              <CTATitle>
-                Apply to join Culturin today & get everything you need to
-                succeed
-              </CTATitle>
-              <CTASubtitle>
-                Book just $360/month in travel and you will cover your
-                subscription fees. Everything after that is your profit to keep.
-              </CTASubtitle>
-              <EmailInput placeholder="Enter your email" />
-              <GetStartedButton>Apply</GetStartedButton>
-            </CTASection>
+            <div id="target-section">
+              <CTASection>
+                <CTATitle>
+                  Apply to join Culturin today & get everything you need to
+                  succeed
+                </CTATitle>
+                <CTASubtitle>
+                  Book just $360/month in travel and you will cover your
+                  subscription fees. Everything after that is your profit to
+                  keep.
+                </CTASubtitle>
+                <EmailInput placeholder="Enter your email" />
+                <GetStartedButton>Apply</GetStartedButton>
+              </CTASection>
+            </div>
           </Body>
         </AppBody>
       </ThemeProvider>
