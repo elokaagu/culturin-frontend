@@ -154,8 +154,10 @@ export default function ProfilePage() {
             </h1>
           </ProfileTitle>
           <Row>
-            <h1>Articles</h1>
-            <p>Your saved articles</p>
+            <ProfileHeadline>
+              <h1>Articles</h1>
+              <p>Your saved articles</p>
+            </ProfileHeadline>
           </Row>
           <Row>
             {articleData.map((cardData, index) => (
@@ -432,4 +434,9 @@ const CardAuthor = styled.div`
   pointer: cursor;
   flex-direction: row;
   align-items: center;
+`;
+
+const ProfileHeadline = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
