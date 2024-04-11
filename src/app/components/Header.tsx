@@ -94,8 +94,7 @@ export default function Header() {
                 </Link>
               </li>
             </ul>
-
-            <li>
+            {/* <li>
               <DropdownContainer>
                 <DropdownHeader
                   onClick={() => handleDropdownToggle("destinations")}
@@ -129,7 +128,7 @@ export default function Header() {
                   </DropdownListContainer>
                 )}
               </DropdownContainer>
-            </li>
+            </li> */}
           </HeaderLeft>
           <HeaderCenter>
             <SearchBar />
@@ -154,13 +153,13 @@ export default function Header() {
               {/* <li>
                 <UserButton afterSignOutUrl="/" />
               </li> */}
-              <Link href="/join-us/advisors">
+              {/* <Link href="/join-us/advisors">
                 <li>
                   {" "}
                   <Plus size="20" />
                   <span>Become an advisor</span>{" "}
                 </li>
-              </Link>
+              </Link> */}
 
               <li>
                 <GoogleSignInButton
@@ -283,6 +282,7 @@ const StyledHeader = styled.header<StyledHeaderProps>`
 
 const HeaderLeft = styled.div`
   display: flex;
+  flex: 0.33;
   flex-direction: row;
   align-items: center;
   cursor: pointer;
