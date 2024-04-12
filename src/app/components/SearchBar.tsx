@@ -74,7 +74,7 @@ const SearchContainer = styled.div`
   flex-direction: row;
   align-items: center;
   border-radius: 10px;
-  width: 85%;
+  width: 100%;
   padding: 12px;
   // padding-left: 20px;
   // padding-right: 20px;

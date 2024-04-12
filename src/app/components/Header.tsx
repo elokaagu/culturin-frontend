@@ -94,6 +94,13 @@ export default function Header() {
                 </Link>
               </li>
             </ul>
+            <Link href="/about">
+              <li>
+                <span />
+                About
+              </li>
+            </Link>
+
             {/* <li>
               <DropdownContainer>
                 <DropdownHeader
@@ -199,8 +206,6 @@ const Head = styled.div`
   width: calc(100% - 60px);
   z-index: 1000;
   background: black;
-  // background: linear-gradient(to bottom, #000000 20%, transparent 100%);
-
   padding-top: 40px;
   padding-bottom: 40px;
   padding-left: 30px;
@@ -369,6 +374,20 @@ const DropdownList = styled("ul")`
     100% {
       opacity: 0.5;
     }
+  }
+`;
+
+const Headeritem = styled("li")`
+  list-style: none;
+  color: black;
+  width: 100%;
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  a:hover {
+    color: #4444;
   }
 `;
 
