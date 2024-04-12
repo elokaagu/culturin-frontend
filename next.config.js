@@ -11,6 +11,7 @@ const nextConfig = {
   // },
 
   images: {
+    domains: ["forbes.com"],
     remotePatterns: [
       {
         protocol: "https",

@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import VideoHero from "./components/VideoHero";
 import ProviderHero from "./components/ProviderHero";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
+import Image from "next/image";
 
 export default function Home() {
   const scrollToSection = () => {
@@ -153,7 +153,7 @@ const HeroContainer = styled.div`
   position: relative; // To position elements within it absolutely
   justify-content: center; // Center the content vertically
   align-items: center; // Center the content horizontally
-  background-image: url("https://www.forbes.com/advisor/wp-content/uploads/2021/03/traveling-based-on-fare-deals.jpg"); // Add your background image path here
+  background-image: url("https://www.forbes.com/advisor/wp-content/uploads/2021/03/traveling-based-on-fare-deals.jpg");
   background-size: cover; // Cover the entire area of the div
   background-position: center; // Center the background image
   color: white; // Assuming you want a light text over a dark image
@@ -284,10 +284,19 @@ const ImageWrapper = styled.div`
   width: 100%; // Ensure it spans the full width or adjust as necessary
   height: 50vh; // Adjust height as needed
   top: /* Adjust this based on your header's height to position it right below the header */ ;
-  z-index: 0; // Ensures that text and buttons with higher z-index values appear above the image
+  z-index: -1; // Ensures the image is behind your content
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 `;
+
+// const ImageWrapper = styled.div`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   z-index: -1; // Ensures the image is behind your content
+// `;
