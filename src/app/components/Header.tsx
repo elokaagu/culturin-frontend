@@ -159,13 +159,13 @@ export default function Header() {
               {/* <li>
                 <UserButton afterSignOutUrl="/" />
               </li> */}
-              {/* <Link href="/join-us/advisors">
+              <Link href="/join-us/advisors">
                 <li>
                   {" "}
-                  <Plus size="20" />
-                  <span>Become an advisor</span>{" "}
+                  {/* <Plus size="20" /> */}
+                  <span> Advisor</span>{" "}
                 </li>
-              </Link> */}
+              </Link>
 
               <li>
                 <GoogleSignInButton
