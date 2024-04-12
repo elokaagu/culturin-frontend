@@ -65,15 +65,15 @@ export default function Home() {
             <Row>
               <Title>
                 <div id="target-section">
-                  <Link href="/curated-experiences" passHref>
-                    <h1>Curated Experiences</h1>
+                  <Link href="/trending" passHref>
+                    <h1>Trending Stories</h1>
                   </Link>
                 </div>
-                <p>Browse our hand picked selection of experiences</p>
+                <p>Discover a world of travel, inspiration and culture</p>
               </Title>
             </Row>
             <Row>
-              <ProviderHero />
+              <Hero />
             </Row>
             <Row>
               <Title>
@@ -88,14 +88,14 @@ export default function Home() {
             </VideoRow>
             <Row>
               <Title>
-                <Link href="/trending" passHref>
-                  <h1>Trending Stories</h1>
+                <Link href="/curated-experiences" passHref>
+                  <h1>Curated Experiences</h1>
                 </Link>
-                <p>Discover a world of travel, inspiration and culture</p>
+                <p>Browse our hand picked selection of experiences</p>
               </Title>
             </Row>
             <Row>
-              <Hero />
+              <ProviderHero />
             </Row>
 
             {/* <Row>

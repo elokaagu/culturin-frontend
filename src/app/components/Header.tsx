@@ -100,7 +100,6 @@ export default function Header() {
                 About
               </li>
             </Link>
-
             {/* <li>
               <DropdownContainer>
                 <DropdownHeader
@@ -287,7 +286,7 @@ const StyledHeader = styled.header<StyledHeaderProps>`
 
 const HeaderLeft = styled.div`
   display: flex;
-  flex: 0.33;
+  flex: 0.25;
   flex-direction: row;
   align-items: center;
   cursor: pointer;
@@ -295,7 +294,7 @@ const HeaderLeft = styled.div`
     opacity: 0.8;
     transition: 0.3s ease-in-out;
   }
-  flex: 0.33;
+
   z-index: 600;
 `;
 
