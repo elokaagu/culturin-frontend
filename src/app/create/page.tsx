@@ -21,40 +21,45 @@ export default function Create() {
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <GlobalStyles />
         <AppBody>
-          <CreateTitle>
-            <h1>Get started</h1>
-            <p>This will be where the partnerships start</p>
-          </CreateTitle>
-          <Link
-            href="/create/upload"
-            style={{
-              textDecoration: "none",
-            }}
-          >
-            <CreateResults>
-              <p>Create a pin</p> <Plus size="20" />
-            </CreateResults>
-          </Link>
-          <Link
-            href="/profile"
-            style={{
-              textDecoration: "none",
-            }}
-          >
-            <CreateResults>
-              <p>View your profile</p> <ChevronDown size="20" />
-            </CreateResults>
-          </Link>
-          <Link
-            href="/assistant"
-            style={{
-              textDecoration: "none",
-            }}
-          >
-            <CreateResults>
-              <p>Make your itinerary</p> <Share size="20" />
-            </CreateResults>
-          </Link>
+          <Title>
+            <h1>Create</h1>
+            <p>
+              Share your story and inspiration from one of your favourite
+              destinations
+            </p>
+          </Title>
+          <UploadContainer>
+            <UploadOption>
+              <Link
+                href="/"
+                style={{
+                  textDecoration: "none",
+                }}
+              >
+                <HeroButton>Write an article</HeroButton>
+              </Link>
+            </UploadOption>
+            <UploadOption>
+              <Link
+                href="/profile"
+                style={{
+                  textDecoration: "none",
+                }}
+              >
+                <HeroButton>Upload a video</HeroButton>
+              </Link>
+            </UploadOption>
+            <UploadOption>
+              <Link
+                href="/assistant"
+                style={{
+                  textDecoration: "none",
+                }}
+              >
+                <HeroButton>Become a partner</HeroButton>
+              </Link>
+            </UploadOption>
+          </UploadContainer>
         </AppBody>
       </ThemeProvider>
     </div>
@@ -74,32 +79,59 @@ const AppBody = styled.div`
   color: white;
 `;
 
-const CreateResults = styled.div`
-  flex-direction: row;
-  align-items: center;
-  border-radius: 15px;
-  justify-content: space-between;
-  padding: 20px;
-  border: 2px solid #262627;
-  background-color: transparent;
-  font-weight: 300;
-  cursor: pointer;
+const Title = styled.div`
+  margin: auto;
+  width: 50%;
+  margin: auto 10px;
+  padding-left: 30px;
+  padding-top: 20px;
+  padding-right: 20px;
   display: flex;
-  color: white;
-  width: 350px;
-  margin: 20px;
-  &:hover {
-    background: #222222;
-    transition: 0.3s ease-in-out;
-  }
+  flex-direction: column;
+  align-items: left;
+  cursor: pointer;
+  transition: background-color 0.3s;
 
-  a {
-    text-decoration: none;
-    color: black;
+  @media ${device.mobile} {
+    align-items: left;
+    margin-left: 0;
+    width: 100%;
+
+    h1 {
+      font-size: 25px;
+      align-items: left;
+      margin-left: 20px;
+      width: 100%;
+    }
   }
 `;
 
-const CreateTitle = styled.div`
+const Subtitle = styled.div`
+  margin: auto;
+  width: 50%;
+  margin: auto 10px;
+  padding-left: 30px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  cursor: pointer;
+
+  h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: grey;
+  }
+
+  @media ${device.mobile} {
+    margin-left: 60px;
+    padding-left: 10px;
+    align-items: left;
+    width: 100%;
+  }
+`;
+
+const AdvisorTitle = styled.div`
   align-items: center;
 
   @media ${device.mobile} {
@@ -107,4 +139,136 @@ const CreateTitle = styled.div`
     margin-left: 0;
     width: 100%;
   }
+`;
+
+const Body = styled.div`
+  margin: auto;
+  width: 50%;
+  padding-left: 30px;
+  padding-top: 20px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  cursor: pointer;
+  a {
+    text-decoration: none;
+  }
+
+  p {
+    font-size: 18px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    color: white;
+  }
+
+  @media ${device.mobile} {
+    padding-left: 20px;
+    align-items: left;
+    width: 100%;
+
+    p {
+      font-size: 18px;
+      padding-bottom: 36px;
+      color: white;
+    }
+  }
+`;
+
+const ImageContainer = styled.div`
+  padding-bottom: 20px;
+  cursor: pointer;
+  img {
+    border-radius: 10px;
+  }
+
+  @media ${device.mobile} {
+    margin: 0 auto;
+    padding-left: 10px;
+    border-radius: 20px;
+
+    img {
+      margin-left: 0;
+      border-radius: 10px;
+      width: 360px;
+    }
+  }
+`;
+
+const ImageWrap = styled.span`
+  & > span {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 20px;
+    object-fit: cover;
+  }
+
+  @media ${device.mobile} {
+    & > span {
+      object-fit: cover;
+      border-radius: 20px; /* Rounded edges on mobile */
+    }
+  }
+`;
+
+const SaveButtonContainer = styled.div`
+  border-radius: 10px;
+  width: 120px;
+  padding: 10px;
+  display: flex;
+  margin-right: 20px;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
+    font-size: 14px;
+  }
+`;
+
+const HeroButton = styled.div`
+  margin-top: 20px;
+  border-radius: 5px;
+  width: 150px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  background: ${(props) => props.theme.title};
+  color: ${(props) => props.theme.body};
+
+  &:hover {
+    background: grey;
+    transition: 0.3s ease-in-out;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
+  }
+`;
+
+const UploadContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+`;
+
+const UploadOption = styled.div`
+  display: flex;
+  margin: 20px;
 `;
