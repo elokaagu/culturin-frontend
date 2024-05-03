@@ -148,7 +148,7 @@ export default function Header() {
             <ul>
               <Link href="/create">
                 <li>
-                  <Plus size="20" />
+                  {/* <Plus size="20" /> */}
                   <span />
                   Create
                 </li>
@@ -286,7 +286,7 @@ const StyledHeader = styled.header<StyledHeaderProps>`
 
 const HeaderLeft = styled.div`
   display: flex;
-  flex: 0.25;
+  flex: 0.33;
   flex-direction: row;
   align-items: center;
   cursor: pointer;
@@ -299,10 +299,17 @@ const HeaderLeft = styled.div`
 `;
 
 const HeaderRight = styled.div`
-  /* flex: 0.33;
-  align-items: right; */
+  display: flex;
+  // flex: 0.25;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+    transition: 0.3s ease-in-out;
+  }
 
-  justify-content: space-between;
+  z-index: 600;
   @media ${device.mobile} {
     display: none;
   }
