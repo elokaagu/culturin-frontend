@@ -1,152 +1,76 @@
-import * as React from "react";
-import styled from "styled-components";
-import { device } from "../styles/breakpoints";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function ProfileCard({
-  article,
-}: {
-  article: {
-    title: string;
-    description: string;
-    imageSrc: string;
-    author: string;
-  };
-}) {
+export type ProfileCardArticle = {
+  title: string;
+  description: string;
+  imageSrc: string;
+  author: string;
+  /** Optional tiny preview for `placeholder="blur"` (remote URLs need this). */
+  blurDataURL?: string;
+};
+
+type ProfileCardProps = {
+  article: ProfileCardArticle;
+  /** When set, the entire card is keyboard-focusable and navigates here. */
+  href?: string;
+  className?: string;
+};
+
+const shellClass =
+  "group flex w-full max-w-[min(100%,20rem)] flex-col rounded-xl outline-none transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/35 focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black";
+
+function CardMedia({ article }: { article: ProfileCardArticle }) {
+  const blur = article.blurDataURL
+    ? { placeholder: "blur" as const, blurDataURL: article.blurDataURL }
+    : {};
+
   return (
-    <AppBody>
-      <Card>
-        <CardBody>
-          <Image
-            src={article.imageSrc}
-            alt={article.title}
-            placeholder="blur"
-            fill
-            style={{ objectFit: "cover" }}
-            blurDataURL={article.imageSrc}
-          />
-        </CardBody>
-        <CardText>
-          <p>{article?.title}</p>
-          <CardAuthor>
-            <p>{article?.description}</p>
-          </CardAuthor>
-        </CardText>
-      </Card>
-    </AppBody>
+    <div className="relative aspect-[5/4] w-full overflow-hidden rounded-lg bg-neutral-900 ring-1 ring-white/10">
+      <Image
+        src={article.imageSrc}
+        alt={article.title}
+        fill
+        className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+        sizes="(max-width: 640px) 45vw, 320px"
+        {...blur}
+      />
+    </div>
   );
 }
 
-const AppBody = styled.div`
-  padding: 10px;
-  display: flex;
-  margin-top: 20px;
+function CardCopy({ article }: { article: ProfileCardArticle }) {
+  const author = article.author.trim();
 
-  margin-right: 30px;
-  flex-direction: row;
-  width: 100%;
-  line-height: 1.5;
-  @media ${device.laptop} {
-    margin-left: 20px;
-  }
-  @media ${device.mobile} {
-    padding: 6px;
-    line-height: 1.5;
-    margin-left: 0px;
-  }
-`;
+  return (
+    <div className="mt-3 flex flex-col gap-1.5">
+      <h3 className="text-base font-semibold leading-snug text-white line-clamp-2">{article.title}</h3>
+      <p className="text-sm leading-relaxed text-neutral-400 line-clamp-3">{article.description}</p>
+      {author ? (
+        <p className="text-xs font-medium tracking-wide text-neutral-500">By {author}</p>
+      ) : null}
+    </div>
+  );
+}
 
-const Card = styled.div`
-  padding-bottom: 20px;
-  padding-right: 20px;
-`;
+export default function ProfileCard({ article, href, className }: ProfileCardProps) {
+  const merged = [shellClass, className].filter(Boolean).join(" ");
 
-const CardBody = styled.div`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  justify-content: left;
-  height: 200px;
-  width: 250px;
-  padding: 20px;
-  border-radius: 8px;
-  drop-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background: #1a1a1a;
-  cursor: pointer;
-  box-shadow: 0px 6px 8px rgba(25, 50, 47, 0.08),
-    0px 4px 4px rgba(18, 71, 52, 0.02), 0px 1px 16px rgba(18, 71, 52, 0.03);
-
-  img {
-    border-radius: 8px;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
+  if (href) {
+    return (
+      <Link href={href} className={`${merged} text-left no-underline`}>
+        <article className="flex flex-col">
+          <CardMedia article={article} />
+          <CardCopy article={article} />
+        </article>
+      </Link>
+    );
   }
 
-  &:hover {
-    background-color: #4444;
-    opacity: 0.4;
-    transform: scale(0.98);
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.laptop} {
-    height: 200px;
-  }
-
-  @media ${device.mobile} {
-    height: 200px;
-    width: 150px;
-  }
-`;
-const CardText = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
-  color: ${(props) => props.theme.title};
-
-  h1 {
-    cursor: pointer;
-    font-size: 16px;
-
-    @media ${device.laptop} {
-      font-size: 16px;
-    }
-
-    @media ${device.mobile} {
-      font-size: 14px;
-    }
-  }
-
-  p {
-    cursor: pointer;
-    font-size: 14px;
-    color: ${(props) => props.theme.subtitle};
-
-    @media ${device.laptop} {
-      font-size: 12px;
-      color: grey;
-    }
-
-    @media ${device.mobile} {
-      font-size: 12px;
-    }
-  }
-
-  span {
-    cursor: pointer;
-    font-size: 14px;
-
-    @media ${device.laptop} {
-      font-size: 12px;
-    }
-  }
-`;
-
-const CardAuthor = styled.div`
-  display: flex;
-  pointer: cursor;
-  flex-direction: row;
-  align-items: center;
-`;
+  return (
+    <article className={merged}>
+      <CardMedia article={article} />
+      <CardCopy article={article} />
+    </article>
+  );
+}
