@@ -1,78 +1,77 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
-import styled from "styled-components";
-import { device } from "../styles/breakpoints";
 import { useState } from "react";
-import { ChevronDown } from "styled-icons/boxicons-regular";
 import Link from "next/link";
-import React, { useEffect } from "react";
 
-const createUsernameSlug = (name: string) => {
-  return name
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, "");
-};
+const signInButtonClass =
+  "flex w-full min-w-0 cursor-pointer flex-col items-center rounded-[10px] bg-white px-2.5 py-2.5 font-semibold text-black transition-colors duration-300 ease-in-out hover:bg-neutral-400 max-[428px]:w-[100px]";
 
-export function GoogleSignInButton({
-  showDropdown: dropdownVisible,
-  toggleDropdownButton,
-}: {
-  showDropdown: boolean;
-  toggleDropdownButton: () => void;
-}) {
+const dropdownPanelClass =
+  "absolute right-0 z-[100] w-[200px] text-black";
+
+const dropdownListClass =
+  "ml-2.5 mt-2 animate-fade-in rounded-[10px] bg-white py-1 shadow-lg";
+
+const dropdownItemClass =
+  "list-none px-3 py-2 text-black [&_a]:text-black [&_a]:no-underline [&_a:hover]:text-neutral-600";
+
+export function GoogleSignInButton() {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   if (session) {
-    const username = session.user?.name || "Guest";
-    console.log("username", username);
-    console.log("session", session);
-    console.log(session.user.id); // Now you should have the Google user ID
-    if (session.user.id) {
-      ("User ID found");
-    }
-
     return (
-      <>
-        <SigninButton onClick={toggleDropdown}>
+      <div className="relative">
+        <button type="button" className={signInButtonClass} onClick={toggleDropdown}>
           {session?.user?.name?.split(" ")[0] || "Guest"}
-        </SigninButton>
-        {showDropdown && (
-          <DropdownListContainer>
-            <DropdownList>
-              <DropdownItem>
-                {/* <Link href={`/profile/${createUsernameSlug(userId)}`}> */}
-                <Link href={`/profile/${session.user.id}`}>Profile</Link>
-              </DropdownItem>
-
-              <DropdownItem>
+        </button>
+        {showDropdown ? (
+          <div className={dropdownPanelClass}>
+            <ul className={dropdownListClass}>
+              <li className={dropdownItemClass}>
+                <Link
+                  href={
+                    session.user?.id
+                      ? `/profile/${session.user.id}`
+                      : "/profile"
+                  }
+                >
+                  Profile
+                </Link>
+              </li>
+              <li className={dropdownItemClass}>
                 <Link href="/settings">Settings</Link>
-              </DropdownItem>
-              <DropdownItem>
+              </li>
+              <li className={dropdownItemClass}>
                 <Link href="/assistant">Culturin AI</Link>
-              </DropdownItem>
-              <DropdownItem
-                onClick={async () => {
-                  await signOut({
-                    redirect: false,
-                    callbackUrl: "/",
-                  });
-                  setShowDropdown(false);
-                }}
-              >
-                <a>Sign out</a>
-              </DropdownItem>
-            </DropdownList>
-          </DropdownListContainer>
-        )}
-      </>
+              </li>
+              <li className={dropdownItemClass}>
+                <button
+                  type="button"
+                  className="w-full cursor-pointer bg-transparent p-0 text-left text-inherit"
+                  onClick={async () => {
+                    await signOut({
+                      redirect: false,
+                      callbackUrl: "/",
+                    });
+                    setShowDropdown(false);
+                  }}
+                >
+                  Sign out
+                </button>
+              </li>
+            </ul>
+          </div>
+        ) : null}
+      </div>
     );
   }
+
   return (
-    <SigninButton
+    <button
+      type="button"
+      className={signInButtonClass}
       onClick={async () => {
         await signIn("google", {
           redirect: true,
@@ -81,184 +80,6 @@ export function GoogleSignInButton({
       }}
     >
       Sign in
-    </SigninButton>
+    </button>
   );
-
-  // const handleClick = () => {
-  //   signIn("google");
-  // };
-
-  // return (
-  //   <button
-  //     onClick={handleClick}
-  //     className="w-full flex items-center font-semibold justify-center h-14 px-6 mt-4 text-xl  transition-colors duration-300 bg-white border-2 border-black text-black rounded-lg focus:shadow-outline hover:bg-slate-200"
-  //   >
-  //     <Image src={googleLogo} alt="Google Logo" width={20} height={20} />
-  //     <span className="ml-4">Continue with Google</span>
-  //   </button>
-  // );
 }
-
-// export function GithubSignInButton() {
-//   const { data: session } = useSession();
-
-//   if (session) {
-//     return (
-//       <>
-//         {session?.user?.name} <br />
-//         <button onClick={() => signOut()}>Sign out</button>
-//       </>
-//     );
-//   }
-//   return (
-//     <>
-//       Sign in <br />
-//       <button onClick={() => signIn()}>Sign in</button>
-//     </>
-//   );
-
-// const handleClick = () => {
-//   signIn("github");
-// };
-
-// return (
-//   <button
-//     onClick={handleClick}
-//     className="w-full flex items-center font-semibold justify-center h-14 px-6 mt-4 text-xl transition-colors duration-300 bg-white border-2 border-black text-black rounded-lg focus:shadow-outline hover:bg-slate-200"
-//   >
-//     <Image src={githubLogo} alt="Github Logo" width={20} height={20} />
-//     <span className="ml-4">Continue with Github</span>
-//   </button>
-// );
-// }
-
-// export function CredentialsSignInButton() {
-//   const { data: session } = useSession();
-
-//   if (session) {
-//     return (
-//       <>
-//         {session?.user?.name} <br />
-//         <button onClick={() => signOut()}>Sign out</button>
-//       </>
-//     );
-//   }
-//   return (
-//     <>
-//       Sign in <br />
-//       <button onClick={() => signIn()}>Sign in</button>
-//     </>
-//   );
-
-// const handleClick = () => {
-//   signIn();
-// };
-
-// return (
-//   <button
-//     onClick={handleClick}
-//     className="w-full flex items-center font-semibold justify-center h-14 px-6 mt-4 text-xl transition-colors duration-300 bg-white border-2 border-black text-black rounded-lg focus:shadow-outline hover:bg-slate-200"
-//   >
-//     {/* <Image src={githubLogo} alt="Github Logo" width={20} height={20} /> */}
-//     <span className="ml-4">Continue with Email</span>
-//   </button>
-// );
-// }
-
-const SigninButton = styled.div`
-  border-radius: 10px;
-  width: 100%;
-  ${"" /* border: 1px solid white; */}
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: white;
-  color: black;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover {
-    background: grey;
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    width: 100px;
-  }
-`;
-
-const DropdownHeader = styled.div`
-  /* width: 100%;
-  border: black;
-  display: flex;
-  flex-direction: row; */
-`;
-
-const DropdownContainer = styled("div")`
-  @media ${device.mobile} {
-    display: none;
-  }
-`;
-
-const DropdownList = styled("ul")`
-  margin: 30px;
-  margin-left: 10px;
-  color: black;
-  background: white;
-  z-index: 100;
-  border-radius: 10px;
-  animation: fadeIn 0.3s;
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0.5;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes fadeOut {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0.5;
-    }
-  }
-`;
-
-const DropdownItem = styled("li")`
-  list-style: none;
-  color: black;
-  width: 100%;
-  a {
-    text-decoration: none;
-    color: black;
-  }
-
-  a:hover {
-    color: #4444;
-  }
-`;
-
-const DropdownListContainer = styled.div`
-  position: absolute;
-  color: black;
-  width: 200px;
-  z-index: 100;
-  right: 0;
-
-  ul:hover {
-    list-style: none;
-    color: black;
-  }
-
-  ul li {
-    text-decoration: none;
-    color: black;
-  }
-`;

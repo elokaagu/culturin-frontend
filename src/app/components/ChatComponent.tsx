@@ -1,173 +1,91 @@
 "use client";
-import React from "react";
-import styled from "styled-components";
-import { useChat, Message } from "ai/react";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { device } from "../styles/breakpoints";
+
+import React, { useRef, useEffect } from "react";
+import { useChat, type Message } from "ai/react";
+import { useSession } from "next-auth/react";
 
 export default function ChatComponent() {
-  // Vercel AI SDK
+  const { data: session } = useSession();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const { input, handleInputChange, handleSubmit, isLoading, messages } =
     useChat();
 
-  console.log(messages);
-  console.log(input);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, [messages, isLoading]);
 
-  //User name
-  const { data: session } = useSession();
+  const displayName = session?.user?.name?.split(" ")[0] || "You";
 
   return (
-    <>
-      <ChatBox>
-        <ChatForm onSubmit={handleSubmit}>
-          <ChatInput
-            type="textarea"
-            name="search"
-            placeholder="How can I help ?"
+    <div className="flex min-h-0 flex-1 flex-col gap-3">
+      <section
+        ref={scrollRef}
+        aria-label="Conversation"
+        className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain rounded-xl border border-white/10 bg-[#111111] px-4 py-4 sm:px-5"
+      >
+        {messages.length === 0 ? (
+          <p className="text-sm text-white/50">
+            Start by asking a question below. Replies stream in as Atlas responds.
+          </p>
+        ) : (
+          <ul className="flex list-none flex-col items-stretch gap-6 p-0">
+            {messages.map((message: Message) => (
+              <li key={message.id} className="flex flex-col gap-1">
+                <div className="text-xs font-semibold uppercase tracking-wide text-white/45">
+                  {message.role === "assistant" ? "Atlas" : displayName}
+                </div>
+                <div className="text-base font-normal leading-relaxed text-white/90">
+                  {message.content.split("\n").map((block, index) =>
+                    block === "" ? (
+                      <br key={`${message.id}-${index}`} />
+                    ) : (
+                      <p key={`${message.id}-${index}`} className="mb-2 last:mb-0">
+                        {block}
+                      </p>
+                    )
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+        {isLoading ? (
+          <p className="mt-4 text-sm text-white/50" aria-live="polite">
+            Atlas is thinking…
+          </p>
+        ) : null}
+      </section>
+
+      <form
+        onSubmit={handleSubmit}
+        className="shrink-0 rounded-xl border border-white/10 bg-[#1e1e1e] p-3 sm:p-4"
+      >
+        <label htmlFor="assistant-input" className="sr-only">
+          Message to Atlas
+        </label>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+          <textarea
+            id="assistant-input"
+            name="message"
+            placeholder="How can I help?"
             autoComplete="off"
+            rows={2}
             value={input}
             onChange={handleInputChange}
+            className="min-h-[3rem] w-full resize-y rounded-lg border border-white/10 bg-transparent px-3 py-2.5 text-base font-medium text-white placeholder:text-white/40 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 sm:flex-1"
           />
-        </ChatForm>
-      </ChatBox>
-      <MessageBox>
-        {messages.map((message: Message) => {
-          return (
-            <div key={message.id}>
-              {message.role === "assistant" ? (
-                <BotMessage>
-                  <h3>Atlas</h3>
-                </BotMessage>
-              ) : (
-                <BotMessage>
-                  <h3>{session?.user?.name?.split(" ")[0] || "Guest"}</h3>
-                </BotMessage>
-              )}
-              {message.content
-                .split("\n")
-                .map((currentTextBlock: string, index: number) => {
-                  if (currentTextBlock === "") {
-                    return;
-                    <UserMessage>
-                      <p key={message.id + index}>
-                        &nbsp
-                        <br />
-                      </p>
-                      ;
-                    </UserMessage>;
-                  } else {
-                    return <p key={message.id + index}>{currentTextBlock}</p>;
-                  }
-                })}
-              {}
-            </div>
-          );
-        })}
-      </MessageBox>
-    </>
+          <button
+            type="submit"
+            disabled={isLoading || !input.trim()}
+            className="shrink-0 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
-
-const ChatForm = styled.form`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-`;
-
-const ChatBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  border-radius: 10px;
-  width: 100%;
-  padding: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background: #1e1e1e;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-
-  p {
-    margin-left: 10px;
-  }
-
-  &:hover {
-    opacity: 0.8;
-    transition: 0.3s ease-in-out;
-  }
-
-  margin-bottom: 20px;
-
-  @media ${device.mobile} {
-    width: 80%;
-  }
-`;
-
-const ChatInput = styled.input`
-  background: transparent;
-  margin-left: 10px;
-  outline: none;
-  width: 80%;
-  display: flex;
-  flex-direction: row;
-  flex: 2;
-  border: none;
-  height: 100%;
-  color: white;
-  font-weight: 600;
-  font-size: 18px;
-`;
-
-const MessageBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  border-radius: 10px;
-  width: 100%;
-  padding: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background: #111111;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-
-  h3 {
-    font-weight: 450;
-    margin-left: 10px;
-    color: #888888;
-  }
-
-  p {
-    margin-left: 10px;
-  }
-
-  &:hover {
-    opacity: 0.8;
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    width: 80%;
-  }
-`;
-
-const BotMessage = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  justify-content: flex-start;
-  margin-top: 10px;
-  margin-bottom: 10px;
-`;
-
-const UserMessage = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  justify-content: flex-start;
-  margin-top: 10px;
-  margin-bottom: 10px;
-`;

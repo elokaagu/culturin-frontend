@@ -56,7 +56,7 @@ const AppBody = styled.div`
   color: white;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     width: 100%;
   }
@@ -68,7 +68,7 @@ const UploadContainer = styled.div`
   align-items: center;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     width: 100%;
   }
@@ -79,7 +79,7 @@ const UploadTitle = styled.div`
   flex-direction: column;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     width: 100%;
   }
@@ -109,7 +109,7 @@ const UploadField = styled.div`
   cursor: pointer;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     width: 100%;
   }
@@ -132,7 +132,7 @@ const UploadButton = styled.div`
   }
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     width: 100%;
   }

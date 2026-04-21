@@ -113,7 +113,7 @@ const FeedContainer = styled.div`
     margin-left: 0px;
     width: 100%;
     flex-direction: column;
-    align-items: left;
+    align-items: flex-start;
   }
 `;
 
@@ -132,7 +132,7 @@ const FeedImage = styled.div`
     padding-top: 20px;
     width: 100%;
     flex-direction: column;
-    align-items: left;
+    align-items: flex-start;
   }
 `;
 

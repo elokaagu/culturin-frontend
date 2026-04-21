@@ -1,69 +1,31 @@
-"use client";
-import React, { useState } from "react";
-import styled from "styled-components";
-import Header from "../components/Header";
-import Link from "next/link";
-import { ThemeProvider } from "styled-components";
-import { device } from "../styles/breakpoints";
+import type { Metadata } from "next";
+
+import { ContentPageShell } from "../components/layout/ContentPageShell";
 import ChatComponent from "../components/ChatComponent";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 
-export default function Assistant() {
-  const [theme, setTheme] = useState("dark");
+export const metadata: Metadata = {
+  title: "Atlas | Culturin",
+  description:
+    "Ask Culturin Atlas for itineraries, cultural context, and local recommendations.",
+};
 
-  const isDarkTheme = theme === "dark";
+export default function AssistantPage() {
   return (
-    <>
-      <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
-          <AssistantTitle>
-            <h1>Atlas</h1>
-          </AssistantTitle>
-          <ChatAssistant>
-            <ChatComponent />
-          </ChatAssistant>
-        </AppBody>
-      </ThemeProvider>
-    </>
+    <ContentPageShell
+      mainClassName="flex min-h-screen w-full flex-col items-center bg-black px-4 pb-6 pt-[150px] text-white sm:px-5 sm:pt-[120px]"
+      innerClassName="flex min-h-0 w-full max-w-3xl flex-1 flex-col gap-6 lg:max-w-4xl"
+    >
+      <header className="shrink-0 space-y-2">
+        <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">Atlas</h1>
+        <p className="max-w-prose text-sm text-white/70">
+          Your Culturin assistant. Ask for itineraries, cultural context, and local
+          recommendations.
+        </p>
+      </header>
+
+      <div className="flex min-h-[min(32rem,calc(100dvh-14rem))] flex-1 flex-col min-h-0 lg:min-h-[min(36rem,calc(100dvh-13rem))]">
+        <ChatComponent />
+      </div>
+    </ContentPageShell>
   );
 }
-
-const AppBody = styled.div`
-  padding: 40px;
-  display: flex;
-  padding-top: 150px;
-  align-items: center;
-  background: black;
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: white;
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
-    align-items: left;
-  }
-`;
-
-const AssistantTitle = styled.div`
-  cursor: pointer;
-  padding-bottom: 20px;
-
-  @media ${device.mobile} {
-    align-items: left;
-    margin-left: 40px;
-    width: 100%;
-  }
-`;
-
-const ChatAssistant = styled.div`
-  width: 50%;
-  @media ${device.mobile} {
-    align-items: left;
-    margin-left: 40px;
-    width: 100%;
-  }
-`;

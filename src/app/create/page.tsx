@@ -88,18 +88,18 @@ const Title = styled.div`
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   cursor: pointer;
   transition: background-color 0.3s;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     width: 100%;
 
     h1 {
       font-size: 25px;
-      align-items: left;
+      align-items: flex-start;
       margin-left: 20px;
       width: 100%;
     }
@@ -114,7 +114,7 @@ const Subtitle = styled.div`
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   cursor: pointer;
 
   h3 {
@@ -126,7 +126,7 @@ const Subtitle = styled.div`
   @media ${device.mobile} {
     margin-left: 60px;
     padding-left: 10px;
-    align-items: left;
+    align-items: flex-start;
     width: 100%;
   }
 `;
@@ -135,7 +135,7 @@ const AdvisorTitle = styled.div`
   align-items: center;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     width: 100%;
   }
@@ -149,7 +149,7 @@ const Body = styled.div`
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   cursor: pointer;
   a {
     text-decoration: none;
@@ -164,7 +164,7 @@ const Body = styled.div`
 
   @media ${device.mobile} {
     padding-left: 20px;
-    align-items: left;
+    align-items: flex-start;
     width: 100%;
 
     p {
@@ -265,7 +265,7 @@ const HeroButton = styled.div`
 const UploadContainer = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: left;
+  align-items: flex-start;
 `;
 
 const UploadOption = styled.div`

@@ -1,217 +1,97 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Header from "../components/Header";
+
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { device } from "../styles/breakpoints";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { useSession } from "next-auth/react";
-import SubNavigation from "../components/SubNavigation";
+
 import AccountSection from "../components/AccountSection";
-import NotificationSection from "../components/NotificationSection";
-import PaymentSection from "../components/PaymentSection";
+import Header from "../components/Header";
+import { useTheme } from "../styles/ThemeContext";
+import { type SettingsSectionId, useSettingsSection } from "./useSettingsSection";
 
-export default function Settings() {
-  const [theme, setTheme] = useState("dark");
-  const [email, setEmail] = useState(""); // Replace with user's email from session
-  const [username, setUsername] = useState(""); // Replace with user's username from session
-  const isDarkTheme = theme === "dark";
-  const [formInput, setFormInput] = useState<undefined>(); // Update the type of formInput to undefined
+const NotificationSection = dynamic(
+  () => import("../components/NotificationSection"),
+  { loading: () => <p className="text-sm text-white/50">Loading…</p> }
+);
+
+const PaymentSection = dynamic(
+  () => import("../components/PaymentSection"),
+  { loading: () => <p className="text-sm text-white/50">Loading…</p> }
+);
+
+const NAV: { id: SettingsSectionId; label: string }[] = [
+  { id: "#account", label: "Account" },
+  { id: "#notifications", label: "Notifications" },
+  { id: "#payments", label: "Payments" },
+];
+
+function sectionTitle(sessionName: string | null | undefined) {
+  const first = sessionName?.trim()?.split(/\s+/)[0];
+  return first ? `${first}'s settings` : "Your settings";
+}
+
+export default function SettingsPage() {
   const { data: session } = useSession();
-  function handleReset() {
-    setFormInput(undefined); // Set formInput state to undefined
-  }
-  const [activeSection, setActiveSection] = useState("");
-
-  useEffect(() => {
-    // Update the active section when the hash changes
-    const handleHashChange = () => {
-      setActiveSection(window.location.hash);
-    };
-
-    // Listen for hash changes
-    window.addEventListener("hashchange", handleHashChange);
-
-    // Clean up the event listener when the component unmounts
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
-
-  const renderSection = () => {
-    switch (activeSection) {
-      case "#account":
-        return <AccountSection />;
-      case "#notifications":
-        return <NotificationSection />;
-
-      case "#payments":
-        return <PaymentSection />;
-      // ... handle other cases
-      default:
-        return <AccountSection />; // Default section
-    }
-  };
-
-  const toggleTheme = () => {
-    setTheme(isDarkTheme ? "light" : "dark");
-  };
+  const activeSection = useSettingsSection();
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
-          <SettingsContainer>
-            <SettingsTitle>
-              {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Settings
-            </SettingsTitle>
-            <Section>
-              {/* <SubNavigation /> */}
-              <SubNavigationRow>
-                <SectionTitle
-                  active={activeSection === "#account"}
-                  onClick={() => setActiveSection("#account")}
+      <main className="min-h-screen bg-black px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
+          <h1 className="text-2xl font-semibold sm:text-3xl">
+            {sectionTitle(session?.user?.name)}
+          </h1>
+
+          <nav
+            aria-label="Settings sections"
+            className="flex flex-wrap gap-6 border-b border-white/15 pb-3"
+          >
+            {NAV.map(({ id, label }) => {
+              const active = activeSection === id;
+              return (
+                <Link
+                  key={id}
+                  href={id}
+                  className={`text-base font-medium transition-colors ${
+                    active
+                      ? "text-white underline decoration-white/80 underline-offset-8"
+                      : "text-sky-400 hover:text-sky-300"
+                  }`}
+                  aria-current={active ? "page" : undefined}
                 >
-                  Account
-                </SectionTitle>
-                <SectionTitle
-                  active={activeSection === "#notifications"}
-                  onClick={() => setActiveSection("#notifications")}
-                >
-                  Notifications
-                </SectionTitle>
-                <SectionTitle
-                  active={activeSection === "#payments"}
-                  onClick={() => setActiveSection("#payments")}
-                >
-                  Payments
-                </SectionTitle>
-              </SubNavigationRow>
-              {renderSection()}
-              {/* <Label>Email address</Label>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleReset();
-                }}
-                autoComplete="off"
-              />
-              <Label>Username</Label>
-              <Input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleReset();
-                }}
-                autoComplete="off"
-              /> */}
-            </Section>
-            <SubSection>
-              <p>Appearance</p>
-              <Button
-                onClick={toggleTheme}
-                style={{ marginBottom: "20px", marginTop: "10px" }}
-              >
-                {isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme"}
-              </Button>
-            </SubSection>
-          </SettingsContainer>
-        </AppBody>
-      </ThemeProvider>
+                  {label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="min-h-[12rem]">
+            {activeSection === "#account" ? <AccountSection /> : null}
+            {activeSection === "#notifications" ? <NotificationSection /> : null}
+            {activeSection === "#payments" ? <PaymentSection /> : null}
+          </div>
+
+          <section
+            aria-label="Appearance"
+            className="mt-4 border-t border-white/10 pt-6"
+          >
+            <h2 className="text-lg font-semibold">Appearance</h2>
+            <p className="mt-1 text-sm text-white/60">
+              Toggle is stored in app theme context (not page-local styled theme).
+            </p>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="mt-4 rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-sky-500"
+            >
+              {isDark ? "Switch to light theme" : "Switch to dark theme"}
+            </button>
+          </section>
+        </div>
+      </main>
     </>
   );
 }
-
-const AppBody = styled.div`
-  background: ${(props) => props.theme.body};
-  padding: 40px;
-  display: flex;
-  padding-top: 150px;
-  align-items: left;
-  // background: black;
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  // color: white;
-  color: ${(props) => props.theme.title};
-  overflow: none;
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
-    align-items: left;
-  }
-`;
-
-const SettingsTitle = styled.div`
-  cursor: pointer;
-`;
-
-const Row = styled.div`
-  overflow: scroll;
-`;
-
-const SettingsContainer = styled.div`
-  margin: 20px;
-`;
-
-const Section = styled.div`
-  margin-bottom: 20px;
-`;
-
-const SectionTitle = styled.h2<{ active?: boolean }>`
-  font-size: 18px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  &:hover {
-    color: #0077cc;
-    // transition: 0.2s;
-  }
-  margin-right: 20px;
-  color: ${({ active, theme }) => (active ? theme.title : "#0077cc")};
-  text-decoration: ${({ active }) => (active ? "underline" : "none")};
-`;
-
-const SubSection = styled.div`
-  margin-bottom: 10px;
-`;
-
-const SubSectionTitle = styled.h3`
-  font-size: 18px;
-  margin-bottom: 5px;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const Label = styled.label`
-  // Add styles for labels
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #005fa3;
-  }
-`;
-
-const SubNavigationRow = styled.div`
-  display: flex;
-  color: ${(props) => props.theme.title};
-  flex-direction: row;
-`;

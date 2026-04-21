@@ -116,7 +116,7 @@ const AppBody = styled.div`
   @media ${device.mobile} {
     padding-left: 0px;
     padding-top: 80px;
-    align-items: left;
+    align-items: flex-start;
   }
 `;
 
@@ -124,18 +124,18 @@ const Title = styled.div`
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   cursor: pointer;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     margin-top: 20px;
     width: 100%;
 
     h1 {
       font-size: 25px;
-      align-items: left;
+      align-items: flex-start;
       margin-left: 40px;
       width: 100%;
     }
@@ -146,7 +146,7 @@ const Subtitle = styled.div`
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   cursor: pointer;
 
   h3 {

@@ -1,35 +1,18 @@
 "use client";
-import styled from "styled-components";
-import React from "react";
-import Header from "../components/Header";
-import Hero from "../components/Hero";
-import { device } from "../styles/breakpoints";
-import { getServerSession } from "next-auth";
-import { CredentialsForm } from "../components/CredentialsForm";
-import { GoogleSignInButton } from "../components/AuthButtons";
 
-export default function Login() {
+import { GoogleSignInButton } from "../components/AuthButtons";
+import { CredentialsForm } from "../components/CredentialsForm";
+import Header from "../components/Header";
+
+export default function LoginPage() {
   return (
     <>
       <Header />
-      <AppBody>
-        <h1>Sign In</h1>
-        <GoogleSignInButton
-          showDropdown={true}
-          toggleDropdownButton={() => {}}
-        />
+      <main className="mx-auto flex min-h-screen max-w-md flex-col gap-6 bg-black px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+        <h1 className="text-2xl font-semibold">Sign in</h1>
+        <GoogleSignInButton />
         <CredentialsForm />
-      </AppBody>
+      </main>
     </>
   );
 }
-
-const AppBody = styled.div`
-  padding: 20px;
-  display: flex;
-  background: black;
-  flex-direction: column;
-  height: 100vh;
-  width: 100%;
-  line-height: 2;
-`;

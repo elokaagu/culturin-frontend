@@ -173,18 +173,18 @@ const Title = styled.div`
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   cursor: pointer;
   transition: background-color 0.3s;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     width: 100%;
 
     h1 {
       font-size: 25px;
-      align-items: left;
+      align-items: flex-start;
       margin-left: 20px;
       width: 100%;
     }
@@ -199,7 +199,7 @@ const Subtitle = styled.div`
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   cursor: pointer;
 
   h3 {
@@ -211,7 +211,7 @@ const Subtitle = styled.div`
   @media ${device.mobile} {
     margin-left: 60px;
     padding-left: 10px;
-    align-items: left;
+    align-items: flex-start;
     width: 100%;
   }
 `;
@@ -220,7 +220,7 @@ const AdvisorTitle = styled.div`
   align-items: center;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     width: 100%;
   }
@@ -234,7 +234,7 @@ const Body = styled.div`
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   cursor: pointer;
 
   p {
@@ -246,7 +246,7 @@ const Body = styled.div`
 
   @media ${device.mobile} {
     padding-left: 20px;
-    align-items: left;
+    align-items: flex-start;
     width: 100%;
 
     p {
@@ -368,7 +368,7 @@ const Modal = styled.div`
 const ButtonsContainer = styled.div`
   display: flex;
   width: 100%;
-  align-items: left;
+  align-items: flex-start;
   flex-direction: row;
 `;
 
@@ -402,13 +402,13 @@ const OfferBody = styled.div`
   margin: auto;
   margin-top: 20px;
   width: 95%;
-  align-items: left;
+  align-items: flex-start;
   padding-left: 30px;
   padding-top: 20px;
   padding-right: 20px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   cursor: pointer;
   background: #111111;
   border-radius: 10px;
@@ -422,7 +422,7 @@ const OfferBody = styled.div`
 
   @media ${device.mobile} {
     padding-left: 20px;
-    align-items: left;
+    align-items: flex-start;
     width: 100%;
 
     p {

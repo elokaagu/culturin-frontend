@@ -1,13 +1,11 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import styled from "styled-components";
 import Image from "next/image";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import { useSession } from "next-auth/react";
 
 import Header from "../../components/Header";
-import { device } from "../../styles/breakpoints";
 import { urlFor } from "../../lib/sanity";
 import type { fullBlog } from "../../../libs/interface";
 
@@ -27,9 +25,19 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
   const portableTextComponents: PortableTextComponents = useMemo(
     () => ({
       block: {
-        h2: ({ children }) => <H2>{children}</H2>,
-        h3: ({ children }) => <H3>{children}</H3>,
-        normal: ({ children }) => <P>{children}</P>,
+        h2: ({ children }) => (
+          <h2 className="mt-6 text-[22px] font-semibold leading-snug text-white">
+            {children}
+          </h2>
+        ),
+        h3: ({ children }) => (
+          <h3 className="mt-5 text-lg font-semibold leading-snug text-white/90">
+            {children}
+          </h3>
+        ),
+        normal: ({ children }) => (
+          <p className="text-base leading-relaxed text-white/85">{children}</p>
+        ),
       },
     }),
     []
@@ -93,16 +101,22 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
   return (
     <>
       <Header />
-      <Page>
-        <Content>
+      <main className="flex justify-center bg-black px-5 pb-12 pt-[150px] text-white sm:pt-[120px]">
+        <div className="flex w-full max-w-3xl flex-col gap-6">
           <article>
             <header>
-              <Title>{data.title}</Title>
-              {data.summary ? <Lead>{data.summary}</Lead> : null}
+              <h1 className="max-w-prose text-3xl font-semibold leading-tight sm:text-4xl">
+                {data.title}
+              </h1>
+              {data.summary ? (
+                <p className="mt-3 max-w-prose text-base text-white/90 sm:text-lg">
+                  {data.summary}
+                </p>
+              ) : null}
             </header>
 
             {imageUrl ? (
-              <Hero>
+              <div className="w-full">
                 <Image
                   src={imageUrl}
                   alt={data.title ? `${data.title} cover image` : "Article cover image"}
@@ -110,164 +124,57 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
                   height={560}
                   sizes="(max-width: 900px) 100vw, 900px"
                   priority
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    borderRadius: 16,
-                    objectFit: "cover",
-                  }}
+                  className="h-auto w-full rounded-2xl object-cover"
                 />
-              </Hero>
+              </div>
             ) : null}
 
-            <ArticleBody>
+            <div className="flex flex-col gap-3.5">
               <PortableText
                 value={data.body as any}
                 components={portableTextComponents}
               />
-            </ArticleBody>
+            </div>
 
-            <ActionRow aria-label="Article actions">
-              <ActionButton type="button" onClick={handleSaveArticle}>
+            <div
+              className="flex flex-wrap gap-3 pt-2"
+              aria-label="Article actions"
+            >
+              <button
+                type="button"
+                onClick={handleSaveArticle}
+                className="rounded-lg bg-white px-3.5 py-2 text-sm font-bold text-black transition-colors hover:bg-neutral-200 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
+              >
                 Add to profile
-              </ActionButton>
-              <ActionButton type="button" onClick={handleShareArticle}>
+              </button>
+              <button
+                type="button"
+                onClick={handleShareArticle}
+                className="rounded-lg bg-white px-3.5 py-2 text-sm font-bold text-black transition-colors hover:bg-neutral-200 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
+              >
                 Share article
-              </ActionButton>
-            </ActionRow>
+              </button>
+            </div>
           </article>
-        </Content>
-      </Page>
+        </div>
+      </main>
 
       {toast.open ? (
-        <Toast role="status" aria-live="polite" data-variant={toast.variant}>
+        <div
+          role="status"
+          aria-live="polite"
+          data-variant={toast.variant}
+          className={[
+            "fixed bottom-6 left-1/2 z-[2000] w-[min(720px,calc(100vw-32px))] -translate-x-1/2 rounded-xl border px-3.5 py-3 text-sm shadow-2xl",
+            "border-white/10 bg-neutral-950/90 text-white",
+            toast.variant === "success" ? "border-emerald-400/35" : "",
+            toast.variant === "info" ? "border-amber-300/35" : "",
+            toast.variant === "error" ? "border-rose-400/35" : "",
+          ].join(" ")}
+        >
           {toast.message}
-        </Toast>
+        </div>
       ) : null}
     </>
   );
 }
-
-const Page = styled.main`
-  padding: 40px 20px;
-  padding-top: 150px;
-  display: flex;
-  justify-content: center;
-  background: black;
-  min-height: 100%;
-  line-height: 1.75;
-  color: white;
-
-  @media ${device.mobile} {
-    padding-top: 120px;
-  }
-`;
-
-const Content = styled.div`
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-`;
-
-const Title = styled.h1`
-  margin: 0;
-  font-size: clamp(28px, 4vw, 44px);
-  line-height: 1.12;
-`;
-
-const Lead = styled.p`
-  margin: 0;
-  margin-top: 12px;
-  font-size: clamp(16px, 2.2vw, 20px);
-  color: rgba(255, 255, 255, 0.88);
-`;
-
-const Hero = styled.div`
-  width: 100%;
-`;
-
-const ArticleBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-`;
-
-const P = styled.p`
-  margin: 0;
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.86);
-`;
-
-const H2 = styled.h2`
-  margin: 18px 0 0;
-  font-size: 22px;
-  line-height: 1.25;
-`;
-
-const H3 = styled.h3`
-  margin: 16px 0 0;
-  font-size: 18px;
-  line-height: 1.25;
-  color: rgba(255, 255, 255, 0.92);
-`;
-
-const ActionRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding-top: 10px;
-`;
-
-const ActionButton = styled.button`
-  border: 0;
-  border-radius: 10px;
-  padding: 10px 14px;
-  background: white;
-  color: black;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    background: #d9d9d9;
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
-
-  &:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.85);
-    outline-offset: 3px;
-  }
-`;
-
-const Toast = styled.div`
-  position: fixed;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
-  z-index: 2000;
-  max-width: min(720px, calc(100vw - 32px));
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(20, 20, 20, 0.92);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-
-  &[data-variant="success"] {
-    border-color: rgba(46, 204, 113, 0.35);
-  }
-
-  &[data-variant="info"] {
-    border-color: rgba(250, 193, 0, 0.35);
-  }
-
-  &[data-variant="error"] {
-    border-color: rgba(255, 107, 107, 0.35);
-  }
-`;

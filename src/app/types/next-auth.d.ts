@@ -8,6 +8,8 @@ declare module "next-auth" {
       id: string;
       name: string;
       email: string;
+      /** Optional app username when populated by the auth adapter / callbacks. */
+      username?: string | null;
     } & User;
   }
 }

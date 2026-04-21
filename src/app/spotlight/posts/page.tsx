@@ -108,7 +108,7 @@ const AppBody = styled.div`
   @media ${device.mobile} {
     padding-left: 0px;
     padding-top: 80px;
-    align-items: left;
+    align-items: flex-start;
   }
 `;
 
@@ -123,13 +123,13 @@ const Title = styled.div`
   cursor: pointer;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 0;
     width: 100%;
 
     h1 {
       font-size: 25px;
-      align-items: left;
+      align-items: flex-start;
       margin-left: 40px;
       width: 100%;
     }
@@ -153,7 +153,7 @@ const Subtitle = styled.div`
 
   @media ${device.mobile} {
     padding-left: 10px;
-    align-items: left;
+    align-items: flex-start;
   }
 `;
 
@@ -236,7 +236,7 @@ const Body = styled.div`
 
   @media ${device.mobile} {
     padding-left: 20px;
-    align-items: left;
+    align-items: flex-start;
     width: 100%;
 
     p {

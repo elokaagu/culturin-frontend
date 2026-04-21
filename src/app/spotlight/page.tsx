@@ -37,7 +37,7 @@ const AppBody = styled.div`
   padding: 40px;
   display: flex;
   padding-top: 150px;
-  align-items: left;
+  align-items: flex-start;
   background: black;
   flex-direction: column;
   height: 100%;
@@ -48,7 +48,7 @@ const AppBody = styled.div`
   @media ${device.mobile} {
     padding-left: 0px;
     padding-top: 80px;
-    align-items: left;
+    align-items: flex-start;
   }
 `;
 
@@ -58,14 +58,14 @@ const SpotlightTitle = styled.div`
   margin-left: 320px;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 10px;
   }
 `;
 
 const FeedContainer = styled.div`
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     margin-left: 20px;
   }
 `;

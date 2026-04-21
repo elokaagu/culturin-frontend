@@ -41,10 +41,7 @@ export default function Signin() {
               <SigninButton>
                 <p>Sign up</p>
               </SigninButton>
-              <GoogleSignInButton
-                showDropdown={true}
-                toggleDropdownButton={() => {}}
-              />
+              <GoogleSignInButton />
             </SignInSection>
           </AppRight>
         </ThemeProvider>
@@ -64,14 +61,14 @@ const AppBody = styled.div`
   overflow: none;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
     height: 100vw;
 
     img {
       margin-top: 100px;
-      align-items: left;
+      align-items: flex-start;
       margin-left: 0px;
     }
   }
@@ -86,12 +83,12 @@ const AppLeft = styled.div`
   }
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     width: 100%;
 
     img {
       margin-top: 100px;
-      align-items: left;
+      align-items: flex-start;
       margin-left: 40px;
     }
   }
@@ -104,7 +101,7 @@ const AppRight = styled.div`
   align-items: center;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
   }
 `;
 
@@ -113,7 +110,7 @@ const SignInSection = styled.div`
   align-items: center;
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     width: 100%;
     margin-left: 65px;
   }
@@ -149,7 +146,7 @@ const Title = styled.div`
   display: flex;
   padding-bottom: 20px;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   width: 40%;
   cursor: pointer;
 
@@ -158,7 +155,7 @@ const Title = styled.div`
   }
 
   @media ${device.mobile} {
-    align-items: left;
+    align-items: flex-start;
     width: 80%;
   }
 `;

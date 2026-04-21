@@ -1,457 +1,100 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { Plus, Search } from "styled-icons/boxicons-regular";
-import { ChevronDown } from "styled-icons/boxicons-regular";
 import Image from "next/image";
 import Link from "next/link";
-import { device } from "../styles/breakpoints";
 import { GoogleSignInButton } from "./AuthButtons";
 import SearchBar from "./SearchBar";
 import Hamburger from "hamburger-react";
 import Sidebar from "./Sidebar";
-import { Dispatch, SetStateAction } from "react";
-import ThemeToggle from "./ThemeToggle";
-import { Sun, Moon } from "styled-icons/boxicons-regular";
-import { useTheme } from "../styles/ThemeContext";
 
 export default function Header() {
-  // const [theme, setTheme] = useState("light");
-  const [headerClass, setHeaderClass] = useState("transparentHeader");
   const [isScrolled, setIsScrolled] = useState(false);
-  const { theme, toggleTheme } = useTheme(); // Use the theme and toggleTheme from context
-  // Replace the isOpen state
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [isSearchActive, setIsSearchActive] = useState(false);
-
-  const handleDropdownToggle = (dropdownId: string) => {
-    setActiveDropdown((current) =>
-      current === dropdownId ? null : dropdownId
-    );
-  };
-
-  const isDarkTheme = theme === "dark";
-
-  // Listen for scroll events
   useEffect(() => {
     const handleScroll = () => {
-      const show = window.scrollY > 0;
-      setHeaderClass(show ? "solidHeader" : "transparentHeader");
+      setIsScrolled(window.scrollY > 0);
     };
 
-    // Attach the handler on component mount
     window.addEventListener("scroll", handleScroll);
-
-    // Detach the handler on component unmount
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []); // Empty dependency array means this runs once on mount
-
-  // Toggle Theme
-
-  // const toggleTheme = () => {
-  //   setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
-  // };
-
-  const [isOpen, setIsOpen] = useState(false);
-  const toggling = () => setIsOpen(!isOpen);
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  const onOptionClicked = (value: React.SetStateAction<null>) => () => {
-    setSelectedOption(value);
-    setIsOpen(false);
-    console.log(selectedOption);
-  };
+  }, []);
 
   const [isNavOpen, setIsNavOpen] = useState(false);
-
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false); // New state for mobile sidebar
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const handleMobileSidebarToggle = () => {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
   };
 
-  type SidebarProps = {
-    isNavOpen: boolean;
-    setIsNavOpen: Dispatch<SetStateAction<boolean>>;
-  };
+  const navItemClass =
+    "inline-block list-none px-5 py-5 text-white max-[428px]:px-2.5 max-[428px]:py-2.5";
+  const navLinkClass =
+    "text-white no-underline transition-colors duration-300 ease-in-out hover:text-neutral-400";
 
   return (
-    <>
-      <StyledHeader isScrolled={isScrolled}>
-        <Head>
-          <HeaderLeft>
-            <ul>
-              <li>
-                <Link href="/">
-                  <Image
-                    src="/culturin_logo.svg"
-                    width={100}
-                    height={100}
-                    draggable={false}
-                    alt="culturin logo"
-                  />
-                </Link>
-              </li>
-            </ul>
-            <Link href="/about">
-              <li>
-                <span />
-                About
-              </li>
-            </Link>
-            {/* <li>
-              <DropdownContainer>
-                <DropdownHeader
-                  onClick={() => handleDropdownToggle("destinations")}
-                >
-                  Destinations
-                  <ChevronDown size="20" />
-                </DropdownHeader>
-                {activeDropdown === "destinations" && (
-                  <DropdownListContainer>
-                    <DropdownList>
-                      <DropdownItem>
-                        <Link href="/countries/africa">Africa</Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link href="/countries/asia">Asia</Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link href="/countries/europe">Europe</Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link href="/countries/north-america">
-                          North America
-                        </Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link href="/countries/south-america">
-                          South America
-                        </Link>
-                      </DropdownItem>
-                    </DropdownList>
-                  </DropdownListContainer>
-                )}
-              </DropdownContainer>
-            </li> */}
-          </HeaderLeft>
-          <HeaderCenter>
-            <SearchBar />
-          </HeaderCenter>
-          <HeaderRight>
-            <li>
-              {/* <Switch>
-                <Sun size={20} onClick={toggleTheme} />
-              </Switch> */}
-            </li>
-            <ul>
-              <Link href="/create">
-                <li>
-                  {/* <Plus size="20" /> */}
-                  <span />
-                  Create
-                </li>
-              </Link>
-
-              {/* <Link href="/search">Upload</Link> */}
-
-              {/* <li>
-                <UserButton afterSignOutUrl="/" />
-              </li> */}
-              <Link href="/join-us/advisors">
-                <li>
-                  {" "}
-                  {/* <Plus size="20" /> */}
-                  <span> Advisor</span>{" "}
-                </li>
-              </Link>
-
-              <li>
-                <GoogleSignInButton
-                  showDropdown={activeDropdown === "signIn"}
-                  toggleDropdownButton={() => handleDropdownToggle("signIn")}
+    <header
+      className={`fixed left-0 right-0 top-0 z-[1000] w-full transition-[background] duration-300 ease-out ${
+        isScrolled
+          ? "bg-gradient-to-r from-black to-neutral-700"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="fixed z-[1000] flex min-h-[60px] w-[calc(100%-60px)] flex-row items-center justify-between bg-black px-8 py-10 max-[1024px]:p-5 max-[428px]:w-[calc(100%-20px)] max-[428px]:px-3 max-[428px]:py-5">
+        <div className="z-[600] flex max-w-[33%] flex-[0.33] cursor-pointer flex-row items-center gap-2 hover:opacity-80">
+          <ul className="m-0 inline-block list-none p-0 text-white">
+            <li className="m-0 inline-block list-none p-0">
+              <Link href="/">
+                <Image
+                  src="/culturin_logo.svg"
+                  width={100}
+                  height={100}
+                  draggable={false}
+                  alt="culturin logo"
                 />
-              </li>
-            </ul>
-          </HeaderRight>
-          <HeaderRightMobile>
-            <HamburgerMenu>
-              <Hamburger
-                rounded
-                toggled={isMobileSidebarOpen}
-                toggle={handleMobileSidebarToggle}
-                size={20}
-                onToggle={() => setIsNavOpen(!isNavOpen)}
-              />
-              {isMobileSidebarOpen && (
-                <Sidebar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
-              )}
-            </HamburgerMenu>
-          </HeaderRightMobile>
-        </Head>
-      </StyledHeader>
-    </>
+              </Link>
+            </li>
+          </ul>
+          <Link href="/about" className={`${navLinkClass} px-2`}>
+            About
+          </Link>
+        </div>
+
+        <div className="z-[600] min-w-0 flex-1 px-2 max-[1024px]:px-1">
+          <SearchBar />
+        </div>
+
+        <nav className="z-[600] hidden flex-none flex-row items-center max-[428px]:hidden min-[429px]:flex">
+          <ul className="m-0 inline-block list-none p-0 text-white">
+            <li className={navItemClass}>
+              <Link href="/create" className={navLinkClass}>
+                Create
+              </Link>
+            </li>
+            <li className={navItemClass}>
+              <Link href="/join-us/advisors" className={navLinkClass}>
+                Advisor
+              </Link>
+            </li>
+            <li className={`${navItemClass} relative`}>
+              <GoogleSignInButton />
+            </li>
+          </ul>
+        </nav>
+
+        <div className="hidden shrink-0 max-[428px]:block">
+          <Hamburger
+            rounded
+            toggled={isMobileSidebarOpen}
+            toggle={handleMobileSidebarToggle}
+            size={20}
+            onToggle={() => setIsNavOpen(!isNavOpen)}
+          />
+          {isMobileSidebarOpen ? (
+            <Sidebar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
+          ) : null}
+        </div>
+      </div>
+    </header>
   );
 }
-
-const Head = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  height: 60px;
-  position: fixed;
-  width: calc(100% - 60px);
-  z-index: 1000;
-  background: black;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  padding-left: 30px;
-  padding-right: 30px;
-
-  @media ${device.laptop} {
-    padding: 20px;
-  }
-
-  @media ${device.mobile} {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 10px;
-    width: calc(100% - 20px);
-    padding-right: 20px;
-  }
-
-  h1 {
-    font-weight: 600;
-    font-size: 25px;
-    color: white;
-    cursor: pointer;
-  }
-
-  p {
-    font-size: 20px;
-    color: white;
-    cursor: pointer;
-  }
-
-  h2 {
-    font-weight: 400;
-    color: white;
-    font-size: 1rem;
-  }
-
-  li {
-    list-style: none;
-    display: inline-block;
-    color: white;
-    padding: 20px;
-    cursor: pointer;
-
-    @media ${device.mobile} {
-      padding: 10px;
-    }
-  }
-
-  ul {
-    list-style: none;
-    display: inline-block;
-    color: white;
-  }
-
-  ul li {
-    text-decoration: none;
-    color: white;
-  }
-  ul li:hover {
-    color: grey;
-    transition: 0.3s ease-in-out;
-  }
-`;
-
-type StyledHeaderProps = {
-  isScrolled: boolean;
-};
-
-const StyledHeader = styled.header<StyledHeaderProps>`
-  transition: background-color 0.3s ease;
-  background: ${(props) =>
-    props.isScrolled
-      ? "linear-gradient(to right, #000000, #434343)"
-      : "transparent"};
-  position: fixed;
-  width: 100%;
-  z-index: 1000;
-`;
-
-const HeaderLeft = styled.div`
-  display: flex;
-  flex: 0.33;
-  flex-direction: row;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.8;
-    transition: 0.3s ease-in-out;
-  }
-
-  z-index: 600;
-`;
-
-const HeaderRight = styled.div`
-  display: flex;
-  // flex: 0.25;
-  flex-direction: row;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.8;
-    transition: 0.3s ease-in-out;
-  }
-
-  z-index: 600;
-  @media ${device.mobile} {
-    display: none;
-  }
-`;
-
-const SigninButton = styled.div`
-  border-radius: 999px;
-  width: 100%;
-  ${"" /* border: 1px solid white; */}
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: white;
-  color: black;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover {
-    background: grey;
-    transition: 0.3s ease-in-out;
-  }
-`;
-
-const SearchIcon = styled(Search)`
-  color: white;
-`;
-
-const DropdownHeader = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  border: black;
-  display: flex;
-  flex-direction: row; */
-`;
-
-const DropdownContainer = styled("div")`
-  @media ${device.mobile} {
-    display: none;
-  }
-`;
-
-const DropdownList = styled("ul")`
-  margin: 30px;
-  margin-left: -10px;
-  color: black;
-  background: white;
-  z-index: 100;
-  border-radius: 10px;
-  animation: fadeIn 0.3s;
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0.5;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes fadeOut {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0.5;
-    }
-  }
-`;
-
-const Headeritem = styled("li")`
-  list-style: none;
-  color: black;
-  width: 100%;
-  a {
-    text-decoration: none;
-    color: black;
-  }
-
-  a:hover {
-    color: #4444;
-  }
-`;
-
-const DropdownItem = styled("li")`
-  list-style: none;
-  color: black;
-  width: 100%;
-  a {
-    text-decoration: none;
-    color: black;
-  }
-
-  a:hover {
-    color: #4444;
-  }
-`;
-
-const DropdownListContainer = styled.div`
-  position: absolute;
-  color: black;
-  width: 200px;
-  z-index: 100;
-
-  ul:hover {
-    list-style: none;
-    color: black;
-  }
-
-  ul li {
-    text-decoration: none;
-    color: black;
-  }
-`;
-
-const HeaderCenter = styled.div`
-  flex: 1;
-  @media ${device.mobile} {
-    display: flex;
-  }
-`;
-
-const HamburgerMenu = styled.div`
-  display: none;
-
-  @media ${device.mobile} {
-    display: flex;
-  }
-`;
-
-const HeaderRightMobile = styled.div`
-  /* flex: 0.33;
-
-  align-items: right; */
-  display: none;
-  @media ${device.mobile} {
-    display: flex;
-    .hamburger-react {
-      display: block;
-      z-index: 2000;
-    }
-  }
-  justify-content: space-between;
-`;

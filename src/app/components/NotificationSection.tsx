@@ -52,7 +52,7 @@ const AppBody = styled.div`
   padding: 40px;
   display: flex;
   padding-top: 150px;
-  align-items: left;
+  align-items: flex-start;
   background: black;
   flex-direction: column;
   height: 100%;
@@ -63,7 +63,7 @@ const AppBody = styled.div`
   @media ${device.mobile} {
     padding-left: 0px;
     padding-top: 80px;
-    align-items: left;
+    align-items: flex-start;
   }
 `;
 

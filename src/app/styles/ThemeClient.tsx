@@ -1,31 +1,11 @@
 "use client";
+
+import React from "react";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "./theme";
-import React, { useState } from "react";
-import Header from "../components/Header";
+import { darkTheme } from "./theme";
 
-export default function ThemeClient({
-  children,
-}: // theme,
-// toggleTheme,
-{
-  children: React.ReactNode;
-}) {
-  const [theme, setTheme] = useState("light");
-
-  const isDarkTheme = theme === "dark";
-
-  // Toggle Theme
-
-  const toggleTheme = () => {
-    setTheme(isDarkTheme ? "light" : "dark");
-  };
-
-  return (
-    <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      <GlobalStyles />
-      {/* <Header toggleTheme={toggleTheme} /> */}
-      {children}
-    </ThemeProvider>
-  );
+export default function ThemeClient({ children }: { children: React.ReactNode }) {
+  // Temporary bridge: keep styled-components pages working while migrating to Tailwind.
+  // Prefer Tailwind + removing styled-components over time.
+  return <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>;
 }
