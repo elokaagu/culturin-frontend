@@ -1,10 +1,12 @@
+"use client";
+
 import * as React from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
 import { client } from "../lib/sanity";
-import { providerCard } from "../../libs/interface";
+import { providerHeroCard } from "../../libs/interface";
 import { useState, useEffect } from "react";
 
 async function getData() {
@@ -31,14 +33,22 @@ async function getData() {
   }
 }
 
-export default function ProviderHero() {
-  const [data, setData] = useState<providerCard[]>([]);
+type ProviderHeroProps = {
+  initialData?: providerHeroCard[];
+};
+
+export default function ProviderHero({ initialData = [] }: ProviderHeroProps) {
+  const [data, setData] = useState<providerHeroCard[]>(initialData);
   useEffect(() => {
+    let cancelled = false;
     async function fetchData() {
       const fetchedData = await getData();
-      setData(fetchedData);
+      if (!cancelled) setData(fetchedData);
     }
     fetchData();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
@@ -48,17 +58,30 @@ export default function ProviderHero() {
           <ProviderCard key={index}>
             <Link href={`/providers/${providerData.slug}`}>
               <ProviderCardBody>
-                <Image
-                  src={providerData?.bannerImage?.image?.url} // Provide a fallback image URL
-                  alt={providerData?.bannerImage?.alt || "Default Alt Text"} // Provide default alt text
-                  width={300}
-                  height={300}
-                  quality={90} // Adjust quality as needed, defaults to 75
-                  style={{
-                    objectFit: "cover",
-                    position: "relative",
-                  }}
-                />
+                {providerData?.bannerImage?.image?.url ? (
+                  <Image
+                    src={providerData.bannerImage.image.url}
+                    alt={
+                      providerData.bannerImage.image.alt ||
+                      providerData.eventName ||
+                      "Provider"
+                    }
+                    width={300}
+                    height={300}
+                    quality={90}
+                    style={{
+                      objectFit: "cover",
+                      position: "relative",
+                    }}
+                  />
+                ) : (
+                  <div
+                    className="flex h-full w-full items-center justify-center bg-neutral-800 text-sm text-white/60"
+                    aria-hidden
+                  >
+                    No image
+                  </div>
+                )}
               </ProviderCardBody>
             </Link>
             <ProviderCardText>

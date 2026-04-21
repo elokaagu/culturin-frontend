@@ -39,6 +39,16 @@ export interface providerCard {
   bannerImage: any;
 }
 
+/** Home / ProviderHero preview row (slug resolved as string in GROQ). */
+export interface providerHeroCard {
+  name: string;
+  eventName: string;
+  slug: string;
+  bannerImage?: {
+    image?: { url?: string; alt?: string };
+  };
+}
+
 export interface fullProvider {
   name: string;
   eventName: string;

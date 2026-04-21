@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import styled from "styled-components";
 import Image from "next/image";
@@ -29,17 +31,23 @@ async function getData() {
   }
 }
 
-export default function VideoHero() {
-  const [data, setData] = useState<videoCard[]>([]);
+type VideoHeroProps = {
+  initialData?: videoCard[];
+};
+
+export default function VideoHero({ initialData = [] }: VideoHeroProps) {
+  const [data, setData] = useState<videoCard[]>(initialData);
   useEffect(() => {
+    let cancelled = false;
     async function fetchData() {
       const fetchedData = await getData();
-      setData(fetchedData);
+      if (!cancelled) setData(fetchedData);
     }
     fetchData();
+    return () => {
+      cancelled = true;
+    };
   }, []);
-
-  console.log(data);
 
   return (
     <AppBody>
