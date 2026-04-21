@@ -8,7 +8,7 @@ export interface simpleBlogCard {
 export interface fullBlog {
   title: string;
   currentSlug: string;
-  summary: string;
+  summary?: string | null;
   titleImage: any;
   body: any;
   _id: string;
