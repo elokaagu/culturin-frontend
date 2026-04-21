@@ -1,145 +1,185 @@
 "use client";
+
+import type { FormEvent } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import React, { useState } from "react";
+
 import Header from "../../components/Header";
-import { ChevronDown } from "styled-icons/boxicons-regular";
-import Link from "next/link";
 import { device } from "../../styles/breakpoints";
 
-interface ToggleOptionProps {
-  active: boolean;
-}
+export default function AdvisorsPage() {
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
+  const [email, setEmail] = useState("");
+  const [formState, setFormState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [formMessage, setFormMessage] = useState("");
 
-export default function Advisors() {
   const scrollToSection = () => {
-    const section = document.getElementById("target-section");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
+    document.getElementById("target-section")?.scrollIntoView({ behavior: "smooth" });
   };
-  // States
-  const [billingCycle, setBillingCycle] = useState("monthly");
-  const [activeSection, setActiveSection] = useState("");
+
+  async function handleApply(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFormMessage("");
+    const trimmed = email.trim();
+    if (!trimmed) {
+      setFormState("error");
+      setFormMessage("Enter your email.");
+      return;
+    }
+
+    setFormState("loading");
+    try {
+      const res = await fetch("/api/advisor-inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmed, billingCycle }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) {
+        setFormState("error");
+        setFormMessage(data.error ?? "Something went wrong.");
+        return;
+      }
+      setFormState("success");
+      setFormMessage("Thanks — we received your application request.");
+    } catch {
+      setFormState("error");
+      setFormMessage("Network error. Please try again.");
+    }
+  }
 
   return (
     <div>
       <Header />
       <AppBody>
-          <Title>
-            <h1>Become a Culturin advisor</h1>
-          </Title>
-          <Subtitle>
+        <Title>
+          <h1>Become a Culturin advisor</h1>
+        </Title>
+        <Subtitle>
+          <p>
+            Culturin is designed for the innovative and entrepreneurial travel advisor of tomorrow. Our core mission is
+            to empower those with a deep-rooted passion for exploration and travel to generate a flexible income by
+            curating and booking unforgettable journeys. At Culturin, we believe that travel is more than just visiting
+            new destinations; it&apos;s about creating experiences that last a lifetime.
+          </p>
+        </Subtitle>
+
+        <Body>
+          <p>
+            Whether you are just starting out or looking to elevate your existing travel advisory business, Culturin
+            offers the tools, resources, and community support needed to thrive in the dynamic world of travel planning.
+            Join us and become part of a vibrant community of travel enthusiasts who are transforming their love for
+            exploration into rewarding careers. Let Culturin be your guide to a successful and fulfilling future in the
+            travel industry.
+          </p>
+          <ApplyScrollButton type="button" onClick={scrollToSection}>
+            Apply
+          </ApplyScrollButton>
+
+          <OfferBody>
+            <h2>Community</h2>
             <p>
-              {" "}
-              Culturin is designed for the innovative and entrepreneurial travel
-              advisor of tomorrow. Our core mission is to empower those with a
-              deep-rooted passion for exploration and travel to generate a
-              flexible income by curating and booking unforgettable journeys. At
-              Culturin, we believe that travel is more than just visiting new
-              destinations; its about creating experiences that last a lifetime.
+              Our diverse, inclusive &amp; engaged global community is designed to make you feel welcome.
             </p>
-          </Subtitle>
+          </OfferBody>
+          <Features>
+            <Feature>
+              <p>Live networking events across the country</p>
+            </Feature>
+            <Feature>
+              <p>Community app for collaboration and support</p>
+            </Feature>
+            <Feature>
+              <p>Weekly online community &amp; partner events</p>
+            </Feature>
+            <Feature>
+              <p>Mentorship, FAM trips &amp; site visits</p>
+            </Feature>
+          </Features>
+          <MembershipSection>
+            <MembershipTitle>Apply to join Culturin &amp; get everything you need to succeed</MembershipTitle>
+            <MembershipInfo>Our advisors typically make back their membership fee within their first month.</MembershipInfo>
+            <PricingCard>
+              <PricingToggle>
+                <ToggleOptionButton
+                  type="button"
+                  $active={billingCycle === "annual"}
+                  onClick={() => setBillingCycle("annual")}
+                >
+                  ANNUAL
+                </ToggleOptionButton>
+                <ToggleOptionButton
+                  type="button"
+                  $active={billingCycle === "monthly"}
+                  onClick={() => setBillingCycle("monthly")}
+                >
+                  MONTHLY
+                </ToggleOptionButton>
+              </PricingToggle>
+              {billingCycle === "annual" ? (
+                <>
+                  <PriceAmount>$299</PriceAmount>
+                  <PricePer>per year</PricePer>
+                  <BilledDetail>billed every 12 months</BilledDetail>
+                </>
+              ) : (
+                <>
+                  <PriceAmount>$49</PriceAmount>
+                  <PricePer>per month</PricePer>
+                  <BilledDetail>billed every month</BilledDetail>
+                </>
+              )}
+              <BestValueLabel>{billingCycle === "annual" ? "BEST VALUE: Save 50%" : ""}</BestValueLabel>
 
-          <Body>
-            <p>
-              Whether you are just starting out or looking to elevate your
-              existing travel advisory business, Culturin offers the tools,
-              resources, and community support needed to thrive in the dynamic
-              world of travel planning. Join us and become part of a vibrant
-              community of travel enthusiasts who are transforming their love
-              for exploration into rewarding careers. Let Culturin be your guide
-              to a successful and fulfilling future in the travel industry.
-            </p>
-            <HeroButton onClick={scrollToSection}>Apply</HeroButton>
-
-            <OfferBody>
-              <h1>Community</h1>
-              <p>
-                Our diverse, inclusive & engaged global community is designed to
-                make you feel welcome.
-              </p>
-            </OfferBody>
-            <Features>
-              <Feature>
-                <p>Live networking events across the country</p>
-              </Feature>
-              <Feature>
-                <p>Community app for collaboration and support</p>
-              </Feature>
-              <Feature>
-                <p>Weekly online community & partner events</p>
-              </Feature>
-              <Feature>
-                <p>Mentorship, FAM trips & site visits</p>
-              </Feature>
-            </Features>
-            <MembershipSection>
-              <MembershipTitle>
-                Apply to join Culturin & get everything you need to succeed
-              </MembershipTitle>
-              <MembershipInfo>
-                Our advisors typically make back their membership fee within
-                their first month.
-              </MembershipInfo>
-              <PricingCard>
-                <PricingToggle>
-                  <ToggleOption
-                    active={billingCycle === "annual"}
-                    onClick={() => setBillingCycle("annual")}
+              <BenefitsList>
+                <Benefit>Start at 70% commission split</Benefit>
+                <Benefit>Live training and mentorship</Benefit>
+                <Benefit>Access to 4,500+ preferred partners</Benefit>
+                <Benefit>Custom marketing tools</Benefit>
+                <Benefit>Global community of travel pros</Benefit>
+              </BenefitsList>
+              <ApplyButton type="button" onClick={scrollToSection}>
+                APPLY
+              </ApplyButton>
+            </PricingCard>
+          </MembershipSection>
+          <div id="target-section">
+            <CTASection>
+              <CTATitle>Apply to join Culturin today &amp; get everything you need to succeed</CTATitle>
+              <CTASubtitle>
+                Book just $360/month in travel and you will cover your subscription fees. Everything after that is your
+                profit to keep.
+              </CTASubtitle>
+              <form onSubmit={handleApply} className="flex flex-col items-center gap-3">
+                <EmailInput
+                  name="email"
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(ev) => setEmail(ev.target.value)}
+                  disabled={formState === "loading" || formState === "success"}
+                  aria-invalid={formState === "error"}
+                  aria-describedby={formMessage ? "apply-form-feedback" : undefined}
+                />
+                {formMessage ? (
+                  <p
+                    id="apply-form-feedback"
+                    className={`max-w-sm text-center text-sm ${formState === "success" ? "text-emerald-400" : "text-red-400"}`}
+                    role={formState === "error" ? "alert" : "status"}
                   >
-                    ANNUAL
-                  </ToggleOption>
-                  <ToggleOption
-                    active={billingCycle === "monthly"}
-                    onClick={() => setBillingCycle("monthly")}
-                  >
-                    MONTHLY
-                  </ToggleOption>
-                </PricingToggle>
-                {billingCycle === "annual" ? (
-                  <>
-                    <PriceAmount>$299</PriceAmount>
-                    <PricePer>per year</PricePer>
-                    <BilledDetail>billed every 12 months</BilledDetail>
-                  </>
-                ) : (
-                  <>
-                    <PriceAmount>$49</PriceAmount>
-                    <PricePer>per month</PricePer>
-                    <BilledDetail>billed every month</BilledDetail>
-                  </>
-                )}
-                <BestValueLabel>
-                  {billingCycle === "annual" ? "BEST VALUE: Save 50%" : ""}
-                </BestValueLabel>
-
-                <BenefitsList>
-                  <Benefit>Start at 70% commission split</Benefit>
-                  <Benefit>Live training and mentorship</Benefit>
-                  <Benefit>Access to 4,500+ preferred partners</Benefit>
-                  <Benefit>Custom marketing tools</Benefit>
-                  <Benefit>Global community of travel pros</Benefit>
-                </BenefitsList>
-                <ApplyButton onClick={scrollToSection}>APPLY</ApplyButton>
-              </PricingCard>
-            </MembershipSection>
-            <div id="target-section">
-              <CTASection>
-                <CTATitle>
-                  Apply to join Culturin today & get everything you need to
-                  succeed
-                </CTATitle>
-                <CTASubtitle>
-                  Book just $360/month in travel and you will cover your
-                  subscription fees. Everything after that is your profit to
-                  keep.
-                </CTASubtitle>
-                <EmailInput placeholder="Enter your email" />
-                <GetStartedButton>Apply</GetStartedButton>
-              </CTASection>
-            </div>
-          </Body>
-        </AppBody>
+                    {formMessage}
+                  </p>
+                ) : null}
+                <GetStartedButton type="submit" disabled={formState === "loading" || formState === "success"}>
+                  {formState === "loading" ? "Sending…" : "Apply"}
+                </GetStartedButton>
+              </form>
+            </CTASection>
+          </div>
+        </Body>
+      </AppBody>
     </div>
   );
 }
@@ -167,7 +207,6 @@ const Title = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  cursor: pointer;
   transition: background-color 0.3s;
 
   @media ${device.mobile} {
@@ -193,7 +232,6 @@ const Subtitle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  cursor: pointer;
 
   h3 {
     font-size: 20px;
@@ -209,16 +247,6 @@ const Subtitle = styled.div`
   }
 `;
 
-const AdvisorTitle = styled.div`
-  align-items: center;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-  }
-`;
-
 const Body = styled.div`
   margin: auto;
   width: 50%;
@@ -228,7 +256,6 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  cursor: pointer;
 
   p {
     font-size: 18px;
@@ -250,122 +277,7 @@ const Body = styled.div`
   }
 `;
 
-const ImageContainer = styled.div`
-  padding-bottom: 20px;
-  cursor: pointer;
-  img {
-    border-radius: 10px;
-  }
-
-  @media ${device.mobile} {
-    margin: 0 auto;
-    padding-left: 10px;
-    border-radius: 20px;
-
-    img {
-      margin-left: 0;
-      border-radius: 10px;
-      width: 360px;
-    }
-  }
-`;
-
-const ImageWrap = styled.span`
-  & > span {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 20px;
-    object-fit: cover;
-  }
-
-  @media ${device.mobile} {
-    & > span {
-      object-fit: cover;
-      border-radius: 20px; /* Rounded edges on mobile */
-    }
-  }
-`;
-
-const SaveButtonContainer = styled.div`
-  border-radius: 10px;
-  width: 120px;
-  padding: 10px;
-  display: flex;
-  margin-right: 20px;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: white;
-  color: black;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover {
-    background: grey;
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    width: 100px;
-    font-size: 14px;
-  }
-`;
-
-const ShareButtonContainer = styled.div`
-  border-radius: 10px;
-  width: 120px;
-  padding: 10px;
-  display: flex;
-  margin-right: 20px;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: white;
-  color: black;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover {
-    background: grey;
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    width: 100px;
-    font-size: 14px;
-  }
-
-  // color: rgb(250, 193, 0);
-  // padding-bottom: 20px;
-  // text-decoration: none;
-  // position: fixed;
-  // right: 50px;
-  // top: 200px;
-`;
-
-const Modal = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  color: black;
-  font-size: 18px;
-`;
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: flex-start;
-  flex-direction: row;
-`;
-
-const HeroButton = styled.div`
+const ApplyScrollButton = styled.button`
   margin-top: 20px;
   border-radius: 5px;
   width: 100px;
@@ -375,9 +287,9 @@ const HeroButton = styled.div`
   align-items: center;
   padding-left: 10px;
   padding-right: 10px;
-  color: black;
   font-weight: 600;
   cursor: pointer;
+  border: none;
   background: ${(props) => props.theme.title};
   color: ${(props) => props.theme.body};
 
@@ -402,9 +314,14 @@ const OfferBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  cursor: pointer;
   background: #111111;
   border-radius: 10px;
+
+  h2 {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+    color: white;
+  }
 
   p {
     font-size: 18px;
@@ -426,8 +343,6 @@ const OfferBody = styled.div`
   }
 `;
 
-const OfferBenefit = styled.div``;
-
 const Features = styled.div`
   margin-top: 40px;
   width: 100%;
@@ -446,29 +361,11 @@ const Feature = styled.div`
   background: black;
   color: white;
   font-size: 1em;
-  cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-`;
-
-const LearnMoreButton = styled.button`
-  margin-top: 50px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: white;
-  color: black;
-  font-weight: bold;
-  font-size: 1em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: #f1f1f1;
   }
 `;
 
@@ -494,10 +391,12 @@ const MembershipInfo = styled.p`
   font-size: 1.2em;
   text-align: center;
   margin-bottom: 40px;
+  max-width: 36rem;
+  color: rgba(255, 255, 255, 0.88);
 `;
 
 const PricingCard = styled.div`
-  width: 350px;
+  width: min(100%, 350px);
   padding: 20px;
   background: #f9f9f9;
   border-radius: 10px;
@@ -514,34 +413,36 @@ const PricingToggle = styled.div`
   margin-bottom: 30px;
 `;
 
-const ToggleOption = styled.span<ToggleOptionProps>`
+const ToggleOptionButton = styled.button<{ $active: boolean }>`
   font-weight: bold;
   cursor: pointer;
-  background-color: ${(props) =>
-    props.active
-      ? "#DDEEFF"
-      : "transparent"}; // Example active color, adjust as needed
+  border: none;
+  background-color: ${(props) => (props.$active ? "#DDEEFF" : "transparent")};
   padding: 10px;
   border-radius: 10px;
+  color: #111;
+
   &:first-child {
     margin-right: 5px;
   }
-  &:last-child {
+  &:last-of-type {
     margin-left: 5px;
   }
 
   &:hover {
-    opacity: 0.8;
+    opacity: 0.85;
   }
 `;
 
 const PriceAmount = styled.span`
   font-size: 3em;
   font-weight: bold;
+  color: #111;
 `;
 
 const PricePer = styled.span`
   font-size: 1em;
+  color: #111;
 `;
 
 const BilledDetail = styled.span`
@@ -553,17 +454,20 @@ const BestValueLabel = styled.span`
   font-size: 0.9em;
   color: green;
   margin: 10px 0;
+  min-height: 1.25em;
 `;
 
 const BenefitsList = styled.ul`
   list-style: none;
   padding: 0;
   margin-bottom: 30px;
+  width: 100%;
 `;
 
 const Benefit = styled.li`
   font-size: 1em;
   margin: 10px 0;
+  color: #111;
   &:before {
     content: "✔";
     color: green;
@@ -593,7 +497,6 @@ const CTASection = styled.section`
   flex-direction: column;
   text-align: center;
   border-radius: 10px;
-  color: #000;
 `;
 
 const CTATitle = styled.h2`
@@ -613,19 +516,23 @@ const CTASubtitle = styled.p`
 const EmailInput = styled.input`
   font-size: 1em;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 4px;
   border: none;
   border-bottom: 2px solid #000;
   background-color: white;
   color: #000;
-  width: 280px;
+  width: min(100%, 320px);
   align-self: center;
   border-radius: 10px;
   outline: none;
   text-align: left;
 
   &::placeholder {
-    color: #000;
+    color: #555;
+  }
+
+  &:disabled {
+    opacity: 0.7;
   }
 `;
 
@@ -634,15 +541,20 @@ const GetStartedButton = styled.button`
   color: #000;
   background-color: #fff;
   padding: 10px 20px;
-  width: 300px;
+  width: min(100%, 300px);
   align-self: center;
   font-weight: bold;
   border-radius: 10px;
-  border: 2px solid #000; /* or another color for the border */
+  border: 2px solid #000;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
-  &:hover {
-    opacity: 0.8;
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
   }
 `;
