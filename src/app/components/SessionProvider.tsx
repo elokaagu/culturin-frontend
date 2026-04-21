@@ -1,15 +1,19 @@
 "use client";
 
-import { SessionProvider } from "next-auth/react";
+import type { ReactNode } from "react";
+import type { Session } from "next-auth";
+import { SessionProvider as NextAuthSessionProvider } from "next-auth/react";
 
-const Provider = ({
-  children,
-  session,
-}: {
-  children: React.ReactNode;
-  session: any;
-}) => {
-  return <SessionProvider session={session}>{children}</SessionProvider>;
+type AppSessionProviderProps = {
+  children: ReactNode;
+  session?: Session | null;
 };
 
-export default SessionProvider;
+/** App Router client bridge: passes server session into next-auth/react. */
+export default function SessionProvider({ children, session }: AppSessionProviderProps) {
+  return (
+    <NextAuthSessionProvider session={session ?? undefined}>
+      {children}
+    </NextAuthSessionProvider>
+  );
+}
