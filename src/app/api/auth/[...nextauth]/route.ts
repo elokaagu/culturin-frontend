@@ -1,11 +1,6 @@
 import NextAuth, { AuthOptions, NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { connectMongoDB } from "../../../../libs/mongodb";
-import User from "../../../models/User";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "../../../../libs/prismadb";
-import bcrypt from "bcryptjs";
+import { getUserByEmail, upsertOAuthUser } from "../../../../libs/repositories/userRepository";
 
 const authOptions: AuthOptions = {
   providers: [
@@ -50,39 +45,35 @@ const authOptions: AuthOptions = {
     //   },
     // }),
   ],
-  adapter: PrismaAdapter(prisma) as import("next-auth/adapters").Adapter,
   session: {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async session({ session }) {
-      const sessionUser = await User.findOne({ email: session.user.email });
-
-      session.user.id = sessionUser?._id;
-
-      console.log("session id", session.user.id);
+    async session({ session, token }) {
+      session.user.id = (token.userId as string) || "";
       return session;
+    },
+    async jwt({ token, user }) {
+      if (user?.email) {
+        const dbUser = await getUserByEmail(user.email);
+        if (dbUser) {
+          token.userId = dbUser.id;
+        }
+      }
+      return token;
     },
     async signIn({ profile }) {
       if (!profile) {
         console.error("No profile found");
         return false;
       }
-      console.log("profile", profile);
-
       try {
-        await connectMongoDB();
-        const userExist = await User.findOne({ email: profile.email });
-        if (!userExist) {
-          const username = (profile.email ?? "").split("@")[0];
-          await User.create({
-            email: profile.email,
-            name: profile.name,
-            username,
-            id: profile.sub,
-          });
-        }
+        await upsertOAuthUser({
+          email: profile.email,
+          name: profile.name,
+          authProviderId: profile.sub,
+        });
         return true;
       } catch (error) {
         console.error("SignIn error:", error);

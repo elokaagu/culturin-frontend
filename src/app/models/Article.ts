@@ -1,14 +1,6 @@
-import mongoose, { Schema, models } from "mongoose";
-
-const articleSchema = new Schema(
-  {
-    title: String,
-  },
-  {
-    timestamps: true,
-  }
-);
-
-const Article = models.Article || mongoose.model("Article", articleSchema);
-
-export default Article;
+export type ArticleModel = {
+  id: string;
+  title: string | null;
+  created_at: string;
+  updated_at: string;
+};

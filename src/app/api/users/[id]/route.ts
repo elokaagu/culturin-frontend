@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
-import { connectMongoDB } from "../../../../libs/mongodb";
-import User from "../../../models/User";
+import { getUserById } from "../../../../libs/repositories/userRepository";
 
-export async function GET(request: Request, params: { id: string }) {
+export async function GET(
+  _request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    await connectMongoDB();
-    const user = await User.findOne();
+    const user = await getUserById(params.id);
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
     return NextResponse.json({
       message: "ok finding the user:",
       user,

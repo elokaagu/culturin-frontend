@@ -1,10 +1,10 @@
-import { connectMongoDB } from "../../libs/mongodb";
-import User from "../models/User";
+import { listUsers } from "../../libs/repositories/userRepository";
 
 export const fetchUsers = async () => {
   try {
-    connectMongoDB();
-    const users = await User.find();
+    const users = await listUsers();
     return users;
-  } catch (error) {}
+  } catch (_error) {
+    return [];
+  }
 };

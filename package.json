@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "prisma generate"
+    "lint": "next lint"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^2.5.0",
@@ -23,6 +22,7 @@
     "@portabletext/react": "^3.0.11",
     "@prisma/client": "^5.12.1",
     "@sanity/image-url": "^1.0.2",
+    "@supabase/supabase-js": "^2.104.0",
     "@types/bcrypt": "^5.0.2",
     "@types/mapbox-gl": "^2.7.19",
     "@types/styled-components": "^5.1.34",

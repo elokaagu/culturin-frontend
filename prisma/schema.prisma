@@ -1,51 +1,49 @@
 datasource db {
-  provider = "mongodb"
-  url      = env("MONGODB_URI")
+  provider = "postgresql"
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
-
-model Account {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId             String  @db.ObjectId
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.String
-  access_token       String?  @db.String
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.String
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  sessionToken String   @unique
-  userId       String?  @db.ObjectId
-  expires      DateTime
-    user         User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  }
 
 model User {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  hashedPassword String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  role Role @default(USER)
-  accounts      Account[]
-  sessions      Session[]
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email          String   @unique
+  name           String?
+  username       String?
+  hashedPassword String?  @map("hashed_password")
+  authProviderId String?  @map("auth_provider_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  role           Role     @default(USER)
+
+  savedArticles UserSavedArticle[]
+
+  @@map("users")
+}
+
+model Article {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  savedBy UserSavedArticle[]
+
+  @@map("articles")
+}
+
+model UserSavedArticle {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  articleId String   @map("article_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, articleId])
+  @@map("user_saved_articles")
 }
 
 enum Role {

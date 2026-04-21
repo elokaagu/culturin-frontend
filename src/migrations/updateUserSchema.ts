@@ -1,50 +1,41 @@
-require("dotenv").config();
-import mongoose from "mongoose";
-import User from "../app/models/User";
-import { v4 as uuidv4 } from "uuid";
+import { getSupabaseAdmin } from "../libs/supabase";
 
-// Create a connection to the database
-mongoose.connect(
-  process.env.MONGODB_URI as string,
-  {
-    useUnifiedTopology: true,
-  } as any
-);
-
-// Function to generate a username from a user's name
-function generateUsername(name: string) {
-  let names = name.split(" ");
-  let firstName = names[0];
-  let lastName = names.length > 1 ? names[names.length - 1] : "";
-  return `${firstName}${lastName}`.replace(/[.\s]/g, "").toLowerCase();
+function generateUsername(name?: string | null, email?: string | null) {
+  const source = name?.trim() || email?.split("@")[0] || "user";
+  return source
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[.\s]/g, "")
+    .toLowerCase();
 }
 
-// Function to update existing users
-async function updateExistingUsers() {
-  const users = await User.find({ username: { $exists: false } });
+async function backfillUsernames() {
+  const supabaseAdmin: any = getSupabaseAdmin();
+  const { data: users, error } = await supabaseAdmin
+    .from("users")
+    .select("id, name, email, username")
+    .is("username", null);
 
-  const userUpdates = users.map((user) => {
-    // Avoid overwriting if username already exists
-    if (!user.username) {
-      user.username = generateUsername(user.name);
+  if (error) {
+    throw error;
+  }
 
-      // Ensure userId is set, otherwise create a new one
-      if (!user.userId) {
-        user.userId = uuidv4();
-      }
+  for (const user of (users ?? []) as any[]) {
+    const username = generateUsername(user.name, user.email);
+    const { error: updateError } = await supabaseAdmin
+      .from("users")
+      .update({ username })
+      .eq("id", user.id);
 
-      return user.save();
+    if (updateError) {
+      throw updateError;
     }
-  });
+  }
 
-  await Promise.all(userUpdates.filter(Boolean)); // Filter out any undefined from map
-  console.log("All users have been updated.");
+  console.log(`Updated ${(users ?? []).length} users.`);
 }
 
-// Run the update
-updateExistingUsers()
-  .then(() => mongoose.disconnect())
-  .catch((error) => {
-    console.error("Error updating users:", error);
-    mongoose.disconnect();
-  });
+backfillUsernames().catch((error) => {
+  console.error("Error backfilling Supabase users:", error);
+  process.exit(1);
+});
