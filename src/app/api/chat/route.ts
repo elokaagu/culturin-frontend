@@ -1,11 +1,5 @@
-// Route Handlers
-import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import OpenAI from "openai";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 // Set the runtime to edge for best performance
 
@@ -13,6 +7,18 @@ export const runtime = "edge";
 
 // POST
 export async function POST(req: Request) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    return new Response(
+      JSON.stringify({ error: "OPENAI_API_KEY is not configured." }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  }
+
+  const openai = new OpenAI({ apiKey });
   const { messages } = await req.json();
 
   // Messages

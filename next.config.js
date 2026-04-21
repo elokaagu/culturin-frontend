@@ -11,8 +11,11 @@ const nextConfig = {
   // },
 
   images: {
-    domains: ["forbes.com"],
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "www.forbes.com",
+      },
       {
         protocol: "https",
         hostname: "cdn.sanity.io",

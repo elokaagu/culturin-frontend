@@ -1,9 +1,5 @@
 import mongoose, { Schema, models } from "mongoose";
 
-mongoose.connect(process.env.MONGODB_URI as string);
-
-mongoose.Promise = global.Promise;
-
 const articleSchema = new Schema(
   {
     title: String,

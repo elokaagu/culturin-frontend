@@ -24,23 +24,32 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession();
+  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
   // const currentUser = await getCurrentUser();
   // console.log("user prisma", currentUser);
   // Toggle Theme
 
   return (
     <ThemeProvider>
-      <ClerkProvider>
-        <html lang="en">
-          <body className={inter.className}>
+      <html lang="en">
+        <body className={inter.className}>
+          {clerkPublishableKey ? (
+            <ClerkProvider publishableKey={clerkPublishableKey}>
+              <SessionProvider session={session}>
+                <ThemeClient>
+                  {children} <Analytics /> <SpeedInsights />
+                </ThemeClient>
+              </SessionProvider>
+            </ClerkProvider>
+          ) : (
             <SessionProvider session={session}>
               <ThemeClient>
                 {children} <Analytics /> <SpeedInsights />
               </ThemeClient>
             </SessionProvider>
-          </body>
-        </html>
-      </ClerkProvider>
+          )}
+        </body>
+      </html>
     </ThemeProvider>
   );
 }
