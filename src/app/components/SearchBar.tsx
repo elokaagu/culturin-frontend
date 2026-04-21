@@ -1,42 +1,53 @@
 "use client";
-import React from "react";
+
+import { useCallback, useEffect, useId, useState, type FormEvent } from "react";
 import { Search } from "styled-icons/boxicons-regular";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type SearchBarProps = {
   /** Tighter pill style for the main site header. */
   variant?: "default" | "header";
 };
 
+/**
+ * Search UX:
+ * - Typing updates local state only (no URL churn on random pages).
+ * - Submit (Enter / implicit form submit) navigates to `/search?query=…`.
+ * - Clear removes `query` from the current URL and resets the field.
+ */
 export default function SearchBar({ variant = "default" }: SearchBarProps) {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const inputId = useId();
 
-  function handleSearch(term: string) {
-    const params = new URLSearchParams(searchParams);
-    if (term) {
-      params.set("query", term);
-    } else {
-      params.delete("query");
-    }
-    replace(`${pathname}?${params.toString()}`);
-  }
+  const queryFromUrl = searchParams.get("query") ?? "";
+  const [value, setValue] = useState(queryFromUrl);
 
-  const onSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const fd = new FormData(form);
-    const q = String(fd.get("search") ?? "").trim();
-    if (q) router.push(`/search?query=${encodeURIComponent(q)}`);
-  };
+  useEffect(() => {
+    setValue(queryFromUrl);
+  }, [queryFromUrl]);
 
-  function handleReset() {
-    const params = new URLSearchParams(searchParams);
-    params.delete("query");
-    replace(`${pathname}?${params.toString()}`);
-  }
+  const onSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const q = value.trim();
+      if (q) {
+        router.push(`/search?query=${encodeURIComponent(q)}`);
+        return;
+      }
+      router.push("/search");
+    },
+    [router, value],
+  );
+
+  const clear = useCallback(() => {
+    setValue("");
+    const next = new URLSearchParams(searchParams.toString());
+    next.delete("query");
+    const qs = next.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname);
+  }, [pathname, router, searchParams]);
 
   const shell =
     variant === "header"
@@ -53,27 +64,48 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
   return (
     <div className="flex w-full flex-row items-center justify-center">
       <div
-        className={`flex w-full cursor-pointer flex-row items-center bg-[#262627] font-semibold text-white transition-opacity duration-300 ease-in-out hover:opacity-90 ${shell}`}
+        className={`flex w-full flex-row items-center bg-[#262627] font-semibold text-white transition-opacity duration-300 ease-in-out hover:opacity-90 ${shell}`}
       >
         <Search size={iconSize} className="shrink-0 text-white" aria-hidden />
         <div
-          className={`ml-2 flex h-full min-h-0 w-full flex-1 flex-row bg-transparent ${variant === "header" ? "" : "text-lg font-semibold text-white"}`}
+          className={`ml-2 flex h-full min-h-0 w-full flex-1 flex-row items-center bg-transparent ${variant === "header" ? "" : "text-lg font-semibold text-white"}`}
         >
-          <form className="flex w-full flex-1 flex-row" onSubmit={onSearchSubmit}>
+          <form
+            role="search"
+            className="flex w-full min-w-0 flex-1 flex-row items-center gap-1"
+            onSubmit={onSubmit}
+          >
+            <label htmlFor={inputId} className="sr-only">
+              Search articles and destinations
+            </label>
             <input
-              className={`ml-1.5 h-full w-full flex-1 border-0 bg-transparent outline-none placeholder:text-neutral-500 ${inputText}`}
+              id={inputId}
+              className={`min-w-0 flex-1 border-0 bg-transparent py-0.5 outline-none placeholder:text-neutral-500 ${inputText}`}
               type="text"
               name="search"
+              inputMode="search"
               placeholder="Search"
-              onChange={(e) => {
-                handleSearch(e.target.value);
-              }}
-              defaultValue={searchParams.get("query")?.toString()}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleReset();
+                if (e.key === "Escape" && value) {
+                  e.preventDefault();
+                  clear();
+                }
               }}
               autoComplete="off"
+              enterKeyHint="search"
             />
+            {value ? (
+              <button
+                type="button"
+                className="shrink-0 rounded-md px-2 py-1 text-lg leading-none text-neutral-400 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+                aria-label="Clear search"
+                onClick={clear}
+              >
+                ×
+              </button>
+            ) : null}
           </form>
         </div>
       </div>

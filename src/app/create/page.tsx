@@ -2,7 +2,6 @@
 import styled from "styled-components";
 import React from "react";
 import Header from "../components/Header";
-import SearchBar from "../components/SearchBar";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import { Plus } from "styled-icons/boxicons-regular";
 import { Share } from "styled-icons/boxicons-regular";
