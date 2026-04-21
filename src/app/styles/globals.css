@@ -8,8 +8,8 @@
   :root {
     /* Main content `padding-top` below fixed header (matches historical 150 / sm:120). */
     --header-offset: 150px;
-    /* Approximate fixed bar height for overlays (e.g. mobile nav). */
-    --header-bar-height: 100px;
+    /* Fixed bar height (header row + overlays that clear it). */
+    --header-bar-height: 5rem;
   }
 
   @media (min-width: 640px) {

@@ -3,7 +3,12 @@ import React from "react";
 import { Search } from "styled-icons/boxicons-regular";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-export default function SearchBar() {
+type SearchBarProps = {
+  /** Tighter pill style for the main site header. */
+  variant?: "default" | "header";
+};
+
+export default function SearchBar({ variant = "default" }: SearchBarProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -33,14 +38,30 @@ export default function SearchBar() {
     replace(`${pathname}?${params.toString()}`);
   }
 
+  const shell =
+    variant === "header"
+      ? "rounded-full px-3 py-2 sm:px-5 sm:py-2.5"
+      : "rounded-[10px] p-3";
+
+  const inputText =
+    variant === "header"
+      ? "text-sm font-medium text-neutral-100 sm:text-base"
+      : "text-lg font-semibold text-white";
+
+  const iconSize = variant === "header" ? 18 : 20;
+
   return (
-    <div className="flex flex-row items-center justify-center">
-      <div className="flex w-full cursor-pointer flex-row items-center rounded-[10px] bg-[#262627] p-3 font-semibold text-white transition-opacity duration-300 ease-in-out hover:opacity-80">
-        <Search size={20} className="shrink-0 text-white" />
-        <div className="ml-2.5 flex h-full min-h-0 w-full flex-1 flex-row bg-transparent text-lg font-semibold text-white">
+    <div className="flex w-full flex-row items-center justify-center">
+      <div
+        className={`flex w-full cursor-pointer flex-row items-center bg-[#262627] font-semibold text-white transition-opacity duration-300 ease-in-out hover:opacity-90 ${shell}`}
+      >
+        <Search size={iconSize} className="shrink-0 text-white" aria-hidden />
+        <div
+          className={`ml-2 flex h-full min-h-0 w-full flex-1 flex-row bg-transparent ${variant === "header" ? "" : "text-lg font-semibold text-white"}`}
+        >
           <form className="flex w-full flex-1 flex-row" onSubmit={onSearchSubmit}>
             <input
-              className="ml-2.5 h-full w-full flex-1 border-0 bg-transparent text-lg font-semibold text-white outline-none placeholder:text-white/60"
+              className={`ml-1.5 h-full w-full flex-1 border-0 bg-transparent outline-none placeholder:text-neutral-500 ${inputText}`}
               type="text"
               name="search"
               placeholder="Search"

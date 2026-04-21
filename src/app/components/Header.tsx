@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Hamburger from "hamburger-react";
@@ -10,22 +9,25 @@ import { GoogleSignInButton } from "./AuthButtons";
 import SearchBar from "./SearchBar";
 import Sidebar from "./Sidebar";
 
-function navIsActive(pathname: string | null, href: string) {
+function pathnameMatches(pathname: string | null, href: string) {
   if (!pathname) return false;
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+const navText =
+  "whitespace-nowrap text-[15px] font-medium leading-none text-white no-underline transition-colors hover:text-neutral-300";
+
 export default function Header() {
   const pathname = usePathname();
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [elevated, setElevated] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 0);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setElevated(window.scrollY > 6);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -43,90 +45,71 @@ export default function Header() {
 
   const closeMobile = useCallback(() => setMobileMenuOpen(false), []);
 
-  const navLinkClass =
-    "text-white no-underline transition-colors duration-200 ease-out hover:text-neutral-400";
-  const navLinkActive = "text-amber-300 hover:text-amber-200";
-
-  const desktopNavLink = (href: string, label: string) => {
-    const active = navIsActive(pathname, href);
+  function NavLink({ href, children }: { href: string; children: ReactNode }) {
+    const active = pathnameMatches(pathname, href);
     return (
-      <li className="inline-block list-none px-5 py-5 text-white max-md:px-2.5 max-md:py-5">
-        <Link
-          href={href}
-          className={`${navLinkClass} ${active ? navLinkActive : ""}`}
-          aria-current={active ? "page" : undefined}
-        >
-          {label}
-        </Link>
-      </li>
+      <Link
+        href={href}
+        className={`${navText} ${active ? "text-amber-300 hover:text-amber-200" : ""}`}
+        aria-current={active ? "page" : undefined}
+      >
+        {children}
+      </Link>
     );
-  };
+  }
 
   return (
     <header
-      className={`fixed left-0 right-0 top-0 z-[1000] w-full transition-[background] duration-300 ease-out ${
-        isScrolled ? "bg-gradient-to-r from-black to-neutral-700" : "bg-transparent"
+      className={`fixed inset-x-0 top-0 z-[1000] w-full transition-[background-color,box-shadow,border-color] duration-200 ${
+        elevated
+          ? "border-b border-white/10 bg-black/90 shadow-sm shadow-black/40 backdrop-blur-sm"
+          : "border-b border-transparent bg-black"
       }`}
     >
-      <div className="relative z-[1000] mx-auto flex min-h-[60px] w-full max-w-[100vw] flex-row items-center justify-between gap-2 bg-black px-4 py-4 sm:px-6 sm:py-5 md:px-8">
-        <div className="z-[600] flex min-w-0 max-w-[40%] shrink-0 flex-row items-center gap-2 sm:max-w-[33%] sm:flex-[0.33]">
+      <div className="mx-auto flex min-h-[var(--header-bar-height)] max-w-[1680px] items-center gap-2 px-3 sm:gap-3 sm:px-5 md:gap-5 md:px-8">
+        <div className="flex min-w-0 shrink-0 items-center gap-3 sm:gap-5 md:gap-6">
           <Link
             href="/"
-            className="shrink-0 rounded-md outline-none ring-offset-2 ring-offset-black hover:opacity-90 focus-visible:ring-2 focus-visible:ring-amber-400"
+            className="group shrink-0 rounded-sm outline-none ring-offset-2 ring-offset-black focus-visible:ring-2 focus-visible:ring-amber-400/90"
             aria-label="Culturin home"
           >
-            <Image
-              src="/culturin_logo.svg"
-              width={100}
-              height={100}
-              draggable={false}
-              alt=""
-              className="h-10 w-auto sm:h-12"
-              priority
-            />
+            <span className="inline-flex items-baseline font-serif text-lg font-bold tracking-tight text-amber-400 transition-colors group-hover:text-amber-300 sm:text-xl md:text-2xl">
+              Culturin
+              <span className="ml-0.5 translate-y-[-0.35em] text-[0.42em] font-semibold leading-none" aria-hidden>
+                ™
+              </span>
+            </span>
           </Link>
-          <Link
-            href="/about"
-            className={`${navLinkClass} shrink-0 px-2 text-sm sm:text-base ${
-              navIsActive(pathname, "/about") ? navLinkActive : ""
-            }`}
-            aria-current={navIsActive(pathname, "/about") ? "page" : undefined}
-          >
-            About
-          </Link>
+          <NavLink href="/about">About</NavLink>
         </div>
 
-        <div className="z-[600] min-w-0 flex-1 px-1 sm:px-2">
-          <SearchBar />
+        <div className="min-w-0 flex-1 md:px-2">
+          <div className="mx-auto w-full max-w-md md:max-w-xl lg:max-w-2xl">
+            <SearchBar variant="header" />
+          </div>
         </div>
 
         <nav
           aria-label="Primary"
-          className="z-[600] hidden flex-none flex-row items-center md:flex"
+          className="hidden min-w-0 shrink-0 items-center gap-5 md:flex lg:gap-8"
         >
-          <ul className="m-0 flex list-none flex-row p-0 text-white">
-            {desktopNavLink("/create", "Create")}
-            {desktopNavLink("/join-us/advisors", "Advisor")}
-            <li className={`inline-block list-none px-5 py-5 max-md:px-2.5 max-md:py-5`}>
-              <GoogleSignInButton />
-            </li>
-          </ul>
+          <NavLink href="/create">Create</NavLink>
+          <NavLink href="/join-us/advisors">Advisor</NavLink>
+          <GoogleSignInButton className="!w-auto !max-w-none shrink-0 rounded-lg px-5 py-2.5 text-sm font-bold shadow-none max-[428px]:!w-auto" />
         </nav>
 
-        <div className="flex shrink-0 items-center justify-center text-white md:hidden [&_button]:rounded-md [&_button]:text-white [&_button]:outline-none [&_button]:ring-offset-2 [&_button]:ring-offset-black [&_button]:hover:bg-white/10 [&_button]:focus-visible:ring-2 [&_button]:focus-visible:ring-amber-400">
+        <div className="flex shrink-0 items-center text-white md:hidden [&_button]:rounded-md [&_button]:text-white [&_button]:outline-none [&_button]:ring-offset-2 [&_button]:ring-offset-black [&_button]:hover:bg-white/10 [&_button]:focus-visible:ring-2 [&_button]:focus-visible:ring-amber-400">
           <Hamburger
             toggled={mobileMenuOpen}
-            toggle={() => setMobileMenuOpen((o) => !o)}
-            size={20}
+            toggle={() => setMobileMenuOpen((open) => !open)}
+            size={22}
             rounded
             label={mobileMenuOpen ? "Close menu" : "Open menu"}
           />
         </div>
       </div>
 
-      {mobileMenuOpen ? (
-        <Sidebar id="mobile-navigation" onClose={closeMobile} />
-      ) : null}
+      {mobileMenuOpen ? <Sidebar id="mobile-navigation" onClose={closeMobile} /> : null}
     </header>
   );
 }

@@ -10,7 +10,7 @@ function profileHref(userId: string | undefined) {
 }
 
 const triggerClass =
-  "flex w-full min-w-0 cursor-pointer flex-col items-center rounded-[10px] bg-white px-2.5 py-2.5 font-semibold text-black outline-none transition-colors duration-200 ease-out hover:bg-neutral-200 focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-black max-[428px]:w-[100px]";
+  "flex w-full min-w-0 cursor-pointer flex-col items-center justify-center rounded-[10px] bg-white px-2.5 py-2.5 font-semibold text-black outline-none transition-colors duration-200 ease-out hover:bg-neutral-200 focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-black max-[428px]:w-[100px]";
 
 const menuPanelClass =
   "absolute right-0 top-full z-[100] mt-1 w-[min(100vw-1rem,14rem)] rounded-[10px] border border-neutral-200 bg-white py-1 shadow-lg";
@@ -59,7 +59,7 @@ function useDismissOnEscapeAndOutside(
  * Google OAuth entry + signed-in account menu.
  * Menu is self-contained (internal open state), with escape/outside dismiss and ARIA attributes.
  */
-export function GoogleSignInButton() {
+export function GoogleSignInButton({ className }: { className?: string }) {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -71,11 +71,13 @@ export function GoogleSignInButton() {
 
   useDismissOnEscapeAndOutside(open, setOpen, rootRef, triggerRef);
 
+  const triggerCn = className ? `${triggerClass} ${className}` : triggerClass;
+
   if (status === "loading") {
     return (
       <button
         type="button"
-        className={`${triggerClass} cursor-wait opacity-60`}
+        className={`${triggerCn} cursor-wait opacity-60`}
         disabled
         aria-busy="true"
         aria-label="Checking sign-in status"
@@ -93,7 +95,7 @@ export function GoogleSignInButton() {
         <button
           ref={triggerRef}
           type="button"
-          className={triggerClass}
+          className={triggerCn}
           aria-expanded={open}
           aria-haspopup="menu"
           aria-controls={menuId}
@@ -157,7 +159,7 @@ export function GoogleSignInButton() {
   return (
     <button
       type="button"
-      className={triggerClass}
+      className={triggerCn}
       onClick={() =>
         void signIn("google", { redirect: true, callbackUrl: "/" })
       }
