@@ -1,135 +1,48 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Header from "../components/Header";
-import Link from "next/link";
-import { device } from "../styles/breakpoints";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
+
+import { useState } from "react";
 import { useSession } from "next-auth/react";
-import SubNavigation from "../components/SubNavigation";
 
 export default function NotificationSection() {
-  const [theme, setTheme] = useState("dark");
-  const [email, setEmail] = useState(""); // Replace with user's email from session
-  const [username, setUsername] = useState(""); // Replace with user's username from session
-  const isDarkTheme = theme === "dark";
-  const [formInput, setFormInput] = useState<undefined>(); // Update the type of formInput to undefined
   const { data: session } = useSession();
-  function handleReset() {
-    setFormInput(undefined); // Set formInput state to undefined
-  }
-  const [activeSection, setActiveSection] = useState("");
-
-  useEffect(() => {
-    setActiveSection(window.location.hash);
-  }, []);
+  const [mobile, setMobile] = useState("");
 
   return (
-    <>
-      <LabelContainer>
-        <Label>Recommended Reading</Label>
-        <p>
-          Featured stories, vidoes and packages that we think you’ll enjoy based
-          on your reading history.
-        </p>{" "}
-        <Label>Mobile</Label>
-        <Input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleReset();
-          }}
-          autoComplete="off"
+    <section
+      aria-label="Notification preferences"
+      className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 py-6 text-white"
+    >
+      <header>
+        <h2 className="text-2xl font-semibold">Notifications</h2>
+        <p className="mt-2 text-sm text-white/70">
+          Recommended reading and alerts. Full preference controls will connect here
+          when the API is ready.
+        </p>
+      </header>
+
+      <div className="flex flex-col gap-4 rounded-lg border border-white/10 bg-white/5 p-5">
+        <h3 className="text-base font-semibold">Recommended reading</h3>
+        <p className="text-sm text-white/75">
+          Featured stories, videos, and packages we think you will enjoy based on your
+          reading history.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label htmlFor="notif-mobile" className="text-sm font-medium text-white/80">
+          Mobile number (optional)
+        </label>
+        <input
+          id="notif-mobile"
+          type="tel"
+          value={mobile}
+          onChange={(e) => setMobile(e.target.value)}
+          autoComplete="tel"
+          disabled={!session}
+          placeholder={session ? "+1 …" : "Sign in to add"}
+          className="max-w-md rounded-md border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-white/40 disabled:cursor-not-allowed disabled:opacity-50"
         />
-      </LabelContainer>
-    </>
+      </div>
+    </section>
   );
 }
-
-const AppBody = styled.div`
-  padding: 40px;
-  display: flex;
-  padding-top: 150px;
-  align-items: flex-start;
-  background: black;
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: white;
-  overflow: none;
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
-    align-items: flex-start;
-  }
-`;
-
-const LabelContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const SettingsTitle = styled.div`
-  cursor: pointer;
-`;
-
-const Row = styled.div`
-  overflow: scroll;
-`;
-
-const SettingsContainer = styled.div`
-  margin: 20px;
-`;
-
-const Section = styled.div`
-  margin-bottom: 20px;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 24px;
-  margin-bottom: 10px;
-`;
-
-const SubSection = styled.div`
-  margin-bottom: 10px;
-`;
-
-const SubSectionTitle = styled.h3`
-  font-size: 18px;
-  margin-bottom: 5px;
-`;
-
-const Input = styled.input`
-  width: 50%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-`;
-
-const Label = styled.label`
-  // Add styles for labels
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #005fa3;
-  }
-`;
-
-const SubNavigationRow = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: row;
-`;

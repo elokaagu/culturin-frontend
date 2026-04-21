@@ -1,244 +1,54 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Header from "../components/Header";
+
 import Link from "next/link";
-import { ThemeProvider } from "styled-components";
-import { device } from "../styles/breakpoints";
-import { CldImage } from "next-cloudinary";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import MuxPlayer from "@mux/mux-player-react";
-import { getBlurHash } from "../lib/mux";
 
-export default function Videos() {
-  const [theme, setTheme] = useState("dark");
-  const [blurHash, setBlurHash] = useState(""); // State to hold the blur hash
+import Header from "../components/Header";
 
-  const isDarkTheme = theme === "dark";
-
+export default function StreamLandingPage() {
   return (
     <>
       <Header />
-      <AppBody>
-        <Link href="/" passHref>
-          <BackLink>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 12 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+      <main className="flex min-h-screen flex-col bg-black px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+        <nav className="mb-6" aria-label="Back">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 font-semibold text-[rgb(250,193,0)] transition-colors hover:text-white max-[428px]:hidden"
+          >
+            <svg width={16} height={16} viewBox="0 0 12 12" aria-hidden>
               <path
                 d="M6.85355 3.14645C7.04882 3.34171 7.04882 3.65829 6.85355 3.85355L3.70711 7H12.5C12.7761 7 13 7.22386 13 7.5C13 7.77614 12.7761 8 12.5 8H3.70711L6.85355 11.1464C7.04882 11.3417 7.04882 11.6583 6.85355 11.8536C6.65829 12.0488 6.34171 12.0488 6.14645 11.8536L2.14645 7.85355C1.95118 7.65829 1.95118 7.34171 2.14645 7.14645L6.14645 3.14645C6.34171 2.95118 6.65829 2.95118 6.85355 3.14645Z"
                 fill="currentColor"
                 fillRule="evenodd"
                 clipRule="evenodd"
-              ></path>
+              />
             </svg>
-            {"   "}
-            back
-          </BackLink>
-        </Link>
-        <VideoWrapper>
-          <VideoContainer>
+            Back
+          </Link>
+        </nav>
+
+        <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
+          <div className="overflow-hidden rounded-[20px]">
             <MuxPlayer
               playbackId="Hf9691bovUrlcAHV2CIqHm1uwUGmZJAg00tUvz2geu8s"
-              style={{ borderRadius: "20px" }}
-              accent-color="black"
+              style={{ borderRadius: 20, width: "100%", aspectRatio: "16 / 9" }}
+              accentColor="#000"
               metadata={{
                 video_id: "video-id-54321",
                 video_title: "Munchies",
                 viewer_user_id: "user-id-007",
               }}
             />
-          </VideoContainer>
-          <Title>
-            <h1>Munchies</h1>
-          </Title>
-          <Subtitle>
-            <p>
-              Join Anthony Bourdain as he explores New York's culinary culture
-              and shares it with the world in a gritty documentation of No
-              Reservations.
+          </div>
+          <div>
+            <h1 className="text-3xl font-semibold">Munchies</h1>
+            <p className="mt-4 max-w-prose text-base leading-relaxed text-white/85">
+              Join Anthony Bourdain as he explores New York&apos;s culinary culture and
+              shares it with the world in a gritty documentation of No Reservations.
             </p>
-          </Subtitle>
-        </VideoWrapper>
-      </AppBody>
+          </div>
+        </div>
+      </main>
     </>
   );
 }
-
-const AppBody = styled.div`
-  padding: 40px;
-  display: flex;
-  padding-top: 150px;
-  align-items: center;
-  background: black;
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: white;
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
-    align-items: flex-start;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
-    align-items: flex-start;
-  }
-`;
-
-const Title = styled.div`
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-
-    h1 {
-      font-size: 25px;
-      align-items: flex-start;
-      margin-left: 40px;
-      width: 100%;
-    }
-  }
-`;
-
-const Subtitle = styled.div`
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: grey;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 10px;
-    align-items: flex-start;
-  }
-`;
-
-const VideoWrapper = styled.div`
-  margin: auto;
-  width: 60%;
-  padding-top: 30px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  p {
-    font-size: 18px;
-    padding-bottom: 36px;
-    color: white;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 20px;
-    align-items: flex-start;
-    width: 100%;
-
-    p {
-      font-size: 18px;
-      padding-bottom: 36px;
-      color: white;
-    }
-  }
-
-  @media ${device.mobile} {
-    margin-left: -100px;
-    border-radius: 10px;
-    width: 300px;
-    height: 50%;
-    overflow: hidden;
-  }
-`;
-
-const Body = styled.div`
-  margin: auto;
-  width: 50%;
-  padding-left: 30px;
-  padding-top: 20px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-
-  p {
-    font-size: 18px;
-    padding-bottom: 36px;
-    color: white;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 20px;
-    align-items: flex-start;
-    width: 100%;
-
-    p {
-      font-size: 18px;
-      padding-bottom: 36px;
-      color: white;
-    }
-  }
-`;
-
-const BackLink = styled.a`
-  color: rgb(250, 193, 0);
-  padding-bottom: 20px;
-  text-decoration: none;
-  position: fixed;
-  left: 50px;
-  top: 200px;
-
-  :hover {
-    color: white;
-    cursor: pointer;
-    transition: all 0.5s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    // position: fixed;
-    // left: 20px;
-    // top: 105px;
-    display: none;
-  }
-`;
-
-const VideoContainer = styled.div`
-  padding-bottom: 20px;
-  cursor: pointer;
-  img {
-    border-radius: 10px;
-  }
-
-  @media ${device.mobile} {
-    margin: 0 auto;
-    padding-left: 10px;
-    border-radius: 20px;
-
-    img {
-      margin-left: 0;
-      border-radius: 10px;
-      width: 360px;
-    }
-  }
-`;

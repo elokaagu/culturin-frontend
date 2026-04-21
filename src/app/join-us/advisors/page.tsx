@@ -5,8 +5,6 @@ import Header from "../../components/Header";
 import { ChevronDown } from "styled-icons/boxicons-regular";
 import Link from "next/link";
 import { device } from "../../styles/breakpoints";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
 interface ToggleOptionProps {
   active: boolean;
@@ -20,17 +18,13 @@ export default function Advisors() {
     }
   };
   // States
-  const [theme, setTheme] = useState("dark");
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [activeSection, setActiveSection] = useState("");
 
-  const isDarkTheme = theme === "dark";
   return (
     <div>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
+      <AppBody>
           <Title>
             <h1>Become a Culturin advisor</h1>
           </Title>
@@ -146,7 +140,6 @@ export default function Advisors() {
             </div>
           </Body>
         </AppBody>
-      </ThemeProvider>
     </div>
   );
 }

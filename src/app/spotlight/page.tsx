@@ -1,23 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
 import Feed from "../components/Feed";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 
 export default function Spotlight() {
-  const [theme, setTheme] = useState("dark");
-
-  const isDarkTheme = theme === "dark";
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
+      <AppBody>
           <SpotlightTitle>
             <h1> News</h1>
           </SpotlightTitle>
@@ -26,8 +19,7 @@ export default function Spotlight() {
             <Feed />
             <Feed />
           </FeedContainer>
-        </AppBody>
-      </ThemeProvider>
+      </AppBody>
     </>
   );
 }

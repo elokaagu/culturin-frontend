@@ -1,61 +1,27 @@
 "use client";
-import React, { useState } from "react";
-import styled from "styled-components";
-import Header from "../components/Header";
-import Link from "next/link";
-import { device } from "../styles/breakpoints";
-import ProfileCard from "../components/ProfileCard";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
+
 import { useSession } from "next-auth/react";
-import { fetchUsers } from "../lib/data";
 
-export default function Profile() {
-  const [theme, setTheme] = useState("dark");
+import Header from "../components/Header";
 
-  const isDarkTheme = theme === "dark";
+export default function ProfilePage() {
   const { data: session } = useSession();
+  const first = session?.user?.name?.trim()?.split(/\s+/)[0];
 
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
-          <ProfileTitle>
-            <h1> {session?.user?.name?.split(" ")[0] || "Your"} Profile</h1>
-          </ProfileTitle>
-          <Row></Row>
-        </AppBody>
-      </ThemeProvider>
+      <main className="min-h-screen bg-black px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+        <div className="mx-auto max-w-3xl">
+          <h1 className="cursor-default text-2xl font-semibold sm:text-3xl">
+            {first ? `${first}'s profile` : "Your profile"}
+          </h1>
+          <p className="mt-4 text-sm text-white/65">
+            Public profile and saved content will appear here as we connect your data
+            sources.
+          </p>
+        </div>
+      </main>
     </>
   );
 }
-
-const AppBody = styled.div`
-  padding: 40px;
-  display: flex;
-  padding-top: 150px;
-  align-items: flex-start;
-  background: black;
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: white;
-  overflow: none;
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
-    align-items: flex-start;
-  }
-`;
-
-const ProfileTitle = styled.div`
-  cursor: pointer;
-  padding: 10px;
-`;
-
-const Row = styled.div`
-  overflow: scroll;
-};`;

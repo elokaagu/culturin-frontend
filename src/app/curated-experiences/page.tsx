@@ -4,9 +4,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
-import { ThemeProvider } from "styled-components";
 import { device } from "../styles/breakpoints";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { client } from "../lib/sanity";
 import Image from "next/image";
 import { providerCard } from "../../libs/interface";
@@ -35,9 +33,6 @@ async function getData() {
 }
 
 export default function Videos() {
-  const [theme, setTheme] = useState("dark");
-  const isDarkTheme = theme === "dark";
-
   const [data, setData] = useState<providerCard[]>([]);
 
   useEffect(() => {
@@ -48,16 +43,10 @@ export default function Videos() {
     fetchData();
   }, []);
 
-  console.log(data);
-
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <>
-          <GlobalStyles />
-
-          <AppBody>
+      <AppBody>
             <Title>
               <h1>Curated experiences</h1>
             </Title>
@@ -95,9 +84,7 @@ export default function Videos() {
                 </ProviderCard>
               ))}
             </ProviderContainer>
-          </AppBody>
-        </>
-      </ThemeProvider>
+      </AppBody>
     </>
   );
 }

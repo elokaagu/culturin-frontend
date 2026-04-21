@@ -1,6 +1,6 @@
 "use client";
 import styled from "styled-components";
-import React, { useState } from "react";
+import React from "react";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import { ChevronDown } from "styled-icons/boxicons-regular";
@@ -8,19 +8,12 @@ import { Plus } from "styled-icons/boxicons-regular";
 import { Share } from "styled-icons/boxicons-regular";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 
 export default function Create() {
-  const [theme, setTheme] = useState("dark");
-
-  const isDarkTheme = theme === "dark";
   return (
     <div>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
+      <AppBody>
           <Title>
             <h1>Create</h1>
             <p>
@@ -60,8 +53,7 @@ export default function Create() {
               </Link>
             </UploadOption>
           </UploadContainer>
-        </AppBody>
-      </ThemeProvider>
+      </AppBody>
     </div>
   );
 }

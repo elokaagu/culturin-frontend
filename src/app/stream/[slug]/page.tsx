@@ -2,20 +2,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
-import { ThemeProvider } from "styled-components";
-import Link from "next/link";
 import { device } from "../../styles/breakpoints";
-import { client, urlFor } from "../../lib/sanity";
-import { fullBlog, fullVideo } from "../../../libs/interface";
-import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
-import Image from "next/image";
-import { url } from "inspector";
-import { PortableText } from "@portabletext/react";
+import { client } from "../../lib/sanity";
+import type { fullVideo } from "../../../libs/interface";
 import MuxPlayer from "@mux/mux-player-react";
 
 async function getData(slug: string) {
   const query = `
-    *[_type == "video" && slug.current == '${slug}'] {
+    *[_type == "video" && slug.current == $slug] {
       "currentSlug": slug.current,
         title,
         slug,
@@ -25,17 +19,11 @@ async function getData(slug: string) {
         "playbackId": video.asset->playbackId
     }[0]`;
 
-  const data = await client.fetch(query);
-  return data;
+  return await client.fetch(query, { slug });
 }
 
 export default function Videos({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<fullVideo | null>(null);
-
-  const [theme, setTheme] = useState("dark");
-  const [blurHash, setBlurHash] = useState(""); // State to hold the blur hash
-
-  const isDarkTheme = theme === "dark";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,10 +37,7 @@ export default function Videos({ params }: { params: { slug: string } }) {
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <>
-          <GlobalStyles />
-          <AppBody>
+      <AppBody>
             <VideoWrapper>
               <VideoContainer>
                 <MuxPlayer
@@ -74,9 +59,7 @@ export default function Videos({ params }: { params: { slug: string } }) {
                 <p>{data?.description}</p>
               </Subtitle>
             </VideoWrapper>
-          </AppBody>
-        </>
-      </ThemeProvider>
+      </AppBody>
     </>
   );
 }

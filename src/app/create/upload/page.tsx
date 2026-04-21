@@ -1,23 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import { device } from "../../styles/breakpoints";
 import { CldUploadWidget } from "next-cloudinary";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
 export default function Upload() {
-  const [theme, setTheme] = useState("dark");
-
-  const isDarkTheme = theme === "dark";
-
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
+      <AppBody>
           <UploadContainer>
             <UploadDetails>
               <UploadTitle>
@@ -37,8 +29,7 @@ export default function Upload() {
               </UploadField>
             </UploadDetails>
           </UploadContainer>
-        </AppBody>
-      </ThemeProvider>
+      </AppBody>
     </>
   );
 }

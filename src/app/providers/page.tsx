@@ -1,25 +1,17 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
-import { ThemeProvider } from "styled-components";
 import { device } from "../styles/breakpoints";
 import { CldImage } from "next-cloudinary";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 
 export default function Providers() {
-  const [theme, setTheme] = useState("dark");
-
-  const isDarkTheme = theme === "dark";
-
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
+      <AppBody>
           {" "}
           <Link href="/" passHref>
             <BackLink>
@@ -132,8 +124,7 @@ export default function Providers() {
               </Link>
             </Banner>
           </ProviderWrapper>
-        </AppBody>
-      </ThemeProvider>
+      </AppBody>
     </>
   );
 }

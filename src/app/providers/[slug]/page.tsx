@@ -2,17 +2,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
-import { ThemeProvider } from "styled-components";
 import Link from "next/link";
 import { device } from "../../styles/breakpoints";
 import { client, urlFor } from "../../lib/sanity";
 import { fullProvider } from "../../../libs/interface";
-import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 import Image from "next/image";
 
 async function getData(slug: string) {
   const query = `
-  *[_type == "providers" && slug.current == '${slug}'] {
+  *[_type == "providers" && slug.current == $slug] {
     name,
     eventName,
     "slug": slug.current,
@@ -38,14 +36,12 @@ async function getData(slug: string) {
   
       `;
 
-  const data = await client.fetch(query);
+  const data = await client.fetch(query, { slug });
   return data;
 }
 
 export default function Provider({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<fullProvider | null>(null);
-  const [theme, setTheme] = useState("dark");
-  const isDarkTheme = theme === "dark";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,9 +54,7 @@ export default function Provider({ params }: { params: { slug: string } }) {
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
+      <AppBody>
           <ProviderWrapper>
             <Title>
               <h1>{data?.eventName}</h1>
@@ -157,8 +151,7 @@ export default function Provider({ params }: { params: { slug: string } }) {
               </Link>
             </Banner>
           </ProviderWrapper>
-        </AppBody>
-      </ThemeProvider>
+      </AppBody>
     </>
   );
 }

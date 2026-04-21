@@ -1,25 +1,18 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Link from "next/link";
-import { ThemeProvider } from "styled-components";
 import { CldImage } from "next-cloudinary";
 import { device } from "../../styles/breakpoints";
 import VideoPlayer from "../../components/VideoPlayer";
-import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
 
 export default function SpotlightPosts() {
-  const [theme, setTheme] = useState("dark");
-
-  const isDarkTheme = theme === "dark";
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
+      <AppBody>
           <Link href="/spotlight" passHref>
             <BackLink>
               <svg
@@ -87,8 +80,7 @@ export default function SpotlightPosts() {
               Igbo.
             </p>
           </Body>
-        </AppBody>
-      </ThemeProvider>
+      </AppBody>
     </>
   );
 }

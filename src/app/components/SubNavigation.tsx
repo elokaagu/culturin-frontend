@@ -1,41 +1,29 @@
-import React from "react";
-import styled from "styled-components";
 import Link from "next/link";
 
+const tabs = [
+  { href: "/settings#account", label: "Account" },
+  { href: "/settings#notifications", label: "Notifications" },
+  { href: "/settings#payments", label: "Payments" },
+] as const;
+
+/**
+ * Settings sub-nav (hash links). Styled for dark settings shell.
+ */
 export default function SubNavigation() {
   return (
-    <>
-      <NavContainer>
-        <NavLink href="/settings#account" passHref>
-          <NavAnchor>Account</NavAnchor>
-        </NavLink>
-        <NavLink href="/settings#notifications" passHref>
-          <NavAnchor>Notifications</NavAnchor>
-        </NavLink>
-        <NavLink href="/settings#payments" passHref>
-          <NavAnchor>Payments</NavAnchor>
-        </NavLink>
-        {/* ... other links */}
-      </NavContainer>
-    </>
+    <nav
+      aria-label="Settings sections"
+      className="flex flex-wrap justify-around gap-2 border-b border-white/15 bg-neutral-950/80 px-3 py-2.5"
+    >
+      {tabs.map(({ href, label }) => (
+        <Link
+          key={href}
+          href={href}
+          className="rounded-md px-3 py-2 text-sm font-medium text-sky-400 no-underline transition-colors hover:bg-white/5 hover:text-sky-300"
+        >
+          {label}
+        </Link>
+      ))}
+    </nav>
   );
 }
-
-const NavContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
-  background: #f5f5f5; // Example styling
-`;
-
-const NavLink = styled(Link)`
-  margin-right: 20px; // Example styling
-`;
-
-const NavAnchor = styled.a`
-  color: #0077cc; // Example styling
-  cursor: pointer;
-  &:hover {
-    color: #005fa3; // Example styling
-  }
-`;

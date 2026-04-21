@@ -1,28 +1,18 @@
 "use client";
-import { GetServerSideProps } from "next";
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Header from "../../components/Header";
-import Link from "next/link";
-import { device } from "../../styles/breakpoints";
+
 import Image from "next/image";
-import ProfileCard from "../../components/ProfileCard";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, GlobalStyles } from "../../styles/theme";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import { useSession } from "next-auth/react";
+
+import Header from "../../components/Header";
 import { client } from "../../lib/sanity";
-import { simpleBlogCard } from "../../../libs/interface";
 import { urlFor } from "../../lib/sanity";
+import type { simpleBlogCard } from "../../../libs/interface";
+import { device } from "../../styles/breakpoints";
 
-const createUsernameSlug = (name: string) => {
-  return name
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, "");
-};
-
-async function getData() {
+async function getData(): Promise<simpleBlogCard[]> {
   const query = `
   *[_type== 'blog'] | order(_createdAt desc) {
     title,
@@ -33,132 +23,61 @@ async function getData() {
  `;
 
   try {
-    const data = await client.fetch(query);
-    return data;
+    return await client.fetch<simpleBlogCard[]>(query);
   } catch (error) {
     console.error("Failed to fetch data from Sanity:", error);
-    return []; // Return an empty array or appropriate error response
+    return [];
   }
 }
 
-// profile/[userId].page.tsx
-
-// ... other imports
-
-export default function ProfilePage() {
+export default function ProfileByIdPage() {
   const { data: session } = useSession();
-  console.log("session", session);
-  const [theme, setTheme] = useState("dark");
-  const isDarkTheme = theme === "dark";
   const [userData, setUserData] = useState({ name: "", email: "" });
-  const fetchDataFromApri = async () => {
-    try {
-      const response = await fetch("/api/users", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log("data", data);
-        setUserData(data);
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (session?.user?.id) {
-      fetch(`/api/users/${session.user.id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          // Update user data state
-          setUserData({ name: data.name, email: data.email });
-        })
-        .catch((error) => console.error("Error fetching user data:", error));
-    }
-  }, [session]);
-
   const [articleData, setArticleData] = useState<simpleBlogCard[]>([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const fetchedArticleData = await getData();
-      setArticleData(fetchedArticleData);
-    }
-    fetchData();
+    if (!session?.user?.id) return;
+    fetch(`/api/users/${session.user.id}`)
+      .then((res) => res.json())
+      .then((data: { name?: string; email?: string }) => {
+        setUserData({
+          name: data.name ?? "",
+          email: data.email ?? "",
+        });
+      })
+      .catch((error) => console.error("Error fetching user data:", error));
+  }, [session?.user?.id]);
+
+  useEffect(() => {
+    void (async () => {
+      setArticleData(await getData());
+    })();
   }, []);
 
-  console.log(articleData);
-
-  // const [savedArticles, setSavedArticles] = useState<Article[]>([]);
-
-  // useEffect(() => {
-  //   const fetchSavedArticles = async () => {
-  //     if (!session) return;
-
-  //     setIsLoading(true);
-
-  //     try {
-  //       const res = await fetch("/api/user-saved-articles", {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           // Include authorization if your API requires it
-  //           Authorization: `Bearer ${(session as any).token}`,
-  //         },
-  //       });
-
-  //       if (!res.ok) {
-  //         const errMessage = await res.text(); // Assuming the server responds with a plain text error message
-  //         switch (res.status) {
-  //           case 404:
-  //             throw new Error("Articles not found.");
-  //           case 401:
-  //             throw new Error("Unauthorized. Please log in again.");
-  //           case 500:
-  //             throw new Error("Server error. Please try again later.");
-  //           default:
-  //             throw new Error(errMessage || "An unknown error occurred.");
-  //         }
-  //       }
-
-  //       const { savedArticles } = await res.json();
-  //       setSavedArticles(savedArticles);
-  //     } catch (error) {
-  //       console.error("Failed to fetch saved articles:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchSavedArticles();
-  // }, [session]);
-
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>Error: {error}</div>;
+  const first = session?.user?.name?.trim()?.split(/\s+/)[0];
 
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <AppBody>
-          <ProfileTitle>
-            <h1>
-              {session?.user?.name?.split(" ")[0] + "'s" || "Your"} Profile
+      <main className="min-h-screen bg-black px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6">
+          <div>
+            <h1 className="text-2xl font-semibold sm:text-3xl">
+              {first ? `${first}'s profile` : "Your profile"}
             </h1>
-          </ProfileTitle>
-          <Row>
-            <ProfileHeadline>
-              <h1>Articles</h1>
-              <p>Your saved articles</p>
-            </ProfileHeadline>
-          </Row>
-          <Row>
+            {userData.email ? (
+              <p className="mt-2 text-sm text-white/60">{userData.email}</p>
+            ) : null}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <h2 className="text-xl font-semibold">Articles</h2>
+            <p className="text-sm text-white/65">Latest stories from Sanity (saved list coming soon).</p>
+          </div>
+
+          <div className="flex flex-row flex-wrap gap-4 overflow-x-auto py-2">
             {articleData.map((cardData, index) => (
-              <Card key={index}>
+              <Card key={cardData.currentSlug ?? index}>
                 <Link href={`/articles/${cardData.currentSlug}`}>
                   <CardBody>
                     <Image
@@ -169,170 +88,25 @@ export default function ProfilePage() {
                       draggable={false}
                       style={{ objectFit: "cover" }}
                       blurDataURL={urlFor(cardData.titleImage).url()}
-                      priority={true}
+                      priority={index < 3}
                     />
                   </CardBody>
                 </Link>
 
                 <CardText>
-                  <h1>{cardData.title}</h1>
+                  <h2>{cardData.title}</h2>
                   <CardAuthor>
-                    {/* <AvatarContainer>
-            <Image
-              src="/eloka.jpeg"
-              alt="elokaagu"
-              priority={true}
-              width={25}
-              height={25}
-              style={imageStyle}
-            />
-          </AvatarContainer> */}
                     <p>{cardData.summary}</p>
                   </CardAuthor>
                 </CardText>
               </Card>
             ))}
-          </Row>
-        </AppBody>
-      </ThemeProvider>
+          </div>
+        </div>
+      </main>
     </>
   );
 }
-
-const AppBody = styled.div`
-  padding: 40px;
-  display: flex;
-  padding-top: 150px;
-  align-items: flex-start;
-  background: black;
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: white;
-  overflow: none;
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
-    align-items: flex-start;
-  }
-`;
-
-const ProfileTitle = styled.div`
-  cursor: pointer;
-  padding-bottom: 10px;
-`;
-
-const Row = styled.div`
-display: flex;
-padding: 20px;
-flex direction: column;
-justify: space-between;
-flex: 1;
-overflow: scroll;
-a {
-  text-decoration: none;
-  color: white;
-}
-
-@media ${device.mobile} {
-  padding: 10px;
-  overflow: scroll;
-  }
-`;
-
-const ProfileCardBody = styled.div`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  justify-content: left;
-  height: 300px;
-  width: 300px;
-
-  border-radius: 8px;
-  drop-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background: #1a1a1a;
-  cursor: pointer;
-  box-shadow: 0px 6px 8px rgba(25, 50, 47, 0.08),
-    0px 4px 4px rgba(18, 71, 52, 0.02), 0px 1px 16px rgba(18, 71, 52, 0.03);
-
-  img {
-    border-radius: 8px;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-  }
-
-  &:hover {
-    background-color: #4444;
-    opacity: 0.4;
-    transform: scale(0.98);
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.laptop} {
-    height: 200px;
-  }
-
-  @media ${device.mobile} {
-    height: 200px;
-    width: 150px;
-  }
-`;
-
-const ProviderCardText = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
-
-  color: ${(props) => props.theme.title};
-
-  h1 {
-    cursor: pointer;
-    font-size: 16px;
-
-    @media ${device.laptop} {
-      font-size: 16px;
-    }
-
-    @media ${device.mobile} {
-      font-size: 14px;
-    }
-  }
-
-  p {
-    cursor: pointer;
-    font-size: 14px;
-    -webkit-line-clamp: 2;
-
-    color: ${(props) => props.theme.subtitle};
-
-    @media ${device.laptop} {
-      font-size: 12px;
-      color: grey;
-    }
-
-    @media ${device.mobile} {
-      font-size: 12px;
-    }
-  }
-
-  span {
-    cursor: pointer;
-    font-size: 14px;
-
-    @media ${device.laptop} {
-      font-size: 12px;
-    }
-  }
-`;
-
-const ProviderCardAuthor = styled.div`
-  display: flex;
-  pointer: cursor;
-  flex-direction: row;
-  align-items: center;
-`;
 
 const Card = styled.div`
   padding-bottom: 20px;
@@ -343,12 +117,11 @@ const CardBody = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
-  justify-content: left;
+  justify-content: flex-start;
   height: 300px;
   width: 200px;
   padding: 20px;
   border-radius: 8px;
-  drop-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background: #1a1a1a;
   cursor: pointer;
   box-shadow: 0px 6px 8px rgba(25, 50, 47, 0.08),
@@ -362,7 +135,7 @@ const CardBody = styled.div`
   }
 
   &:hover {
-    background-color: #4444;
+    background-color: #44444444;
     opacity: 0.4;
     transform: scale(0.98);
     transition: 0.3s ease-in-out;
@@ -382,13 +155,13 @@ const CardText = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
-
   color: ${(props) => props.theme.title};
 
-  h1 {
+  h2 {
     cursor: pointer;
     font-size: 16px;
     padding-bottom: 10px;
+    margin: 0;
 
     @media ${device.laptop} {
       font-size: 16px;
@@ -402,8 +175,6 @@ const CardText = styled.div`
   p {
     cursor: pointer;
     font-size: 14px;
-    -webkit-line-clamp: 2;
-
     color: ${(props) => props.theme.subtitle};
 
     @media ${device.laptop} {
@@ -415,25 +186,10 @@ const CardText = styled.div`
       font-size: 12px;
     }
   }
-
-  span {
-    cursor: pointer;
-    font-size: 14px;
-
-    @media ${device.laptop} {
-      font-size: 12px;
-    }
-  }
 `;
 
 const CardAuthor = styled.div`
   display: flex;
-  pointer: cursor;
   flex-direction: row;
   align-items: center;
-`;
-
-const ProfileHeadline = styled.div`
-  display: flex;
-  flex-direction: column;
 `;

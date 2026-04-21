@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Map from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -33,17 +35,42 @@ const longlat: {
 };
 
 export default function MapGL({ continent }: { continent: string }) {
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+  const view = longlat[continent];
+
+  if (!mapboxToken) {
+    return (
+      <div className="flex h-[min(24rem,50vh)] w-full items-center justify-center rounded-xl border border-amber-500/30 bg-neutral-900 px-4 text-center text-sm text-white/70">
+        Map is unavailable: set{" "}
+        <code className="rounded bg-black/40 px-1 text-amber-200/90">
+          NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+        </code>{" "}
+        in your environment.
+      </div>
+    );
+  }
+
+  if (!view) {
+    return (
+      <div className="flex h-[min(24rem,50vh)] w-full items-center justify-center rounded-xl border border-white/10 bg-neutral-900 text-sm text-white/60">
+        Unknown region: {continent}
+      </div>
+    );
+  }
+
   return (
-    <Map
-      mapboxAccessToken="pk.eyJ1IjoiZWxva2FhZ3UiLCJhIjoiY2xyODJtOWZxMmd6YjJrbXk1MHNrbDdhNyJ9.jScEFqw_a7q7TEX_dOwvgg"
-      initialViewState={{
-        longitude: longlat[continent].longitude,
-        latitude: longlat[continent].latitude,
-        zoom: longlat[continent].zoom,
-      }}
-      style={{ width: 1000, height: 600 }}
-      attributionControl={false}
-      mapStyle="mapbox://styles/elokaagu/clr82swh9001o01p431j70659"
-    />
+    <div className="h-[min(28rem,55vh)] w-full min-h-[280px] sm:h-[min(32rem,60vh)] lg:min-h-[420px]">
+      <Map
+        mapboxAccessToken={mapboxToken}
+        initialViewState={{
+          longitude: view.longitude,
+          latitude: view.latitude,
+          zoom: view.zoom,
+        }}
+        style={{ width: "100%", height: "100%", borderRadius: 12 }}
+        attributionControl={false}
+        mapStyle="mapbox://styles/elokaagu/clr82swh9001o01p431j70659"
+      />
+    </div>
   );
 }

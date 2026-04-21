@@ -4,9 +4,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
-import { ThemeProvider } from "styled-components";
 import { device } from "../styles/breakpoints";
-import { lightTheme, darkTheme, GlobalStyles } from "../styles/theme";
 import { client } from "../lib/sanity";
 import { urlFor } from "../lib/sanity";
 import Image from "next/image";
@@ -31,11 +29,6 @@ async function getData() {
 }
 
 export default function Trending() {
-  const [theme, setTheme] = useState("dark");
-  const [blurHash, setBlurHash] = useState(""); // State to hold the blur hash
-
-  const isDarkTheme = theme === "dark";
-
   const [data, setData] = useState<simpleBlogCard[]>([]);
 
   useEffect(() => {
@@ -46,15 +39,10 @@ export default function Trending() {
     fetchData();
   }, []);
 
-  console.log(data);
-
   return (
     <>
       <Header />
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-        <>
-          <GlobalStyles />
-          <AppBody>
+      <AppBody>
             <Title>
               <h1>Trending</h1>
             </Title>
@@ -98,9 +86,7 @@ export default function Trending() {
                 </Card>
               ))}
             </ArticlesContainer>
-          </AppBody>
-        </>
-      </ThemeProvider>
+      </AppBody>
     </>
   );
 }
