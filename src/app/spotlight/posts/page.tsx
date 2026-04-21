@@ -61,7 +61,7 @@ export default function SpotlightPosts() {
               />
             </ImageWrap>
           </ImageContainer>
-          <VideoPlayer />
+          <VideoPlayer src="https://www.youtube.com/watch?v=IX8reBGLQFk" />
           <Body>
             <p>
               Cynthia, often referred to as the "Coal City State," is a Nigerian
