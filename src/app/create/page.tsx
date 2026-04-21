@@ -60,7 +60,7 @@ export default function Create() {
 
 const AppBody = styled.div`
   padding: 20px;
-  padding-top: 150px;
+  padding-top: var(--header-offset);
   display: flex;
   flex: 1;
   align-items: center;

@@ -39,7 +39,7 @@ export default function SettingsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+      <main className="min-h-screen bg-black px-5 pb-16 pt-[var(--header-offset)] text-white">
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
           <h1 className="text-2xl font-semibold sm:text-3xl">
             {sectionTitle(session?.user?.name)}

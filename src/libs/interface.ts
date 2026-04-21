@@ -2,15 +2,19 @@ export interface simpleBlogCard {
   title: string;
   summary: string;
   currentSlug: string;
-  titleImage: any;
+  /** Resolved hero image URL (Supabase CMS). */
+  titleImageUrl?: string | null;
+  /** @deprecated Legacy Sanity image object; prefer titleImageUrl. */
+  titleImage?: unknown;
 }
 
 export interface fullBlog {
   title: string;
   currentSlug: string;
   summary?: string | null;
-  titleImage: any;
-  body: any;
+  titleImageUrl?: string | null;
+  titleImage?: unknown;
+  body: unknown;
   _id: string;
 }
 
@@ -18,25 +22,30 @@ export interface videoCard {
   title: string;
   currentSlug: string;
   uploader: string;
-  videoThumbnail: any;
   description: string;
+  videoThumbnailUrl?: string | null;
+  /** @deprecated Legacy Sanity asset; prefer videoThumbnailUrl. */
+  videoThumbnail?: unknown;
 }
 
 export interface fullVideo {
   title: string;
   currentSlug: string;
   uploader: string;
-  videoThumbnail: any;
   description: string;
   playbackId: string;
   _id: string;
+  videoThumbnailUrl?: string | null;
+  videoThumbnail?: unknown;
 }
 
 export interface providerCard {
   name: string;
   eventName: string;
   slug: { current: string };
-  bannerImage: any;
+  bannerImage?: {
+    image?: { url?: string; alt?: string };
+  };
 }
 
 /** Home / ProviderHero preview row (slug resolved as string in GROQ). */
@@ -72,7 +81,7 @@ export interface BannerImage {
 
 export interface imageAsset {
   _id: string;
-  url: string; // URL resolved from the asset reference ID
+  url: string;
   dimensions: {
     width: number;
     height: number;

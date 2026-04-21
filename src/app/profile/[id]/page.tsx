@@ -7,28 +7,11 @@ import styled from "styled-components";
 import { useSession } from "next-auth/react";
 
 import Header from "../../components/Header";
-import { client } from "../../lib/sanity";
-import { urlFor } from "../../lib/sanity";
 import type { simpleBlogCard } from "../../../libs/interface";
 import { device } from "../../styles/breakpoints";
 
-async function getData(): Promise<simpleBlogCard[]> {
-  const query = `
-  *[_type== 'blog'] | order(_createdAt desc) {
-    title,
-      titleImage,
-      summary,
-      "currentSlug":slug.current,
-  }
- `;
-
-  try {
-    return await client.fetch<simpleBlogCard[]>(query);
-  } catch (error) {
-    console.error("Failed to fetch data from Sanity:", error);
-    return [];
-  }
-}
+import { getCmsBrowserClient } from "../../../lib/cms/browser";
+import { listBlogs } from "../../../lib/cms/queries";
 
 export default function ProfileByIdPage() {
   const { data: session } = useSession();
@@ -50,7 +33,9 @@ export default function ProfileByIdPage() {
 
   useEffect(() => {
     void (async () => {
-      setArticleData(await getData());
+      const db = getCmsBrowserClient();
+      if (!db) return;
+      setArticleData(await listBlogs(db));
     })();
   }, []);
 
@@ -59,7 +44,7 @@ export default function ProfileByIdPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+      <main className="min-h-screen bg-black px-5 pb-16 pt-[var(--header-offset)] text-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-6">
           <div>
             <h1 className="text-2xl font-semibold sm:text-3xl">
@@ -72,22 +57,24 @@ export default function ProfileByIdPage() {
 
           <div className="flex flex-col gap-2">
             <h2 className="text-xl font-semibold">Articles</h2>
-            <p className="text-sm text-white/65">Latest stories from Sanity (saved list coming soon).</p>
+            <p className="text-sm text-white/65">Latest stories (saved list coming soon).</p>
           </div>
 
           <div className="flex flex-row flex-wrap gap-4 overflow-x-auto py-2">
-            {articleData.map((cardData, index) => (
-              <Card key={cardData.currentSlug ?? index}>
+            {articleData
+              .filter((c) => Boolean(c.titleImageUrl))
+              .map((cardData, index) => (
+              <Card key={cardData.currentSlug}>
                 <Link href={`/articles/${cardData.currentSlug}`}>
                   <CardBody>
                     <Image
-                      src={urlFor(cardData.titleImage).url()}
+                      src={cardData.titleImageUrl as string}
                       alt={cardData.title}
                       placeholder="blur"
                       fill
                       draggable={false}
                       style={{ objectFit: "cover" }}
-                      blurDataURL={urlFor(cardData.titleImage).url()}
+                      blurDataURL={cardData.titleImageUrl as string}
                       priority={index < 3}
                     />
                   </CardBody>

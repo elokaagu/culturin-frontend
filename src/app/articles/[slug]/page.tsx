@@ -1,21 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { client } from "../../lib/sanity";
+import { getCmsDbOrNull } from "../../../lib/cms/server";
+import { getBlogBySlug } from "../../../lib/cms/queries";
 import type { fullBlog } from "../../../libs/interface";
 import ArticleClient from "./ArticleClient";
 
 async function getArticleBySlug(slug: string): Promise<fullBlog | null> {
-  const query = `*[_type == "blog" && slug.current == $slug][0]{
-    _id,
-    "currentSlug": slug.current,
-    title,
-    titleImage,
-    body,
-    summary
-  }`;
-
-  return await client.fetch<fullBlog | null>(query, { slug });
+  const db = getCmsDbOrNull();
+  if (!db) return null;
+  return getBlogBySlug(db, slug);
 }
 
 export async function generateMetadata({

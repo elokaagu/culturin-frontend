@@ -132,7 +132,7 @@ export default function Providers() {
 const AppBody = styled.div`
   padding: 40px;
   display: flex;
-  padding-top: 150px;
+  padding-top: var(--header-offset);
   align-items: flex-start;
   background: ${(props) => props.theme.body};
   flex-direction: column;
@@ -142,7 +142,6 @@ const AppBody = styled.div`
 
   @media ${device.mobile} {
     padding-left: 0px;
-    padding-top: 80px;
     align-items: flex-start;
   }
 `;

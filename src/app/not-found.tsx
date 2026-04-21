@@ -6,7 +6,7 @@ export default function NotFoundPage() {
   return (
     <>
       <Header />
-      <main className="flex min-h-[60vh] flex-col items-center justify-center bg-black px-5 pb-16 pt-[150px] text-center text-white sm:pt-[120px]">
+      <main className="flex min-h-[60vh] flex-col items-center justify-center bg-black px-5 pb-16 pt-[var(--header-offset)] text-center text-white">
         <div className="flex max-w-lg flex-col items-center gap-4 rounded-2xl border border-white/10 bg-neutral-950/60 px-8 py-12">
           <h1 className="text-3xl font-semibold sm:text-4xl">Page not found</h1>
           <p className="text-base text-white/75">

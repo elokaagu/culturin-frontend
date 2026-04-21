@@ -53,7 +53,7 @@ export default function RegisterForm() {
   return (
     <>
       <Header />
-      <main className="mx-auto flex max-w-md flex-col gap-5 px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+      <main className="mx-auto flex max-w-md flex-col gap-5 px-5 pb-16 pt-[var(--header-offset)] text-white">
         <h1 className="text-2xl font-semibold">Create an account</h1>
         <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
           <Input<RegisterFormValues>

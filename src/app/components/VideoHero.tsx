@@ -5,31 +5,11 @@ import styled from "styled-components";
 import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
-import { client } from "../lib/sanity";
 import { videoCard } from "../../libs/interface";
-import { urlFor } from "../lib/sanity";
 import { useState, useEffect } from "react";
 
-async function getData() {
-  const query = `
-    *[_type== 'video'] | order(_createdAt desc) {
-        title,
-        uploader,
-        videoThumbnail,
-        description,
-        "currentSlug":slug.current,
-      }
-    
-   `;
-
-  try {
-    const data = await client.fetch(query);
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch data from Sanity:", error);
-    return []; // Return an empty array or appropriate error response
-  }
-}
+import { getCmsBrowserClient } from "../../lib/cms/browser";
+import { listVideos } from "../../lib/cms/queries";
 
 type VideoHeroProps = {
   initialData?: videoCard[];
@@ -40,10 +20,12 @@ export default function VideoHero({ initialData = [] }: VideoHeroProps) {
   useEffect(() => {
     let cancelled = false;
     async function fetchData() {
-      const fetchedData = await getData();
+      const db = getCmsBrowserClient();
+      if (!db) return;
+      const fetchedData = await listVideos(db);
       if (!cancelled) setData(fetchedData);
     }
-    fetchData();
+    void fetchData();
     return () => {
       cancelled = true;
     };
@@ -51,23 +33,25 @@ export default function VideoHero({ initialData = [] }: VideoHeroProps) {
 
   return (
     <AppBody>
-      {data.map((videoData, index) => (
-        <VideoCard key={index}>
+      {data
+        .filter((v) => Boolean(v.videoThumbnailUrl))
+        .map((videoData) => (
+        <VideoCard key={videoData.currentSlug}>
           <Link href={`/stream/${videoData.currentSlug}`}>
             <VideoCardBody>
               <Image
-                src={urlFor(videoData.videoThumbnail).url()}
+                src={videoData.videoThumbnailUrl as string}
                 alt={videoData.title}
                 placeholder="blur"
                 fill
                 style={{ objectFit: "cover" }}
-                blurDataURL={urlFor(videoData.videoThumbnail).url()}
+                blurDataURL={videoData.videoThumbnailUrl as string}
                 priority={true}
               />
             </VideoCardBody>
           </Link>
           <VideoCardText>
-            <h1>{videoData.title}</h1>
+            <h3>{videoData.title}</h3>
             <VideoCardAuthor>
               {" "}
               <p>{videoData.uploader}</p>
@@ -149,9 +133,11 @@ const VideoCardText = styled.div`
 
   color: ${(props) => props.theme.title};
 
-  h1 {
+  h3 {
     cursor: pointer;
     font-size: 16px;
+    margin: 0;
+    font-weight: 600;
 
     @media ${device.laptop} {
       font-size: 16px;

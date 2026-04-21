@@ -9,7 +9,7 @@ export default function StreamLandingPage() {
   return (
     <>
       <Header />
-      <main className="flex min-h-screen flex-col bg-black px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+      <main className="flex min-h-screen flex-col bg-black px-5 pb-16 pt-[var(--header-offset)] text-white">
         <nav className="mb-6" aria-label="Back">
           <Link
             href="/"

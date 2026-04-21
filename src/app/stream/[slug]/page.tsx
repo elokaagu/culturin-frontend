@@ -3,35 +3,24 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import { device } from "../../styles/breakpoints";
-import { client } from "../../lib/sanity";
 import type { fullVideo } from "../../../libs/interface";
 import MuxPlayer from "@mux/mux-player-react";
 
-async function getData(slug: string) {
-  const query = `
-    *[_type == "video" && slug.current == $slug] {
-      "currentSlug": slug.current,
-        title,
-        slug,
-        uploader,
-        videoThumbnail,
-        description,
-        "playbackId": video.asset->playbackId
-    }[0]`;
-
-  return await client.fetch(query, { slug });
-}
+import { getCmsBrowserClient } from "../../../lib/cms/browser";
+import { getVideoBySlug } from "../../../lib/cms/queries";
 
 export default function Videos({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<fullVideo | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedData = await getData(params.slug);
+      const db = getCmsBrowserClient();
+      if (!db) return;
+      const fetchedData = await getVideoBySlug(db, params.slug);
       setData(fetchedData);
     };
 
-    fetchData();
+    void fetchData();
   }, [params.slug]);
 
   return (
@@ -45,8 +34,8 @@ export default function Videos({ params }: { params: { slug: string } }) {
                   style={{ borderRadius: "20px" }}
                   accent-color="black"
                   metadata={{
-                    video_id: data?._id,
-                    video_title: data?.title,
+                    video_id: data?._id ?? "",
+                    video_title: data?.title ?? "",
                     viewer_user_id: "user-id-dynamic",
                   }}
                 />
@@ -67,7 +56,7 @@ export default function Videos({ params }: { params: { slug: string } }) {
 const AppBody = styled.div`
   padding: 40px;
   display: flex;
-  padding-top: 150px;
+  padding-top: var(--header-offset);
   align-items: center;
   background: black;
   flex-direction: column;
@@ -77,13 +66,6 @@ const AppBody = styled.div`
 
   @media ${device.mobile} {
     padding-left: 0px;
-    padding-top: 80px;
-    align-items: flex-start;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
     align-items: flex-start;
   }
 `;

@@ -89,7 +89,7 @@ const AppBody = styled.div`
   height: 100%;
   padding: 40px;
   display: flex;
-  padding-top: 150px;
+  padding-top: var(--header-offset);
   align-items: center;
   background: black;
   flex-direction: column;
@@ -99,7 +99,6 @@ const AppBody = styled.div`
 
   @media ${device.mobile} {
     padding-left: 0px;
-    padding-top: 80px;
     align-items: flex-start;
   }
 `;

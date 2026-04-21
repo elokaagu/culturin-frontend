@@ -6,7 +6,6 @@ import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import { useSession } from "next-auth/react";
 
 import Header from "../../components/Header";
-import { urlFor } from "../../lib/sanity";
 import type { fullBlog } from "../../../libs/interface";
 
 type ToastState =
@@ -18,9 +17,9 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
   const [toast, setToast] = useState<ToastState>({ open: false });
 
   const imageUrl = useMemo(() => {
-    if (!data?.titleImage) return null;
-    return urlFor(data.titleImage).url();
-  }, [data?.titleImage]);
+    if (data?.titleImageUrl) return data.titleImageUrl;
+    return null;
+  }, [data?.titleImageUrl]);
 
   const portableTextComponents: PortableTextComponents = useMemo(
     () => ({
@@ -101,7 +100,7 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
   return (
     <>
       <Header />
-      <main className="flex justify-center bg-black px-5 pb-12 pt-[150px] text-white sm:pt-[120px]">
+      <main className="flex justify-center bg-black px-5 pb-12 pt-[var(--header-offset)] text-white">
         <div className="flex w-full max-w-3xl flex-col gap-6">
           <article>
             <header>

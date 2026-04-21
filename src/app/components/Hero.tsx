@@ -5,29 +5,11 @@ import styled from "styled-components";
 import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
-import { client } from "../lib/sanity";
 import { simpleBlogCard } from "../../libs/interface";
-import { urlFor } from "../lib/sanity";
 import { useState, useEffect } from "react";
 
-async function getData() {
-  const query = `
-  *[_type== 'blog'] | order(_createdAt desc) {
-    title,
-      titleImage,
-      summary,
-      "currentSlug":slug.current,
-  }
- `;
-
-  try {
-    const data = await client.fetch(query);
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch data from Sanity:", error);
-    return []; // Return an empty array or appropriate error response
-  }
-}
+import { getCmsBrowserClient } from "../../lib/cms/browser";
+import { listBlogs } from "../../lib/cms/queries";
 
 type HeroProps = {
   initialData?: simpleBlogCard[];
@@ -39,10 +21,12 @@ export default function Hero({ initialData = [] }: HeroProps) {
   useEffect(() => {
     let cancelled = false;
     async function fetchData() {
-      const fetchedData = await getData();
+      const db = getCmsBrowserClient();
+      if (!db) return;
+      const fetchedData = await listBlogs(db);
       if (!cancelled) setData(fetchedData);
     }
-    fetchData();
+    void fetchData();
     return () => {
       cancelled = true;
     };
@@ -50,25 +34,27 @@ export default function Hero({ initialData = [] }: HeroProps) {
 
   return (
     <AppBody>
-      {data.map((cardData, index) => (
-        <Card key={index}>
+      {data
+        .filter((c) => Boolean(c.titleImageUrl))
+        .map((cardData) => (
+        <Card key={cardData.currentSlug}>
           <Link href={`/articles/${cardData.currentSlug}`}>
             <CardBody>
               <Image
-                src={urlFor(cardData.titleImage).url()}
+                src={cardData.titleImageUrl as string}
                 alt={cardData.title}
                 placeholder="blur"
                 fill
                 draggable={false}
                 style={{ objectFit: "cover" }}
-                blurDataURL={urlFor(cardData.titleImage).url()}
+                blurDataURL={cardData.titleImageUrl as string}
                 priority={true}
               />
             </CardBody>
           </Link>
 
           <CardText>
-            <h1>{cardData.title}</h1>
+            <h3>{cardData.title}</h3>
             <CardAuthor>
               {/* <AvatarContainer>
             <Image
@@ -159,10 +145,12 @@ const CardText = styled.div`
 
   color: ${(props) => props.theme.title};
 
-  h1 {
+  h3 {
     cursor: pointer;
     font-size: 16px;
     padding-bottom: 10px;
+    margin: 0;
+    font-weight: 600;
 
     @media ${device.laptop} {
       font-size: 16px;

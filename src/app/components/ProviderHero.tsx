@@ -5,33 +5,11 @@ import styled from "styled-components";
 import Image from "next/image";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
-import { client } from "../lib/sanity";
 import { providerHeroCard } from "../../libs/interface";
 import { useState, useEffect } from "react";
 
-async function getData() {
-  const query = `
-  *[_type == "providers"] {
-    name,
-    eventName,
-    "slug": slug.current,
-    "bannerImage": {
-      "image": {
-        "url": bannerImage.image.asset->url,
-        "alt": bannerImage.caption
-      }
-    },
-  }
-   `;
-
-  try {
-    const data = await client.fetch(query);
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch data from Sanity:", error);
-    return [];
-  }
-}
+import { getCmsBrowserClient } from "../../lib/cms/browser";
+import { listProviders } from "../../lib/cms/queries";
 
 type ProviderHeroProps = {
   initialData?: providerHeroCard[];
@@ -42,10 +20,12 @@ export default function ProviderHero({ initialData = [] }: ProviderHeroProps) {
   useEffect(() => {
     let cancelled = false;
     async function fetchData() {
-      const fetchedData = await getData();
+      const db = getCmsBrowserClient();
+      if (!db) return;
+      const fetchedData = await listProviders(db);
       if (!cancelled) setData(fetchedData);
     }
-    fetchData();
+    void fetchData();
     return () => {
       cancelled = true;
     };
@@ -54,8 +34,8 @@ export default function ProviderHero({ initialData = [] }: ProviderHeroProps) {
   return (
     <>
       <AppBody>
-        {data.map((providerData, index) => (
-          <ProviderCard key={index}>
+        {data.map((providerData) => (
+          <ProviderCard key={providerData.slug}>
             <Link href={`/providers/${providerData.slug}`}>
               <ProviderCardBody>
                 {providerData?.bannerImage?.image?.url ? (
@@ -85,7 +65,7 @@ export default function ProviderHero({ initialData = [] }: ProviderHeroProps) {
               </ProviderCardBody>
             </Link>
             <ProviderCardText>
-              <h1>{providerData?.eventName}</h1>
+              <h3>{providerData?.eventName}</h3>
             </ProviderCardText>
             <ProviderCardAuthor>
               {" "}
@@ -168,9 +148,11 @@ const ProviderCardText = styled.div`
 
   color: ${(props) => props.theme.title};
 
-  h1 {
+  h3 {
     cursor: pointer;
     font-size: 16px;
+    margin: 0;
+    font-weight: 600;
 
     @media ${device.laptop} {
       font-size: 16px;

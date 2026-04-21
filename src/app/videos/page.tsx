@@ -5,39 +5,22 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
-import { client } from "../lib/sanity";
-import { urlFor } from "../lib/sanity";
 import Image from "next/image";
 import { videoCard } from "../../libs/interface";
 
-async function getData() {
-  const query = `
-    *[_type== 'video'] | order(_createdAt desc) {
-        title,
-        uploader,
-        videoThumbnail,
-        description,
-        "currentSlug":slug.current,
-      }
- `;
-  try {
-    const data = await client.fetch(query);
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch data from Sanity:", error);
-    return []; // Return an empty array or appropriate error response
-  }
-}
+import { getCmsBrowserClient } from "../../lib/cms/browser";
+import { listVideos } from "../../lib/cms/queries";
 
 export default function Videos() {
   const [data, setData] = useState<videoCard[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const fetchedData = await getData();
-      setData(fetchedData);
+      const db = getCmsBrowserClient();
+      if (!db) return;
+      setData(await listVideos(db));
     }
-    fetchData();
+    void fetchData();
   }, []);
 
   return (
@@ -51,17 +34,19 @@ export default function Videos() {
               <p>Only on Culturin </p>
             </Subtitle>
             <VideoContainer>
-              {data.map((videoData, index) => (
-                <VideoCard key={index}>
+              {data
+                .filter((v) => Boolean(v.videoThumbnailUrl))
+                .map((videoData) => (
+                <VideoCard key={videoData.currentSlug}>
                   <Link href={`/stream/${videoData.currentSlug}`}>
                     <VideoCardBody>
                       <Image
-                        src={urlFor(videoData.videoThumbnail).url()}
+                        src={videoData.videoThumbnailUrl as string}
                         alt={videoData.title}
                         placeholder="blur"
                         fill
                         style={{ objectFit: "cover" }}
-                        blurDataURL={urlFor(videoData.videoThumbnail).url()}
+                        blurDataURL={videoData.videoThumbnailUrl as string}
                         priority={true}
                       />
                     </VideoCardBody>
@@ -84,7 +69,7 @@ export default function Videos() {
 const AppBody = styled.div`
   padding: 40px;
   display: flex;
-  padding-top: 150px;
+  padding-top: var(--header-offset);
   align-items: center;
   background: black;
   flex-direction: column;
@@ -94,7 +79,6 @@ const AppBody = styled.div`
 
   @media ${device.mobile} {
     padding-left: 0px;
-    padding-top: 80px;
     align-items: flex-start;
   }
 `;

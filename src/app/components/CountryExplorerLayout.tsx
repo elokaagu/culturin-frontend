@@ -28,7 +28,7 @@ export default function CountryExplorerLayout({
   return (
     <>
       <Header />
-      <div className="flex min-h-screen flex-col gap-6 bg-black px-5 pb-12 pt-[150px] text-white sm:pt-[120px] lg:flex-row lg:items-stretch lg:gap-8 lg:px-10">
+      <div className="flex min-h-screen flex-col gap-6 bg-black px-5 pb-12 pt-[var(--header-offset)] text-white lg:flex-row lg:items-stretch lg:gap-8 lg:px-10">
         <aside className="flex w-full max-w-md shrink-0 flex-col rounded-2xl border-2 border-neutral-800 transition-colors hover:bg-neutral-950 lg:max-w-xs">
           <div className="flex flex-col gap-1 px-5 pb-2 pt-6">
             <h1 className="text-3xl font-semibold leading-tight">{title}</h1>

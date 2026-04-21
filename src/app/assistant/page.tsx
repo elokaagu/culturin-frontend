@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function AssistantPage() {
   return (
     <ContentPageShell
-      mainClassName="flex min-h-screen w-full flex-col items-center bg-black px-4 pb-6 pt-[150px] text-white sm:px-5 sm:pt-[120px]"
+      mainClassName="flex min-h-screen w-full flex-col items-center bg-black px-4 pb-6 pt-[var(--header-offset)] text-white sm:px-5"
       innerClassName="flex min-h-0 w-full max-w-3xl flex-1 flex-col gap-6 lg:max-w-4xl"
     >
       <header className="shrink-0 space-y-2">

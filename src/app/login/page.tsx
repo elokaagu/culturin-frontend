@@ -8,7 +8,7 @@ export default function LoginPage() {
   return (
     <>
       <Header />
-      <main className="mx-auto flex min-h-screen max-w-md flex-col gap-6 bg-black px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+      <main className="mx-auto flex min-h-screen max-w-md flex-col gap-6 bg-black px-5 pb-16 pt-[var(--header-offset)] text-white">
         <h1 className="text-2xl font-semibold">Sign in</h1>
         <GoogleSignInButton />
         <CredentialsForm />

@@ -5,6 +5,19 @@
 @import "../styles/typography.css";
 
 @layer base {
+  :root {
+    /* Main content `padding-top` below fixed header (matches historical 150 / sm:120). */
+    --header-offset: 150px;
+    /* Approximate fixed bar height for overlays (e.g. mobile nav). */
+    --header-bar-height: 100px;
+  }
+
+  @media (min-width: 640px) {
+    :root {
+      --header-offset: 120px;
+    }
+  }
+
   html,
   body {
     height: 100%;

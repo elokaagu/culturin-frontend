@@ -146,7 +146,7 @@ export default function Advisors() {
 
 const AppBody = styled.div`
   padding: 20px;
-  padding-top: 150px;
+  padding-top: var(--header-offset);
   display: flex;
   flex: 1;
   align-items: center;

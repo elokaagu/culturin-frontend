@@ -4,40 +4,15 @@ import styled from "styled-components";
 import Header from "../../components/Header";
 import Link from "next/link";
 import { device } from "../../styles/breakpoints";
-import { client, urlFor } from "../../lib/sanity";
-import { fullProvider } from "../../../libs/interface";
+import type { fullProvider, imageAsset } from "../../../libs/interface";
 import Image from "next/image";
 
-async function getData(slug: string) {
-  const query = `
-  *[_type == "providers" && slug.current == $slug] {
-    name,
-    eventName,
-    "slug": slug.current,
-    "bannerImage": {
-      "image": {
-        "url": bannerImage.image.asset->url,
-        "alt": bannerImage.caption
-      }
-    },     
-    description,
-    location,
-    "contactEmail": contact.email,
-    "contactPhone": contact.phone,
-    "contactWebsite": contact.website,
-    
-    prices[],
-    "images": images[].asset->{
-      _id,
-      url,
-      "dimensions": metadata.dimensions
-    }
-  }[0]
-  
-      `;
+import { getCmsBrowserClient } from "../../../lib/cms/browser";
+import { getProviderBySlug } from "../../../lib/cms/queries";
 
-  const data = await client.fetch(query, { slug });
-  return data;
+function imageUrl(img: imageAsset | undefined) {
+  const u = img?.url;
+  return typeof u === "string" && u.startsWith("http") ? u : "";
 }
 
 export default function Provider({ params }: { params: { slug: string } }) {
@@ -45,11 +20,13 @@ export default function Provider({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedData = await getData(params.slug);
+      const db = getCmsBrowserClient();
+      if (!db) return;
+      const fetchedData = await getProviderBySlug(db, params.slug);
       setData(fetchedData);
     };
 
-    fetchData();
+    void fetchData();
   }, [params.slug]);
   return (
     <>
@@ -67,14 +44,14 @@ export default function Provider({ params }: { params: { slug: string } }) {
                 <ImageColumnLeft>
                   <ImageWrap>
                     <Image
-                      src={urlFor(data.images[0].url).url()}
-                      alt={`Image ${data.images[0]._id}`} // Assuming no alt text in imageAsset, using _id as fallback
+                      src={imageUrl(data.images[0])}
+                      alt={`Image ${data.images[0]._id}`}
                       placeholder="blur"
                       width={600}
                       height={400}
                       priority={true}
-                      quality={90} // Adjust quality as needed, defaults to 75
-                      blurDataURL={urlFor(data.images[0].url).url()}
+                      quality={90}
+                      blurDataURL={imageUrl(data.images[0])}
                       style={{
                         // width: "100%",
                         // height: "auto",
@@ -91,13 +68,13 @@ export default function Provider({ params }: { params: { slug: string } }) {
                 {data?.images && data.images.length > 1 && (
                   <ImageWrap>
                     <Image
-                      src={urlFor(data.images[1].url).url()}
+                      src={imageUrl(data.images[1])}
                       alt={`Image ${data.images[1]._id}`}
                       placeholder="blur"
                       width={300}
                       height={195}
-                      quality={90} // Adjust quality as needed, defaults to 75
-                      blurDataURL={urlFor(data.images[1].url).url()}
+                      quality={90}
+                      blurDataURL={imageUrl(data.images[1])}
                       style={{
                         // width: "100%",
                         // height: "auto",
@@ -111,13 +88,13 @@ export default function Provider({ params }: { params: { slug: string } }) {
                 {data?.images && data.images.length > 2 && (
                   <ImageWrap>
                     <Image
-                      src={urlFor(data.images[2].url).url()}
+                      src={imageUrl(data.images[2])}
                       alt={`Image ${data.images[2]._id}`}
                       placeholder="blur"
                       width={300}
                       height={195}
-                      quality={90} // Adjust quality as needed, defaults to 75
-                      blurDataURL={urlFor(data.images[2].url).url()}
+                      quality={90}
+                      blurDataURL={imageUrl(data.images[2])}
                       style={{
                         // width: "100%",
                         // height: "auto",
@@ -159,7 +136,7 @@ export default function Provider({ params }: { params: { slug: string } }) {
 const AppBody = styled.div`
   padding: 40px;
   display: flex;
-  padding-top: 150px;
+  padding-top: var(--header-offset);
   align-items: flex-start;
   background: ${(props) => props.theme.body};
   flex-direction: column;
@@ -169,7 +146,6 @@ const AppBody = styled.div`
 
   @media ${device.mobile} {
     padding-left: 0px;
-    padding-top: 80px;
     align-items: flex-start;
     margin-left: 0;
   }

@@ -11,7 +11,7 @@ export default function ProfilePage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black px-5 pb-16 pt-[150px] text-white sm:pt-[120px]">
+      <main className="min-h-screen bg-black px-5 pb-16 pt-[var(--header-offset)] text-white">
         <div className="mx-auto max-w-3xl">
           <h1 className="cursor-default text-2xl font-semibold sm:text-3xl">
             {first ? `${first}'s profile` : "Your profile"}

@@ -3,67 +3,12 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "../components/Header";
-import { usePathname, useSearchParams } from "next/navigation";
-import { client } from "../lib/sanity";
 import { simpleBlogCard } from "../../libs/interface";
 import { device } from "../styles/breakpoints";
 import Link from "next/link";
-import { urlFor } from "../lib/sanity";
-import { videoCard } from "../../libs/interface";
-import { Video } from "styled-icons/boxicons-regular";
 
-// const fetchArticlesByCategory = async (categoryName: string) => {
-//   const query = `
-//     *[_type == "article" && references(*[_type=="category" && title==$title]._id)] {
-//       title,
-//       slug,
-//       body,
-//     }
-//   `;
-//   return await client.fetch(query, { title: categoryName });
-// };
-
-async function getData() {
-  const query = `
-  *[_type== 'blog'] | order(_createdAt desc) {
-    title,
-      titleImage,
-      summary,
-      "currentSlug":slug.current,
-  }
- `;
-
-  try {
-    const data = await client.fetch(query);
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch data from Sanity:", error);
-    return []; // Return an empty array or appropriate error response
-  }
-}
-
-async function getVideoData() {
-  const query = `
-  *[_type== 'video'] | order(_createdAt desc) {
-      title,
-      uploader,
-      videoThumbnail,
-      description,
-      "currentSlug":slug.current,
-    }
-
- `;
-
-  try {
-    const videoData = await client.fetch(query);
-    return videoData;
-  } catch (error) {
-    console.error("Failed to fetch data from Sanity:", error);
-    return [];
-  }
-}
-
-// Search Results
+import { getCmsBrowserClient } from "../../lib/cms/browser";
+import { searchBlogs } from "../../lib/cms/queries";
 
 export default function SearchResultsPage({
   searchParams,
@@ -78,13 +23,12 @@ export default function SearchResultsPage({
   const [data, setData] = useState<simpleBlogCard[]>([]);
   useEffect(() => {
     async function fetchData() {
-      const fetchedData = await getData();
-      setData(fetchedData);
+      const db = getCmsBrowserClient();
+      if (!db) return;
+      setData(await searchBlogs(db, query));
     }
-    fetchData();
-  }, []);
-
-  console.log(data);
+    void fetchData();
+  }, [query]);
 
   return (
     <>
@@ -98,18 +42,20 @@ export default function SearchResultsPage({
         </Subtitle>
 
         <ArticlesContainer>
-          {data.map((cardData, index) => (
-            <Card key={index}>
+          {data
+            .filter((c) => Boolean(c.titleImageUrl))
+            .map((cardData) => (
+            <Card key={cardData.currentSlug}>
               <Link href={`/articles/${cardData.currentSlug}`}>
                 <CardBody>
                   <Image
-                    src={urlFor(cardData.titleImage).url()}
+                    src={cardData.titleImageUrl as string}
                     alt={cardData.title}
                     placeholder="blur"
                     fill
                     draggable={false}
                     style={{ objectFit: "cover" }}
-                    blurDataURL={urlFor(cardData.titleImage).url()}
+                    blurDataURL={cardData.titleImageUrl as string}
                     priority={true}
                   />
                 </CardBody>
@@ -142,7 +88,7 @@ export default function SearchResultsPage({
 const AppBody = styled.div`
   padding: 40px;
   display: flex;
-  padding-top: 150px;
+  padding-top: var(--header-offset);
   align-items: center;
   background: black;
   flex-direction: column;
@@ -152,13 +98,6 @@ const AppBody = styled.div`
 
   @media ${device.mobile} {
     padding-left: 0px;
-    padding-top: 80px;
-    align-items: flex-start;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    padding-top: 80px;
     align-items: flex-start;
   }
 `;

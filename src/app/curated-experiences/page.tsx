@@ -5,42 +5,22 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
 import { device } from "../styles/breakpoints";
-import { client } from "../lib/sanity";
 import Image from "next/image";
 import { providerCard } from "../../libs/interface";
 
-async function getData() {
-  const query = `
-    *[_type == "providers"] {
-      name,
-      eventName,
-      "slug": slug.current,
-      "bannerImage": {
-        "image": {
-          "url": bannerImage.image.asset->url,
-          "alt": bannerImage.caption
-        }
-      },
-    }
- `;
-  try {
-    const data = await client.fetch(query);
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch data from Sanity:", error);
-    return []; // Return an empty array or appropriate error response
-  }
-}
+import { getCmsBrowserClient } from "../../lib/cms/browser";
+import { listProvidersAsCards } from "../../lib/cms/queries";
 
 export default function Videos() {
   const [data, setData] = useState<providerCard[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const fetchedData = await getData();
-      setData(fetchedData);
+      const db = getCmsBrowserClient();
+      if (!db) return;
+      setData(await listProvidersAsCards(db));
     }
-    fetchData();
+    void fetchData();
   }, []);
 
   return (
@@ -57,21 +37,31 @@ export default function Videos() {
             <ProviderContainer>
               {data.map((providerData, index) => (
                 <ProviderCard key={index}>
-                  <Link href={`/providers/${providerData.slug}`}>
+                  <Link href={`/providers/${providerData.slug.current}`}>
                     <ProviderCardBody>
-                      <Image
-                        src={providerData?.bannerImage?.image?.url} // Provide a fallback image URL
-                        alt={
-                          providerData?.bannerImage?.alt || "Default Alt Text"
-                        } // Provide default alt text
-                        width={300}
-                        height={300}
-                        quality={90} // Adjust quality as needed, defaults to 75
-                        style={{
-                          objectFit: "cover",
-                          position: "relative",
-                        }}
-                      />
+                      {providerData?.bannerImage?.image?.url ? (
+                        <Image
+                          src={providerData.bannerImage.image.url}
+                          alt={
+                            providerData.bannerImage.image.alt ||
+                            "Default Alt Text"
+                          }
+                          width={300}
+                          height={300}
+                          quality={90}
+                          style={{
+                            objectFit: "cover",
+                            position: "relative",
+                          }}
+                        />
+                      ) : (
+                        <div
+                          className="flex h-full w-full items-center justify-center bg-neutral-800 text-sm text-white/60"
+                          aria-hidden
+                        >
+                          No image
+                        </div>
+                      )}
                     </ProviderCardBody>
                   </Link>
                   <ProviderCardText>
@@ -92,7 +82,7 @@ export default function Videos() {
 const AppBody = styled.div`
   padding: 40px;
   display: flex;
-  padding-top: 150px;
+  padding-top: var(--header-offset);
   align-items: center;
   background: black;
   flex-direction: column;
@@ -102,7 +92,6 @@ const AppBody = styled.div`
 
   @media ${device.mobile} {
     padding-left: 0px;
-    padding-top: 80px;
     align-items: flex-start;
   }
 `;
