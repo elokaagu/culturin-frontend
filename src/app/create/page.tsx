@@ -1,265 +1,57 @@
 "use client";
-import styled from "styled-components";
-import React from "react";
-import Header from "../components/Header";
-import { ChevronDown } from "styled-icons/boxicons-regular";
-import { Plus } from "styled-icons/boxicons-regular";
-import { Share } from "styled-icons/boxicons-regular";
-import Link from "next/link";
-import { device } from "../styles/breakpoints";
 
-export default function Create() {
+import Link from "next/link";
+
+import Header from "../components/Header";
+
+const actions = [
+  {
+    href: "/assistant",
+    title: "Write an article",
+    description: "Use Culturin AI to brainstorm angles, outline, and refine travel stories.",
+  },
+  {
+    href: "/create/upload",
+    title: "Upload a video",
+    description: "Open the upload flow to add media from your trips to your library.",
+  },
+  {
+    href: "/join-us/advisors",
+    title: "Become a partner",
+    description: "See how to work with Culturin as an advisor or travel partner.",
+  },
+] as const;
+
+export default function CreatePage() {
   return (
-    <div>
+    <>
       <Header />
-      <AppBody>
-          <Title>
-            <h1>Create</h1>
-            <p>
-              Share your story and inspiration from one of your favourite
-              destinations
-            </p>
-          </Title>
-          <UploadContainer>
-            <UploadOption>
-              <Link
-                href="/"
-                style={{
-                  textDecoration: "none",
-                }}
-              >
-                <HeroButton>Write an article</HeroButton>
-              </Link>
-            </UploadOption>
-            <UploadOption>
-              <Link
-                href="/profile"
-                style={{
-                  textDecoration: "none",
-                }}
-              >
-                <HeroButton>Upload a video</HeroButton>
-              </Link>
-            </UploadOption>
-            <UploadOption>
-              <Link
-                href="/assistant"
-                style={{
-                  textDecoration: "none",
-                }}
-              >
-                <HeroButton>Become a partner</HeroButton>
-              </Link>
-            </UploadOption>
-          </UploadContainer>
-      </AppBody>
-    </div>
+      <main className="mx-auto flex min-h-screen max-w-lg flex-col gap-10 bg-black px-4 pb-16 pt-[var(--header-offset)] text-white sm:max-w-2xl sm:px-6">
+        <header className="max-w-xl">
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Create</h1>
+          <p className="mt-3 text-sm leading-relaxed text-neutral-400 sm:text-base">
+            Share your story and inspiration from one of your favourite destinations.
+          </p>
+        </header>
+
+        <nav aria-label="Create options">
+          <ul className="flex flex-col gap-4 sm:gap-5">
+            {actions.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-5 no-underline outline-none transition-[border-color,background-color] hover:border-amber-400/35 hover:bg-white/[0.07] focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:p-6"
+                >
+                  <span className="text-lg font-semibold text-white group-hover:text-amber-200">
+                    {item.title}
+                  </span>
+                  <span className="mt-2 text-sm leading-snug text-neutral-400">{item.description}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </main>
+    </>
   );
 }
-
-const AppBody = styled.div`
-  padding: 20px;
-  padding-top: var(--header-offset);
-  display: flex;
-  flex: 1;
-  align-items: center;
-  background: black;
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: white;
-`;
-
-const Title = styled.div`
-  margin: auto;
-  width: 50%;
-  margin: auto 10px;
-  padding-left: 30px;
-  padding-top: 20px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-
-    h1 {
-      font-size: 25px;
-      align-items: flex-start;
-      margin-left: 20px;
-      width: 100%;
-    }
-  }
-`;
-
-const Subtitle = styled.div`
-  margin: auto;
-  width: 50%;
-  margin: auto 10px;
-  padding-left: 30px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: grey;
-  }
-
-  @media ${device.mobile} {
-    margin-left: 60px;
-    padding-left: 10px;
-    align-items: flex-start;
-    width: 100%;
-  }
-`;
-
-const AdvisorTitle = styled.div`
-  align-items: center;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-  }
-`;
-
-const Body = styled.div`
-  margin: auto;
-  width: 50%;
-  padding-left: 30px;
-  padding-top: 20px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-  a {
-    text-decoration: none;
-  }
-
-  p {
-    font-size: 18px;
-    padding-top: 5px;
-    padding-bottom: 20px;
-    color: white;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 20px;
-    align-items: flex-start;
-    width: 100%;
-
-    p {
-      font-size: 18px;
-      padding-bottom: 36px;
-      color: white;
-    }
-  }
-`;
-
-const ImageContainer = styled.div`
-  padding-bottom: 20px;
-  cursor: pointer;
-  img {
-    border-radius: 10px;
-  }
-
-  @media ${device.mobile} {
-    margin: 0 auto;
-    padding-left: 10px;
-    border-radius: 20px;
-
-    img {
-      margin-left: 0;
-      border-radius: 10px;
-      width: 360px;
-    }
-  }
-`;
-
-const ImageWrap = styled.span`
-  & > span {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 20px;
-    object-fit: cover;
-  }
-
-  @media ${device.mobile} {
-    & > span {
-      object-fit: cover;
-      border-radius: 20px; /* Rounded edges on mobile */
-    }
-  }
-`;
-
-const SaveButtonContainer = styled.div`
-  border-radius: 10px;
-  width: 120px;
-  padding: 10px;
-  display: flex;
-  margin-right: 20px;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: white;
-  color: black;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover {
-    background: grey;
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    width: 100px;
-    font-size: 14px;
-  }
-`;
-
-const HeroButton = styled.div`
-  margin-top: 20px;
-  border-radius: 5px;
-  width: 150px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  color: black;
-  font-weight: 600;
-  cursor: pointer;
-  background: ${(props) => props.theme.title};
-  color: ${(props) => props.theme.body};
-
-  &:hover {
-    background: grey;
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    width: 100px;
-  }
-`;
-
-const UploadContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-`;
-
-const UploadOption = styled.div`
-  display: flex;
-  margin: 20px;
-`;
