@@ -1,130 +1,134 @@
 "use client";
-import React from "react";
-import styled from "styled-components";
-import Header from "../../components/Header";
-import { device } from "../../styles/breakpoints";
-import { CldUploadWidget } from "next-cloudinary";
 
-export default function Upload() {
+import { useCallback, useState } from "react";
+import type { CldUploadWidgetInfo } from "next-cloudinary";
+import { CldUploadWidget } from "next-cloudinary";
+import Image from "next/image";
+
+import Header from "../../components/Header";
+
+function pickInfo(results: { info?: string | CldUploadWidgetInfo } | undefined): CldUploadWidgetInfo | null {
+  const raw = results?.info;
+  if (raw && typeof raw === "object" && "secure_url" in raw) {
+    return raw;
+  }
+  return null;
+}
+
+function formatWidgetError(err: unknown): string {
+  if (typeof err === "string") return err;
+  if (err && typeof err === "object" && "statusText" in err) {
+    const st = (err as { statusText?: string }).statusText;
+    if (st) return st;
+  }
+  return "Upload failed. Please try again.";
+}
+
+export default function UploadPage() {
+  const [secureUrl, setSecureUrl] = useState<string | null>(null);
+  const [publicId, setPublicId] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const resetOutcome = useCallback(() => {
+    setSecureUrl(null);
+    setPublicId(null);
+    setMessage(null);
+  }, []);
+
   return (
     <>
       <Header />
-      <AppBody>
-          <UploadContainer>
-            <UploadDetails>
-              <UploadTitle>
-                <h1>Upload</h1>
-                <p>Add to your collection</p>
-              </UploadTitle>
-              <UploadField>
-                <CldUploadWidget uploadPreset="culturin">
-                  {({ open }) => {
-                    return (
-                      <UploadButton onClick={() => open()}>
-                        Upload an image
-                      </UploadButton>
-                    );
-                  }}
-                </CldUploadWidget>
-              </UploadField>
-            </UploadDetails>
-          </UploadContainer>
-      </AppBody>
+      <main className="flex min-h-screen flex-col bg-black px-4 pb-16 pt-[var(--header-offset)] text-white sm:px-6">
+        <div className="mx-auto w-full max-w-md">
+          <header className="mb-8">
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Upload</h1>
+            <p className="mt-2 text-sm text-neutral-400 sm:text-base">Add an image to your collection.</p>
+          </header>
+
+          <section
+            aria-labelledby="upload-panel-title"
+            className="rounded-2xl border border-white/10 bg-neutral-950/80 p-6 shadow-lg shadow-black/30"
+          >
+            <h2 id="upload-panel-title" className="sr-only">
+              Cloudinary image upload
+            </h2>
+
+            <CldUploadWidget
+              uploadPreset="culturin"
+              onSuccess={(results) => {
+                setMessage(null);
+                const info = pickInfo(results);
+                if (info?.secure_url) {
+                  setSecureUrl(info.secure_url);
+                  setPublicId(info.public_id ?? null);
+                }
+              }}
+              onError={(err) => {
+                resetOutcome();
+                setMessage(formatWidgetError(err));
+              }}
+            >
+              {({ open, isLoading, error: widgetError }) => {
+                const alertText = message ?? (widgetError ? formatWidgetError(widgetError) : null);
+
+                return (
+                  <div className="flex flex-col gap-5">
+                    <button
+                      type="button"
+                      disabled={Boolean(isLoading)}
+                      className="inline-flex min-h-[44px] w-full items-center justify-center rounded-xl bg-white px-4 py-3 text-sm font-semibold text-black shadow transition-colors hover:bg-neutral-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
+                      onClick={() => {
+                        setMessage(null);
+                        open();
+                      }}
+                    >
+                      {isLoading ? "Opening upload…" : "Upload an image"}
+                    </button>
+
+                    {alertText ? (
+                      <p className="text-sm text-red-400" role="alert">
+                        {alertText}
+                      </p>
+                    ) : null}
+
+                    {secureUrl ? (
+                      <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-black/40 p-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <p className="text-sm font-medium text-emerald-400">Upload complete</p>
+                          <button
+                            type="button"
+                            className="text-xs font-medium text-neutral-400 underline-offset-2 hover:text-white hover:underline"
+                            onClick={resetOutcome}
+                          >
+                            Clear
+                          </button>
+                        </div>
+                        <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-neutral-900">
+                          <Image
+                            src={secureUrl}
+                            alt={publicId ? `Preview of ${publicId}` : "Uploaded image preview"}
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 640px) 100vw, 28rem"
+                          />
+                        </div>
+                        <a
+                          href={secureUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium text-amber-400 underline-offset-2 hover:text-amber-300"
+                        >
+                          Open full-size asset
+                        </a>
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              }}
+            </CldUploadWidget>
+          </section>
+        </div>
+      </main>
     </>
   );
 }
-
-const AppBody = styled.div`
-  padding: 20px;
-  padding-top: var(--header-offset);
-  display: flex;
-  flex: 1;
-  align-items: center;
-  background: black;
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: white;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-  }
-`;
-
-const UploadContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-  }
-`;
-
-const UploadTitle = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-  }
-`;
-
-const UploadDetails = styled.div`
-  display: flex;
-  padding: 20px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #222;
-  border-radius: 15px;
-  width: 300px;
-  &:hover {
-    opacity: 0.8;
-    background: #111;
-    transition: 0.3s ease-in-out;
-  }
-`;
-
-const UploadField = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  align-items: center;
-  cursor: pointer;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-  }
-`;
-
-const UploadButton = styled.div`
-  border-radius: 10px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  color: black;
-  font-weight: 600;
-  align-items: center;
-  cursor: pointer;
-
-  &:hover {
-    background: grey;
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-  }
-`;
