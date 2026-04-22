@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCallback, type ReactNode } from "react";
 
 import Header from "./Header";
-import Hero from "./Hero";
+import TrendingStoriesRail from "./TrendingStoriesRail";
 import ProviderHero from "./ProviderHero";
 import VideoHero from "./VideoHero";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "../../libs/interface";
@@ -159,7 +159,7 @@ export default function HomePageClient({
             viewAllHref="/trending"
           >
             {initialBlogs.length > 0 ? (
-              <Hero initialData={initialBlogs} />
+              <TrendingStoriesRail stories={initialBlogs} />
             ) : (
               <EmptyRail
                 message="No stories are available yet. Check back soon or open the full trending feed."
