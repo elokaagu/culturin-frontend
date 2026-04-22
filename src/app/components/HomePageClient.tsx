@@ -7,7 +7,7 @@ import { useCallback, type ReactNode } from "react";
 import Header from "./Header";
 import TrendingStoriesRail from "./TrendingStoriesRail";
 import ProviderHero from "./ProviderHero";
-import VideoHero from "./VideoHero";
+import TopVideosRail from "./TopVideosRail";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "../../libs/interface";
 
 type HomePageClientProps = {
@@ -176,7 +176,7 @@ export default function HomePageClient({
             viewAllHref="/videos"
           >
             {initialVideos.length > 0 ? (
-              <VideoHero initialData={initialVideos} />
+              <TopVideosRail videos={initialVideos} />
             ) : (
               <EmptyRail
                 message="No videos are available yet. Browse the video library when you are ready."
