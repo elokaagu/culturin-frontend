@@ -10,6 +10,7 @@ import { simpleBlogCard } from "../../libs/interface";
 
 import { getCmsBrowserClient } from "../../lib/cms/browser";
 import { listBlogs } from "../../lib/cms/queries";
+import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 
 export default function Trending() {
   const [data, setData] = useState<simpleBlogCard[]>([]);
@@ -44,12 +45,12 @@ export default function Trending() {
                       <Image
                         src={cardData.titleImageUrl as string}
                         alt={cardData.title}
-                        placeholder="blur"
                         fill
+                        loading="lazy"
                         draggable={false}
                         style={{ objectFit: "cover" }}
-                        blurDataURL={cardData.titleImageUrl as string}
-                        priority={true}
+                        placeholder="blur"
+                        blurDataURL={IMAGE_BLUR_DATA_URL}
                       />
                     </CardBody>
                   </Link>
@@ -82,11 +83,11 @@ const AppBody = styled.div`
   display: flex;
   padding-top: var(--header-offset);
   align-items: center;
-  background: black;
+  background: ${({ theme }) => theme.body};
   flex-direction: column;
   height: 100%;
   line-height: 2;
-  color: white;
+  color: ${({ theme }) => theme.title};
 
   @media ${device.mobile} {
     padding-left: 0px;
@@ -147,13 +148,13 @@ const ArticlesContainer = styled.div`
 
   h1 {
     font-size: 25px;
-    color: white;
+    color: ${({ theme }) => theme.title};
     width: 100%;
   }
 
   p {
     font-size: 18px;
-    color: white;
+    color: ${({ theme }) => theme.title};
     width: 100%;
   }
 
@@ -164,12 +165,12 @@ const ArticlesContainer = styled.div`
 
     h1 {
       font-size: 25px;
-      color: white;
+      color: ${({ theme }) => theme.title};
       width: 70%;
     }
     p {
       font-size: 18px;
-      color: white;
+      color: ${({ theme }) => theme.title};
       width: 70%;
     }
   }
@@ -184,7 +185,7 @@ const BackLink = styled.a`
   top: 200px;
 
   :hover {
-    color: white;
+    color: ${({ theme }) => theme.title};
     cursor: pointer;
     transition: all 0.5s ease-in-out;
   }

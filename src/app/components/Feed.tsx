@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+
 export type FeedCardProps = {
   title: string;
   description: string;
@@ -18,7 +20,7 @@ export type FeedCardProps = {
 };
 
 const linkShellClass =
-  "group block w-full max-w-3xl rounded-2xl border border-white/10 bg-black text-left shadow-sm no-underline transition-colors hover:border-white/20 hover:bg-neutral-950/80";
+  "group block w-full max-w-3xl rounded-2xl border border-neutral-200 bg-white text-left shadow-sm no-underline transition-colors hover:border-neutral-300 hover:bg-neutral-50 dark:border-white/10 dark:bg-black dark:hover:border-white/20 dark:hover:bg-neutral-950/80";
 
 const articleInnerClass =
   "flex flex-col gap-4 p-4 sm:flex-row sm:items-stretch sm:gap-6 sm:p-5";
@@ -47,21 +49,22 @@ export function FeedCard({
             src={imageSrc}
             alt={imageAlt}
             fill
+            loading="lazy"
             sizes="(max-width: 640px) 100vw, 16rem"
             className="object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
-            placeholder={blurDataURL ? "blur" : "empty"}
-            blurDataURL={blurDataURL}
+            placeholder="blur"
+            blurDataURL={blurDataURL ?? IMAGE_BLUR_DATA_URL}
             draggable={false}
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col justify-center gap-2">
-          <h2 className="text-xl font-semibold leading-snug text-white group-hover:text-amber-100/95 sm:text-[1.35rem]">
+          <h2 className="text-xl font-semibold leading-snug text-neutral-900 group-hover:text-amber-800 sm:text-[1.35rem] dark:text-white dark:group-hover:text-amber-100/95">
             {title}
           </h2>
-          <p className="text-sm leading-relaxed text-white/70 sm:text-base">{description}</p>
+          <p className="text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-white/70">{description}</p>
           <time
             dateTime={publishedAt}
-            className="text-xs font-medium uppercase tracking-wide text-white/45"
+            className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-white/45"
           >
             {dateLabel}
           </time>

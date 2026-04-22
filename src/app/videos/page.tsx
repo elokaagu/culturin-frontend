@@ -10,6 +10,7 @@ import { videoCard } from "../../libs/interface";
 
 import { getCmsBrowserClient } from "../../lib/cms/browser";
 import { listVideos } from "../../lib/cms/queries";
+import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 
 export default function Videos() {
   const [data, setData] = useState<videoCard[]>([]);
@@ -43,11 +44,11 @@ export default function Videos() {
                       <Image
                         src={videoData.videoThumbnailUrl as string}
                         alt={videoData.title}
-                        placeholder="blur"
                         fill
+                        loading="lazy"
                         style={{ objectFit: "cover" }}
-                        blurDataURL={videoData.videoThumbnailUrl as string}
-                        priority={true}
+                        placeholder="blur"
+                        blurDataURL={IMAGE_BLUR_DATA_URL}
                       />
                     </VideoCardBody>
                   </Link>
@@ -71,11 +72,11 @@ const AppBody = styled.div`
   display: flex;
   padding-top: var(--header-offset);
   align-items: center;
-  background: black;
+  background: ${({ theme }) => theme.body};
   flex-direction: column;
   height: 100%;
   line-height: 2;
-  color: white;
+  color: ${({ theme }) => theme.title};
 
   @media ${device.mobile} {
     padding-left: 0px;
@@ -136,13 +137,13 @@ const VideoContainer = styled.div`
 
   h1 {
     font-size: 25px;
-    color: white;
+    color: ${({ theme }) => theme.title};
     width: 100%;
   }
 
   p {
     font-size: 18px;
-    color: white;
+    color: ${({ theme }) => theme.title};
     width: 100%;
   }
 
@@ -153,12 +154,12 @@ const VideoContainer = styled.div`
 
     h1 {
       font-size: 25px;
-      color: white;
+      color: ${({ theme }) => theme.title};
       width: 70%;
     }
     p {
       font-size: 18px;
-      color: white;
+      color: ${({ theme }) => theme.title};
       width: 70%;
     }
   }

@@ -48,7 +48,7 @@ export interface providerCard {
   };
 }
 
-/** Home / ProviderHero preview row (slug resolved as string in GROQ). */
+/** Home curated-experiences rail card (server list from CMS). */
 export interface providerHeroCard {
   name: string;
   eventName: string;

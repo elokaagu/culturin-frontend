@@ -91,11 +91,11 @@ const AppBody = styled.div`
   display: flex;
   padding-top: var(--header-offset);
   align-items: center;
-  background: black;
+  background: ${({ theme }) => theme.body};
   flex-direction: column;
   height: 100%;
   line-height: 2;
-  color: white;
+  color: ${({ theme }) => theme.title};
 
   @media ${device.mobile} {
     padding-left: 0px;
@@ -157,7 +157,7 @@ const BackLink = styled.a`
   top: 200px;
 
   :hover {
-    color: white;
+    color: ${({ theme }) => theme.title};
     cursor: pointer;
     transition: all 0.5s ease-in-out;
   }
@@ -222,7 +222,7 @@ const Body = styled.div`
   p {
     font-size: 18px;
     padding-bottom: 36px;
-    color: white;
+    color: ${({ theme }) => theme.title};
   }
 
   @media ${device.mobile} {
@@ -233,7 +233,7 @@ const Body = styled.div`
     p {
       font-size: 18px;
       padding-bottom: 36px;
-      color: white;
+      color: ${({ theme }) => theme.title};
     }
   }
 `;

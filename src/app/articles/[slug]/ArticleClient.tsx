@@ -6,6 +6,7 @@ import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import { useSession } from "next-auth/react";
 
 import Header from "../../components/Header";
+import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
 import type { fullBlog } from "../../../libs/interface";
 
 type ToastState =
@@ -25,17 +26,17 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
     () => ({
       block: {
         h2: ({ children }) => (
-          <h2 className="mt-6 text-[22px] font-semibold leading-snug text-white">
+          <h2 className="mt-6 text-[22px] font-semibold leading-snug text-neutral-900 dark:text-white">
             {children}
           </h2>
         ),
         h3: ({ children }) => (
-          <h3 className="mt-5 text-lg font-semibold leading-snug text-white/90">
+          <h3 className="mt-5 text-lg font-semibold leading-snug text-neutral-800 dark:text-white/90">
             {children}
           </h3>
         ),
         normal: ({ children }) => (
-          <p className="text-base leading-relaxed text-white/85">{children}</p>
+          <p className="text-base leading-relaxed text-neutral-700 dark:text-white/85">{children}</p>
         ),
       },
     }),
@@ -100,15 +101,15 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
   return (
     <>
       <Header />
-      <main className="flex justify-center bg-black px-5 pb-12 pt-[var(--header-offset)] text-white">
+      <main className="flex justify-center bg-neutral-50 px-5 pb-12 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         <div className="flex w-full max-w-3xl flex-col gap-6">
           <article>
             <header>
-              <h1 className="max-w-prose text-3xl font-semibold leading-tight sm:text-4xl">
+              <h1 className="max-w-prose text-3xl font-semibold leading-tight text-neutral-950 dark:text-inherit sm:text-4xl">
                 {data.title}
               </h1>
               {data.summary ? (
-                <p className="mt-3 max-w-prose text-base text-white/90 sm:text-lg">
+                <p className="mt-3 max-w-prose text-base text-neutral-700 sm:text-lg dark:text-white/90">
                   {data.summary}
                 </p>
               ) : null}
@@ -122,7 +123,9 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
                   width={980}
                   height={560}
                   sizes="(max-width: 900px) 100vw, 900px"
-                  priority
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL={IMAGE_BLUR_DATA_URL}
                   className="h-auto w-full rounded-2xl object-cover"
                 />
               </div>
@@ -165,7 +168,7 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
           data-variant={toast.variant}
           className={[
             "fixed bottom-6 left-1/2 z-[2000] w-[min(720px,calc(100vw-32px))] -translate-x-1/2 rounded-xl border px-3.5 py-3 text-sm shadow-2xl",
-            "border-white/10 bg-neutral-950/90 text-white",
+            "border-neutral-200 bg-white/95 text-neutral-900 shadow-lg dark:border-white/10 dark:bg-neutral-950/90 dark:text-white dark:shadow-2xl",
             toast.variant === "success" ? "border-emerald-400/35" : "",
             toast.variant === "info" ? "border-amber-300/35" : "",
             toast.variant === "error" ? "border-rose-400/35" : "",

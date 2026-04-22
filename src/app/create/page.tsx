@@ -26,7 +26,7 @@ export default function CreatePage() {
   return (
     <>
       <Header />
-      <main className="mx-auto flex min-h-screen max-w-lg flex-col gap-10 bg-black px-4 pb-16 pt-[var(--header-offset)] text-white sm:max-w-2xl sm:px-6">
+      <main className="mx-auto flex min-h-screen max-w-lg flex-col gap-10 bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 sm:max-w-2xl sm:px-6 dark:bg-black dark:text-white">
         <header className="max-w-xl">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Create</h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-400 sm:text-base">

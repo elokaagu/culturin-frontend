@@ -8,6 +8,7 @@ import Hamburger from "hamburger-react";
 import { GoogleSignInButton } from "./AuthButtons";
 import SearchBar from "./SearchBar";
 import Sidebar from "./Sidebar";
+import ThemeToggle from "./ThemeToggle";
 
 function pathnameMatches(pathname: string | null, href: string) {
   if (!pathname) return false;
@@ -16,7 +17,7 @@ function pathnameMatches(pathname: string | null, href: string) {
 }
 
 const navText =
-  "whitespace-nowrap text-[15px] font-medium leading-none text-white no-underline transition-colors hover:text-neutral-300";
+  "whitespace-nowrap text-[15px] font-medium leading-none text-neutral-800 no-underline transition-colors hover:text-neutral-600 dark:text-white dark:hover:text-neutral-300";
 
 export default function Header() {
   const pathname = usePathname();
@@ -62,15 +63,15 @@ export default function Header() {
     <header
       className={`fixed inset-x-0 top-0 z-[1000] w-full transition-[background-color,box-shadow,border-color] duration-200 ${
         elevated
-          ? "border-b border-white/10 bg-black/90 shadow-sm shadow-black/40 backdrop-blur-sm"
-          : "border-b border-transparent bg-black"
+          ? "border-b border-neutral-200 bg-white/90 shadow-sm shadow-neutral-900/10 backdrop-blur-sm dark:border-white/10 dark:bg-black/90 dark:shadow-black/40"
+          : "border-b border-transparent bg-white dark:bg-black"
       }`}
     >
       <div className="mx-auto flex min-h-[var(--header-bar-height)] max-w-[1680px] items-center gap-2 px-3 sm:gap-3 sm:px-5 md:gap-5 md:px-8">
         <div className="flex min-w-0 shrink-0 items-center gap-3 sm:gap-5 md:gap-6">
           <Link
             href="/"
-            className="group shrink-0 rounded-sm outline-none ring-offset-2 ring-offset-black focus-visible:ring-2 focus-visible:ring-amber-400/90"
+            className="group shrink-0 rounded-sm outline-none ring-offset-2 ring-offset-white focus-visible:ring-2 focus-visible:ring-amber-400/90 dark:ring-offset-black"
             aria-label="Culturin home"
           >
             <span className="inline-flex items-baseline font-serif text-lg font-bold tracking-tight text-amber-400 transition-colors group-hover:text-amber-300 sm:text-xl md:text-2xl">
@@ -81,6 +82,7 @@ export default function Header() {
             </span>
           </Link>
           <NavLink href="/about">About</NavLink>
+          <NavLink href="/trending">Trending</NavLink>
         </div>
 
         <div className="min-w-0 flex-1 md:px-2">
@@ -91,14 +93,18 @@ export default function Header() {
 
         <nav
           aria-label="Primary"
-          className="hidden min-w-0 shrink-0 items-center gap-5 md:flex lg:gap-8"
+          className="hidden min-w-0 shrink-0 items-center gap-4 md:flex lg:gap-6"
         >
           <NavLink href="/create">Create</NavLink>
           <NavLink href="/join-us/advisors">Advisor</NavLink>
-          <GoogleSignInButton className="!w-auto !max-w-none shrink-0 rounded-lg px-5 py-2.5 text-sm font-bold shadow-none max-[428px]:!w-auto" />
+          <div className="flex shrink-0 items-center gap-2">
+            <ThemeToggle />
+            <GoogleSignInButton className="!w-auto !max-w-none shrink-0 rounded-lg px-5 py-2.5 text-sm font-bold shadow-none max-[428px]:!w-auto" />
+          </div>
         </nav>
 
-        <div className="flex shrink-0 items-center text-white md:hidden [&_button]:rounded-md [&_button]:text-white [&_button]:outline-none [&_button]:ring-offset-2 [&_button]:ring-offset-black [&_button]:hover:bg-white/10 [&_button]:focus-visible:ring-2 [&_button]:focus-visible:ring-amber-400">
+        <div className="flex shrink-0 items-center gap-2 text-neutral-800 dark:text-white md:hidden [&_button]:rounded-md [&_button]:outline-none [&_button]:ring-offset-2 [&_button]:ring-offset-white [&_button]:hover:bg-neutral-200/80 dark:[&_button]:ring-offset-black dark:[&_button]:hover:bg-white/10 [&_button]:focus-visible:ring-2 [&_button]:focus-visible:ring-amber-400">
+          <ThemeToggle />
           <Hamburger
             toggled={mobileMenuOpen}
             toggle={() => setMobileMenuOpen((open) => !open)}

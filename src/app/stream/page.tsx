@@ -9,11 +9,11 @@ export default function StreamLandingPage() {
   return (
     <>
       <Header />
-      <main className="flex min-h-screen flex-col bg-black px-5 pb-16 pt-[var(--header-offset)] text-white">
+      <main className="flex min-h-screen flex-col bg-neutral-50 px-5 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         <nav className="mb-6" aria-label="Back">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 font-semibold text-[rgb(250,193,0)] transition-colors hover:text-white max-[428px]:hidden"
+            className="inline-flex items-center gap-2 font-semibold text-[rgb(250,193,0)] transition-colors hover:text-neutral-900 dark:hover:text-white max-[428px]:hidden"
           >
             <svg width={16} height={16} viewBox="0 0 12 12" aria-hidden>
               <path
@@ -42,7 +42,7 @@ export default function StreamLandingPage() {
           </div>
           <div>
             <h1 className="text-3xl font-semibold">Munchies</h1>
-            <p className="mt-4 max-w-prose text-base leading-relaxed text-white/85">
+            <p className="mt-4 max-w-prose text-base leading-relaxed text-neutral-700 dark:text-white/85">
               Join Anthony Bourdain as he explores New York&apos;s culinary culture and
               shares it with the world in a gritty documentation of No Reservations.
             </p>

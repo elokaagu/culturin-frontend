@@ -1,16 +1,46 @@
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
 
-// Define the shape of the context
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+
+export type ThemeMode = "light" | "dark";
+
+const STORAGE_KEY = "culturin-theme";
+
+function readStoredMode(): ThemeMode | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const v = window.localStorage.getItem(STORAGE_KEY);
+    if (v === "light" || v === "dark") return v;
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
+function applyThemeToDocument(mode: ThemeMode) {
+  if (typeof document === "undefined") return;
+  document.documentElement.classList.toggle("dark", mode === "dark");
+}
+
 interface ThemeContextType {
-  theme: string;
+  /** Current color mode. */
+  mode: ThemeMode;
+  /** @deprecated Use `mode`; kept for a few call sites. */
+  theme: ThemeMode;
+  setMode: (next: ThemeMode) => void;
   toggleTheme: () => void;
 }
 
-// Create context with a default value
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// Custom hook to use the theme context
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
@@ -19,17 +49,39 @@ export const useTheme = () => {
   return context;
 };
 
-// Theme provider component
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState("light"); // Default theme
+  const [mode, setModeState] = useState<ThemeMode>("dark");
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
+  const setMode = useCallback((next: ThemeMode) => {
+    setModeState(next);
+    try {
+      window.localStorage.setItem(STORAGE_KEY, next);
+    } catch {
+      /* ignore */
+    }
+    applyThemeToDocument(next);
+  }, []);
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+  const toggleTheme = useCallback(() => {
+    setMode(mode === "dark" ? "light" : "dark");
+  }, [mode, setMode]);
+
+  useLayoutEffect(() => {
+    const stored = readStoredMode();
+    const initial = stored ?? "dark";
+    setModeState(initial);
+    applyThemeToDocument(initial);
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      mode,
+      theme: mode,
+      setMode,
+      toggleTheme,
+    }),
+    [mode, setMode, toggleTheme],
   );
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };

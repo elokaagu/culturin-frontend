@@ -190,11 +190,11 @@ const AppBody = styled.div`
   display: flex;
   flex: 1;
   align-items: center;
-  background: black;
+  background: ${({ theme }) => theme.body};
   flex-direction: column;
   height: 100%;
   line-height: 2;
-  color: white;
+  color: ${({ theme }) => theme.title};
 `;
 
 const Title = styled.div`
@@ -261,7 +261,7 @@ const Body = styled.div`
     font-size: 18px;
     padding-top: 5px;
     padding-bottom: 20px;
-    color: white;
+    color: ${({ theme }) => theme.title};
   }
 
   @media ${device.mobile} {
@@ -272,7 +272,7 @@ const Body = styled.div`
     p {
       font-size: 18px;
       padding-bottom: 36px;
-      color: white;
+      color: ${({ theme }) => theme.title};
     }
   }
 `;
@@ -290,8 +290,8 @@ const ApplyScrollButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   border: none;
-  background: ${(props) => props.theme.title};
-  color: ${(props) => props.theme.body};
+  background: #ffffff;
+  color: #000000;
 
   &:hover {
     background: grey;
@@ -320,14 +320,14 @@ const OfferBody = styled.div`
   h2 {
     font-size: 1.5rem;
     margin: 0 0 0.5rem;
-    color: white;
+    color: ${({ theme }) => theme.title};
   }
 
   p {
     font-size: 18px;
     padding-top: 5px;
     padding-bottom: 20px;
-    color: white;
+    color: ${({ theme }) => theme.title};
   }
 
   @media ${device.mobile} {
@@ -338,7 +338,7 @@ const OfferBody = styled.div`
     p {
       font-size: 18px;
       padding-bottom: 36px;
-      color: white;
+      color: ${({ theme }) => theme.title};
     }
   }
 `;
@@ -358,8 +358,8 @@ const Feature = styled.div`
   padding: 20px;
   border: 1px solid #111111;
   border-radius: 10px;
-  background: black;
-  color: white;
+  background: ${({ theme }) => theme.body};
+  color: ${({ theme }) => theme.title};
   font-size: 1em;
   transition: all 0.3s ease;
 
@@ -384,7 +384,7 @@ const MembershipTitle = styled.h2`
   text-align: center;
   line-height: 1.2;
   margin-bottom: 20px;
-  color: white;
+  color: ${({ theme }) => theme.title};
 `;
 
 const MembershipInfo = styled.p`
@@ -477,8 +477,8 @@ const Benefit = styled.li`
 
 const ApplyButton = styled.button`
   padding: 10px 20px;
-  background: black;
-  color: white;
+  background: ${({ theme }) => theme.body};
+  color: ${({ theme }) => theme.title};
   border: none;
   border-radius: 5px;
   font-weight: bold;
@@ -491,7 +491,7 @@ const ApplyButton = styled.button`
 `;
 
 const CTASection = styled.section`
-  background-color: black;
+  background-color: ${({ theme }) => theme.body};
   padding: 50px 0;
   display: flex;
   flex-direction: column;
@@ -504,13 +504,13 @@ const CTATitle = styled.h2`
   text-align: center;
   line-height: 1.2;
   margin-bottom: 20px;
-  color: white;
+  color: ${({ theme }) => theme.title};
 `;
 
 const CTASubtitle = styled.p`
   font-size: 1em;
   margin-bottom: 30px;
-  color: white;
+  color: ${({ theme }) => theme.title};
 `;
 
 const EmailInput = styled.input`
@@ -519,7 +519,7 @@ const EmailInput = styled.input`
   margin-bottom: 4px;
   border: none;
   border-bottom: 2px solid #000;
-  background-color: white;
+  background-color: #ffffff;
   color: #000;
   width: min(100%, 320px);
   align-self: center;

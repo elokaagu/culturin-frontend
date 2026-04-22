@@ -12,7 +12,7 @@ type SidebarProps = {
 };
 
 const linkClass =
-  "block px-5 py-4 text-base text-white no-underline transition-colors hover:text-neutral-400 max-[428px]:px-2.5 max-[428px]:py-2.5";
+  "block px-5 py-4 text-base text-neutral-900 no-underline transition-colors hover:text-neutral-600 dark:text-white dark:hover:text-neutral-400 max-[428px]:px-2.5 max-[428px]:py-2.5";
 
 const dropdownItemClass =
   "list-none px-3 py-2.5 text-black [&_a]:block [&_a]:text-black [&_a]:no-underline [&_a:hover]:text-neutral-600";
@@ -23,7 +23,7 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
   return (
     <div
       id={id}
-      className="fixed inset-0 z-[100] flex h-full w-full animate-fade-in flex-col overflow-x-hidden bg-black pt-[var(--header-bar-height)] text-white transition-opacity duration-200 ease-out"
+      className="fixed inset-0 z-[100] flex h-full w-full animate-fade-in flex-col overflow-x-hidden bg-neutral-50 pt-[var(--header-bar-height)] text-neutral-900 transition-opacity duration-200 ease-out dark:bg-black dark:text-white"
       role="dialog"
       aria-modal="true"
       aria-label="Mobile navigation"
@@ -41,7 +41,7 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
             <button
               type="button"
               onClick={() => setDestinationsOpen((o) => !o)}
-              className="flex w-full items-center gap-2 px-5 py-4 text-left text-base text-white max-[428px]:px-2.5 max-[428px]:py-2.5"
+              className="flex w-full items-center gap-2 px-5 py-4 text-left text-base text-neutral-900 max-[428px]:px-2.5 max-[428px]:py-2.5 dark:text-white"
               aria-expanded={destinationsOpen}
               aria-controls="sidebar-destinations-menu"
             >

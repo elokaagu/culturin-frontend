@@ -56,19 +56,19 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
 
   const inputText =
     variant === "header"
-      ? "text-sm font-medium text-neutral-100 sm:text-base"
-      : "text-lg font-semibold text-white";
+      ? "text-sm font-medium text-neutral-800 sm:text-base dark:text-neutral-100"
+      : "text-lg font-semibold text-neutral-900 dark:text-white";
 
   const iconSize = variant === "header" ? 18 : 20;
 
   return (
     <div className="flex w-full flex-row items-center justify-center">
       <div
-        className={`flex w-full flex-row items-center bg-[#262627] font-semibold text-white transition-opacity duration-300 ease-in-out hover:opacity-90 ${shell}`}
+        className={`flex w-full flex-row items-center bg-neutral-200 font-semibold text-neutral-900 transition-opacity duration-300 ease-in-out hover:opacity-90 dark:bg-[#262627] dark:text-white ${shell}`}
       >
-        <Search size={iconSize} className="shrink-0 text-white" aria-hidden />
+        <Search size={iconSize} className="shrink-0 text-neutral-700 dark:text-white" aria-hidden />
         <div
-          className={`ml-2 flex h-full min-h-0 w-full flex-1 flex-row items-center bg-transparent ${variant === "header" ? "" : "text-lg font-semibold text-white"}`}
+          className={`ml-2 flex h-full min-h-0 w-full flex-1 flex-row items-center bg-transparent ${variant === "header" ? "" : "text-lg font-semibold text-neutral-900 dark:text-white"}`}
         >
           <form
             role="search"
@@ -80,11 +80,11 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
             </label>
             <input
               id={inputId}
-              className={`min-w-0 flex-1 border-0 bg-transparent py-0.5 outline-none placeholder:text-neutral-500 ${inputText}`}
+              className={`min-w-0 flex-1 border-0 bg-transparent py-0.5 outline-none placeholder:text-neutral-500 dark:placeholder:text-neutral-500 ${inputText}`}
               type="text"
               name="search"
               inputMode="search"
-              placeholder="Search"
+              placeholder={variant === "header" ? "Search stories, places, culture…" : "Search"}
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onKeyDown={(e) => {
@@ -99,7 +99,7 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
             {value ? (
               <button
                 type="button"
-                className="shrink-0 rounded-md px-2 py-1 text-lg leading-none text-neutral-400 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+                className="shrink-0 rounded-md px-2 py-1 text-lg leading-none text-neutral-500 transition-colors hover:bg-neutral-300/80 hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:text-neutral-400 dark:hover:bg-white/10 dark:hover:text-white"
                 aria-label="Clear search"
                 onClick={clear}
               >

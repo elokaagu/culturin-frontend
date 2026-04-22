@@ -1,5 +1,6 @@
 import React from "react";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./styles/globals.css";
 import SessionProvider from "./components/SessionProvider";
@@ -10,6 +11,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "./styles/ThemeContext";
 import { getCurrentUser } from "../actions/getCurrentUser";
 import { ClerkProvider } from "@clerk/nextjs";
+
+const themeInitScript = `(function(){try{var k='culturin-theme';var v=localStorage.getItem(k);var r=document.documentElement;if(v==='light')r.classList.remove('dark');else r.classList.add('dark');}catch(e){document.documentElement.classList.add('dark');}})();`;
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,9 +33,12 @@ export default async function RootLayout({
   // Toggle Theme
 
   return (
-    <ThemeProvider>
-      <html lang="en">
-        <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <Script id="culturin-theme-init" strategy="beforeInteractive">
+          {themeInitScript}
+        </Script>
+        <ThemeProvider>
           {clerkPublishableKey ? (
             <ClerkProvider publishableKey={clerkPublishableKey}>
               <SessionProvider session={session}>
@@ -48,8 +54,8 @@ export default async function RootLayout({
               </ThemeClient>
             </SessionProvider>
           )}
-        </body>
-      </html>
-    </ThemeProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

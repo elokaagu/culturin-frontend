@@ -1,177 +1,41 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Header from "../../components/Header";
-import { device } from "../../styles/breakpoints";
-import type { fullVideo } from "../../../libs/interface";
-import MuxPlayer from "@mux/mux-player-react";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import { getCmsBrowserClient } from "../../../lib/cms/browser";
+import { getCmsDbOrNull } from "../../../lib/cms/server";
 import { getVideoBySlug } from "../../../lib/cms/queries";
+import type { fullVideo } from "../../../libs/interface";
+import { normalizeSlugParam } from "../../../lib/slug";
+import VideoDetailClient from "./VideoDetailClient";
 
-export default function Videos({ params }: { params: { slug: string } }) {
-  const [data, setData] = useState<fullVideo | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const db = getCmsBrowserClient();
-      if (!db) return;
-      const fetchedData = await getVideoBySlug(db, params.slug);
-      setData(fetchedData);
-    };
-
-    void fetchData();
-  }, [params.slug]);
-
-  return (
-    <>
-      <Header />
-      <AppBody>
-            <VideoWrapper>
-              <VideoContainer>
-                <MuxPlayer
-                  playbackId={data?.playbackId}
-                  style={{ borderRadius: "20px" }}
-                  accent-color="black"
-                  metadata={{
-                    video_id: data?._id ?? "",
-                    video_title: data?.title ?? "",
-                    viewer_user_id: "user-id-dynamic",
-                  }}
-                />
-              </VideoContainer>
-              <Title>
-                <h1>{data?.title}</h1>
-                <span>{data?.uploader}</span>
-              </Title>
-              <Subtitle>
-                <p>{data?.description}</p>
-              </Subtitle>
-            </VideoWrapper>
-      </AppBody>
-    </>
-  );
+async function getVideo(slug: string): Promise<fullVideo | null> {
+  const db = getCmsDbOrNull();
+  if (!db) return null;
+  return getVideoBySlug(db, slug);
 }
 
-const AppBody = styled.div`
-  padding: 40px;
-  display: flex;
-  padding-top: var(--header-offset);
-  align-items: center;
-  background: black;
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: white;
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    align-items: flex-start;
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const video = await getVideo(normalizeSlugParam(params.slug));
+  if (!video) {
+    return { title: "Video" };
   }
-`;
+  return {
+    title: `${video.title} | Culturin`,
+    description: video.description ?? undefined,
+  };
+}
 
-const Title = styled.div`
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-
-    h1 {
-      font-size: 25px;
-      align-items: flex-start;
-      margin-left: 10px;
-      width: 100%;
-    }
-
-    span {
-      font-size: 18px;
-      color: grey;
-      padding-left: 10px;
-    }
+export default async function StreamVideoPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const data = await getVideo(normalizeSlugParam(params.slug));
+  if (!data) {
+    notFound();
   }
-`;
-
-const Subtitle = styled.div`
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: grey;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 10px;
-    align-items: flex-start;
-  }
-`;
-
-const VideoWrapper = styled.div`
-  margin: auto;
-  width: 60%;
-  padding-top: 30px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  span {
-    font-size: 18px;
-    color: grey;
-  }
-
-  p {
-    font-size: 18px;
-    color: white;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 20px;
-    align-items: flex-start;
-    width: 100%;
-
-    p {
-      font-size: 16px;
-      color: white;
-      // display: -webkit-box;
-      // -webkit-line-clamp: 2;
-      // -webkit-box-orient: vertical;
-      // overflow: hidden;
-      // text-overflow: ellipsis;
-    }
-  }
-
-  @media ${device.mobile} {
-    margin-left: 0px;
-    border-radius: 10px;
-    width: 100%;
-    height: 50%;
-    overflow: hidden;
-  }
-`;
-
-const VideoContainer = styled.div`
-  padding-bottom: 20px;
-  cursor: pointer;
-  img {
-    border-radius: 10px;
-  }
-
-  @media ${device.mobile} {
-    width: 100%;
-    img {
-      margin-left: 0;
-    }
-  }
-`;
+  return <VideoDetailClient data={data} />;
+}

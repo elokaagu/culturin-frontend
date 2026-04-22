@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getCmsDbOrNull } from "../../../lib/cms/server";
 import { getBlogBySlug } from "../../../lib/cms/queries";
 import type { fullBlog } from "../../../libs/interface";
+import { normalizeSlugParam } from "../../../lib/slug";
 import ArticleClient from "./ArticleClient";
 
 async function getArticleBySlug(slug: string): Promise<fullBlog | null> {
@@ -17,7 +18,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const article = await getArticleBySlug(params.slug);
+  const article = await getArticleBySlug(normalizeSlugParam(params.slug));
 
   if (!article) {
     return { title: "Article" };
@@ -34,7 +35,7 @@ export default async function BlogArticle({
 }: {
   params: { slug: string };
 }) {
-  const data = await getArticleBySlug(params.slug);
+  const data = await getArticleBySlug(normalizeSlugParam(params.slug));
 
   if (!data) {
     notFound();
