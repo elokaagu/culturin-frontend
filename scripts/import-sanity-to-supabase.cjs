@@ -5,11 +5,41 @@
  *   SUPABASE_URL
  *   SUPABASE_SERVICE_ROLE_KEY
  *
+ * Loads `.env.local` then `.env` from the repo root (same as Next.js), so
+ * `npm run cms:import` picks up keys without exporting them in the shell.
+ *
  * Run from repo root:
- *   node scripts/import-sanity-to-supabase.cjs
+ *   npm run cms:import
  */
 
+const fs = require("fs");
+const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
+
+/** Minimal KEY=VAL parser; skips comments and blank lines. */
+function loadDotEnv(relPath) {
+  const full = path.resolve(__dirname, "..", relPath);
+  if (!fs.existsSync(full)) return;
+  const content = fs.readFileSync(full, "utf8");
+  for (const line of content.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eq = trimmed.indexOf("=");
+    if (eq === -1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    let val = trimmed.slice(eq + 1).trim();
+    if (
+      (val.startsWith('"') && val.endsWith('"')) ||
+      (val.startsWith("'") && val.endsWith("'"))
+    ) {
+      val = val.slice(1, -1);
+    }
+    if (process.env[key] === undefined) process.env[key] = val;
+  }
+}
+
+loadDotEnv(".env.local");
+loadDotEnv(".env");
 
 const SANITY_PROJECT = "8rwgyjc1";
 const SANITY_DATASET = "production";
@@ -32,10 +62,16 @@ function withWidth(url, w) {
 }
 
 async function main() {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseUrl =
+    process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
   if (!supabaseUrl || !serviceKey) {
-    console.error("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.");
+    console.error(
+      "Missing Supabase credentials. Add to .env.local (or export in shell):\n" +
+        "  SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL)\n" +
+        "  SUPABASE_SERVICE_ROLE_KEY\n" +
+        "Then run: npm run cms:import",
+    );
     process.exit(1);
   }
 
