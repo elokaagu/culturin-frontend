@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAppAuth } from "./SupabaseAuthProvider";
 import toast from "react-hot-toast";
 
 type SaveButtonProps = {
@@ -9,11 +9,11 @@ type SaveButtonProps = {
 };
 
 export default function SaveButton({ contentId }: SaveButtonProps) {
-  const { data: session } = useSession();
+  const { data: session } = useAppAuth();
   const [pending, setPending] = useState(false);
 
   const handleSave = async () => {
-    if (!session) {
+    if (!session?.user) {
       toast.error("Sign in to save articles.");
       return;
     }
@@ -23,7 +23,7 @@ export default function SaveButton({ contentId }: SaveButtonProps) {
       const response = await fetch("/api/save-article", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contentId }),
+        body: JSON.stringify({ articleId: contentId }),
       });
       const data = await response.json();
       if (!response.ok) {

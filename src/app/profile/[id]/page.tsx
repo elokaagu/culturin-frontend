@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSession } from "next-auth/react";
+import { useAppAuth } from "../../components/SupabaseAuthProvider";
 
 import Header from "../../components/Header";
 import type { simpleBlogCard } from "../../../libs/interface";
@@ -20,7 +20,7 @@ import { getCmsBrowserClient } from "../../../lib/cms/browser";
 import { listBlogs } from "../../../lib/cms/queries";
 
 export default function ProfileByIdPage() {
-  const { data: session } = useSession();
+  const { data: session } = useAppAuth();
   const [userData, setUserData] = useState({ name: "", email: "" });
   const [articleData, setArticleData] = useState<simpleBlogCard[]>([]);
 

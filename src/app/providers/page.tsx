@@ -7,6 +7,8 @@ import Link from "next/link";
 import { device } from "../styles/breakpoints";
 import { CldImage } from "next-cloudinary";
 
+import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+
 export default function Providers() {
   return (
     <>
@@ -46,10 +48,11 @@ export default function Providers() {
                   <CldImage
                     src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
                     alt="mainImage"
-                    placeholder="blur"
                     width={600}
                     height={400}
-                    blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                     style={{
                       // width: "100%",
                       // height: "auto",
@@ -65,10 +68,11 @@ export default function Providers() {
                   <CldImage
                     src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
                     alt="mainImage"
-                    placeholder="blur"
                     width={300}
                     height={195}
-                    blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                     style={{
                       // width: "100%",
                       // height: "auto",
@@ -82,10 +86,11 @@ export default function Providers() {
                   <CldImage
                     src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
                     alt="mainImage"
-                    placeholder="blur"
                     width={300}
                     height={195}
-                    blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                     style={{
                       // width: "100%",
                       // height: "auto",

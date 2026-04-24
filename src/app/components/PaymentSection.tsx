@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAppAuth } from "./SupabaseAuthProvider";
 
 export default function PaymentSection() {
-  const { data: session } = useSession();
+  const { data: session } = useAppAuth();
   const [email, setEmail] = useState("");
   const [cardLabel, setCardLabel] = useState("");
 

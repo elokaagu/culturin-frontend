@@ -1,11 +1,10 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-
 import Header from "../components/Header";
+import { useAppAuth } from "../components/SupabaseAuthProvider";
 
 export default function ProfilePage() {
-  const { data: session } = useSession();
+  const { data: session } = useAppAuth();
   const first = session?.user?.name?.trim()?.split(/\s+/)[0];
 
   return (

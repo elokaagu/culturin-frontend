@@ -3,9 +3,8 @@
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
-import { useSession } from "next-auth/react";
-
 import Header from "../../components/Header";
+import { useAppAuth } from "../../components/SupabaseAuthProvider";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,
@@ -18,7 +17,7 @@ type ToastState =
   | { open: true; message: string; variant: "success" | "info" | "error" };
 
 export default function ArticleClient({ data }: { data: fullBlog }) {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useAppAuth();
   const [toast, setToast] = useState<ToastState>({ open: false });
 
   const coverSrc = useMemo(() => resolveContentImageSrc(data?.titleImageUrl), [data?.titleImageUrl]);
@@ -52,7 +51,7 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
   const handleSaveArticle = async () => {
     if (status === "loading") return;
 
-    if (!session) {
+    if (status !== "authenticated" || !session?.user) {
       showToast({
         variant: "error",
         message: "Sign in to save articles to your profile.",

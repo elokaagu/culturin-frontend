@@ -2,10 +2,10 @@
 
 import React, { useRef, useEffect } from "react";
 import { useChat, type Message } from "ai/react";
-import { useSession } from "next-auth/react";
+import { useAppAuth } from "./SupabaseAuthProvider";
 
 export default function ChatComponent() {
-  const { data: session } = useSession();
+  const { data: session } = useAppAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { input, handleInputChange, handleSubmit, isLoading, messages } =

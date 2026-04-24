@@ -7,6 +7,7 @@ import Link from "next/link";
 import { CldImage } from "next-cloudinary";
 import { device } from "../../styles/breakpoints";
 import VideoPlayer from "../../components/VideoPlayer";
+import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
 
 export default function SpotlightPosts() {
   return (
@@ -47,10 +48,11 @@ export default function SpotlightPosts() {
               <CldImage
                 src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705493709/ojcn4o1quyu8e6fdyaws.webp"
                 alt="mainImage"
-                placeholder="blur"
                 width={700}
                 height={500}
-                blurDataURL="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg"
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL={IMAGE_BLUR_DATA_URL}
                 style={{
                   // width: "100%",
                   // height: "auto",

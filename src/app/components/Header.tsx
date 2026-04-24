@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
+import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 import { usePathname, useRouter } from "next/navigation";
 import Hamburger from "hamburger-react";
 
@@ -143,8 +145,10 @@ export default function Header() {
                 width={178}
                 height={36}
                 className="h-9 w-auto opacity-95 transition-opacity group-hover:opacity-100"
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL={IMAGE_BLUR_DATA_URL}
                 unoptimized
-                priority
               />
             </Link>
             <LeftNavLink href="/about">About</LeftNavLink>
@@ -212,8 +216,10 @@ export default function Header() {
                 width={139}
                 height={28}
                 className="h-7 w-auto opacity-95 transition-opacity group-hover:opacity-100"
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL={IMAGE_BLUR_DATA_URL}
                 unoptimized
-                priority
               />
             </Link>
             <div className="flex items-center gap-1.5 text-neutral-800 dark:text-white [&_button]:rounded-md [&_button]:outline-none [&_button]:ring-offset-2 [&_button]:ring-offset-white dark:[&_button]:ring-offset-neutral-950 [&_button]:focus-visible:ring-2 [&_button]:focus-visible:ring-amber-400">

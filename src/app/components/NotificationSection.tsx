@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAppAuth } from "./SupabaseAuthProvider";
 
 export default function NotificationSection() {
-  const { data: session } = useSession();
+  const { data: session } = useAppAuth();
   const [mobile, setMobile] = useState("");
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useSession } from "next-auth/react";
+import { useAppAuth } from "./SupabaseAuthProvider";
 
 import { AccountProfileForm } from "./account/AccountProfileForm";
 import type { AccountProfileUser } from "./account/types";
@@ -11,7 +11,7 @@ import type { AccountProfileUser } from "./account/types";
  * Shell, hash tabs, and theme live on the settings page / root layout.
  */
 export default function AccountSection() {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useAppAuth();
 
   const profileUser: AccountProfileUser | null = useMemo(() => {
     if (!session?.user) return null;

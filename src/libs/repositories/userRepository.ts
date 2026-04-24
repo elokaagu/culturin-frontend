@@ -68,6 +68,28 @@ export async function getUserById(id: string) {
   return (data as AppUser | null) ?? null;
 }
 
+/** Keeps `public.users` in sync with `auth.users` (same primary key). */
+export async function upsertUserFromSupabaseAuth(input: {
+  id: string;
+  email: string;
+  name?: string | null;
+}) {
+  const supabaseAdmin: any = getSupabaseAdmin();
+  const payload = {
+    id: input.id,
+    email: input.email,
+    name: input.name ?? null,
+    username: createUsernameFromName(input.name, input.email),
+    hashed_password: null,
+    auth_provider_id: input.id,
+  };
+
+  const { error } = await supabaseAdmin.from("users").upsert(payload, { onConflict: "id" });
+  if (error) {
+    throw error;
+  }
+}
+
 export async function upsertOAuthUser(input: {
   email?: string | null;
   name?: string | null;

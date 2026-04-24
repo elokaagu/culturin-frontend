@@ -3,9 +3,10 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./styles/globals.css";
-import SessionProvider from "./components/SessionProvider";
-import { getServerSession } from "next-auth";
 import { Metadata } from "next";
+
+import { createSupabaseServerClient } from "../lib/supabase/server";
+import SupabaseAuthProvider from "./components/SupabaseAuthProvider";
 import ThemeClient from "./styles/ThemeClient";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "./styles/ThemeContext";
@@ -24,12 +25,24 @@ export const metadata: Metadata = {
   },
 };
 
+async function getInitialAuthUser() {
+  try {
+    const supabase = await createSupabaseServerClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return user;
+  } catch {
+    return null;
+  }
+}
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
+  const initialUser = await getInitialAuthUser();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -38,11 +51,11 @@ export default async function RootLayout({
           {themeInitScript}
         </Script>
         <ThemeProvider>
-          <SessionProvider session={session}>
+          <SupabaseAuthProvider initialUser={initialUser}>
             <ThemeClient>
               {children} <Analytics /> <SpeedInsights />
             </ThemeClient>
-          </SessionProvider>
+          </SupabaseAuthProvider>
         </ThemeProvider>
       </body>
     </html>

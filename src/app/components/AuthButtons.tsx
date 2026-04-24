@@ -1,10 +1,10 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
-/** Primary nav / sidebar: stable profile URL by NextAuth user id. */
+import { useAppAuth, useSupabaseAuth } from "./SupabaseAuthProvider";
+
 function profileHref(userId: string | undefined) {
   return userId ? `/profile/${userId}` : "/profile";
 }
@@ -56,11 +56,11 @@ function useDismissOnEscapeAndOutside(
 }
 
 /**
- * Google OAuth entry + signed-in account menu.
- * Menu is self-contained (internal open state), with escape/outside dismiss and ARIA attributes.
+ * Google OAuth + signed-in account menu (Supabase Auth).
  */
 export function GoogleSignInButton({ className }: { className?: string }) {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useAppAuth();
+  const { supabase } = useSupabaseAuth();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -72,6 +72,17 @@ export function GoogleSignInButton({ className }: { className?: string }) {
   useDismissOnEscapeAndOutside(open, setOpen, rootRef, triggerRef);
 
   const triggerCn = className ? `${triggerClass} ${className}` : triggerClass;
+
+  const signInGoogle = useCallback(() => {
+    if (!supabase) return;
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    void supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${origin}/auth/callback`,
+      },
+    });
+  }, [supabase]);
 
   if (status === "loading") {
     return (
@@ -142,7 +153,7 @@ export function GoogleSignInButton({ className }: { className?: string }) {
                   role="menuitem"
                   className={menuItemButtonClass}
                   onClick={async () => {
-                    await signOut({ redirect: false, callbackUrl: "/" });
+                    if (supabase) await supabase.auth.signOut();
                     close();
                   }}
                 >
@@ -157,14 +168,8 @@ export function GoogleSignInButton({ className }: { className?: string }) {
   }
 
   return (
-    <button
-      type="button"
-      className={triggerCn}
-      onClick={() =>
-        void signIn("google", { redirect: true, callbackUrl: "/" })
-      }
-    >
-      Sign in
+    <button type="button" className={triggerCn} onClick={signInGoogle}>
+      Sign in with Google
     </button>
   );
 }

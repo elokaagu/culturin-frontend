@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useAppAuth } from "../components/SupabaseAuthProvider";
 
 import AccountSection from "../components/AccountSection";
 import Header from "../components/Header";
@@ -31,7 +31,7 @@ function sectionTitle(sessionName: string | null | undefined) {
 }
 
 export default function SettingsPage() {
-  const { data: session } = useSession();
+  const { data: session } = useAppAuth();
   const activeSection = useSettingsSection();
   const { mode, toggleTheme } = useTheme();
   const isDark = mode === "dark";
