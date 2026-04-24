@@ -4,7 +4,6 @@ export type CmsDb = SupabaseClient;
 
 export type CmsBlogRow = {
   id: string;
-  sanity_id: string | null;
   slug: string;
   title: string;
   summary: string | null;
@@ -18,7 +17,6 @@ export type CmsBlogRow = {
 
 export type CmsVideoRow = {
   id: string;
-  sanity_id: string | null;
   slug: string;
   title: string;
   uploader: string | null;
@@ -33,7 +31,6 @@ export type CmsVideoRow = {
 
 export type CmsProviderRow = {
   id: string;
-  sanity_id: string | null;
   slug: string;
   name: string | null;
   event_name: string | null;
