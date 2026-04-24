@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import { useAppAuth, useSupabaseAuth } from "./SupabaseAuthProvider";

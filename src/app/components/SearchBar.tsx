@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useId, useState, type FormEvent } from "react";
 import { Search } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 
 type SearchBarProps = {
   /** Tighter pill style for the main site header. */
@@ -16,7 +17,7 @@ type SearchBarProps = {
  * - Clear removes `query` from the current URL and resets the field.
  */
 export default function SearchBar({ variant = "default" }: SearchBarProps) {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const inputId = useId();

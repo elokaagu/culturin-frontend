@@ -3,7 +3,7 @@
 
 import React from "react";
 import Header from "../components/Header";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { CldImage } from "next-cloudinary";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 import { Button } from "@/components/ui/button";

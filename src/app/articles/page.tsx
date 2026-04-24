@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 
+import TravelGuidesCategoryGrid from "../components/TravelGuidesCategoryGrid";
 import { ContentPageShell } from "../components/layout/ContentPageShell";
 import { BackToHomeLink } from "../components/nav/BackToHomeLink";
 import {
   getArticlesLandingPage,
   type ArticlesLandingCmsStatus,
 } from "../../lib/cms/articlesLandingPage";
-import {
-  IMAGE_BLUR_DATA_URL,
-  isBundledPlaceholderSrc,
-  resolveContentImageSrc,
-} from "../../lib/imagePlaceholder";
 
 export const revalidate = 300;
 
@@ -36,7 +31,7 @@ function CmsStatusNote({ status }: { status: ArticlesLandingCmsStatus }) {
 
   const messages: Record<ArticlesLandingCmsStatus, string> = {
     missing_base_url:
-      "CMS: set NEXT_PUBLIC_CMS_BASE_URL to load the hero headline and intro from your API.",
+      "CMS: set NEXT_PUBLIC_CMS_BASE_URL to load the hub headline and intro from your API.",
     bad_response:
       "CMS: the pages API returned an unexpected shape or non-OK status; showing bundled fallbacks.",
     network_error:
@@ -46,7 +41,7 @@ function CmsStatusNote({ status }: { status: ArticlesLandingCmsStatus }) {
 
   return (
     <aside
-      className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-950 dark:text-amber-100"
+      className="mb-2 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-950 dark:text-amber-100"
       role="status"
     >
       {messages[status]}
@@ -56,56 +51,33 @@ function CmsStatusNote({ status }: { status: ArticlesLandingCmsStatus }) {
 
 export default async function ArticlesPage() {
   const page = await getArticlesLandingPage();
-  const heroSrc = resolveContentImageSrc(page.heroImage.src);
 
   return (
-    <ContentPageShell>
+    <ContentPageShell
+      mainClassName="min-h-screen bg-white pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
+      innerClassName="flex w-full max-w-7xl flex-col gap-0 px-4 sm:px-6"
+    >
       <CmsStatusNote status={page.cmsStatus} />
 
-      <nav aria-label="Back to home" className="flex justify-start">
+      <nav aria-label="Back to home" className="mb-2 flex justify-start sm:mb-0">
         <BackToHomeLink />
       </nav>
 
-      <article className="flex flex-col gap-6">
-        <header className="flex flex-col gap-3">
-          <h1
-            id="article-heading"
-            className="max-w-prose text-3xl font-semibold leading-tight sm:text-4xl"
-          >
-            {page.headline}
-          </h1>
-          <p className="max-w-prose text-base text-neutral-700 sm:text-lg dark:text-white/90">
-            {page.intro}
-          </p>
-        </header>
+      <header className="mb-10 flex flex-col gap-5 pt-2 sm:mb-12 sm:pt-0 md:mb-14 md:flex-row md:items-end md:justify-between md:gap-8">
+        <h1
+          id="article-heading"
+          className="m-0 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
+        >
+          {page.headline}
+        </h1>
+        <p className="m-0 max-w-md text-base leading-relaxed text-neutral-600 md:max-w-lg md:shrink-0 md:text-right md:text-base lg:text-lg dark:text-white/70">
+          {page.intro}
+        </p>
+      </header>
 
-        <figure className="m-0 w-full">
-          <Image
-            src={heroSrc}
-            alt={page.heroImage.alt}
-            width={page.heroImage.width}
-            height={page.heroImage.height}
-            sizes="(max-width: 900px) 100vw, 900px"
-            className="h-auto w-full rounded-2xl object-cover"
-            draggable={false}
-            loading="lazy"
-            placeholder="blur"
-            blurDataURL={IMAGE_BLUR_DATA_URL}
-            unoptimized={isBundledPlaceholderSrc(heroSrc)}
-          />
-        </figure>
-
-        <div className="flex flex-col gap-4 border-t border-neutral-200 pt-6 dark:border-white/10">
-          {page.bodyParagraphs.map((paragraph, index) => (
-            <p
-              key={index}
-              className="max-w-prose text-base leading-relaxed text-neutral-700 dark:text-white/85"
-            >
-              {paragraph}
-            </p>
-          ))}
-        </div>
-      </article>
+      <section aria-label="Guide categories" className="w-full min-w-0">
+        <TravelGuidesCategoryGrid />
+      </section>
     </ContentPageShell>
   );
 }

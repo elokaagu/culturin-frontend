@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 import { GoogleSignInButton } from "../components/AuthButtons";
 import Header from "../components/Header";

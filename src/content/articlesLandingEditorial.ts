@@ -7,10 +7,10 @@
 
 export const ARTICLES_LANDING_EDITORIAL = {
   /** Used when the CMS is unavailable or does not return a headline. */
-  fallbackHeadline: "The cultural tapestry of Enugu",
+  fallbackHeadline: "Travel Guides",
   /** Used when the CMS is unavailable or does not return an intro. */
   fallbackIntro:
-    "Enugu blends history, Igbo tradition, music, and food into a destination worth understanding before you go.",
+    "Resources that aid, inform, and help you navigate the world with a little more ease.",
   heroImage: {
     src: "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
     alt: "Street and architecture in Enugu, Nigeria",

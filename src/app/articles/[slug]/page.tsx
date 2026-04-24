@@ -3,14 +3,18 @@ import { notFound } from "next/navigation";
 
 import { getCmsDbOrNull } from "../../../lib/cms/server";
 import { getBlogBySlug } from "../../../lib/cms/queries";
+import { getShowcaseFullBlog } from "../../../lib/cms/showcaseContent";
 import type { fullBlog } from "../../../libs/interface";
 import { normalizeSlugParam } from "../../../lib/slug";
 import ArticleClient from "./ArticleClient";
 
 async function getArticleBySlug(slug: string): Promise<fullBlog | null> {
   const db = getCmsDbOrNull();
-  if (!db) return null;
-  return getBlogBySlug(db, slug);
+  if (db) {
+    const fromDb = await getBlogBySlug(db, slug);
+    if (fromDb) return fromDb;
+  }
+  return getShowcaseFullBlog(slug);
 }
 
 export async function generateMetadata({

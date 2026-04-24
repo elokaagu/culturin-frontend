@@ -7,7 +7,7 @@ import { Metadata } from "next";
 
 import { createSupabaseServerClient } from "../lib/supabase/server";
 import SupabaseAuthProvider from "./components/SupabaseAuthProvider";
-import ThemeClient from "./styles/ThemeClient";
+import ViewTransitionsRoot from "./components/ViewTransitionsRoot";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "./styles/ThemeContext";
 
@@ -52,9 +52,11 @@ export default async function RootLayout({
         </Script>
         <ThemeProvider>
           <SupabaseAuthProvider initialUser={initialUser}>
-            <ThemeClient>
-              {children} <Analytics /> <SpeedInsights />
-            </ThemeClient>
+            <ViewTransitionsRoot>
+              {children}
+              <Analytics />
+              <SpeedInsights />
+            </ViewTransitionsRoot>
           </SupabaseAuthProvider>
         </ThemeProvider>
       </body>

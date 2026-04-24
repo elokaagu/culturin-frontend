@@ -2,7 +2,7 @@
 
 import React from "react";
 import Header from "../components/Header";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { FeedCard } from "../components/Feed";
 
 const SPOTLIGHT_CARD = {

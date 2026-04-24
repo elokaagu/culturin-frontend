@@ -1,13 +1,14 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { useState, Suspense } from "react";
 
 import { useSupabaseAuth } from "../SupabaseAuthProvider";
 
 function SignInFormFields() {
   const { supabase } = useSupabaseAuth();
-  const router = useRouter();
+  const router = useTransitionRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);

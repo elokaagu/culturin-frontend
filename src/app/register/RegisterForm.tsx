@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link } from "next-view-transitions";
+import { useTransitionRouter } from "next-view-transitions";
 import { useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
@@ -19,7 +19,7 @@ export type RegisterFormValues = {
 
 export default function RegisterForm() {
   const { supabase } = useSupabaseAuth();
-  const router = useRouter();
+  const router = useTransitionRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {
     register,

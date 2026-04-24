@@ -1,34 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import Hamburger from "hamburger-react";
 
 import { GoogleSignInButton } from "./AuthButtons";
+import NearByPanel from "./NearByPanel";
 import Sidebar from "./Sidebar";
-
-type NearbyItem = {
-  label: string;
-  href: string;
-  description: string;
-};
-
-const nearbyItems: NearbyItem[] = [
-  {
-    label: "Experiences",
-    href: "/curated-experiences",
-    description: "Hand-picked activities and stays",
-  },
-  {
-    label: "Cafes",
-    href: "/search?query=cafe",
-    description: "Popular cafe spots and local gems",
-  },
-];
 
 const suggestionTags = ["Amsterdam", "Socio-cultural", "Health", "Wellness", "Bar", "Restaurant", "Cafe"];
 
@@ -39,17 +22,16 @@ function pathnameMatches(pathname: string | null, href: string) {
 }
 
 const leftNavText =
-  "whitespace-nowrap text-[15px] font-medium leading-none text-neutral-800 no-underline transition-colors hover:text-neutral-600 dark:text-white dark:hover:text-neutral-300";
+  "inline-flex items-center whitespace-nowrap text-sm font-medium leading-none text-neutral-800 no-underline transition-colors hover:text-neutral-600 dark:text-white dark:hover:text-neutral-300";
 
 export default function Header() {
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useTransitionRouter();
   const [elevated, setElevated] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [nearbyOpen, setNearbyOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const nearbyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setElevated(window.scrollY > 6);
@@ -63,17 +45,6 @@ export default function Header() {
     setNearbyOpen(false);
     setSearchOpen(false);
   }, [pathname]);
-
-  useEffect(() => {
-    if (!nearbyOpen) return;
-    const onPointerDown = (event: PointerEvent) => {
-      const node = event.target as Node;
-      if (nearbyRef.current?.contains(node)) return;
-      setNearbyOpen(false);
-    };
-    document.addEventListener("pointerdown", onPointerDown, true);
-    return () => document.removeEventListener("pointerdown", onPointerDown, true);
-  }, [nearbyOpen]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -132,90 +103,84 @@ export default function Header() {
             : "border-b border-neutral-200/80 bg-white dark:border-white/10 dark:bg-neutral-950"
         }`}
       >
-        <div className="mx-auto flex min-h-[var(--header-bar-height)] max-w-[1720px] items-center gap-2 px-3 sm:px-5 md:px-8">
-          <div className="hidden min-w-0 flex-1 items-center gap-5 md:flex lg:gap-6">
+        <div className="mx-auto flex h-[var(--header-bar-height)] min-h-0 max-w-[1720px] items-center px-3 sm:px-5 md:px-8">
+          <div className="hidden w-full min-w-0 items-center gap-2 md:flex md:gap-3 lg:gap-4">
             <Link
               href="/"
-              className="group shrink-0 rounded-sm outline-none ring-offset-2 ring-offset-white focus-visible:ring-2 focus-visible:ring-amber-400/90 dark:ring-offset-neutral-950"
+              className="group flex h-full shrink-0 items-center rounded-sm outline-none ring-offset-2 ring-offset-white focus-visible:ring-2 focus-visible:ring-amber-400/90 dark:ring-offset-neutral-950"
               aria-label="Culturin home"
             >
               <Image
                 src="/culturin_logo.svg"
                 alt="Culturin"
-                width={140}
-                height={28}
-                className="h-7 w-auto opacity-95 transition-opacity group-hover:opacity-100"
+                width={72}
+                height={16}
+                className="h-4 w-auto opacity-95 transition-opacity group-hover:opacity-100"
                 loading="lazy"
                 placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
                 unoptimized
               />
             </Link>
-            <LeftNavLink href="/about">About</LeftNavLink>
-            <LeftNavLink href="/countries/europe">Destinations</LeftNavLink>
-            <LeftNavLink href="/articles">Travel Guides</LeftNavLink>
-          </div>
-
-          <div className="hidden min-w-0 flex-1 items-center justify-end gap-3 md:flex">
-            <button
-              type="button"
-              onClick={() => setSearchOpen(true)}
-              className="inline-flex w-[min(50vw,26rem)] items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 px-4 py-2 text-left text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:border-white/20 dark:bg-white/10 dark:text-white/80 dark:hover:bg-white/15"
-              aria-haspopup="dialog"
-              aria-expanded={searchOpen}
+            <nav
+              className="flex shrink-0 items-center gap-3 lg:gap-4"
+              aria-label="Section navigation"
             >
-              <SearchIcon />
-              <span className="truncate">Search destinations, guides, and culture...</span>
-            </button>
-
-            <div ref={nearbyRef} className="relative">
+              <LeftNavLink href="/destinations">Destinations</LeftNavLink>
+              <LeftNavLink href="/articles">Travel Guides</LeftNavLink>
+            </nav>
+            <div className="min-w-0 flex-1">
               <button
                 type="button"
-                onClick={() => setNearbyOpen((open) => !open)}
-                className="inline-flex items-center rounded-full bg-neutral-900 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
-                aria-haspopup="menu"
+                onClick={() => {
+                  setNearbyOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="flex h-8 w-full max-w-none items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 px-3 text-left text-xs font-medium text-neutral-600 transition-colors hover:bg-neutral-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 min-[1100px]:text-sm dark:border-white/20 dark:bg-white/10 dark:text-white/80 dark:hover:bg-white/15"
+                aria-haspopup="dialog"
+                aria-expanded={searchOpen}
+              >
+                <span className="shrink-0 text-neutral-500 dark:text-white/50">
+                  <SearchIcon />
+                </span>
+                <span className="truncate">Search destinations, guides, and culture…</span>
+              </button>
+            </div>
+            <div className="flex shrink-0 items-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchOpen(false);
+                  setNearbyOpen((open) => !open);
+                }}
+                className="inline-flex h-8 items-center justify-center rounded-full bg-neutral-900 px-3 text-xs font-semibold text-white transition-colors hover:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 sm:px-3.5 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+                aria-haspopup="dialog"
                 aria-expanded={nearbyOpen}
+                aria-controls="nearby-experience-panel"
               >
                 Nearby
               </button>
-              {nearbyOpen ? (
-                <div
-                  role="menu"
-                  className="absolute right-0 top-[calc(100%+0.55rem)] z-[1200] w-[19rem] rounded-2xl border border-neutral-200 bg-white p-2 shadow-xl shadow-neutral-900/10 dark:border-white/10 dark:bg-neutral-950 dark:shadow-black/40"
-                >
-                  {nearbyItems.map((item) => (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      role="menuitem"
-                      className="block rounded-xl px-3 py-2.5 no-underline transition-colors hover:bg-neutral-100 dark:hover:bg-white/5"
-                      onClick={() => setNearbyOpen(false)}
-                    >
-                      <p className="text-sm font-semibold text-neutral-900 dark:text-white">{item.label}</p>
-                      <p className="mt-0.5 text-xs text-neutral-500 dark:text-white/60">{item.description}</p>
-                    </Link>
-                  ))}
-                </div>
-              ) : null}
             </div>
-
-            <nav aria-label="Primary actions" className="flex items-center gap-5 lg:gap-6">
-              <GoogleSignInButton className="!w-auto !max-w-none shrink-0 !rounded-lg px-5 py-2.5 text-sm font-bold shadow-none max-[428px]:!w-auto" />
+            <nav
+              aria-label="Primary actions"
+              className="flex shrink-0 items-center"
+            >
+              <GoogleSignInButton className="!flex !h-8 !min-h-0 !w-auto !max-w-none !flex-row !items-center !justify-center !whitespace-nowrap !rounded-lg !px-2.5 !py-1.5 !text-[11px] !font-semibold !shadow-none min-[1200px]:!px-3 min-[1200px]:!text-xs" />
             </nav>
           </div>
 
-          <div className="flex w-full items-center justify-between gap-2 md:hidden">
+          <div className="flex h-full w-full min-w-0 items-center justify-between gap-2 md:hidden">
             <Link
               href="/"
-              className="group shrink-0 rounded-sm outline-none ring-offset-2 ring-offset-white focus-visible:ring-2 focus-visible:ring-amber-400/90 dark:ring-offset-neutral-950"
+              className="group flex items-center rounded-sm outline-none ring-offset-2 ring-offset-white focus-visible:ring-2 focus-visible:ring-amber-400/90 dark:ring-offset-neutral-950"
               aria-label="Culturin home"
             >
               <Image
                 src="/culturin_logo.svg"
                 alt="Culturin"
-                width={120}
-                height={24}
-                className="h-6 w-auto opacity-95 transition-opacity group-hover:opacity-100"
+                width={72}
+                height={16}
+                className="h-4 w-auto opacity-95 transition-opacity group-hover:opacity-100"
                 loading="lazy"
                 placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
@@ -225,16 +190,32 @@ export default function Header() {
             <div className="flex items-center gap-1.5 text-neutral-800 dark:text-white [&_button]:rounded-md [&_button]:outline-none [&_button]:ring-offset-2 [&_button]:ring-offset-white dark:[&_button]:ring-offset-neutral-950 [&_button]:focus-visible:ring-2 [&_button]:focus-visible:ring-amber-400">
               <button
                 type="button"
-                onClick={() => setSearchOpen(true)}
-                className="inline-flex h-9 w-9 items-center justify-center transition-colors hover:bg-neutral-200 dark:hover:bg-white/10"
+                onClick={() => {
+                  setNearbyOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md transition-colors hover:bg-neutral-200 dark:hover:bg-white/10"
                 aria-label="Open search"
               >
                 <SearchIcon />
               </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchOpen(false);
+                  setNearbyOpen((open) => !open);
+                }}
+                className="inline-flex h-8 min-w-0 shrink items-center justify-center rounded-full bg-neutral-900 px-2.5 text-[11px] font-semibold text-white dark:bg-white dark:text-black"
+                aria-haspopup="dialog"
+                aria-expanded={nearbyOpen}
+                aria-label="Open nearby"
+              >
+                Nearby
+              </button>
               <Hamburger
                 toggled={mobileMenuOpen}
                 toggle={() => setMobileMenuOpen((open) => !open)}
-                size={20}
+                size={18}
                 rounded
                 label={mobileMenuOpen ? "Close menu" : "Open menu"}
               />
@@ -245,8 +226,11 @@ export default function Header() {
         {mobileMenuOpen ? <Sidebar id="mobile-navigation" onClose={closeMobile} /> : null}
       </header>
 
+      <NearByPanel open={nearbyOpen} onClose={() => setNearbyOpen(false)} />
+
       {searchOpen ? (
         <div
+          id="search-dialog"
           role="dialog"
           aria-modal="true"
           aria-label="Search destinations and experiences"

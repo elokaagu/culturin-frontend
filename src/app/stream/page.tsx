@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import MuxPlayer from "@mux/mux-player-react";
 
 import Header from "../components/Header";

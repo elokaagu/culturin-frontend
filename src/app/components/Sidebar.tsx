@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { ChevronDown } from "lucide-react";
 
 import { GoogleSignInButton } from "./AuthButtons";
@@ -55,6 +55,11 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
                 className="absolute left-0 top-full z-[110] w-[min(100vw-2rem,16rem)] pt-1"
               >
                 <ul className="m-0 animate-fade-in list-none rounded-[10px] bg-white py-1 shadow-lg">
+                  <li className={dropdownItemClass}>
+                    <Link href="/destinations" onClick={onClose}>
+                      All destinations
+                    </Link>
+                  </li>
                   <li className={dropdownItemClass}>
                     <Link href="/countries/africa" onClick={onClose}>
                       Africa

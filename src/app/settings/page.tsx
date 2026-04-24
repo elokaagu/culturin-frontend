@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useAppAuth } from "../components/SupabaseAuthProvider";
 
 import AccountSection from "../components/AccountSection";
