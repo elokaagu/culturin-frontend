@@ -6,6 +6,7 @@ import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 
 import Header from "../../components/Header";
+import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
 
 function pickInfo(results: { info?: string | CldUploadWidgetInfo } | undefined): CldUploadWidgetInfo | null {
   const raw = results?.info;
@@ -38,7 +39,7 @@ export default function UploadPage() {
   return (
     <>
       <Header />
-      <main className="flex min-h-screen flex-col bg-black px-4 pb-16 pt-[var(--header-offset)] text-white sm:px-6">
+      <main className="flex min-h-screen flex-col bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 sm:px-6 dark:bg-black dark:text-white">
         <div className="mx-auto w-full max-w-md">
           <header className="mb-8">
             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Upload</h1>
@@ -92,7 +93,7 @@ export default function UploadPage() {
                     ) : null}
 
                     {secureUrl ? (
-                      <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-black/40 p-3">
+                      <div className="flex flex-col gap-3 rounded-xl border border-neutral-200 bg-neutral-100/80 p-3 dark:border-white/10 dark:bg-black/40">
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <p className="text-sm font-medium text-emerald-400">Upload complete</p>
                           <button
@@ -108,6 +109,9 @@ export default function UploadPage() {
                             src={secureUrl}
                             alt={publicId ? `Preview of ${publicId}` : "Uploaded image preview"}
                             fill
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL={IMAGE_BLUR_DATA_URL}
                             className="object-contain"
                             sizes="(max-width: 640px) 100vw, 28rem"
                           />

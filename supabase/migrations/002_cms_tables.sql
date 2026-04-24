@@ -1,8 +1,7 @@
--- CMS tables (content migrated from Sanity). Public read for app UI.
+-- CMS tables for app content. Public read for app UI.
 
 create table if not exists public.cms_blogs (
   id uuid primary key default gen_random_uuid(),
-  sanity_id text unique,
   slug text not null unique,
   title text not null default '',
   summary text,
@@ -16,7 +15,6 @@ create table if not exists public.cms_blogs (
 
 create table if not exists public.cms_videos (
   id uuid primary key default gen_random_uuid(),
-  sanity_id text unique,
   slug text not null unique,
   title text not null default '',
   uploader text,
@@ -31,7 +29,6 @@ create table if not exists public.cms_videos (
 
 create table if not exists public.cms_providers (
   id uuid primary key default gen_random_uuid(),
-  sanity_id text unique,
   slug text not null unique,
   name text,
   event_name text,

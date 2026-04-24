@@ -7,7 +7,7 @@ import { GoogleSignInButton } from "../components/AuthButtons";
 
 export default function SigninPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-black text-white md:flex-row md:items-center md:justify-between">
+    <div className="flex min-h-screen flex-col bg-neutral-50 text-neutral-900 md:flex-row md:items-center md:justify-between dark:bg-black dark:text-white">
       <div className="flex w-full flex-col items-center px-6 py-10 md:w-1/2 md:items-start md:py-16">
         <Link href="/" className="inline-block">
           <Image
@@ -16,7 +16,7 @@ export default function SigninPage() {
             height={200}
             draggable={false}
             alt="Culturin logo"
-            priority
+            loading="lazy"
           />
         </Link>
       </div>

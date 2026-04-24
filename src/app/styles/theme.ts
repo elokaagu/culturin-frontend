@@ -22,10 +22,10 @@ export const GlobalStyles = createGlobalStyle`
     }
 `;
 export const lightTheme = {
-  body: "#ffffff",
-  title: "#000000",
-  subtitle: "grey",
-  button: "#000000",
+  body: "#f5f5f5",
+  title: "#0a0a0a",
+  subtitle: "#525252",
+  button: "#0a0a0a",
 };
 export const darkTheme = {
   body: "#000000",

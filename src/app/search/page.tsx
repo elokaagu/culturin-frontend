@@ -9,6 +9,7 @@ import Link from "next/link";
 
 import { getCmsBrowserClient } from "../../lib/cms/browser";
 import { searchBlogs } from "../../lib/cms/queries";
+import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 
 export default function SearchResultsPage({
   searchParams,
@@ -51,12 +52,12 @@ export default function SearchResultsPage({
                   <Image
                     src={cardData.titleImageUrl as string}
                     alt={cardData.title}
-                    placeholder="blur"
                     fill
+                    loading="lazy"
                     draggable={false}
                     style={{ objectFit: "cover" }}
-                    blurDataURL={cardData.titleImageUrl as string}
-                    priority={true}
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                   />
                 </CardBody>
               </Link>
@@ -90,11 +91,11 @@ const AppBody = styled.div`
   display: flex;
   padding-top: var(--header-offset);
   align-items: center;
-  background: black;
+  background: ${({ theme }) => theme.body};
   flex-direction: column;
   height: 100%;
   line-height: 2;
-  color: white;
+  color: ${({ theme }) => theme.title};
 
   @media ${device.mobile} {
     padding-left: 0px;
@@ -146,7 +147,7 @@ const Subtitle = styled.div`
 const SearchResults = styled.div`
   padding: 30px;
   h1 {
-    color: white;
+    color: ${({ theme }) => theme.title};
   }
 `;
 const ArticlesContainer = styled.div`
@@ -161,13 +162,13 @@ const ArticlesContainer = styled.div`
 
   h1 {
     font-size: 25px;
-    color: white;
+    color: ${({ theme }) => theme.title};
     width: 100%;
   }
 
   p {
     font-size: 18px;
-    color: white;
+    color: ${({ theme }) => theme.title};
     width: 100%;
   }
 
@@ -178,12 +179,12 @@ const ArticlesContainer = styled.div`
 
     h1 {
       font-size: 25px;
-      color: white;
+      color: ${({ theme }) => theme.title};
       width: 70%;
     }
     p {
       font-size: 18px;
-      color: white;
+      color: ${({ theme }) => theme.title};
       width: 70%;
     }
   }

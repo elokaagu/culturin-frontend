@@ -12,11 +12,11 @@ import type { CmsDb } from "./types";
 import type { CmsBlogRow, CmsProviderRow, CmsVideoRow } from "./types";
 
 const blogSelect =
-  "id, sanity_id, slug, title, summary, title_image_url, title_image, body, published_at, created_at, updated_at";
+  "id, slug, title, summary, title_image_url, title_image, body, published_at, created_at, updated_at";
 const videoSelect =
-  "id, sanity_id, slug, title, uploader, description, thumbnail_url, thumbnail, playback_id, published_at, created_at, updated_at";
+  "id, slug, title, uploader, description, thumbnail_url, thumbnail, playback_id, published_at, created_at, updated_at";
 const providerSelect =
-  "id, sanity_id, slug, name, event_name, description, location, contact_email, contact_phone, contact_website, banner_image_url, banner_image_alt, banner_image, images, prices, published_at, created_at, updated_at";
+  "id, slug, name, event_name, description, location, contact_email, contact_phone, contact_website, banner_image_url, banner_image_alt, banner_image, images, prices, published_at, created_at, updated_at";
 
 function ilikePattern(term: string) {
   const safe = term.replace(/%/g, "\\%").replace(/_/g, "\\_");

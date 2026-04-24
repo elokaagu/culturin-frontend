@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+
 export type ProfileCardArticle = {
   title: string;
   description: string;
@@ -21,19 +23,17 @@ const shellClass =
   "group flex w-full max-w-[min(100%,20rem)] flex-col rounded-xl outline-none transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/35 focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black";
 
 function CardMedia({ article }: { article: ProfileCardArticle }) {
-  const blur = article.blurDataURL
-    ? { placeholder: "blur" as const, blurDataURL: article.blurDataURL }
-    : {};
-
   return (
     <div className="relative aspect-[5/4] w-full overflow-hidden rounded-lg bg-neutral-900 ring-1 ring-white/10">
       <Image
         src={article.imageSrc}
         alt={article.title}
         fill
+        loading="lazy"
+        placeholder="blur"
+        blurDataURL={article.blurDataURL ?? IMAGE_BLUR_DATA_URL}
         className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
         sizes="(max-width: 640px) 45vw, 320px"
-        {...blur}
       />
     </div>
   );

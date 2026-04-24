@@ -13,13 +13,13 @@ export default function SubNavigation() {
   return (
     <nav
       aria-label="Settings sections"
-      className="flex flex-wrap justify-around gap-2 border-b border-white/15 bg-neutral-950/80 px-3 py-2.5"
+      className="flex flex-wrap justify-around gap-2 border-b border-neutral-200 bg-white/90 px-3 py-2.5 dark:border-white/15 dark:bg-neutral-950/80"
     >
       {tabs.map(({ href, label }) => (
         <Link
           key={href}
           href={href}
-          className="rounded-md px-3 py-2 text-sm font-medium text-sky-400 no-underline transition-colors hover:bg-white/5 hover:text-sky-300"
+          className="rounded-md px-3 py-2 text-sm font-medium text-sky-600 no-underline transition-colors hover:bg-neutral-100 hover:text-sky-700 dark:text-sky-400 dark:hover:bg-white/5 dark:hover:text-sky-300"
         >
           {label}
         </Link>

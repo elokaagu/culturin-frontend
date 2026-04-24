@@ -68,18 +68,18 @@ export default function Input<T extends FieldValues>({
   };
 
   const inputClassName = [
-    "w-full rounded-md border bg-black/40 px-3 py-2.5 text-sm text-white outline-none transition-[border-color,box-shadow]",
-    "placeholder:text-white/35",
-    "focus-visible:border-white/50 focus-visible:ring-2 focus-visible:ring-white/25",
+    "w-full rounded-md border bg-neutral-100 px-3 py-2.5 text-sm text-neutral-900 outline-none transition-[border-color,box-shadow] dark:bg-black/40 dark:text-white",
+    "placeholder:text-neutral-400 dark:placeholder:text-white/35",
+    "focus-visible:border-neutral-400 focus-visible:ring-2 focus-visible:ring-neutral-200 dark:focus-visible:border-white/50 dark:focus-visible:ring-white/25",
     "disabled:cursor-not-allowed disabled:opacity-50",
     invalid
       ? "border-rose-400/60 focus-visible:border-rose-400/80 focus-visible:ring-rose-400/25"
-      : "border-white/15 focus-visible:border-white/40",
+      : "border-neutral-200 focus-visible:border-neutral-400 dark:border-white/15 dark:focus-visible:border-white/40",
   ].join(" ");
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={idStr} className="text-sm font-medium text-white/80">
+      <label htmlFor={idStr} className="text-sm font-medium text-neutral-700 dark:text-white/80">
         {label}
         {required ? (
           <span className="ml-0.5 text-rose-300" aria-hidden="true">
@@ -100,7 +100,7 @@ export default function Input<T extends FieldValues>({
         className={inputClassName}
       />
       {helperText && !invalid ? (
-        <p id={hintId} className="text-xs text-white/50">
+        <p id={hintId} className="text-xs text-neutral-500 dark:text-white/50">
           {helperText}
         </p>
       ) : null}

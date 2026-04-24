@@ -25,11 +25,11 @@ export default function AccountSection() {
   return (
     <section
       aria-label="Account settings"
-      className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 py-6 text-white"
+      className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 py-6 text-neutral-900 dark:text-white"
     >
       <header className="flex flex-col gap-2">
         <h2 className="text-2xl font-semibold">Account</h2>
-        <p className="text-sm text-white/70">
+        <p className="text-sm text-neutral-600 dark:text-white/70">
           {status === "loading"
             ? "Loading session…"
             : session?.user
@@ -41,7 +41,7 @@ export default function AccountSection() {
       {status === "loading" ? null : profileUser ? (
         <AccountProfileForm user={profileUser} />
       ) : (
-        <p className="text-sm text-white/60">
+        <p className="text-sm text-neutral-500 dark:text-white/60">
           Use the sign-in option in the header to access account settings.
         </p>
       )}

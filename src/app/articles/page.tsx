@@ -7,6 +7,7 @@ import {
   getArticlesLandingPage,
   type ArticlesLandingCmsStatus,
 } from "../../lib/cms/articlesLandingPage";
+import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 
 export const revalidate = 300;
 
@@ -41,7 +42,7 @@ function CmsStatusNote({ status }: { status: ArticlesLandingCmsStatus }) {
 
   return (
     <aside
-      className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-100"
+      className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-950 dark:text-amber-100"
       role="status"
     >
       {messages[status]}
@@ -68,7 +69,7 @@ export default async function ArticlesPage() {
           >
             {page.headline}
           </h1>
-          <p className="max-w-prose text-base text-white/90 sm:text-lg">
+          <p className="max-w-prose text-base text-neutral-700 sm:text-lg dark:text-white/90">
             {page.intro}
           </p>
         </header>
@@ -82,15 +83,17 @@ export default async function ArticlesPage() {
             sizes="(max-width: 900px) 100vw, 900px"
             className="h-auto w-full rounded-2xl object-cover"
             draggable={false}
-            priority
+            loading="lazy"
+            placeholder="blur"
+            blurDataURL={IMAGE_BLUR_DATA_URL}
           />
         </figure>
 
-        <div className="flex flex-col gap-4 border-t border-white/10 pt-6">
+        <div className="flex flex-col gap-4 border-t border-neutral-200 pt-6 dark:border-white/10">
           {page.bodyParagraphs.map((paragraph, index) => (
             <p
               key={index}
-              className="max-w-prose text-base leading-relaxed text-white/85"
+              className="max-w-prose text-base leading-relaxed text-neutral-700 dark:text-white/85"
             >
               {paragraph}
             </p>

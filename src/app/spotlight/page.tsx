@@ -52,11 +52,11 @@ const AppBody = styled.div`
   display: flex;
   padding-top: var(--header-offset);
   align-items: flex-start;
-  background: black;
+  background: ${({ theme }) => theme.body};
   flex-direction: column;
   height: 100%;
   line-height: 2;
-  color: white;
+  color: ${({ theme }) => theme.title};
   overflow: none;
 
   @media ${device.mobile} {
