@@ -26,11 +26,7 @@ const authOptions: AuthOptions = {
     //     if (!credentials?.email || !credentials?.password) {
     //       throw new Error("Invalid email or password");
     //     }
-    //     const user = await prisma.user.findUnique({
-    //       where: {
-    //         email: credentials.email,
-    //       },
-    //     });
+    //     const user = await getUserByEmail(credentials.email);
     //     if (!user || !user?.hashedPassword) {
     //       throw new Error("Invalid email or password");
     //     }

@@ -7,7 +7,11 @@ import {
   getArticlesLandingPage,
   type ArticlesLandingCmsStatus,
 } from "../../lib/cms/articlesLandingPage";
-import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+import {
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "../../lib/imagePlaceholder";
 
 export const revalidate = 300;
 
@@ -52,6 +56,7 @@ function CmsStatusNote({ status }: { status: ArticlesLandingCmsStatus }) {
 
 export default async function ArticlesPage() {
   const page = await getArticlesLandingPage();
+  const heroSrc = resolveContentImageSrc(page.heroImage.src);
 
   return (
     <ContentPageShell>
@@ -76,7 +81,7 @@ export default async function ArticlesPage() {
 
         <figure className="m-0 w-full">
           <Image
-            src={page.heroImage.src}
+            src={heroSrc}
             alt={page.heroImage.alt}
             width={page.heroImage.width}
             height={page.heroImage.height}
@@ -86,6 +91,7 @@ export default async function ArticlesPage() {
             loading="lazy"
             placeholder="blur"
             blurDataURL={IMAGE_BLUR_DATA_URL}
+            unoptimized={isBundledPlaceholderSrc(heroSrc)}
           />
         </figure>
 

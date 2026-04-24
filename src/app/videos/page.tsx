@@ -10,7 +10,11 @@ import { videoCard } from "../../libs/interface";
 
 import { getCmsBrowserClient } from "../../lib/cms/browser";
 import { listVideos } from "../../lib/cms/queries";
-import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+import {
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveVideoThumbnailSrc,
+} from "../../lib/imagePlaceholder";
 
 export default function Videos() {
   const [data, setData] = useState<videoCard[]>([]);
@@ -35,20 +39,21 @@ export default function Videos() {
               <p>Only on Culturin </p>
             </Subtitle>
             <VideoContainer>
-              {data
-                .filter((v) => Boolean(v.videoThumbnailUrl))
-                .map((videoData) => (
+              {data.map((videoData) => {
+                const thumbSrc = resolveVideoThumbnailSrc(videoData.videoThumbnailUrl);
+                return (
                 <VideoCard key={videoData.currentSlug}>
                   <Link href={`/stream/${videoData.currentSlug}`}>
                     <VideoCardBody>
                       <Image
-                        src={videoData.videoThumbnailUrl as string}
+                        src={thumbSrc}
                         alt={videoData.title}
                         fill
                         loading="lazy"
                         style={{ objectFit: "cover" }}
                         placeholder="blur"
                         blurDataURL={IMAGE_BLUR_DATA_URL}
+                        unoptimized={isBundledPlaceholderSrc(thumbSrc)}
                       />
                     </VideoCardBody>
                   </Link>
@@ -60,7 +65,8 @@ export default function Videos() {
                     </VideoCardAuthor>
                   </VideoCardText>
                 </VideoCard>
-              ))}
+                );
+              })}
             </VideoContainer>
       </AppBody>
     </>

@@ -17,6 +17,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Culturin | Where Inspiration Meets Exploration",
   description: "Travel, Culture, and Inspiration Platform",
+  icons: {
+    icon: [{ url: "/culturin_logo.svg", type: "image/svg+xml" }],
+    shortcut: "/culturin_logo.svg",
+    apple: "/culturin_logo.svg",
+  },
 };
 
 export default async function RootLayout({

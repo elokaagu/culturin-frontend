@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Hamburger from "hamburger-react";
@@ -37,9 +38,6 @@ function pathnameMatches(pathname: string | null, href: string) {
 
 const leftNavText =
   "whitespace-nowrap text-[15px] font-medium leading-none text-neutral-800 no-underline transition-colors hover:text-neutral-600 dark:text-white dark:hover:text-neutral-300";
-
-const rightNavText =
-  "whitespace-nowrap text-[15px] font-semibold leading-none text-neutral-900 no-underline transition-colors hover:text-neutral-600 dark:text-white dark:hover:text-neutral-300";
 
 export default function Header() {
   const pathname = usePathname();
@@ -139,12 +137,15 @@ export default function Header() {
               className="group shrink-0 rounded-sm outline-none ring-offset-2 ring-offset-white focus-visible:ring-2 focus-visible:ring-amber-400/90 dark:ring-offset-neutral-950"
               aria-label="Culturin home"
             >
-              <span className="inline-flex items-baseline font-serif text-lg font-bold tracking-tight text-amber-500 transition-colors group-hover:text-amber-400">
-                Culturin
-                <span className="ml-0.5 translate-y-[-0.35em] text-[0.42em] font-semibold leading-none" aria-hidden>
-                  ™
-                </span>
-              </span>
+              <Image
+                src="/culturin_logo.svg"
+                alt="Culturin"
+                width={178}
+                height={36}
+                className="h-9 w-auto opacity-95 transition-opacity group-hover:opacity-100"
+                unoptimized
+                priority
+              />
             </Link>
             <LeftNavLink href="/about">About</LeftNavLink>
             <LeftNavLink href="/countries/europe">Destinations</LeftNavLink>
@@ -195,12 +196,6 @@ export default function Header() {
             </div>
 
             <nav aria-label="Primary actions" className="flex items-center gap-5 lg:gap-6">
-              <Link href="/create" className={rightNavText}>
-                Create
-              </Link>
-              <Link href="/join-us/advisors" className={rightNavText}>
-                Advisor
-              </Link>
               <GoogleSignInButton className="!w-auto !max-w-none shrink-0 !rounded-lg px-5 py-2.5 text-sm font-bold shadow-none max-[428px]:!w-auto" />
             </nav>
           </div>
@@ -211,9 +206,15 @@ export default function Header() {
               className="group shrink-0 rounded-sm outline-none ring-offset-2 ring-offset-white focus-visible:ring-2 focus-visible:ring-amber-400/90 dark:ring-offset-neutral-950"
               aria-label="Culturin home"
             >
-              <span className="inline-flex items-baseline font-serif text-lg font-bold tracking-tight text-amber-500 transition-colors group-hover:text-amber-400">
-                Culturin
-              </span>
+              <Image
+                src="/culturin_logo.svg"
+                alt="Culturin"
+                width={139}
+                height={28}
+                className="h-7 w-auto opacity-95 transition-opacity group-hover:opacity-100"
+                unoptimized
+                priority
+              />
             </Link>
             <div className="flex items-center gap-1.5 text-neutral-800 dark:text-white [&_button]:rounded-md [&_button]:outline-none [&_button]:ring-offset-2 [&_button]:ring-offset-white dark:[&_button]:ring-offset-neutral-950 [&_button]:focus-visible:ring-2 [&_button]:focus-visible:ring-amber-400">
               <button

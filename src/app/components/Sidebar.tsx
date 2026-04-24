@@ -123,18 +123,6 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
             ) : null}
           </li>
 
-          <li className="p-1">
-            <Link href="/create" className={linkClass} onClick={onClose}>
-              Create
-            </Link>
-          </li>
-
-          <li className="p-1">
-            <Link href="/join-us/advisors" className={linkClass} onClick={onClose}>
-              Advisor
-            </Link>
-          </li>
-
           <li className="relative p-1">
             <div className="px-3 py-2">
               <GoogleSignInButton />

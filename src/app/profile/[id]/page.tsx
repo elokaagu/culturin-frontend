@@ -2,7 +2,11 @@
 
 import Image from "next/image";
 
-import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
+import {
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "../../../lib/imagePlaceholder";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -63,14 +67,14 @@ export default function ProfileByIdPage() {
           </div>
 
           <div className="flex flex-row flex-wrap gap-4 overflow-x-auto py-2">
-            {articleData
-              .filter((c) => Boolean(c.titleImageUrl))
-              .map((cardData) => (
+            {articleData.map((cardData) => {
+              const imgSrc = resolveContentImageSrc(cardData.titleImageUrl);
+              return (
               <Card key={cardData.currentSlug}>
                 <Link href={`/articles/${cardData.currentSlug}`}>
                   <CardBody>
                     <Image
-                      src={cardData.titleImageUrl as string}
+                      src={imgSrc}
                       alt={cardData.title}
                       fill
                       loading="lazy"
@@ -78,6 +82,7 @@ export default function ProfileByIdPage() {
                       style={{ objectFit: "cover" }}
                       placeholder="blur"
                       blurDataURL={IMAGE_BLUR_DATA_URL}
+                      unoptimized={isBundledPlaceholderSrc(imgSrc)}
                     />
                   </CardBody>
                 </Link>
@@ -89,7 +94,8 @@ export default function ProfileByIdPage() {
                   </CardAuthor>
                 </CardText>
               </Card>
-            ))}
+              );
+            })}
           </div>
         </div>
       </main>

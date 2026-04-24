@@ -6,7 +6,11 @@ import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import { useSession } from "next-auth/react";
 
 import Header from "../../components/Header";
-import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
+import {
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "../../../lib/imagePlaceholder";
 import type { fullBlog } from "../../../libs/interface";
 
 type ToastState =
@@ -17,10 +21,7 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
   const { data: session, status } = useSession();
   const [toast, setToast] = useState<ToastState>({ open: false });
 
-  const imageUrl = useMemo(() => {
-    if (data?.titleImageUrl) return data.titleImageUrl;
-    return null;
-  }, [data?.titleImageUrl]);
+  const coverSrc = useMemo(() => resolveContentImageSrc(data?.titleImageUrl), [data?.titleImageUrl]);
 
   const portableTextComponents: PortableTextComponents = useMemo(
     () => ({
@@ -115,21 +116,20 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
               ) : null}
             </header>
 
-            {imageUrl ? (
-              <div className="w-full">
-                <Image
-                  src={imageUrl}
-                  alt={data.title ? `${data.title} cover image` : "Article cover image"}
-                  width={980}
-                  height={560}
-                  sizes="(max-width: 900px) 100vw, 900px"
-                  loading="lazy"
-                  placeholder="blur"
-                  blurDataURL={IMAGE_BLUR_DATA_URL}
-                  className="h-auto w-full rounded-2xl object-cover"
-                />
-              </div>
-            ) : null}
+            <div className="w-full">
+              <Image
+                src={coverSrc}
+                alt={data.title ? `${data.title} cover image` : "Article cover image"}
+                width={980}
+                height={560}
+                sizes="(max-width: 900px) 100vw, 900px"
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL={IMAGE_BLUR_DATA_URL}
+                className="h-auto w-full rounded-2xl object-cover"
+                unoptimized={isBundledPlaceholderSrc(coverSrc)}
+              />
+            </div>
 
             <div className="flex flex-col gap-3.5">
               <PortableText

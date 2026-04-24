@@ -10,7 +10,11 @@ import { simpleBlogCard } from "../../libs/interface";
 
 import { getCmsBrowserClient } from "../../lib/cms/browser";
 import { listBlogs } from "../../lib/cms/queries";
-import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+import {
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "../../lib/imagePlaceholder";
 
 export default function Trending() {
   const [data, setData] = useState<simpleBlogCard[]>([]);
@@ -36,14 +40,14 @@ export default function Trending() {
             </Subtitle>
 
             <ArticlesContainer>
-              {data
-                .filter((c) => Boolean(c.titleImageUrl))
-                .map((cardData) => (
+              {data.map((cardData) => {
+                const imgSrc = resolveContentImageSrc(cardData.titleImageUrl);
+                return (
                 <Card key={cardData.currentSlug}>
                   <Link href={`/articles/${cardData.currentSlug}`}>
                     <CardBody>
                       <Image
-                        src={cardData.titleImageUrl as string}
+                        src={imgSrc}
                         alt={cardData.title}
                         fill
                         loading="lazy"
@@ -51,6 +55,7 @@ export default function Trending() {
                         style={{ objectFit: "cover" }}
                         placeholder="blur"
                         blurDataURL={IMAGE_BLUR_DATA_URL}
+                        unoptimized={isBundledPlaceholderSrc(imgSrc)}
                       />
                     </CardBody>
                   </Link>
@@ -71,7 +76,8 @@ export default function Trending() {
                     </CardAuthor>
                   </CardText>
                 </Card>
-              ))}
+                );
+              })}
             </ArticlesContainer>
       </AppBody>
     </>

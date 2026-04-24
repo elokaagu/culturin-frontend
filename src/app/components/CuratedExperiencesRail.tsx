@@ -4,7 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 import type { providerHeroCard } from "../../libs/interface";
-import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+import {
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "../../lib/imagePlaceholder";
 
 type CuratedExperiencesRailProps = {
   providers: providerHeroCard[];
@@ -24,7 +28,7 @@ export default function CuratedExperiencesRail({ providers }: CuratedExperiences
         aria-label="Curated experience cards"
       >
         {providers.map((p) => {
-          const imgUrl = p.bannerImage?.image?.url;
+          const imgSrc = resolveContentImageSrc(p.bannerImage?.image?.url);
           const imgAlt = p.bannerImage?.image?.alt || p.eventName || p.name || "Experience";
 
           return (
@@ -38,27 +42,17 @@ export default function CuratedExperiencesRail({ providers }: CuratedExperiences
                 className="group flex h-full min-h-[19rem] flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-gradient-to-b from-white to-neutral-100 no-underline outline-none ring-offset-2 ring-offset-neutral-50 transition-[border-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-1 hover:border-amber-400/40 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.12)] motion-reduce:transform-none motion-reduce:hover:transform-none focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/10 dark:from-white/[0.06] dark:to-white/[0.02] dark:ring-offset-black dark:hover:border-amber-400/30 dark:hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.85)]"
               >
                 <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-900">
-                  {imgUrl ? (
-                    <Image
-                      src={imgUrl}
-                      alt={imgAlt}
-                      fill
-                      loading="lazy"
-                      placeholder="blur"
-                      blurDataURL={IMAGE_BLUR_DATA_URL}
-                      className="object-cover transition duration-500 ease-out motion-reduce:transition-none group-hover:scale-[1.04] motion-reduce:group-hover:scale-100"
-                      sizes="(max-width: 640px) 78vw, (max-width: 1024px) 31vw, 15rem"
-                    />
-                  ) : (
-                    <div className="flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-amber-100 via-neutral-100 to-neutral-200 px-4 text-center dark:from-amber-900/20 dark:via-neutral-900 dark:to-black">
-                      <span className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-amber-800/90 dark:text-amber-400/90">
-                        Experience
-                      </span>
-                      <span className="text-sm font-medium leading-snug text-neutral-800 line-clamp-2 dark:text-white/80">
-                        {p.eventName || p.name}
-                      </span>
-                    </div>
-                  )}
+                  <Image
+                    src={imgSrc}
+                    alt={imgAlt}
+                    fill
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
+                    className="object-cover transition duration-500 ease-out motion-reduce:transition-none group-hover:scale-[1.04] motion-reduce:group-hover:scale-100"
+                    sizes="(max-width: 640px) 78vw, (max-width: 1024px) 31vw, 15rem"
+                    unoptimized={isBundledPlaceholderSrc(imgSrc)}
+                  />
                 </div>
                 <div className="flex flex-1 flex-col gap-1 px-4 pb-5 pt-4">
                   <h3 className="text-[0.95rem] font-semibold leading-snug tracking-tight text-neutral-900 line-clamp-2 transition-colors group-hover:text-amber-900 dark:text-white dark:group-hover:text-amber-50 sm:text-base">

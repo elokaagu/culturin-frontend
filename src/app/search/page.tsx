@@ -9,7 +9,11 @@ import Link from "next/link";
 
 import { getCmsBrowserClient } from "../../lib/cms/browser";
 import { searchBlogs } from "../../lib/cms/queries";
-import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+import {
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "../../lib/imagePlaceholder";
 
 export default function SearchResultsPage({
   searchParams,
@@ -43,14 +47,14 @@ export default function SearchResultsPage({
         </Subtitle>
 
         <ArticlesContainer>
-          {data
-            .filter((c) => Boolean(c.titleImageUrl))
-            .map((cardData) => (
+          {data.map((cardData) => {
+            const imgSrc = resolveContentImageSrc(cardData.titleImageUrl);
+            return (
             <Card key={cardData.currentSlug}>
               <Link href={`/articles/${cardData.currentSlug}`}>
                 <CardBody>
                   <Image
-                    src={cardData.titleImageUrl as string}
+                    src={imgSrc}
                     alt={cardData.title}
                     fill
                     loading="lazy"
@@ -58,6 +62,7 @@ export default function SearchResultsPage({
                     style={{ objectFit: "cover" }}
                     placeholder="blur"
                     blurDataURL={IMAGE_BLUR_DATA_URL}
+                    unoptimized={isBundledPlaceholderSrc(imgSrc)}
                   />
                 </CardBody>
               </Link>
@@ -79,7 +84,8 @@ export default function SearchResultsPage({
                 </CardAuthor>
               </CardText>
             </Card>
-          ))}
+            );
+          })}
         </ArticlesContainer>
       </AppBody>
     </>

@@ -7,11 +7,19 @@ import Image from "next/image";
 import Header from "../../components/Header";
 import { device } from "../../styles/breakpoints";
 import type { fullProvider, imageAsset } from "../../../libs/interface";
-import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
+import {
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "../../../lib/imagePlaceholder";
 
 function imageUrl(img: imageAsset | undefined) {
   const u = img?.url;
-  return typeof u === "string" && u.startsWith("http") ? u : "";
+  if (typeof u !== "string") return "";
+  const t = u.trim();
+  if (!t) return "";
+  if (t.startsWith("https://") || t.startsWith("http://") || t.startsWith("/")) return t;
+  return "";
 }
 
 function externalBookHref(raw: string | undefined): string {
@@ -23,6 +31,13 @@ function externalBookHref(raw: string | undefined): string {
 
 export default function ProviderDetailClient({ data }: { data: fullProvider }) {
   const bookUrl = externalBookHref(data.contactWebsite);
+  const images = data.images ?? [];
+  const primarySrc = resolveContentImageSrc(imageUrl(images[0]));
+  const secondarySrc = resolveContentImageSrc(imageUrl(images[1]));
+  const tertiarySrc = resolveContentImageSrc(imageUrl(images[2]));
+  const primaryAlt = images[0]?._id ? `Image ${images[0]._id}` : data.eventName || "Experience image";
+  const secondaryAlt = images[1]?._id ? `Image ${images[1]._id}` : `${data.eventName || "Experience"} — gallery`;
+  const tertiaryAlt = images[2]?._id ? `Image ${images[2]._id}` : `${data.eventName || "Experience"} — gallery`;
 
   return (
     <>
@@ -36,67 +51,64 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
             <h3>{data.name}</h3>
           </Subtitle>
           <ImageContainer>
-            {data.images && data.images.length > 0 && imageUrl(data.images[0]) && (
-              <ImageColumnLeft>
-                <ImageWrap>
-                  <Image
-                    src={imageUrl(data.images[0])}
-                    alt={`Image ${data.images[0]._id}`}
-                    width={600}
-                    height={400}
-                    loading="lazy"
-                    quality={90}
-                    placeholder="blur"
-                    blurDataURL={IMAGE_BLUR_DATA_URL}
-                    style={{
-                      objectFit: "cover",
-                      position: "relative",
-                    }}
-                    draggable={false}
-                  />
-                </ImageWrap>
-              </ImageColumnLeft>
-            )}
+            <ImageColumnLeft>
+              <ImageWrap>
+                <Image
+                  src={primarySrc}
+                  alt={primaryAlt}
+                  width={600}
+                  height={400}
+                  loading="lazy"
+                  quality={90}
+                  placeholder="blur"
+                  blurDataURL={IMAGE_BLUR_DATA_URL}
+                  style={{
+                    objectFit: "cover",
+                    position: "relative",
+                  }}
+                  draggable={false}
+                  unoptimized={isBundledPlaceholderSrc(primarySrc)}
+                />
+              </ImageWrap>
+            </ImageColumnLeft>
 
             <ImageColumnRight>
-              {data.images && data.images.length > 1 && imageUrl(data.images[1]) && (
-                <ImageWrap>
-                  <Image
-                    src={imageUrl(data.images[1])}
-                    alt={`Image ${data.images[1]._id}`}
-                    width={300}
-                    height={195}
-                    loading="lazy"
-                    quality={90}
-                    placeholder="blur"
-                    blurDataURL={IMAGE_BLUR_DATA_URL}
-                    style={{
-                      objectFit: "cover",
-                      position: "relative",
-                    }}
-                    draggable={false}
-                  />
-                </ImageWrap>
-              )}
-              {data.images && data.images.length > 2 && imageUrl(data.images[2]) && (
-                <ImageWrap>
-                  <Image
-                    src={imageUrl(data.images[2])}
-                    alt={`Image ${data.images[2]._id}`}
-                    width={300}
-                    height={195}
-                    loading="lazy"
-                    quality={90}
-                    placeholder="blur"
-                    blurDataURL={IMAGE_BLUR_DATA_URL}
-                    style={{
-                      objectFit: "cover",
-                      position: "relative",
-                    }}
-                    draggable={false}
-                  />
-                </ImageWrap>
-              )}
+              <ImageWrap>
+                <Image
+                  src={secondarySrc}
+                  alt={secondaryAlt}
+                  width={300}
+                  height={195}
+                  loading="lazy"
+                  quality={90}
+                  placeholder="blur"
+                  blurDataURL={IMAGE_BLUR_DATA_URL}
+                  style={{
+                    objectFit: "cover",
+                    position: "relative",
+                  }}
+                  draggable={false}
+                  unoptimized={isBundledPlaceholderSrc(secondarySrc)}
+                />
+              </ImageWrap>
+              <ImageWrap>
+                <Image
+                  src={tertiarySrc}
+                  alt={tertiaryAlt}
+                  width={300}
+                  height={195}
+                  loading="lazy"
+                  quality={90}
+                  placeholder="blur"
+                  blurDataURL={IMAGE_BLUR_DATA_URL}
+                  style={{
+                    objectFit: "cover",
+                    position: "relative",
+                  }}
+                  draggable={false}
+                  unoptimized={isBundledPlaceholderSrc(tertiarySrc)}
+                />
+              </ImageWrap>
             </ImageColumnRight>
           </ImageContainer>
           <About>

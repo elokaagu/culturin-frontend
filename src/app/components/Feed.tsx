@@ -3,14 +3,19 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+import {
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "../../lib/imagePlaceholder";
 
 export type FeedCardProps = {
   title: string;
   description: string;
   /** Destination when the card is activated. */
   href: string;
-  imageSrc: string;
+  /** Remote URL, `/path`, or empty — empty uses the bundled placeholder. */
+  imageSrc: string | null | undefined;
   imageAlt: string;
   /** ISO 8601 date string for `<time dateTime>` (e.g. `2024-01-17`). */
   publishedAt: string;
@@ -41,12 +46,13 @@ export function FeedCard({
   dateLabel,
   blurDataURL,
 }: FeedCardProps) {
+  const resolvedSrc = resolveContentImageSrc(imageSrc);
   return (
     <Link href={href} className={linkShellClass}>
       <article className={articleInnerClass}>
         <div className={imageWrapClass}>
           <Image
-            src={imageSrc}
+            src={resolvedSrc}
             alt={imageAlt}
             fill
             loading="lazy"
@@ -55,6 +61,7 @@ export function FeedCard({
             placeholder="blur"
             blurDataURL={blurDataURL ?? IMAGE_BLUR_DATA_URL}
             draggable={false}
+            unoptimized={isBundledPlaceholderSrc(resolvedSrc)}
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col justify-center gap-2">
