@@ -96,6 +96,12 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
             </Link>
           </li>
 
+          <li className="p-1">
+            <Link href="/create" className={linkClass} onClick={onClose}>
+              For creators
+            </Link>
+          </li>
+
           <li className="relative p-1">
             <button
               type="button"

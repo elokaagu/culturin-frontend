@@ -6,9 +6,9 @@ import Header from "../components/Header";
 
 const actions = [
   {
-    href: "/assistant",
-    title: "Write an article",
-    description: "Use Culturin AI to brainstorm angles, outline, and refine travel stories.",
+    href: "/articles",
+    title: "Browse travel guides",
+    description: "Get inspired by place-based stories, itineraries, and local context before you create.",
   },
   {
     href: "/create/upload",
@@ -28,7 +28,7 @@ export default function CreatePage() {
       <Header />
       <main className="mx-auto flex min-h-screen max-w-lg flex-col gap-10 bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 sm:max-w-2xl sm:px-6 dark:bg-black dark:text-white">
         <header className="max-w-xl">
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Create</h1>
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">For creators</h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-400 sm:text-base">
             Share your story and inspiration from one of your favourite destinations.
           </p>

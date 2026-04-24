@@ -138,9 +138,6 @@ export default function AboutPage() {
             <Link href="/search" className={ctaClass}>
               Search
             </Link>
-            <Link href="/assistant" className={ctaClass}>
-              Culturin AI
-            </Link>
           </div>
         </section>
       </div>

@@ -9,19 +9,22 @@ function profileHref(userId: string | undefined) {
   return userId ? `/profile/${userId}` : "/profile";
 }
 
-const triggerClass =
+const solidTriggerClass =
   "flex w-full min-w-0 cursor-pointer flex-col items-center justify-center rounded-[10px] bg-white px-2.5 py-2.5 font-semibold text-black outline-none transition-colors duration-200 ease-out hover:bg-neutral-200 focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-black max-[428px]:w-[100px]";
 
+const headerTriggerClass =
+  "inline-flex h-9 min-w-[5rem] max-w-[10rem] shrink-0 items-center justify-center gap-1.5 rounded-md border border-neutral-200/90 bg-white px-3.5 text-sm font-medium text-neutral-900 shadow-sm transition-colors outline-none hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/20 dark:bg-white/5 dark:text-white dark:shadow-none dark:hover:bg-white/10 dark:focus-visible:ring-amber-400/40 dark:focus-visible:ring-offset-neutral-950";
+
 const menuPanelClass =
-  "absolute right-0 top-full z-[100] mt-1 w-[min(100vw-1rem,14rem)] rounded-[10px] border border-neutral-200 bg-white py-1 shadow-lg";
+  "absolute right-0 top-full z-[100] mt-1.5 w-[min(100vw-1rem,14rem)] rounded-lg border border-neutral-200/90 bg-white py-1 shadow-lg dark:border-white/15 dark:bg-neutral-950 dark:shadow-black/30";
 
 const menuListClass = "m-0 list-none p-0";
 
 const menuItemLinkClass =
-  "block w-full rounded-md px-3 py-2.5 text-left text-sm font-medium text-neutral-900 no-underline outline-none transition-colors hover:bg-neutral-100 focus-visible:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-neutral-400";
+  "block w-full rounded-md px-3 py-2.5 text-left text-sm font-medium text-neutral-900 no-underline outline-none transition-colors hover:bg-neutral-100 focus-visible:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-400/60 dark:text-white dark:hover:bg-white/10 dark:focus-visible:bg-white/10";
 
 const menuItemButtonClass =
-  "w-full cursor-pointer rounded-md border-0 bg-transparent px-3 py-2.5 text-left text-sm font-medium text-neutral-900 outline-none transition-colors hover:bg-neutral-100 focus-visible:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-neutral-400";
+  "w-full cursor-pointer rounded-md border-0 bg-transparent px-3 py-2.5 text-left text-sm font-medium text-neutral-900 outline-none transition-colors hover:bg-neutral-100 focus-visible:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-400/60 dark:text-white dark:hover:bg-white/10";
 
 function useDismissOnEscapeAndOutside(
   open: boolean,
@@ -55,10 +58,16 @@ function useDismissOnEscapeAndOutside(
   }, [open, rootRef, setOpen, triggerRef]);
 }
 
+export type GoogleSignInButtonProps = {
+  className?: string;
+  /** `header`: compact top-bar style. `default`: wide solid card (e.g. mobile menu). */
+  appearance?: "default" | "header";
+};
+
 /**
- * Google OAuth + signed-in account menu (Supabase Auth).
+ * Google OAuth (Supabase) + signed-in account menu.
  */
-export function GoogleSignInButton({ className }: { className?: string }) {
+export function GoogleSignInButton({ className, appearance = "default" }: GoogleSignInButtonProps) {
   const { data: session, status } = useAppAuth();
   const { supabase } = useSupabaseAuth();
   const [open, setOpen] = useState(false);
@@ -71,7 +80,8 @@ export function GoogleSignInButton({ className }: { className?: string }) {
 
   useDismissOnEscapeAndOutside(open, setOpen, rootRef, triggerRef);
 
-  const triggerCn = className ? `${triggerClass} ${className}` : triggerClass;
+  const base = appearance === "header" ? headerTriggerClass : solidTriggerClass;
+  const triggerCn = [base, className].filter(Boolean).join(" ");
 
   const signInGoogle = useCallback(() => {
     if (!supabase) return;
@@ -85,10 +95,17 @@ export function GoogleSignInButton({ className }: { className?: string }) {
   }, [supabase]);
 
   if (status === "loading") {
+    const loadCn = [
+      appearance === "header" ? headerTriggerClass : solidTriggerClass,
+      "cursor-wait opacity-60",
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
     return (
       <button
         type="button"
-        className={`${triggerCn} cursor-wait opacity-60`}
+        className={loadCn}
         disabled
         aria-busy="true"
         aria-label="Checking sign-in status"
@@ -112,7 +129,7 @@ export function GoogleSignInButton({ className }: { className?: string }) {
           aria-controls={menuId}
           onClick={toggle}
         >
-          {label}
+          <span className="truncate">{label}</span>
         </button>
         {open ? (
           <div className={menuPanelClass} id={menuId} role="presentation">
@@ -138,16 +155,6 @@ export function GoogleSignInButton({ className }: { className?: string }) {
                 </Link>
               </li>
               <li role="none">
-                <Link
-                  role="menuitem"
-                  href="/assistant"
-                  className={menuItemLinkClass}
-                  onClick={close}
-                >
-                  Culturin AI
-                </Link>
-              </li>
-              <li role="none">
                 <button
                   type="button"
                   role="menuitem"
@@ -169,7 +176,7 @@ export function GoogleSignInButton({ className }: { className?: string }) {
 
   return (
     <button type="button" className={triggerCn} onClick={signInGoogle}>
-      Sign in with Google
+      Sign in
     </button>
   );
 }

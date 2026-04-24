@@ -18,10 +18,9 @@ const socialLinks = [
 const footerLinkItems = [
   { label: "Destinations", href: "/destinations" },
   { label: "Articles", href: "/articles" },
-  { label: "Culturin AI", href: "/assistant" },
   { label: "About", href: "/about" },
   { label: "Partner with us", href: "/join-us/advisors" },
-  { label: "Culturin for creators", href: "/create" },
+  { label: "For creators", href: "/create" },
   { label: "Privacy", href: "/privacy" },
 ] as const;
 

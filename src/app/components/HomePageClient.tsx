@@ -6,7 +6,6 @@ import { useCallback, type ReactNode } from "react";
 
 import Header from "./Header";
 import HomeHeroFeatured from "./HomeHeroFeatured";
-import HomeQuoteNewsletterBand from "./HomeQuoteNewsletterBand";
 import HomeStorySidebar from "./HomeStorySidebar";
 import SiteFooter from "./SiteFooter";
 import TrendingStoriesRail from "./TrendingStoriesRail";
@@ -204,10 +203,6 @@ export default function HomePageClient({
             </div>
           )}
         </section>
-
-        <div className="pt-2 pb-8 sm:pt-0 sm:pb-10">
-          <HomeQuoteNewsletterBand />
-        </div>
 
         <div id="discover" className="scroll-mt-[var(--header-offset)]">
           <HomeSection
