@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Sun, Moon } from "styled-icons/boxicons-regular";
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "../styles/ThemeContext";
 
 export default function ThemeToggle() {

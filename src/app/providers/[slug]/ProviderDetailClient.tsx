@@ -1,17 +1,16 @@
 "use client";
 
 import React from "react";
-import styled from "styled-components";
 import Image from "next/image";
 
 import Header from "../../components/Header";
-import { device } from "../../styles/breakpoints";
 import type { fullProvider, imageAsset } from "../../../libs/interface";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../../lib/imagePlaceholder";
+import { Button } from "@/components/ui/button";
 
 function imageUrl(img: imageAsset | undefined) {
   const u = img?.url;
@@ -42,17 +41,16 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
   return (
     <>
       <Header />
-      <AppBody>
-        <ProviderWrapper>
-          <Title>
-            <h1>{data.eventName}</h1>
-          </Title>
-          <Subtitle>
-            <h3>{data.name}</h3>
-          </Subtitle>
-          <ImageContainer>
-            <ImageColumnLeft>
-              <ImageWrap>
+      <div
+        className="flex min-h-full flex-col items-start bg-background px-6 py-10 pt-[var(--header-offset)] text-foreground sm:px-10"
+        style={{ lineHeight: 2 }}
+      >
+        <div className="mx-auto flex w-full max-w-3xl flex-col items-start pr-2 max-[428px]:w-[300px] max-[428px]:overflow-y-auto sm:max-w-3xl">
+          <h1 className="mb-0 w-full pt-5 pr-5 text-3xl sm:pl-0 sm:ml-2.5">{data.eventName}</h1>
+          <h3 className="pr-5 text-xl text-muted-foreground sm:ml-2.5 sm:pl-0">{data.name}</h3>
+          <div className="mb-4 flex w-full max-w-full flex-col gap-3 sm:flex-row sm:flex-wrap max-[428px]:flex-col">
+            <div className="min-w-0 pr-0 sm:pr-2">
+              <div className="mb-0 inline-block overflow-hidden rounded-2xl shadow-md max-[428px]:[&>img]:w-[300px]">
                 <Image
                   src={primarySrc}
                   alt={primaryAlt}
@@ -62,18 +60,15 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                   quality={90}
                   placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
-                  style={{
-                    objectFit: "cover",
-                    position: "relative",
-                  }}
+                  className="relative object-cover"
+                  style={{ position: "relative" }}
                   draggable={false}
                   unoptimized={isBundledPlaceholderSrc(primarySrc)}
                 />
-              </ImageWrap>
-            </ImageColumnLeft>
-
-            <ImageColumnRight>
-              <ImageWrap>
+              </div>
+            </div>
+            <div className="flex min-w-0 flex-col gap-2">
+              <div className="inline-block overflow-hidden rounded-2xl shadow-md max-[428px]:[&>img]:w-[300px]">
                 <Image
                   src={secondarySrc}
                   alt={secondaryAlt}
@@ -83,15 +78,13 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                   quality={90}
                   placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
-                  style={{
-                    objectFit: "cover",
-                    position: "relative",
-                  }}
+                  className="relative object-cover"
+                  style={{ position: "relative" }}
                   draggable={false}
                   unoptimized={isBundledPlaceholderSrc(secondarySrc)}
                 />
-              </ImageWrap>
-              <ImageWrap>
+              </div>
+              <div className="inline-block overflow-hidden rounded-2xl shadow-md max-[428px]:[&>img]:w-[300px]">
                 <Image
                   src={tertiarySrc}
                   alt={tertiaryAlt}
@@ -101,234 +94,38 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                   quality={90}
                   placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
-                  style={{
-                    objectFit: "cover",
-                    position: "relative",
-                  }}
+                  className="relative object-cover"
+                  style={{ position: "relative" }}
                   draggable={false}
                   unoptimized={isBundledPlaceholderSrc(tertiarySrc)}
                 />
-              </ImageWrap>
-            </ImageColumnRight>
-          </ImageContainer>
-          <About>
-            <h1>About</h1>
-            <p>{data.description}</p>
-          </About>
-          <Banner>
+              </div>
+            </div>
+          </div>
+          <section>
+            <h2 className="text-xl text-muted-foreground">About</h2>
+            <p className="text-lg text-foreground max-[428px]:pb-9">{data.description}</p>
+          </section>
+          <div>
             <p>Location: {data.location}</p>
             <p>Contact: {data.contactEmail}</p>
             <p>Website: {data.contactWebsite}</p>
-          </Banner>
-          <Banner>
+          </div>
+          <div>
             {bookUrl !== "#" ? (
-              <a
-                href={bookUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: "none" }}
-              >
-                <HeroButton>Book</HeroButton>
-              </a>
+              <Button asChild className="mt-5 w-[100px]">
+                <a href={bookUrl} target="_blank" rel="noopener noreferrer" className="no-underline">
+                  Book
+                </a>
+              </Button>
             ) : (
-              <HeroButton
-                as="div"
-                aria-disabled
-                style={{ cursor: "not-allowed", opacity: 0.5, pointerEvents: "none" }}
-              >
+              <Button className="mt-5 w-[100px] cursor-not-allowed opacity-50" disabled>
                 Book
-              </HeroButton>
+              </Button>
             )}
-          </Banner>
-        </ProviderWrapper>
-      </AppBody>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
-
-const AppBody = styled.div`
-  padding: 40px;
-  display: flex;
-  padding-top: var(--header-offset);
-  align-items: flex-start;
-  background: ${(props) => props.theme.body};
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: white;
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    align-items: flex-start;
-    margin-left: 0;
-  }
-`;
-
-const Title = styled.div`
-  padding-top: 20px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-
-    h1 {
-      font-size: 25px;
-      align-items: flex-start;
-      margin-left: 10px;
-      width: 100%;
-    }
-  }
-`;
-
-const Subtitle = styled.div`
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: grey;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 10px;
-    align-items: flex-start;
-  }
-`;
-
-const About = styled.div`
-  margin: auto;
-  align-items: flex-start;
-
-  h1 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: grey;
-  }
-  p {
-    font-size: 18px;
-    padding-bottom: 36px;
-    color: white;
-  }
-`;
-
-const ImageContainer = styled.div`
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: row;
-  cursor: pointer;
-  img {
-    border-radius: 10px;
-    margin-right: 20px;
-  }
-
-  @media ${device.mobile} {
-    margin: 0 auto;
-    padding-left: 10px;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-
-    img {
-      margin-left: 0;
-      border-radius: 10px;
-      width: 300px;
-    }
-  }
-`;
-
-const ImageWrap = styled.span`
-  & > span {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 20px;
-    object-fit: cover;
-  }
-
-  @media ${device.mobile} {
-    & > span {
-      object-fit: cover;
-      border-radius: 20px;
-    }
-  }
-`;
-
-const ProviderWrapper = styled.div`
-  margin: auto;
-  width: 60%;
-  padding-top: 30px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  span {
-    font-size: 18px;
-    color: grey;
-  }
-
-  p {
-    font-size: 18px;
-    color: white;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 20px;
-    align-items: flex-start;
-    width: 100%;
-
-    p {
-      font-size: 18px;
-      padding-bottom: 36px;
-      color: white;
-    }
-  }
-
-  @media ${device.mobile} {
-    margin-left: 0px;
-    border-radius: 10px;
-    width: 300px;
-    height: 50%;
-    overflow: scroll;
-  }
-`;
-
-const ImageColumnLeft = styled.div``;
-
-const ImageColumnRight = styled.div``;
-
-const Banner = styled.div``;
-
-const HeroButton = styled.div`
-  margin-top: 20px;
-  border-radius: 5px;
-  width: 100px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: white;
-  color: black;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover {
-    background: grey;
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    width: 100px;
-  }
-`;

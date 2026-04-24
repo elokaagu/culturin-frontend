@@ -142,9 +142,9 @@ export default function Header() {
               <Image
                 src="/culturin_logo.svg"
                 alt="Culturin"
-                width={178}
-                height={36}
-                className="h-9 w-auto opacity-95 transition-opacity group-hover:opacity-100"
+                width={140}
+                height={28}
+                className="h-7 w-auto opacity-95 transition-opacity group-hover:opacity-100"
                 loading="lazy"
                 placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
@@ -213,9 +213,9 @@ export default function Header() {
               <Image
                 src="/culturin_logo.svg"
                 alt="Culturin"
-                width={139}
-                height={28}
-                className="h-7 w-auto opacity-95 transition-opacity group-hover:opacity-100"
+                width={120}
+                height={24}
+                className="h-6 w-auto opacity-95 transition-opacity group-hover:opacity-100"
                 loading="lazy"
                 placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}

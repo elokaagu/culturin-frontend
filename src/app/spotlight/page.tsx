@@ -1,9 +1,8 @@
 "use client";
+
 import React from "react";
-import styled from "styled-components";
 import Header from "../components/Header";
 import Link from "next/link";
-import { device } from "../styles/breakpoints";
 import { FeedCard } from "../components/Feed";
 
 const SPOTLIGHT_CARD = {
@@ -23,8 +22,14 @@ export default function Spotlight() {
   return (
     <>
       <Header />
-      <AppBody>
-        <nav aria-label="Spotlight section" className="mb-4 w-full max-w-3xl self-center px-2 sm:px-4">
+      <div
+        className="flex h-full min-h-full flex-col items-start overflow-x-hidden bg-background px-10 py-10 pt-[var(--header-offset)] text-foreground max-[428px]:pl-0"
+        style={{ lineHeight: 2 }}
+      >
+        <nav
+          aria-label="Spotlight section"
+          className="mb-4 w-full max-w-3xl self-center px-2 sm:px-4"
+        >
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm font-medium text-amber-400 no-underline transition-colors hover:text-amber-200 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
@@ -33,51 +38,15 @@ export default function Spotlight() {
             Back to home
           </Link>
         </nav>
-        <SpotlightTitle>
-          <h1> News</h1>
-        </SpotlightTitle>
-        <FeedContainer className="flex w-full flex-col items-center gap-8">
+        <div className="p-2.5 pl-4 sm:ml-80 sm:pl-0 max-[428px]:ml-2.5">
+          <h1 className="text-3xl"> News</h1>
+        </div>
+        <div className="flex w-full max-w-3xl flex-col items-center gap-8 self-center max-[428px]:ml-5 max-[428px]:items-start">
           {[0, 1, 2].map((i) => (
             <FeedCard key={i} {...SPOTLIGHT_CARD} />
           ))}
-        </FeedContainer>
-      </AppBody>
+        </div>
+      </div>
     </>
   );
 }
-
-const AppBody = styled.div`
-  height: 100%;
-  padding: 40px;
-  display: flex;
-  padding-top: var(--header-offset);
-  align-items: flex-start;
-  background: ${({ theme }) => theme.body};
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: ${({ theme }) => theme.title};
-  overflow: none;
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    align-items: flex-start;
-  }
-`;
-
-const SpotlightTitle = styled.div`
-  padding: 10px;
-  margin-left: 320px;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 10px;
-  }
-`;
-
-const FeedContainer = styled.div`
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 20px;
-  }
-`;

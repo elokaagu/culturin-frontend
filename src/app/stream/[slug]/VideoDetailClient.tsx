@@ -1,163 +1,41 @@
 "use client";
 
 import React from "react";
-import styled from "styled-components";
 import MuxPlayer from "@mux/mux-player-react";
 
 import Header from "../../components/Header";
-import { device } from "../../styles/breakpoints";
 import type { fullVideo } from "../../../libs/interface";
 
 export default function VideoDetailClient({ data }: { data: fullVideo }) {
   return (
     <>
       <Header />
-      <AppBody>
-        <VideoWrapper>
-          <VideoContainer>
+      <div
+        className="flex min-h-full flex-col items-center bg-background px-6 py-10 pt-[var(--header-offset)] text-foreground sm:px-10"
+        style={{ lineHeight: 2 }}
+      >
+        <div className="mx-auto w-full max-w-3xl cursor-pointer pr-2 max-[428px]:h-1/2 max-[428px]:w-full max-[428px]:overflow-hidden sm:pl-5">
+          <div className="w-full max-w-full pb-5 max-[428px]:[&_img]:ml-0">
             <MuxPlayer
               playbackId={data.playbackId || undefined}
+              className="w-full max-w-full overflow-hidden rounded-[20px]"
               style={{ borderRadius: "20px" }}
-              accent-color="black"
               metadata={{
                 video_id: data._id ?? "",
                 video_title: data.title ?? "",
                 viewer_user_id: "user-id-dynamic",
               }}
             />
-          </VideoContainer>
-          <Title>
-            <h1>{data.title}</h1>
-            <span>{data.uploader}</span>
-          </Title>
-          <Subtitle>
-            <p>{data.description}</p>
-          </Subtitle>
-        </VideoWrapper>
-      </AppBody>
+          </div>
+          <div className="w-full pr-5 text-foreground sm:pl-0">
+            <h1 className="text-3xl max-[428px]:ml-2.5">{data.title}</h1>
+            <span className="text-lg text-muted-foreground max-[428px]:pl-2.5">{data.uploader}</span>
+          </div>
+          <div className="w-full pr-5 sm:pl-2.5">
+            <p className="text-lg text-foreground max-[428px]:text-base">{data.description}</p>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
-
-const AppBody = styled.div`
-  padding: 40px;
-  display: flex;
-  padding-top: var(--header-offset);
-  align-items: center;
-  background: ${({ theme }) => theme.body};
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: ${({ theme }) => theme.title};
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    align-items: flex-start;
-  }
-`;
-
-const Title = styled.div`
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-  color: ${({ theme }) => theme.title};
-
-  h1 {
-    color: inherit;
-  }
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-
-    h1 {
-      font-size: 25px;
-      align-items: flex-start;
-      margin-left: 10px;
-      width: 100%;
-    }
-
-    span {
-      font-size: 18px;
-      color: grey;
-      padding-left: 10px;
-    }
-  }
-`;
-
-const Subtitle = styled.div`
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: grey;
-  }
-
-  @media ${device.mobile} {
-    padding-left: 10px;
-    align-items: flex-start;
-  }
-`;
-
-const VideoWrapper = styled.div`
-  margin: auto;
-  width: 60%;
-  padding-top: 30px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  span {
-    font-size: 18px;
-    color: grey;
-  }
-
-  p {
-    font-size: 18px;
-    color: ${({ theme }) => theme.title};
-  }
-
-  @media ${device.mobile} {
-    padding-left: 20px;
-    align-items: flex-start;
-    width: 100%;
-
-    p {
-      font-size: 16px;
-      color: ${({ theme }) => theme.title};
-    }
-  }
-
-  @media ${device.mobile} {
-    margin-left: 0px;
-    border-radius: 10px;
-    width: 100%;
-    height: 50%;
-    overflow: hidden;
-  }
-`;
-
-const VideoContainer = styled.div`
-  padding-bottom: 20px;
-  cursor: pointer;
-  img {
-    border-radius: 10px;
-  }
-
-  @media ${device.mobile} {
-    width: 100%;
-    img {
-      margin-left: 0;
-    }
-  }
-`;

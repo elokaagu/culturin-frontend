@@ -1,20 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Header from "../components/Header";
-import Link from "next/link";
-import { device } from "../styles/breakpoints";
-import Image from "next/image";
-import { simpleBlogCard } from "../../libs/interface";
 
+import React, { useEffect, useState } from "react";
+import Header from "../components/Header";
+import { simpleBlogCard } from "../../libs/interface";
 import { getCmsBrowserClient } from "../../lib/cms/browser";
 import { listBlogs } from "../../lib/cms/queries";
-import {
-  IMAGE_BLUR_DATA_URL,
-  isBundledPlaceholderSrc,
-  resolveContentImageSrc,
-} from "../../lib/imagePlaceholder";
+import { ArticleCardFromBlog } from "@/components/cms/ArticleCard";
 
 export default function Trending() {
   const [data, setData] = useState<simpleBlogCard[]>([]);
@@ -31,280 +23,22 @@ export default function Trending() {
   return (
     <>
       <Header />
-      <AppBody>
-            <Title>
-              <h1>Trending</h1>
-            </Title>
-            <Subtitle>
-              <p>Trending on Culturin </p>
-            </Subtitle>
-
-            <ArticlesContainer>
-              {data.map((cardData) => {
-                const imgSrc = resolveContentImageSrc(cardData.titleImageUrl);
-                return (
-                <Card key={cardData.currentSlug}>
-                  <Link href={`/articles/${cardData.currentSlug}`}>
-                    <CardBody>
-                      <Image
-                        src={imgSrc}
-                        alt={cardData.title}
-                        fill
-                        loading="lazy"
-                        draggable={false}
-                        style={{ objectFit: "cover" }}
-                        placeholder="blur"
-                        blurDataURL={IMAGE_BLUR_DATA_URL}
-                        unoptimized={isBundledPlaceholderSrc(imgSrc)}
-                      />
-                    </CardBody>
-                  </Link>
-                  <CardText>
-                    <h1>{cardData.title}</h1>
-                    <CardAuthor>
-                      {/* <AvatarContainer>
-            <Image
-              src="/eloka.jpeg"
-              alt="elokaagu"
-              priority={true}
-              width={25}
-              height={25}
-              style={imageStyle}
-            />
-          </AvatarContainer> */}
-                      <p>{cardData.summary}</p>
-                    </CardAuthor>
-                  </CardText>
-                </Card>
-                );
-              })}
-            </ArticlesContainer>
-      </AppBody>
+      <div className="flex min-h-full flex-col items-center bg-background px-10 py-10 pt-[var(--header-offset)] text-foreground max-[428px]:items-start max-[428px]:pl-0">
+        <div className="flex w-full cursor-pointer flex-col items-start pr-5 max-[428px]:ml-0 max-[428px]:mt-5 max-[428px]:w-full">
+          <h1 className="text-2xl max-[428px]:ml-7">Trending</h1>
+        </div>
+        <div className="mb-5 flex w-full flex-col items-start pr-5 max-[428px]:ml-[3.75rem] max-[428px]:w-full">
+          <p className="text-xl text-muted-foreground">Trending on Culturin</p>
+        </div>
+        <div
+          className="mx-auto grid w-[80%] grid-cols-1 place-items-center gap-5 py-5 max-[428px]:w-full max-[428px]:p-5 min-[800px]:grid-cols-3"
+          style={{ lineHeight: 2 }}
+        >
+          {data.map((card) => (
+            <ArticleCardFromBlog key={card.currentSlug} card={card} layout="grid" />
+          ))}
+        </div>
+      </div>
     </>
   );
 }
-
-const AppBody = styled.div`
-  padding: 40px;
-  display: flex;
-  padding-top: var(--header-offset);
-  align-items: center;
-  background: ${({ theme }) => theme.body};
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: ${({ theme }) => theme.title};
-
-  @media ${device.mobile} {
-    padding-left: 0px;
-    align-items: flex-start;
-  }
-`;
-
-const Title = styled.div`
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    margin-top: 20px;
-    width: 100%;
-
-    h1 {
-      font-size: 25px;
-      align-items: flex-start;
-      margin-left: 30px;
-      width: 100%;
-    }
-  }
-`;
-
-const Subtitle = styled.div`
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-
-  h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: grey;
-  }
-
-  @media ${device.mobile} {
-    margin-left: 60px;
-    width: 100%;
-  }
-`;
-
-const ArticlesContainer = styled.div`
-  margin: auto;
-  width: 80%;
-  padding: 20px 30px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  justify-items: center;
-  align-items: start;
-
-  h1 {
-    font-size: 25px;
-    color: ${({ theme }) => theme.title};
-    width: 100%;
-  }
-
-  p {
-    font-size: 18px;
-    color: ${({ theme }) => theme.title};
-    width: 100%;
-  }
-
-  @media ${device.mobile} {
-    width: 100%;
-    padding: 20px;
-    grid-template-columns: 1fr;
-
-    h1 {
-      font-size: 25px;
-      color: ${({ theme }) => theme.title};
-      width: 70%;
-    }
-    p {
-      font-size: 18px;
-      color: ${({ theme }) => theme.title};
-      width: 70%;
-    }
-  }
-`;
-
-const BackLink = styled.a`
-  color: rgb(250, 193, 0);
-  padding-bottom: 20px;
-  text-decoration: none;
-  position: fixed;
-  left: 50px;
-  top: 200px;
-
-  :hover {
-    color: ${({ theme }) => theme.title};
-    cursor: pointer;
-    transition: all 0.5s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    // position: fixed;
-    // left: 20px;
-    // top: 105px;
-    display: none;
-  }
-`;
-
-const Card = styled.div`
-  padding-bottom: 20px;
-  padding-right: 20px;
-`;
-
-const CardBody = styled.div`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  justify-content: left;
-  height: 300px;
-  width: 300px;
-  padding: 20px;
-  border-radius: 8px;
-  drop-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background: #1a1a1a;
-  cursor: pointer;
-  box-shadow: 0px 6px 8px rgba(25, 50, 47, 0.08),
-    0px 4px 4px rgba(18, 71, 52, 0.02), 0px 1px 16px rgba(18, 71, 52, 0.03);
-
-  img {
-    border-radius: 8px;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-  }
-
-  &:hover {
-    background-color: #4444;
-    opacity: 0.4;
-    transform: scale(0.98);
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.laptop} {
-    height: 200px;
-    width: 200px;
-  }
-
-  @media ${device.mobile} {
-    height: 200px;
-    width: 200px;
-  }
-`;
-
-const CardText = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
-
-  color: ${(props) => props.theme.body};
-
-  h1 {
-    cursor: pointer;
-    font-size: 16px;
-    padding-bottom: 10px;
-
-    @media ${device.laptop} {
-      font-size: 16px;
-    }
-
-    @media ${device.mobile} {
-      font-size: 14px;
-    }
-  }
-
-  p {
-    cursor: pointer;
-    font-size: 14px;
-    -webkit-line-clamp: 2;
-
-    color: ${(props) => props.theme.subtitle};
-
-    @media ${device.laptop} {
-      font-size: 12px;
-      color: grey;
-    }
-
-    @media ${device.mobile} {
-      font-size: 12px;
-    }
-  }
-
-  span {
-    cursor: pointer;
-    font-size: 14px;
-
-    @media ${device.laptop} {
-      font-size: 12px;
-    }
-  }
-`;
-
-const CardAuthor = styled.div`
-  display: flex;
-  pointer: cursor;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const AvatarContainer = styled.div`
-  display: flex;
-  margin-right: 6px;
-`;

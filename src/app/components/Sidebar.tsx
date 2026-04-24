@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ChevronDown } from "styled-icons/boxicons-regular";
+import { ChevronDown } from "lucide-react";
 
 import { GoogleSignInButton } from "./AuthButtons";
 

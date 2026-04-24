@@ -18,7 +18,7 @@ type CountryExplorerLayoutProps = {
 
 /**
  * Shared layout for /countries/* explorer pages: header, country list panel, map.
- * Replaces duplicated styled-components + per-page ThemeProvider blocks.
+ * Shared Tailwind layout; theme comes from `html.dark` + `ThemeContext`.
  */
 export default function CountryExplorerLayout({
   title,

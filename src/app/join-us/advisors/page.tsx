@@ -2,10 +2,12 @@
 
 import type { FormEvent } from "react";
 import { useState } from "react";
-import styled from "styled-components";
 
 import Header from "../../components/Header";
-import { device } from "../../styles/breakpoints";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export default function AdvisorsPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
@@ -51,107 +53,143 @@ export default function AdvisorsPage() {
   return (
     <div>
       <Header />
-      <AppBody>
-        <Title>
-          <h1>Become a Culturin advisor</h1>
-        </Title>
-        <Subtitle>
-          <p>
+      <div
+        className="flex min-h-full flex-1 flex-col items-center bg-background px-4 py-5 pt-[var(--header-offset)] text-foreground"
+        style={{ lineHeight: 2 }}
+      >
+        <div className="mx-auto w-full max-w-2xl items-start pl-0 pr-4 pt-5 sm:pl-6 sm:pr-5 max-[428px]:ml-0 max-[428px]:w-full">
+          <h1 className="w-full text-2xl sm:pl-5">Become a Culturin advisor</h1>
+        </div>
+        <div className="mx-auto w-full max-w-2xl items-start pl-0 pr-4 sm:pl-6 sm:pr-5 max-[428px]:ml-14 max-[428px]:w-full max-[428px]:pl-2.5">
+          <p className="text-lg text-foreground">
             Culturin is designed for the innovative and entrepreneurial travel advisor of tomorrow. Our core mission is
             to empower those with a deep-rooted passion for exploration and travel to generate a flexible income by
             curating and booking unforgettable journeys. At Culturin, we believe that travel is more than just visiting
             new destinations; it&apos;s about creating experiences that last a lifetime.
           </p>
-        </Subtitle>
-
-        <Body>
-          <p>
+        </div>
+        <div className="mx-auto w-full max-w-2xl items-start pl-0 pr-4 sm:pl-6 sm:pr-5 max-[428px]:w-full max-[428px]:pl-5">
+          <p className="pt-1.5 pb-5 text-lg text-foreground max-[428px]:pb-9">
             Whether you are just starting out or looking to elevate your existing travel advisory business, Culturin
             offers the tools, resources, and community support needed to thrive in the dynamic world of travel planning.
             Join us and become part of a vibrant community of travel enthusiasts who are transforming their love for
             exploration into rewarding careers. Let Culturin be your guide to a successful and fulfilling future in the
             travel industry.
           </p>
-          <ApplyScrollButton type="button" onClick={scrollToSection}>
+          <Button
+            type="button"
+            onClick={scrollToSection}
+            className="mb-4 w-[100px] bg-foreground text-background hover:bg-foreground/90"
+          >
             Apply
-          </ApplyScrollButton>
-
-          <OfferBody>
-            <h2>Community</h2>
-            <p>
+          </Button>
+          <div className="mb-4 mt-5 w-[95%] flex-col items-start rounded-lg bg-zinc-900 px-4 py-5 sm:pl-6 sm:pr-5 max-[428px]:w-full">
+            <h2 className="mb-2 text-2xl text-foreground">Community</h2>
+            <p className="pt-1.5 pb-5 text-lg text-foreground max-[428px]:pb-9">
               Our diverse, inclusive &amp; engaged global community is designed to make you feel welcome.
             </p>
-          </OfferBody>
-          <Features>
-            <Feature>
-              <p>Live networking events across the country</p>
-            </Feature>
-            <Feature>
-              <p>Community app for collaboration and support</p>
-            </Feature>
-            <Feature>
-              <p>Weekly online community &amp; partner events</p>
-            </Feature>
-            <Feature>
-              <p>Mentorship, FAM trips &amp; site visits</p>
-            </Feature>
-          </Features>
-          <MembershipSection>
-            <MembershipTitle>Apply to join Culturin &amp; get everything you need to succeed</MembershipTitle>
-            <MembershipInfo>Our advisors typically make back their membership fee within their first month.</MembershipInfo>
-            <PricingCard>
-              <PricingToggle>
-                <ToggleOptionButton
+          </div>
+          <div className="mt-10 grid w-full grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-5">
+            {[
+              "Live networking events across the country",
+              "Community app for collaboration and support",
+              "Weekly online community &amp; partner events",
+              "Mentorship, FAM trips &amp; site visits",
+            ].map((t) => (
+              <div
+                key={t}
+                className="flex min-h-[4rem] items-center justify-center rounded-lg border border-zinc-900 bg-background p-5 text-center text-foreground transition hover:-translate-y-1 hover:shadow-md"
+              >
+                <p className="m-0 text-base">{t}</p>
+              </div>
+            ))}
+          </div>
+          <section className="flex w-full flex-col items-center justify-around gap-4 py-14 text-center text-foreground">
+            <h2 className="text-center text-2xl leading-tight text-foreground sm:max-w-2xl">
+              Apply to join Culturin &amp; get everything you need to succeed
+            </h2>
+            <p className="mb-8 max-w-xl text-center text-lg text-white/90">
+              Our advisors typically make back their membership fee within their first month.
+            </p>
+            <Card className="w-full max-w-sm border-0 bg-zinc-100 text-zinc-900 shadow-lg">
+              <CardHeader>
+                <div className="mb-6 flex w-full justify-around">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className={cn(
+                      "font-bold text-zinc-900",
+                      billingCycle === "annual" && "bg-sky-100",
+                    )}
+                    onClick={() => setBillingCycle("annual")}
+                  >
+                    ANNUAL
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className={cn("font-bold text-zinc-900", billingCycle === "monthly" && "bg-sky-100")}
+                    onClick={() => setBillingCycle("monthly")}
+                  >
+                    MONTHLY
+                  </Button>
+                </div>
+                {billingCycle === "annual" ? (
+                  <>
+                    <CardTitle className="text-5xl font-bold text-zinc-900">$299</CardTitle>
+                    <p className="text-base text-zinc-900">per year</p>
+                    <p className="text-sm text-zinc-600">billed every 12 months</p>
+                  </>
+                ) : (
+                  <>
+                    <CardTitle className="text-5xl font-bold text-zinc-900">$49</CardTitle>
+                    <p className="text-base text-zinc-900">per month</p>
+                    <p className="text-sm text-zinc-600">billed every month</p>
+                  </>
+                )}
+                <p className="min-h-5 text-sm text-green-600">
+                  {billingCycle === "annual" ? "BEST VALUE: Save 50%" : ""}
+                </p>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center gap-2">
+                <ul className="mb-6 w-full list-none space-y-2.5 p-0 text-left text-zinc-900">
+                  {[
+                    "Start at 70% commission split",
+                    "Live training and mentorship",
+                    "Access to 4,500+ preferred partners",
+                    "Custom marketing tools",
+                    "Global community of travel pros",
+                  ].map((line) => (
+                    <li key={line} className="flex items-start gap-2.5 text-base">
+                      <span className="text-green-600" aria-hidden>
+                        ✔
+                      </span>
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+                <Button
                   type="button"
-                  $active={billingCycle === "annual"}
-                  onClick={() => setBillingCycle("annual")}
+                  variant="secondary"
+                  onClick={scrollToSection}
+                  className="w-full max-w-xs font-bold"
                 >
-                  ANNUAL
-                </ToggleOptionButton>
-                <ToggleOptionButton
-                  type="button"
-                  $active={billingCycle === "monthly"}
-                  onClick={() => setBillingCycle("monthly")}
-                >
-                  MONTHLY
-                </ToggleOptionButton>
-              </PricingToggle>
-              {billingCycle === "annual" ? (
-                <>
-                  <PriceAmount>$299</PriceAmount>
-                  <PricePer>per year</PricePer>
-                  <BilledDetail>billed every 12 months</BilledDetail>
-                </>
-              ) : (
-                <>
-                  <PriceAmount>$49</PriceAmount>
-                  <PricePer>per month</PricePer>
-                  <BilledDetail>billed every month</BilledDetail>
-                </>
-              )}
-              <BestValueLabel>{billingCycle === "annual" ? "BEST VALUE: Save 50%" : ""}</BestValueLabel>
-
-              <BenefitsList>
-                <Benefit>Start at 70% commission split</Benefit>
-                <Benefit>Live training and mentorship</Benefit>
-                <Benefit>Access to 4,500+ preferred partners</Benefit>
-                <Benefit>Custom marketing tools</Benefit>
-                <Benefit>Global community of travel pros</Benefit>
-              </BenefitsList>
-              <ApplyButton type="button" onClick={scrollToSection}>
-                APPLY
-              </ApplyButton>
-            </PricingCard>
-          </MembershipSection>
+                  APPLY
+                </Button>
+              </CardContent>
+            </Card>
+          </section>
           <div id="target-section">
-            <CTASection>
-              <CTATitle>Apply to join Culturin today &amp; get everything you need to succeed</CTATitle>
-              <CTASubtitle>
+            <section className="mt-2 flex flex-col items-center rounded-lg bg-background py-12 text-center text-foreground">
+              <h2 className="mb-5 text-center text-2xl leading-tight">
+                Apply to join Culturin today &amp; get everything you need to succeed
+              </h2>
+              <p className="mb-8 text-base text-foreground">
                 Book just $360/month in travel and you will cover your subscription fees. Everything after that is your
                 profit to keep.
-              </CTASubtitle>
-              <form onSubmit={handleApply} className="flex flex-col items-center gap-3">
-                <EmailInput
+              </p>
+              <form onSubmit={handleApply} className="flex w-full max-w-sm flex-col items-center gap-3">
+                <Input
                   name="email"
                   type="email"
                   inputMode="email"
@@ -162,399 +200,32 @@ export default function AdvisorsPage() {
                   disabled={formState === "loading" || formState === "success"}
                   aria-invalid={formState === "error"}
                   aria-describedby={formMessage ? "apply-form-feedback" : undefined}
+                  className="max-w-xs border-0 border-b-2 border-zinc-900 bg-white text-left text-zinc-900"
                 />
                 {formMessage ? (
                   <p
                     id="apply-form-feedback"
-                    className={`max-w-sm text-center text-sm ${formState === "success" ? "text-emerald-400" : "text-red-400"}`}
+                    className={cn(
+                      "max-w-sm text-center text-sm",
+                      formState === "success" ? "text-emerald-500" : "text-red-500",
+                    )}
                     role={formState === "error" ? "alert" : "status"}
                   >
                     {formMessage}
                   </p>
                 ) : null}
-                <GetStartedButton type="submit" disabled={formState === "loading" || formState === "success"}>
+                <Button
+                  type="submit"
+                  disabled={formState === "loading" || formState === "success"}
+                  className="w-full max-w-[300px] border-2 border-zinc-900 bg-white font-bold text-zinc-900 hover:bg-zinc-100"
+                >
                   {formState === "loading" ? "Sending…" : "Apply"}
-                </GetStartedButton>
+                </Button>
               </form>
-            </CTASection>
+            </section>
           </div>
-        </Body>
-      </AppBody>
+        </div>
+      </div>
     </div>
   );
 }
-
-const AppBody = styled.div`
-  padding: 20px;
-  padding-top: var(--header-offset);
-  display: flex;
-  flex: 1;
-  align-items: center;
-  background: ${({ theme }) => theme.body};
-  flex-direction: column;
-  height: 100%;
-  line-height: 2;
-  color: ${({ theme }) => theme.title};
-`;
-
-const Title = styled.div`
-  margin: auto;
-  width: 50%;
-  margin: auto 10px;
-  padding-left: 30px;
-  padding-top: 20px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  transition: background-color 0.3s;
-
-  @media ${device.mobile} {
-    align-items: flex-start;
-    margin-left: 0;
-    width: 100%;
-
-    h1 {
-      font-size: 25px;
-      align-items: flex-start;
-      margin-left: 20px;
-      width: 100%;
-    }
-  }
-`;
-
-const Subtitle = styled.div`
-  margin: auto;
-  width: 50%;
-  margin: auto 10px;
-  padding-left: 30px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: grey;
-  }
-
-  @media ${device.mobile} {
-    margin-left: 60px;
-    padding-left: 10px;
-    align-items: flex-start;
-    width: 100%;
-  }
-`;
-
-const Body = styled.div`
-  margin: auto;
-  width: 50%;
-  padding-left: 30px;
-  padding-top: 20px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  p {
-    font-size: 18px;
-    padding-top: 5px;
-    padding-bottom: 20px;
-    color: ${({ theme }) => theme.title};
-  }
-
-  @media ${device.mobile} {
-    padding-left: 20px;
-    align-items: flex-start;
-    width: 100%;
-
-    p {
-      font-size: 18px;
-      padding-bottom: 36px;
-      color: ${({ theme }) => theme.title};
-    }
-  }
-`;
-
-const ApplyScrollButton = styled.button`
-  margin-top: 20px;
-  border-radius: 5px;
-  width: 100px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  background: #ffffff;
-  color: #000000;
-
-  &:hover {
-    background: grey;
-    transition: 0.3s ease-in-out;
-  }
-
-  @media ${device.mobile} {
-    width: 100px;
-  }
-`;
-
-const OfferBody = styled.div`
-  margin: auto;
-  margin-top: 20px;
-  width: 95%;
-  align-items: flex-start;
-  padding-left: 30px;
-  padding-top: 20px;
-  padding-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background: #111111;
-  border-radius: 10px;
-
-  h2 {
-    font-size: 1.5rem;
-    margin: 0 0 0.5rem;
-    color: ${({ theme }) => theme.title};
-  }
-
-  p {
-    font-size: 18px;
-    padding-top: 5px;
-    padding-bottom: 20px;
-    color: ${({ theme }) => theme.title};
-  }
-
-  @media ${device.mobile} {
-    padding-left: 20px;
-    align-items: flex-start;
-    width: 100%;
-
-    p {
-      font-size: 18px;
-      padding-bottom: 36px;
-      color: ${({ theme }) => theme.title};
-    }
-  }
-`;
-
-const Features = styled.div`
-  margin-top: 40px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-`;
-
-const Feature = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  border: 1px solid #111111;
-  border-radius: 10px;
-  background: ${({ theme }) => theme.body};
-  color: ${({ theme }) => theme.title};
-  font-size: 1em;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-`;
-
-const MembershipSection = styled.section`
-  width: 100%;
-  padding: 60px 0;
-  color: black;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const MembershipTitle = styled.h2`
-  font-size: 2em;
-  text-align: center;
-  line-height: 1.2;
-  margin-bottom: 20px;
-  color: ${({ theme }) => theme.title};
-`;
-
-const MembershipInfo = styled.p`
-  font-size: 1.2em;
-  text-align: center;
-  margin-bottom: 40px;
-  max-width: 36rem;
-  color: rgba(255, 255, 255, 0.88);
-`;
-
-const PricingCard = styled.div`
-  width: min(100%, 350px);
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const PricingToggle = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-  margin-bottom: 30px;
-`;
-
-const ToggleOptionButton = styled.button<{ $active: boolean }>`
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  background-color: ${(props) => (props.$active ? "#DDEEFF" : "transparent")};
-  padding: 10px;
-  border-radius: 10px;
-  color: #111;
-
-  &:first-child {
-    margin-right: 5px;
-  }
-  &:last-of-type {
-    margin-left: 5px;
-  }
-
-  &:hover {
-    opacity: 0.85;
-  }
-`;
-
-const PriceAmount = styled.span`
-  font-size: 3em;
-  font-weight: bold;
-  color: #111;
-`;
-
-const PricePer = styled.span`
-  font-size: 1em;
-  color: #111;
-`;
-
-const BilledDetail = styled.span`
-  font-size: 0.8em;
-  color: #666;
-`;
-
-const BestValueLabel = styled.span`
-  font-size: 0.9em;
-  color: green;
-  margin: 10px 0;
-  min-height: 1.25em;
-`;
-
-const BenefitsList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin-bottom: 30px;
-  width: 100%;
-`;
-
-const Benefit = styled.li`
-  font-size: 1em;
-  margin: 10px 0;
-  color: #111;
-  &:before {
-    content: "✔";
-    color: green;
-    margin-right: 10px;
-  }
-`;
-
-const ApplyButton = styled.button`
-  padding: 10px 20px;
-  background: ${({ theme }) => theme.body};
-  color: ${({ theme }) => theme.title};
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: #333;
-  }
-`;
-
-const CTASection = styled.section`
-  background-color: ${({ theme }) => theme.body};
-  padding: 50px 0;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  border-radius: 10px;
-`;
-
-const CTATitle = styled.h2`
-  font-size: 2em;
-  text-align: center;
-  line-height: 1.2;
-  margin-bottom: 20px;
-  color: ${({ theme }) => theme.title};
-`;
-
-const CTASubtitle = styled.p`
-  font-size: 1em;
-  margin-bottom: 30px;
-  color: ${({ theme }) => theme.title};
-`;
-
-const EmailInput = styled.input`
-  font-size: 1em;
-  padding: 10px;
-  margin-bottom: 4px;
-  border: none;
-  border-bottom: 2px solid #000;
-  background-color: #ffffff;
-  color: #000;
-  width: min(100%, 320px);
-  align-self: center;
-  border-radius: 10px;
-  outline: none;
-  text-align: left;
-
-  &::placeholder {
-    color: #555;
-  }
-
-  &:disabled {
-    opacity: 0.7;
-  }
-`;
-
-const GetStartedButton = styled.button`
-  font-size: 1em;
-  color: #000;
-  background-color: #fff;
-  padding: 10px 20px;
-  width: min(100%, 300px);
-  align-self: center;
-  font-weight: bold;
-  border-radius: 10px;
-  border: 2px solid #000;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover:not(:disabled) {
-    opacity: 0.9;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.65;
-  }
-`;
