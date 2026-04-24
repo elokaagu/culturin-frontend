@@ -1,4 +1,4 @@
-import type { fullBlog, fullProvider, fullVideo, providerCard, providerHeroCard, simpleBlogCard, videoCard } from "../../libs/interface";
+import type { fullBlog, fullProvider, fullVideo, providerCard, providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import type { CmsBlogRow, CmsProviderRow, CmsVideoRow } from "./types";
 
 export function mapBlogRowToCard(row: CmsBlogRow): simpleBlogCard {

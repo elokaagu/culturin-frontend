@@ -1,40 +1,55 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import type { CldUploadWidgetInfo } from "next-cloudinary";
-import { CldUploadWidget } from "next-cloudinary";
+import { useCallback, useRef, useState } from "react";
 import Image from "next/image";
+import { Link } from "next-view-transitions";
 
 import Header from "../../components/Header";
+import { useSupabaseAuth } from "../../components/SupabaseAuthProvider";
 import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
+import { SUPABASE_PUBLIC_MEDIA_BUCKET } from "../../../lib/storageConstants";
 
-function pickInfo(results: { info?: string | CldUploadWidgetInfo } | undefined): CldUploadWidgetInfo | null {
-  const raw = results?.info;
-  if (raw && typeof raw === "object" && "secure_url" in raw) {
-    return raw;
-  }
-  return null;
-}
-
-function formatWidgetError(err: unknown): string {
-  if (typeof err === "string") return err;
-  if (err && typeof err === "object" && "statusText" in err) {
-    const st = (err as { statusText?: string }).statusText;
-    if (st) return st;
-  }
-  return "Upload failed. Please try again.";
+function sanitizeFileName(name: string): string {
+  return name.replace(/[^\w.+-]+/g, "-").replace(/^-+|-+$/g, "") || "upload.bin";
 }
 
 export default function UploadPage() {
-  const [secureUrl, setSecureUrl] = useState<string | null>(null);
-  const [publicId, setPublicId] = useState<string | null>(null);
+  const { supabase, user } = useSupabaseAuth();
+  const [publicUrl, setPublicUrl] = useState<string | null>(null);
+  const [objectPath, setObjectPath] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const resetOutcome = useCallback(() => {
-    setSecureUrl(null);
-    setPublicId(null);
+    setPublicUrl(null);
+    setObjectPath(null);
     setMessage(null);
   }, []);
+
+  const onFileChange: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !supabase || !user) return;
+    if (!file.type.startsWith("image/")) {
+      setMessage("Please choose an image file (JPEG, PNG, WebP, or GIF).");
+      return;
+    }
+    setUploading(true);
+    setMessage(null);
+    const path = `${user.id}/${Date.now()}-${sanitizeFileName(file.name)}`;
+    const { error, data } = await supabase.storage
+      .from(SUPABASE_PUBLIC_MEDIA_BUCKET)
+      .upload(path, file, { cacheControl: "3600", upsert: false, contentType: file.type });
+    if (error) {
+      setUploading(false);
+      setMessage(error.message);
+      return;
+    }
+    const { data: pub } = supabase.storage.from(SUPABASE_PUBLIC_MEDIA_BUCKET).getPublicUrl(data.path);
+    setPublicUrl(pub.publicUrl);
+    setObjectPath(data.path);
+    setUploading(false);
+  };
 
   return (
     <>
@@ -43,93 +58,97 @@ export default function UploadPage() {
         <div className="mx-auto w-full max-w-md">
           <header className="mb-8">
             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Upload</h1>
-            <p className="mt-2 text-sm text-neutral-400 sm:text-base">Add an image to your collection.</p>
+            <p className="mt-2 text-sm text-neutral-500 sm:text-base">Store images in Supabase Storage (public read).</p>
           </header>
+
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="sr-only"
+            onChange={onFileChange}
+          />
 
           <section
             aria-labelledby="upload-panel-title"
             className="rounded-2xl border border-white/10 bg-neutral-950/80 p-6 shadow-lg shadow-black/30"
           >
             <h2 id="upload-panel-title" className="sr-only">
-              Cloudinary image upload
+              Supabase storage upload
             </h2>
 
-            <CldUploadWidget
-              uploadPreset="culturin"
-              onSuccess={(results) => {
-                setMessage(null);
-                const info = pickInfo(results);
-                if (info?.secure_url) {
-                  setSecureUrl(info.secure_url);
-                  setPublicId(info.public_id ?? null);
-                }
-              }}
-              onError={(err) => {
-                resetOutcome();
-                setMessage(formatWidgetError(err));
-              }}
-            >
-              {({ open, isLoading, error: widgetError }) => {
-                const alertText = message ?? (widgetError ? formatWidgetError(widgetError) : null);
+            {user && supabase ? (
+              <div className="flex flex-col gap-5">
+                <p className="text-xs text-neutral-500">
+                  Files go to bucket <code className="text-amber-400/90">media</code> under your user id. Apply migration{" "}
+                  <code className="text-amber-400/90">004_storage_media_bucket</code> if uploads fail.
+                </p>
+                <button
+                  type="button"
+                  disabled={uploading}
+                  className="inline-flex min-h-[44px] w-full items-center justify-center rounded-xl bg-white px-4 py-3 text-sm font-semibold text-black shadow transition-colors hover:bg-neutral-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  {uploading ? "Uploading…" : "Choose an image"}
+                </button>
+              </div>
+            ) : !supabase ? (
+              <p className="text-sm text-amber-500">
+                Supabase is not configured. Set <code className="text-amber-400/90">NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
+                <code className="text-amber-400/90">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> in the environment.
+              </p>
+            ) : (
+              <p className="text-sm text-neutral-300">
+                Sign in to upload.{" "}
+                <Link href="/login" className="font-medium text-amber-400 underline-offset-2 hover:underline">
+                  Log in
+                </Link>
+              </p>
+            )}
 
-                return (
-                  <div className="flex flex-col gap-5">
-                    <button
-                      type="button"
-                      disabled={Boolean(isLoading)}
-                      className="inline-flex min-h-[44px] w-full items-center justify-center rounded-xl bg-white px-4 py-3 text-sm font-semibold text-black shadow transition-colors hover:bg-neutral-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
-                      onClick={() => {
-                        setMessage(null);
-                        open();
-                      }}
-                    >
-                      {isLoading ? "Opening upload…" : "Upload an image"}
-                    </button>
+            {message ? (
+              <p className="mt-4 text-sm text-red-400" role="alert">
+                {message}
+              </p>
+            ) : null}
 
-                    {alertText ? (
-                      <p className="text-sm text-red-400" role="alert">
-                        {alertText}
-                      </p>
-                    ) : null}
-
-                    {secureUrl ? (
-                      <div className="flex flex-col gap-3 rounded-xl border border-neutral-200 bg-neutral-100/80 p-3 dark:border-white/10 dark:bg-black/40">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                          <p className="text-sm font-medium text-emerald-400">Upload complete</p>
-                          <button
-                            type="button"
-                            className="text-xs font-medium text-neutral-400 underline-offset-2 hover:text-white hover:underline"
-                            onClick={resetOutcome}
-                          >
-                            Clear
-                          </button>
-                        </div>
-                        <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-neutral-900">
-                          <Image
-                            src={secureUrl}
-                            alt={publicId ? `Preview of ${publicId}` : "Uploaded image preview"}
-                            fill
-                            loading="lazy"
-                            placeholder="blur"
-                            blurDataURL={IMAGE_BLUR_DATA_URL}
-                            className="object-contain"
-                            sizes="(max-width: 640px) 100vw, 28rem"
-                          />
-                        </div>
-                        <a
-                          href={secureUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm font-medium text-amber-400 underline-offset-2 hover:text-amber-300"
-                        >
-                          Open full-size asset
-                        </a>
-                      </div>
-                    ) : null}
-                  </div>
-                );
-              }}
-            </CldUploadWidget>
+            {publicUrl ? (
+              <div className="mt-4 flex flex-col gap-3 rounded-xl border border-neutral-200 bg-neutral-100/80 p-3 dark:border-white/10 dark:bg-black/40">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-sm font-medium text-emerald-400">Upload complete</p>
+                  <button
+                    type="button"
+                    className="text-xs font-medium text-neutral-500 underline-offset-2 hover:text-white hover:underline"
+                    onClick={resetOutcome}
+                  >
+                    Clear
+                  </button>
+                </div>
+                {objectPath ? (
+                  <p className="text-xs break-all text-neutral-500">Path: {objectPath}</p>
+                ) : null}
+                <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-neutral-900">
+                  <Image
+                    src={publicUrl}
+                    alt="Uploaded image preview"
+                    fill
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
+                    className="object-contain"
+                    sizes="(max-width: 640px) 100vw, 28rem"
+                  />
+                </div>
+                <a
+                  href={publicUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-amber-400 underline-offset-2 hover:text-amber-300"
+                >
+                  Open public URL
+                </a>
+              </div>
+            ) : null}
           </section>
         </div>
       </main>

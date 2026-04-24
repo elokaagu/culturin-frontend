@@ -4,7 +4,8 @@
 import React from "react";
 import Header from "../../components/Header";
 import { Link } from "next-view-transitions";
-import { CldImage } from "next-cloudinary";
+import Image from "next/image";
+import { SPOTLIGHT_DEMO } from "@/lib/remoteImageUrls";
 import VideoPlayer from "../../components/VideoPlayer";
 import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
 
@@ -52,16 +53,16 @@ export default function SpotlightPosts() {
           <span
             className="inline-block overflow-hidden rounded-2xl shadow-md [&>span]:rounded-2xl max-[428px]:[&>span>img]:ml-0"
           >
-            <CldImage
-              src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1705493709/ojcn4o1quyu8e6fdyaws.webp"
+            <Image
+              src={SPOTLIGHT_DEMO.hero}
               alt="mainImage"
               width={700}
               height={500}
               loading="lazy"
               placeholder="blur"
               blurDataURL={IMAGE_BLUR_DATA_URL}
-              style={{ objectFit: "cover", position: "relative" }}
-              draggable="false"
+              className="relative object-cover"
+              draggable={false}
             />
           </span>
         </div>

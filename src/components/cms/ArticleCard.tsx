@@ -9,7 +9,7 @@ import {
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "@/lib/imagePlaceholder";
-import type { simpleBlogCard } from "@/libs/interface";
+import type { simpleBlogCard } from "@/lib/interface";
 
 export function ArticleCardFromBlog({
   card,

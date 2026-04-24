@@ -12,7 +12,7 @@ import SiteFooter from "./SiteFooter";
 import TrendingStoriesRail from "./TrendingStoriesRail";
 import CuratedExperiencesRail from "./CuratedExperiencesRail";
 import TopVideosRail from "./TopVideosRail";
-import type { providerHeroCard, simpleBlogCard, videoCard } from "../../libs/interface";
+import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 
 type HomePageClientProps = {

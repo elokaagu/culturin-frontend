@@ -4,7 +4,7 @@ import React from "react";
 import MuxPlayer from "@mux/mux-player-react";
 
 import Header from "../../components/Header";
-import type { fullVideo } from "../../../libs/interface";
+import type { fullVideo } from "@/lib/interface";
 
 export default function VideoDetailClient({ data }: { data: fullVideo }) {
   return (

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getCmsDbOrNull } from "../../../lib/cms/server";
 import { getVideoBySlug } from "../../../lib/cms/queries";
 import { getShowcaseFullVideo } from "../../../lib/cms/showcaseContent";
-import type { fullVideo } from "../../../libs/interface";
+import type { fullVideo } from "@/lib/interface";
 import { normalizeSlugParam } from "../../../lib/slug";
 import VideoDetailClient from "./VideoDetailClient";
 

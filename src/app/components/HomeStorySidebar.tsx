@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 
-import type { simpleBlogCard } from "../../libs/interface";
+import type { simpleBlogCard } from "@/lib/interface";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,

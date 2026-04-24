@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import Header from "../../components/Header";
 import { useAppAuth } from "../../components/SupabaseAuthProvider";
 import {
@@ -10,7 +11,7 @@ import {
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../../lib/imagePlaceholder";
-import type { fullBlog } from "../../../libs/interface";
+import type { fullBlog } from "@/lib/interface";
 
 type ToastState =
   | { open: false }
@@ -132,7 +133,7 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
 
             <div className="flex flex-col gap-3.5">
               <PortableText
-                value={data.body as any}
+                value={data.body as PortableTextBlock[]}
                 components={portableTextComponents}
               />
             </div>

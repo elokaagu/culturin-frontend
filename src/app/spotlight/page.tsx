@@ -4,18 +4,19 @@ import React from "react";
 import Header from "../components/Header";
 import { Link } from "next-view-transitions";
 import { FeedCard } from "../components/Feed";
+import { SPOTLIGHT_DEMO } from "@/lib/remoteImageUrls";
 
 const SPOTLIGHT_CARD = {
   title: "Introducing Cynthia Bailey",
   description: "American star talks travel, culture and health",
   href: "/spotlight/posts",
-  imageSrc:
-    "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705493709/ojcn4o1quyu8e6fdyaws.webp",
+  imageSrc: SPOTLIGHT_DEMO.hero,
   imageAlt: "Cynthia Bailey for Culturin spotlight interview",
   publishedAt: "2024-01-17",
   dateLabel: "17 January 2024",
+  /** Tiny LQIP; Feed uses this for placeholder blur, not a full remote frame. */
   blurDataURL:
-    "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==",
 } as const;
 
 export default function Spotlight() {

@@ -9,7 +9,7 @@ import {
   isBundledPlaceholderSrc,
   resolveVideoThumbnailSrc,
 } from "@/lib/imagePlaceholder";
-import type { videoCard } from "@/libs/interface";
+import type { videoCard } from "@/lib/interface";
 
 export function VideoCardFromCms({ video, className }: { video: videoCard; className?: string }) {
   const thumbSrc = resolveVideoThumbnailSrc(video.videoThumbnailUrl);

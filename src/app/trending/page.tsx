@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import { simpleBlogCard } from "../../libs/interface";
+import { simpleBlogCard } from "@/lib/interface";
 import { getCmsBrowserClient } from "../../lib/cms/browser";
 import { listBlogs } from "../../lib/cms/queries";
 import { ArticleCardFromBlog } from "@/components/cms/ArticleCard";

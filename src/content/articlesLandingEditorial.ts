@@ -12,7 +12,7 @@ export const ARTICLES_LANDING_EDITORIAL = {
   fallbackIntro:
     "Resources that aid, inform, and help you navigate the world with a little more ease.",
   heroImage: {
-    src: "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
+    src: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600&auto=format&fit=crop&q=80",
     alt: "Street and architecture in Enugu, Nigeria",
     width: 980,
     height: 560,

@@ -1,4 +1,4 @@
-import { getSupabaseAdmin } from "../../libs/supabase";
+import { getSupabaseAdmin } from "../supabaseServiceRole";
 import type { CmsDb } from "./types";
 
 /**

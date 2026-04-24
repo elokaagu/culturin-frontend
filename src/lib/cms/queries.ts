@@ -1,4 +1,4 @@
-import type { fullBlog, fullProvider, fullVideo, providerCard, providerHeroCard, simpleBlogCard, videoCard } from "../../libs/interface";
+import type { fullBlog, fullProvider, fullVideo, providerCard, providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import {
   mapBlogRowToCard,
   mapBlogRowToFull,

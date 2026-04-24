@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { getCmsDbOrNull } from "../../../lib/cms/server";
 import { getProviderBySlug } from "../../../lib/cms/queries";
-import type { fullProvider } from "../../../libs/interface";
+import type { fullProvider } from "@/lib/interface";
 import { normalizeSlugParam } from "../../../lib/slug";
 import ProviderDetailClient from "./ProviderDetailClient";
 

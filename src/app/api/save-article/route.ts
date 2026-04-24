@@ -5,7 +5,7 @@ import {
   getUserById,
   saveArticleForUser,
   upsertUserFromSupabaseAuth,
-} from "../../../libs/repositories/userRepository";
+} from "@/lib/repositories/userRepository";
 
 export async function POST(request: Request) {
   const supabase = await createSupabaseServerClient();
@@ -38,10 +38,8 @@ export async function POST(request: Request) {
 
     await saveArticleForUser({ userId: dbUser.id, articleId });
     return NextResponse.json({ message: "Article saved successfully" });
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: "Failed to save article", error: error.message },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Save failed";
+    return NextResponse.json({ message: "Failed to save article", error: message }, { status: 500 });
   }
 }

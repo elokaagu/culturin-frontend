@@ -4,7 +4,8 @@
 import React from "react";
 import Header from "../components/Header";
 import { Link } from "next-view-transitions";
-import { CldImage } from "next-cloudinary";
+import Image from "next/image";
+import { PROVIDER_DEMO_COVER } from "@/lib/remoteImageUrls";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 import { Button } from "@/components/ui/button";
 
@@ -46,44 +47,44 @@ export default function Providers() {
           <div className="mb-4 flex w-full max-w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
             <div className="min-w-0 sm:pr-2">
               <div className="mb-0 inline-block overflow-hidden rounded-2xl shadow-md [&>img]:m-0 [&>img]:rounded-lg">
-                <CldImage
-                  src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
+                <Image
+                  src={PROVIDER_DEMO_COVER}
                   alt="mainImage"
                   width={600}
                   height={400}
                   loading="lazy"
                   placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
-                  style={{ objectFit: "cover", position: "relative" }}
-                  draggable="false"
+                  className="relative m-0 rounded-lg object-cover"
+                  draggable={false}
                 />
               </div>
             </div>
             <div className="flex min-w-0 flex-col gap-2">
               <div className="inline-block overflow-hidden rounded-2xl shadow-md">
-                <CldImage
-                  src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
+                <Image
+                  src={PROVIDER_DEMO_COVER}
                   alt="mainImage"
                   width={300}
                   height={195}
                   loading="lazy"
                   placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
-                  style={{ objectFit: "cover", position: "relative" }}
-                  draggable="false"
+                  className="relative object-cover"
+                  draggable={false}
                 />
               </div>
               <div className="inline-block overflow-hidden rounded-2xl shadow-md">
-                <CldImage
-                  src="https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg"
+                <Image
+                  src={PROVIDER_DEMO_COVER}
                   alt="mainImage"
                   width={300}
                   height={195}
                   loading="lazy"
                   placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
-                  style={{ objectFit: "cover", position: "relative" }}
-                  draggable="false"
+                  className="relative object-cover"
+                  draggable={false}
                 />
               </div>
             </div>

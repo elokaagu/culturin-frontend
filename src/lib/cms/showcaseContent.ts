@@ -1,13 +1,10 @@
-import type { fullBlog, fullVideo, simpleBlogCard, videoCard } from "../../libs/interface";
+import type { fullBlog, fullVideo, simpleBlogCard, videoCard } from "@/lib/interface";
+import { REMOTE_DEMO_IMAGES } from "../remoteImageUrls";
 
 /** Same public Mux asset used on `/stream` for consistent demo playback. */
 const MUX_PLAYBACK_DEMO = "Hf9691bovUrlcAHV2CIqHm1uwUGmZJAg00tUvz2geu8s";
 
-const IMAGES = {
-  portrait: "https://res.cloudinary.com/drfkw9rgh/image/upload/v1705493709/ojcn4o1quyu8e6fdyaws.webp",
-  fitness: "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/hdfbvawg6isdoft0sghq.jpg",
-  texture: "https://res.cloudinary.com/drfkw9rgh/image/upload/v1704889319/htsnt5rzrvjcfnrixbqy.jpg",
-} as const;
+const IMAGES = REMOTE_DEMO_IMAGES;
 
 type ShowcaseArticle = {
   card: simpleBlogCard;

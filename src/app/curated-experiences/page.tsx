@@ -9,7 +9,7 @@ import {
 } from "../../lib/imagePlaceholder";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listProvidersAsCards } from "../../lib/cms/queries";
-import type { providerCard } from "../../libs/interface";
+import type { providerCard } from "@/lib/interface";
 
 export default async function CuratedExperiencesPage() {
   const db = getCmsDbOrNull();

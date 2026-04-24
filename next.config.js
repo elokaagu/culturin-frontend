@@ -4,28 +4,11 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // images: {
-  //   // domains: ["res.cloudinary.com", "images.unsplash.com", "cdn.pixabay.com"],
-  //   loader: "cloudinary",
-  //   path: "https://res.cloudinary.com/drfkw9rgh/image/upload/",
-  // },
-
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "www.forbes.com",
-      },
-      {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
-        port: "",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        port: "",
-      },
+      { protocol: "https", hostname: "www.forbes.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/**" },
     ],
   },
 };

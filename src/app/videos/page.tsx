@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import { videoCard } from "../../libs/interface";
+import { videoCard } from "@/lib/interface";
 import { getCmsBrowserClient } from "../../lib/cms/browser";
 import { listVideos } from "../../lib/cms/queries";
 import { VideoCardFromCms } from "@/components/cms/VideoCard";

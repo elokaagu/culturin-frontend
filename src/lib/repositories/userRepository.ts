@@ -1,4 +1,6 @@
-import { getSupabaseAdmin } from "../supabase";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import { getSupabaseAdmin } from "../supabaseServiceRole";
 
 type AppUser = {
   id: string;
@@ -11,6 +13,10 @@ type AppUser = {
   updated_at: string;
 };
 
+function db(): SupabaseClient {
+  return getSupabaseAdmin();
+}
+
 const createUsernameFromName = (name?: string | null, email?: string | null) => {
   const source = name?.trim() || email?.split("@")[0] || "user";
   return source
@@ -21,8 +27,7 @@ const createUsernameFromName = (name?: string | null, email?: string | null) => 
 };
 
 export async function listUsers() {
-  const supabaseAdmin: any = getSupabaseAdmin();
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await db()
     .from("users")
     .select("*")
     .order("created_at", { ascending: false });
@@ -35,12 +40,7 @@ export async function listUsers() {
 }
 
 export async function getUserById(id: string) {
-  const supabaseAdmin: any = getSupabaseAdmin();
-  const { data, error } = await supabaseAdmin
-    .from("users")
-    .select("*")
-    .eq("id", id)
-    .maybeSingle();
+  const { data, error } = await db().from("users").select("*").eq("id", id).maybeSingle();
 
   if (error) {
     throw error;
@@ -55,7 +55,6 @@ export async function upsertUserFromSupabaseAuth(input: {
   email: string;
   name?: string | null;
 }) {
-  const supabaseAdmin: any = getSupabaseAdmin();
   const payload = {
     id: input.id,
     email: input.email,
@@ -65,27 +64,24 @@ export async function upsertUserFromSupabaseAuth(input: {
     auth_provider_id: input.id,
   };
 
-  const { error } = await supabaseAdmin.from("users").upsert(payload, { onConflict: "id" });
+  const { error } = await db().from("users").upsert(payload, { onConflict: "id" });
   if (error) {
     throw error;
   }
 }
 
-export async function saveArticleForUser(input: {
-  userId: string;
-  articleId: string;
-}) {
-  const supabaseAdmin: any = getSupabaseAdmin();
-  const { error } = await supabaseAdmin.from("user_saved_articles").upsert(
-    {
-      user_id: input.userId,
-      article_id: input.articleId,
-    },
-    { onConflict: "user_id,article_id" }
-  );
+export async function saveArticleForUser(input: { userId: string; articleId: string }) {
+  const { error } = await db()
+    .from("user_saved_articles")
+    .upsert(
+      {
+        user_id: input.userId,
+        article_id: input.articleId,
+      },
+      { onConflict: "user_id,article_id" },
+    );
 
   if (error) {
     throw error;
   }
 }
-

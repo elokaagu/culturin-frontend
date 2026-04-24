@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getCmsDbOrNull } from "../../../lib/cms/server";
 import { getBlogBySlug } from "../../../lib/cms/queries";
 import { getShowcaseFullBlog } from "../../../lib/cms/showcaseContent";
-import type { fullBlog } from "../../../libs/interface";
+import type { fullBlog } from "@/lib/interface";
 import { normalizeSlugParam } from "../../../lib/slug";
 import ArticleClient from "./ArticleClient";
 

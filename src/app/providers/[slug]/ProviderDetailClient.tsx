@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 
 import Header from "../../components/Header";
-import type { fullProvider, imageAsset } from "../../../libs/interface";
+import type { fullProvider, imageAsset } from "@/lib/interface";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,
