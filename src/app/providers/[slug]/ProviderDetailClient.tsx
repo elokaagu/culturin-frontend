@@ -1,18 +1,17 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
+import { Link } from "next-view-transitions";
 
-import Header from "../../components/Header";
+import { DetailPageShell } from "../../components/detail/DetailPageShell";
 import type { fullProvider, imageAsset } from "@/lib/interface";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../../lib/imagePlaceholder";
-import { Button } from "@/components/ui/button";
 
-function imageUrl(img: imageAsset | undefined) {
+function imageUrlFromAsset(img: imageAsset | undefined) {
   const u = img?.url;
   if (typeof u !== "string") return "";
   const t = u.trim();
@@ -21,111 +20,165 @@ function imageUrl(img: imageAsset | undefined) {
   return "";
 }
 
+function buildGallery(data: fullProvider): { src: string; alt: string; key: string }[] {
+  const items: { src: string; alt: string; key: string }[] = [];
+  for (const img of data.images ?? []) {
+    const raw = imageUrlFromAsset(img);
+    if (!raw) continue;
+    const src = resolveContentImageSrc(raw);
+    items.push({
+      src,
+      alt: data.eventName ? `${data.eventName} — image` : "Experience image",
+      key: img._id || raw,
+    });
+  }
+  if (items.length === 0) {
+    const b = data.bannerImage?.image?.url?.trim();
+    if (b) {
+      const src = resolveContentImageSrc(b);
+      items.push({
+        src,
+        alt: data.bannerImage?.image?.alt || data.eventName || "Cover",
+        key: "banner",
+      });
+    }
+  }
+  return items;
+}
+
 function externalBookHref(raw: string | undefined): string {
   const s = (raw || "").trim();
-  if (!s) return "#";
+  if (!s) return "";
   if (s.startsWith("http://") || s.startsWith("https://")) return s;
   return `https://${s}`;
 }
 
+const subtitleText = (data: fullProvider) => {
+  const loc = (data.location || "").trim();
+  if (loc) return loc;
+  const n = (data.name || "").trim();
+  const ev = (data.eventName || "").trim();
+  if (n && ev && n.toLowerCase() !== ev.toLowerCase()) return n;
+  return "";
+};
+
+function compactPriceList(prices: number[]) {
+  if (!prices.length) return null;
+  return prices.map((p) => (Number.isInteger(p) ? p.toString() : p.toFixed(0))).join(" · ");
+}
+
 export default function ProviderDetailClient({ data }: { data: fullProvider }) {
   const bookUrl = externalBookHref(data.contactWebsite);
-  const images = data.images ?? [];
-  const primarySrc = resolveContentImageSrc(imageUrl(images[0]));
-  const secondarySrc = resolveContentImageSrc(imageUrl(images[1]));
-  const tertiarySrc = resolveContentImageSrc(imageUrl(images[2]));
-  const primaryAlt = images[0]?._id ? `Image ${images[0]._id}` : data.eventName || "Experience image";
-  const secondaryAlt = images[1]?._id ? `Image ${images[1]._id}` : `${data.eventName || "Experience"} — gallery`;
-  const tertiaryAlt = images[2]?._id ? `Image ${images[2]._id}` : `${data.eventName || "Experience"} — gallery`;
+  const gallery = buildGallery(data);
+  const subtitle = subtitleText(data);
+  const title = (data.eventName || data.name || "Experience").trim() || "Experience";
+  const priceLine = data.prices?.length ? compactPriceList(data.prices) : null;
 
   return (
-    <>
-      <Header />
-      <div
-        className="flex min-h-full flex-col items-start bg-background px-6 py-10 pt-[var(--header-offset)] text-foreground sm:px-10"
-        style={{ lineHeight: 2 }}
-      >
-        <div className="mx-auto flex w-full max-w-3xl flex-col items-start pr-2 max-[428px]:w-[300px] max-[428px]:overflow-y-auto sm:max-w-3xl">
-          <h1 className="mb-0 w-full pt-5 pr-5 text-3xl sm:pl-0 sm:ml-2.5">{data.eventName}</h1>
-          <h3 className="pr-5 text-xl text-muted-foreground sm:ml-2.5 sm:pl-0">{data.name}</h3>
-          <div className="mb-4 flex w-full max-w-full flex-col gap-3 sm:flex-row sm:flex-wrap max-[428px]:flex-col">
-            <div className="min-w-0 pr-0 sm:pr-2">
-              <div className="mb-0 inline-block overflow-hidden rounded-2xl shadow-md max-[428px]:[&>img]:w-[300px]">
+    <DetailPageShell>
+      <nav className="mb-8" aria-label="Breadcrumb">
+        <Link
+          href="/providers"
+          className="text-sm text-amber-400/90 no-underline transition hover:text-amber-300/95 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50"
+        >
+          ← All experiences
+        </Link>
+      </nav>
+
+      <header className="text-left">
+        <h1 className="m-0 text-2xl font-medium leading-tight tracking-tight text-white sm:text-[1.6rem]">{title}</h1>
+        {subtitle ? (
+          <p className="mt-2.5 text-sm font-normal leading-relaxed text-[#9a9a9a] sm:text-base">{subtitle}</p>
+        ) : null}
+      </header>
+
+      {gallery.length > 0 ? (
+        <ul className="m-0 mt-8 list-none space-y-5 p-0" role="list" aria-label="Image gallery">
+          {gallery.map((g, i) => (
+            <li key={g.key + i} className="overflow-hidden rounded-3xl bg-neutral-950/80 ring-1 ring-white/[0.08]">
+              <div className="relative aspect-[3/4] w-full">
                 <Image
-                  src={primarySrc}
-                  alt={primaryAlt}
-                  width={600}
-                  height={400}
-                  loading="lazy"
-                  quality={90}
+                  src={g.src}
+                  alt={g.alt}
+                  fill
+                  sizes="(max-width: 640px) 100vw, 28rem"
+                  className="object-cover"
+                  loading={i < 1 ? "eager" : "lazy"}
+                  priority={i < 1}
                   placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
-                  className="relative object-cover"
-                  style={{ position: "relative" }}
                   draggable={false}
-                  unoptimized={isBundledPlaceholderSrc(primarySrc)}
+                  unoptimized={isBundledPlaceholderSrc(g.src)}
                 />
               </div>
-            </div>
-            <div className="flex min-w-0 flex-col gap-2">
-              <div className="inline-block overflow-hidden rounded-2xl shadow-md max-[428px]:[&>img]:w-[300px]">
-                <Image
-                  src={secondarySrc}
-                  alt={secondaryAlt}
-                  width={300}
-                  height={195}
-                  loading="lazy"
-                  quality={90}
-                  placeholder="blur"
-                  blurDataURL={IMAGE_BLUR_DATA_URL}
-                  className="relative object-cover"
-                  style={{ position: "relative" }}
-                  draggable={false}
-                  unoptimized={isBundledPlaceholderSrc(secondarySrc)}
-                />
-              </div>
-              <div className="inline-block overflow-hidden rounded-2xl shadow-md max-[428px]:[&>img]:w-[300px]">
-                <Image
-                  src={tertiarySrc}
-                  alt={tertiaryAlt}
-                  width={300}
-                  height={195}
-                  loading="lazy"
-                  quality={90}
-                  placeholder="blur"
-                  blurDataURL={IMAGE_BLUR_DATA_URL}
-                  className="relative object-cover"
-                  style={{ position: "relative" }}
-                  draggable={false}
-                  unoptimized={isBundledPlaceholderSrc(tertiarySrc)}
-                />
-              </div>
-            </div>
-          </div>
-          <section>
-            <h2 className="text-xl text-muted-foreground">About</h2>
-            <p className="text-lg text-foreground max-[428px]:pb-9">{data.description}</p>
-          </section>
-          <div>
-            <p>Location: {data.location}</p>
-            <p>Contact: {data.contactEmail}</p>
-            <p>Website: {data.contactWebsite}</p>
-          </div>
-          <div>
-            {bookUrl !== "#" ? (
-              <Button asChild className="mt-5 w-[100px]">
-                <a href={bookUrl} target="_blank" rel="noopener noreferrer" className="no-underline">
-                  Book
-                </a>
-              </Button>
-            ) : (
-              <Button className="mt-5 w-[100px] cursor-not-allowed opacity-50" disabled>
-                Book
-              </Button>
-            )}
-          </div>
-        </div>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
+      {data.description ? (
+        <section className="mt-12" aria-labelledby="exp-about">
+          <h2 id="exp-about" className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
+            About
+          </h2>
+          <p className="mb-0 mt-4 text-base font-normal leading-[1.7] text-white/[0.78]">{data.description}</p>
+        </section>
+      ) : null}
+
+      {priceLine ? (
+        <p className="mt-8 text-sm text-white/55" aria-label="Indicative pricing">
+          <span className="text-white/40">Indicative rates: </span>
+          {priceLine}
+        </p>
+      ) : null}
+
+      <section className="mt-8 space-y-1.5 text-sm text-white/50" aria-label="Contact">
+        {data.contactEmail ? (
+          <p className="m-0">
+            <a
+              className="text-amber-400/90 no-underline underline-offset-2 transition hover:underline"
+              href={`mailto:${data.contactEmail}`}
+            >
+              {data.contactEmail}
+            </a>
+          </p>
+        ) : null}
+        {data.contactPhone ? (
+          <p className="m-0">
+            <a
+              className="text-amber-400/90 no-underline underline-offset-2 transition hover:underline"
+              href={`tel:${data.contactPhone.replace(/\s+/g, "")}`}
+            >
+              {data.contactPhone}
+            </a>
+          </p>
+        ) : null}
+        {data.contactWebsite ? (
+          <p className="m-0 break-all">
+            <a
+              className="text-amber-400/90 no-underline underline-offset-2 transition hover:underline"
+              href={bookUrl || `https://${data.contactWebsite}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {data.contactWebsite}
+            </a>
+          </p>
+        ) : null}
+      </section>
+
+      <div className="mt-10">
+        {bookUrl ? (
+          <a
+            href={bookUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-12 w-full min-w-0 max-w-sm items-center justify-center rounded-full bg-white/95 px-6 text-sm font-semibold text-black no-underline transition hover:bg-amber-100/95 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-400/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          >
+            Book
+          </a>
+        ) : null}
       </div>
-    </>
+    </DetailPageShell>
   );
 }

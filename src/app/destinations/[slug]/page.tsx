@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Link } from "next-view-transitions";
 
 import { destinations, getDestinationBySlug } from "../../../lib/destinationsData";
-import { ContentPageShell } from "../../components/layout/ContentPageShell";
+import { DetailPageShell } from "../../components/detail/DetailPageShell";
 import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
 
 type PageProps = { params: { slug: string } };
@@ -29,39 +29,37 @@ export default function DestinationDetailPage({ params }: PageProps) {
   if (!d) notFound();
 
   return (
-    <ContentPageShell
-      mainClassName="min-h-screen bg-white pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
-    >
-      <div className="w-full max-w-3xl">
-        <nav className="mb-6" aria-label="Breadcrumb">
+    <DetailPageShell>
+      <nav className="mb-8" aria-label="Breadcrumb">
+        <div className="flex flex-wrap items-baseline gap-x-1.5 text-sm text-[#9a9a9a]">
           <Link
             href="/"
-            className="text-sm font-medium text-amber-800 no-underline hover:underline dark:text-amber-300/95"
+            className="text-amber-400/90 no-underline transition hover:text-amber-300/95 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50"
           >
             Home
           </Link>
-          <span className="px-1 text-neutral-400" aria-hidden>
+          <span aria-hidden className="text-white/30">
             /
           </span>
           <Link
             href="/destinations"
-            className="text-sm font-medium text-amber-800 no-underline hover:underline dark:text-amber-300/95"
+            className="text-amber-400/90 no-underline transition hover:text-amber-300/95 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50"
           >
             Destinations
           </Link>
-          <span className="px-1 text-neutral-400" aria-hidden>
-            /
-          </span>
-          <span className="text-sm text-neutral-600 dark:text-white/60">{d.name}</span>
-        </nav>
-        <article>
-          <header className="mb-6">
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{d.name}</h1>
-            {d.country ? (
-              <p className="mt-2 text-lg text-neutral-600 dark:text-white/70">{d.country}</p>
-            ) : null}
-          </header>
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-800">
+        </div>
+      </nav>
+
+      <header className="text-left">
+        <h1 className="m-0 text-2xl font-medium leading-tight tracking-tight text-white sm:text-[1.6rem]">{d.name}</h1>
+        {d.country ? (
+          <p className="mt-2.5 text-sm font-normal text-[#9a9a9a] sm:text-base">{d.country}</p>
+        ) : null}
+      </header>
+
+      <ul className="m-0 mt-8 list-none space-y-5 p-0" role="list" aria-label="Destination image">
+        <li className="overflow-hidden rounded-3xl bg-neutral-950/80 ring-1 ring-white/[0.08]">
+          <div className="relative aspect-[3/4] w-full sm:aspect-[16/10]">
             <Image
               src={d.imageUrl}
               alt={d.imageAlt}
@@ -70,23 +68,27 @@ export default function DestinationDetailPage({ params }: PageProps) {
               priority
               placeholder="blur"
               blurDataURL={IMAGE_BLUR_DATA_URL}
-              sizes="(max-width: 768px) 100vw, 42rem"
+              sizes="(max-width: 640px) 100vw, 28rem"
             />
           </div>
-          <p className="mt-8 text-base leading-relaxed text-neutral-700 dark:text-white/85">
-            This is a starter page for {d.name}
-            {d.country ? `, ${d.country}` : ""}. Open articles and search from the home page to
-            go deeper, or return to the{" "}
-            <Link
-              href="/destinations"
-              className="font-medium text-amber-800 no-underline underline-offset-2 hover:underline dark:text-amber-300/95"
-            >
-              full destinations list
-            </Link>
-            .
-          </p>
-        </article>
-      </div>
-    </ContentPageShell>
+        </li>
+      </ul>
+
+      <section className="mt-10" aria-labelledby="dest-plug">
+        <h2 id="dest-plug" className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
+          Explore
+        </h2>
+        <p className="mb-0 mt-4 text-base font-normal leading-[1.7] text-white/[0.78]">
+          Find guides, stories, and search from the home page, or go back to the full{" "}
+          <Link
+            href="/destinations"
+            className="text-amber-400/90 no-underline underline-offset-2 transition hover:underline"
+          >
+            destinations list
+          </Link>
+          .
+        </p>
+      </section>
+    </DetailPageShell>
   );
 }

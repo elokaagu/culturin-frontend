@@ -2,24 +2,19 @@ import { ContentPageShell } from "../components/layout/ContentPageShell";
 
 export default function ArticlesLoading() {
   return (
-    <ContentPageShell>
-      <div
-        className="h-5 w-24 animate-pulse rounded bg-white/10"
-        aria-hidden="true"
-      />
-      <div className="flex flex-col gap-3" aria-busy="true" aria-live="polite">
-        <div className="h-9 max-w-prose animate-pulse rounded bg-white/10 sm:h-10" />
-        <div className="h-24 max-w-prose animate-pulse rounded bg-white/10" />
+    <ContentPageShell
+      mainClassName="min-h-screen bg-white pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
+      innerClassName="flex w-full max-w-7xl flex-col gap-0 px-4 sm:px-6"
+    >
+      <div className="mb-2 h-4 w-32 animate-pulse rounded bg-white/10" aria-hidden="true" />
+      <div className="mb-10 flex flex-col gap-4 pt-2 sm:mb-12" aria-busy="true" aria-live="polite">
+        <div className="h-12 max-w-2xl animate-pulse rounded-lg bg-white/10 sm:h-14" />
+        <div className="h-20 max-w-md animate-pulse rounded bg-white/8" />
       </div>
       <div
-        className="aspect-[980/560] w-full animate-pulse rounded-2xl bg-white/10"
+        className="min-h-[280px] w-full animate-pulse rounded-2xl bg-white/10"
         aria-hidden="true"
       />
-      <div className="flex flex-col gap-3">
-        <div className="h-4 w-full animate-pulse rounded bg-white/10" />
-        <div className="h-4 w-full animate-pulse rounded bg-white/10" />
-        <div className="h-4 w-[92%] animate-pulse rounded bg-white/10" />
-      </div>
     </ContentPageShell>
   );
 }

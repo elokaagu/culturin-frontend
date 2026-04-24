@@ -1,41 +1,50 @@
 "use client";
 
-import React from "react";
 import MuxPlayer from "@mux/mux-player-react";
+import { Link } from "next-view-transitions";
 
-import Header from "../../components/Header";
+import { DetailPageShell } from "../../components/detail/DetailPageShell";
 import type { fullVideo } from "@/lib/interface";
 
 export default function VideoDetailClient({ data }: { data: fullVideo }) {
   return (
-    <>
-      <Header />
-      <div
-        className="flex min-h-full flex-col items-center bg-background px-6 py-10 pt-[var(--header-offset)] text-foreground sm:px-10"
-        style={{ lineHeight: 2 }}
-      >
-        <div className="mx-auto w-full max-w-3xl cursor-pointer pr-2 max-[428px]:h-1/2 max-[428px]:w-full max-[428px]:overflow-hidden sm:pl-5">
-          <div className="w-full max-w-full pb-5 max-[428px]:[&_img]:ml-0">
-            <MuxPlayer
-              playbackId={data.playbackId || undefined}
-              className="w-full max-w-full overflow-hidden rounded-[20px]"
-              style={{ borderRadius: "20px" }}
-              metadata={{
-                video_id: data._id ?? "",
-                video_title: data.title ?? "",
-                viewer_user_id: "user-id-dynamic",
-              }}
-            />
-          </div>
-          <div className="w-full pr-5 text-foreground sm:pl-0">
-            <h1 className="text-3xl max-[428px]:ml-2.5">{data.title}</h1>
-            <span className="text-lg text-muted-foreground max-[428px]:pl-2.5">{data.uploader}</span>
-          </div>
-          <div className="w-full pr-5 sm:pl-2.5">
-            <p className="text-lg text-foreground max-[428px]:text-base">{data.description}</p>
-          </div>
+    <DetailPageShell contentMaxClassName="max-w-2xl sm:max-w-2xl">
+      <nav className="mb-8" aria-label="Breadcrumb">
+        <Link
+          href="/stream"
+          className="text-sm text-amber-400/90 no-underline transition hover:text-amber-300/95 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50"
+        >
+          ← All videos
+        </Link>
+      </nav>
+
+      <header className="text-left">
+        <h1 className="m-0 text-2xl font-medium leading-tight tracking-tight text-white sm:text-[1.6rem]">
+          {data.title}
+        </h1>
+        {data.uploader ? (
+          <p className="mt-2.5 text-sm font-normal text-[#9a9a9a] sm:text-base">{data.uploader}</p>
+        ) : null}
+      </header>
+
+      <div className="mt-8 overflow-hidden rounded-3xl bg-neutral-950/80 ring-1 ring-white/[0.08]">
+        <div className="w-full max-w-full">
+          <MuxPlayer
+            playbackId={data.playbackId || undefined}
+            className="w-full max-w-full overflow-hidden rounded-3xl"
+            style={{ borderRadius: "1.5rem" }}
+            metadata={{
+              video_id: data._id ?? "",
+              video_title: data.title ?? "",
+              viewer_user_id: "user-id-dynamic",
+            }}
+          />
         </div>
       </div>
-    </>
+
+      {data.description ? (
+        <p className="mb-0 mt-8 text-base font-normal leading-[1.7] text-white/[0.78]">{data.description}</p>
+      ) : null}
+    </DetailPageShell>
   );
 }
