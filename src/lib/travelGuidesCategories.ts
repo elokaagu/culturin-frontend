@@ -2,7 +2,7 @@
  * Travel Guides hub — large category cards (image + color overlay) linking into search.
  * Swap for CMS counts or tags when your catalogue supports it.
  */
-export type TravelGuideCategory = {
+type TravelGuideCategory = {
   title: string;
   articleCount: number;
   imageUrl: string;

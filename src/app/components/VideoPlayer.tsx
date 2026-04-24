@@ -2,7 +2,7 @@
 
 import ReactPlayer from "react-player";
 
-export type VideoPlayerProps = {
+type VideoPlayerProps = {
   /** Any URL react-player supports (YouTube, Vimeo, direct MP4, etc.). */
   src: string;
   autoplay?: boolean;

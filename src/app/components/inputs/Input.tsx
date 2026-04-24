@@ -10,7 +10,7 @@ import {
   type UseFormRegister,
 } from "react-hook-form";
 
-export type InputProps<T extends FieldValues> = {
+type InputProps<T extends FieldValues> = {
   id: Path<T>;
   label: string;
   type?: React.HTMLInputTypeAttribute;

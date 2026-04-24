@@ -1,6 +1,6 @@
 import { getSupabaseAdmin } from "../supabase";
 
-export type AppUser = {
+type AppUser = {
   id: string;
   email: string;
   name: string | null;
@@ -32,25 +32,6 @@ export async function listUsers() {
   }
 
   return (data ?? []) as AppUser[];
-}
-
-export async function getUserByEmail(email?: string | null) {
-  if (!email) {
-    return null;
-  }
-
-  const supabaseAdmin: any = getSupabaseAdmin();
-  const { data, error } = await supabaseAdmin
-    .from("users")
-    .select("*")
-    .eq("email", email)
-    .maybeSingle();
-
-  if (error) {
-    throw error;
-  }
-
-  return (data as AppUser | null) ?? null;
 }
 
 export async function getUserById(id: string) {
@@ -90,62 +71,6 @@ export async function upsertUserFromSupabaseAuth(input: {
   }
 }
 
-export async function upsertOAuthUser(input: {
-  email?: string | null;
-  name?: string | null;
-  authProviderId?: string | null;
-}) {
-  if (!input.email) {
-    throw new Error("Email is required to upsert OAuth user.");
-  }
-
-  const supabaseAdmin: any = getSupabaseAdmin();
-  const payload = {
-    email: input.email,
-    name: input.name ?? null,
-    username: createUsernameFromName(input.name, input.email),
-    auth_provider_id: input.authProviderId ?? null,
-  };
-
-  const { data, error } = await supabaseAdmin
-    .from("users")
-    .upsert(payload, { onConflict: "email" })
-    .select("*")
-    .single();
-
-  if (error) {
-    throw error;
-  }
-
-  return data as AppUser;
-}
-
-export async function createCredentialsUser(input: {
-  email: string;
-  name: string;
-  hashedPassword: string;
-}) {
-  const supabaseAdmin: any = getSupabaseAdmin();
-  const payload = {
-    email: input.email,
-    name: input.name,
-    username: createUsernameFromName(input.name, input.email),
-    hashed_password: input.hashedPassword,
-  };
-
-  const { data, error } = await supabaseAdmin
-    .from("users")
-    .insert(payload)
-    .select("*")
-    .single();
-
-  if (error) {
-    throw error;
-  }
-
-  return data as AppUser;
-}
-
 export async function saveArticleForUser(input: {
   userId: string;
   articleId: string;
@@ -162,19 +87,5 @@ export async function saveArticleForUser(input: {
   if (error) {
     throw error;
   }
-}
-
-export async function listSavedArticleIdsForUser(userId: string) {
-  const supabaseAdmin: any = getSupabaseAdmin();
-  const { data, error } = await supabaseAdmin
-    .from("user_saved_articles")
-    .select("article_id")
-    .eq("user_id", userId);
-
-  if (error) {
-    throw error;
-  }
-
-  return (data ?? []).map((row: any) => row.article_id as string);
 }
 

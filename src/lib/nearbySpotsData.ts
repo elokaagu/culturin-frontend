@@ -1,7 +1,7 @@
 /**
  * Placeholder “nearby” spots for the header panel. Wire to a maps/places API later.
  */
-export type NearbySpot = {
+type NearbySpot = {
   title: string;
   city: string;
   category: string;

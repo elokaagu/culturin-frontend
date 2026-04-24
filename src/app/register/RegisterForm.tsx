@@ -11,7 +11,7 @@ import Header from "../components/Header";
 import Input from "../components/inputs/Input";
 import { useSupabaseAuth } from "../components/SupabaseAuthProvider";
 
-export type RegisterFormValues = {
+type RegisterFormValues = {
   name: string;
   email: string;
   password: string;

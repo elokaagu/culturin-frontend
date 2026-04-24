@@ -10,7 +10,7 @@ import React, {
   type ReactNode,
 } from "react";
 
-export type ThemeMode = "light" | "dark";
+type ThemeMode = "light" | "dark";
 
 const STORAGE_KEY = "culturin-theme";
 

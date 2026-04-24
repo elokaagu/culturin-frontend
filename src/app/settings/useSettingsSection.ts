@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-export const SETTINGS_SECTION_IDS = [
+const SETTINGS_SECTION_IDS = [
   "#account",
   "#notifications",
   "#payments",
@@ -12,7 +12,7 @@ export type SettingsSectionId = (typeof SETTINGS_SECTION_IDS)[number];
 
 const ALLOWED = new Set<string>(SETTINGS_SECTION_IDS);
 
-export function normalizeSettingsHash(raw: string): SettingsSectionId {
+function normalizeSettingsHash(raw: string): SettingsSectionId {
   if (ALLOWED.has(raw)) return raw as SettingsSectionId;
   return "#account";
 }

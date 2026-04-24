@@ -2,7 +2,7 @@
  * Curated list for the destinations index. Images are from Unsplash (credited in UI via alt text).
  * Replace with CMS data when available.
  */
-export type Destination = {
+type Destination = {
   name: string;
   /** URL segment: /destinations/[slug] */
   slug: string;
@@ -11,7 +11,7 @@ export type Destination = {
   country?: string;
 };
 
-export function letterOf(name: string): string {
+function letterOf(name: string): string {
   const c = name.charAt(0);
   if (/[A-Z]/i.test(c)) return c.toUpperCase();
   return "#";

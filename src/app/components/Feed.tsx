@@ -9,7 +9,7 @@ import {
   resolveContentImageSrc,
 } from "../../lib/imagePlaceholder";
 
-export type FeedCardProps = {
+type FeedCardProps = {
   title: string;
   description: string;
   /** Destination when the card is activated. */

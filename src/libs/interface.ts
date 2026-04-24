@@ -72,7 +72,7 @@ export interface fullProvider {
   images: imageAsset[];
 }
 
-export interface BannerImage {
+interface BannerImage {
   image: {
     url: string;
     alt: string;

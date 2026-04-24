@@ -29,12 +29,6 @@ function mergeBlogRows(rows: CmsBlogRow[]): simpleBlogCard[] {
   return Array.from(byId.values()).map(mapBlogRowToCard);
 }
 
-function mergeVideoRows(rows: CmsVideoRow[]): videoCard[] {
-  const byId = new Map<string, CmsVideoRow>();
-  for (const r of rows) byId.set(r.id, r);
-  return Array.from(byId.values()).map(mapVideoRowToCard);
-}
-
 export async function listBlogs(db: CmsDb): Promise<simpleBlogCard[]> {
   const { data, error } = await db
     .from("cms_blogs")
@@ -103,21 +97,4 @@ export async function searchBlogs(db: CmsDb, term: string): Promise<simpleBlogCa
   ]);
   const rows = [...(byTitle.data as CmsBlogRow[] | null | undefined) ?? [], ...(bySummary.data as CmsBlogRow[] | null | undefined) ?? []];
   return mergeBlogRows(rows);
-}
-
-export async function searchVideos(db: CmsDb, term: string): Promise<videoCard[]> {
-  const t = term.trim();
-  if (!t) return listVideos(db);
-  const p = ilikePattern(t);
-  const [a, b, c] = await Promise.all([
-    db.from("cms_videos").select(videoSelect).ilike("title", p),
-    db.from("cms_videos").select(videoSelect).ilike("description", p),
-    db.from("cms_videos").select(videoSelect).ilike("uploader", p),
-  ]);
-  const rows = [
-    ...((a.data as CmsVideoRow[]) ?? []),
-    ...((b.data as CmsVideoRow[]) ?? []),
-    ...((c.data as CmsVideoRow[]) ?? []),
-  ];
-  return mergeVideoRows(rows);
 }

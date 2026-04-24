@@ -6,7 +6,7 @@ export const IMAGE_BLUR_DATA_URL =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==";
 
 /** Static SVG in `public/` when CMS has no image URL. */
-export const CONTENT_PLACEHOLDER_IMAGE = "/placeholders/content-cover.svg";
+const CONTENT_PLACEHOLDER_IMAGE = "/placeholders/content-cover.svg";
 
 function trimOrEmpty(value: string | null | undefined): string {
   return typeof value === "string" ? value.trim() : "";

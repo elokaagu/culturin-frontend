@@ -8,7 +8,7 @@ export type ArticlesLandingCmsStatus =
   | "bad_response"
   | "network_error";
 
-export type ArticlesLandingPageModel = {
+type ArticlesLandingPageModel = {
   headline: string;
   intro: string;
   cmsStatus: ArticlesLandingCmsStatus;
