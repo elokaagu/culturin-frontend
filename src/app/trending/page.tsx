@@ -36,8 +36,8 @@ function TrendingSection({
   return (
     <section className="mt-10">
       <header className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold tracking-tight text-white sm:text-2xl">{title}</h2>
-        <span className="text-xs font-medium uppercase tracking-[0.12em] text-white/45">{countLabel}</span>
+        <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-white sm:text-2xl">{title}</h2>
+        <span className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/45">{countLabel}</span>
       </header>
       {children}
     </section>
@@ -57,11 +57,11 @@ export default async function TrendingPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black pb-20 pt-[var(--header-offset)] text-white">
+      <main className="min-h-screen bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
-          <header className="border-b border-white/10 pb-8">
+          <header className="border-b border-neutral-200 pb-8 dark:border-white/10">
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Trending</h1>
-            <p className="mt-3 max-w-3xl text-base leading-relaxed text-white/65 sm:text-lg">
+            <p className="mt-3 max-w-3xl text-base leading-relaxed text-neutral-600 dark:text-white/65 sm:text-lg">
               What the Culturin community is reading, watching, and booking right now.
             </p>
           </header>

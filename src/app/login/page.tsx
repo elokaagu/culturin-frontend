@@ -87,15 +87,15 @@ function LoginPageContent() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black px-4 pb-16 pt-[var(--header-offset)] text-white sm:px-6">
-        <div className="mx-auto mt-8 w-full max-w-md rounded-2xl border border-white/10 bg-neutral-950/90 p-6 shadow-[0_24px_64px_-30px_rgba(0,0,0,0.8)] sm:mt-12 sm:p-7">
-          <div className="mb-6 flex rounded-full bg-white/[0.06] p-1">
+      <main className="min-h-screen bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white sm:px-6">
+        <div className="mx-auto mt-8 w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-6 shadow-[0_24px_64px_-30px_rgba(0,0,0,0.22)] dark:border-white/10 dark:bg-neutral-950/90 dark:shadow-[0_24px_64px_-30px_rgba(0,0,0,0.8)] sm:mt-12 sm:p-7">
+          <div className="mb-6 flex rounded-full bg-neutral-100 p-1 dark:bg-white/[0.06]">
             <button
               type="button"
               onClick={() => setMode("signin")}
               className={[
                 "flex-1 rounded-full px-4 py-2 text-sm font-semibold transition-colors",
-                mode === "signin" ? "bg-white text-black" : "text-white/75 hover:text-white",
+                mode === "signin" ? "bg-white text-black dark:bg-white dark:text-black" : "text-neutral-500 hover:text-neutral-900 dark:text-white/75 dark:hover:text-white",
               ].join(" ")}
             >
               Sign in
@@ -105,7 +105,7 @@ function LoginPageContent() {
               onClick={() => setMode("signup")}
               className={[
                 "flex-1 rounded-full px-4 py-2 text-sm font-semibold transition-colors",
-                mode === "signup" ? "bg-white text-black" : "text-white/75 hover:text-white",
+                mode === "signup" ? "bg-white text-black dark:bg-white dark:text-black" : "text-neutral-500 hover:text-neutral-900 dark:text-white/75 dark:hover:text-white",
               ].join(" ")}
             >
               Create account
@@ -113,19 +113,19 @@ function LoginPageContent() {
           </div>
 
           <h1 className="text-2xl font-semibold tracking-tight">{heading}</h1>
-          <p className="mt-2 text-sm text-white/65">{subtext}</p>
+          <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">{subtext}</p>
 
           <div className="mt-5">
             <GoogleSignInButton
               directOAuth
-              className="!w-full !max-w-none rounded-lg border border-white/20 bg-white/[0.06] px-4 py-3 text-sm font-semibold text-white hover:bg-white/[0.1]"
+              className="!w-full !max-w-none rounded-lg border border-neutral-300 bg-neutral-100 px-4 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-200 dark:border-white/20 dark:bg-white/[0.06] dark:text-white dark:hover:bg-white/[0.1]"
             />
           </div>
 
           <div className="relative my-5 flex items-center gap-3 py-1">
-            <span className="h-px flex-1 bg-white/15" />
-            <span className="text-xs font-medium uppercase tracking-wide text-white/45">or continue with email</span>
-            <span className="h-px flex-1 bg-white/15" />
+            <span className="h-px flex-1 bg-neutral-300 dark:bg-white/15" />
+            <span className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-white/45">or continue with email</span>
+            <span className="h-px flex-1 bg-neutral-300 dark:bg-white/15" />
           </div>
 
           <form onSubmit={onSubmit} className="flex flex-col gap-4">
@@ -143,7 +143,7 @@ function LoginPageContent() {
             ) : null}
             {mode === "signup" ? (
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="auth-name" className="text-sm font-medium text-white/80">
+                <label htmlFor="auth-name" className="text-sm font-medium text-neutral-700 dark:text-white/80">
                   Name
                 </label>
                 <input
@@ -153,12 +153,12 @@ function LoginPageContent() {
                   autoComplete="name"
                   disabled={pending}
                   required={mode === "signup"}
-                  className="rounded-lg border border-white/15 bg-black px-3 py-2.5 text-white outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400"
+                  className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
                 />
               </div>
             ) : null}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="auth-email" className="text-sm font-medium text-white/80">
+              <label htmlFor="auth-email" className="text-sm font-medium text-neutral-700 dark:text-white/80">
                 Email
               </label>
               <input
@@ -168,11 +168,11 @@ function LoginPageContent() {
                 autoComplete="email"
                 required
                 disabled={pending}
-                className="rounded-lg border border-white/15 bg-black px-3 py-2.5 text-white outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400"
+                className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="auth-password" className="text-sm font-medium text-white/80">
+              <label htmlFor="auth-password" className="text-sm font-medium text-neutral-700 dark:text-white/80">
                 Password
               </label>
               <input
@@ -183,7 +183,7 @@ function LoginPageContent() {
                 required
                 disabled={pending}
                 minLength={8}
-                className="rounded-lg border border-white/15 bg-black px-3 py-2.5 text-white outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400"
+                className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
               />
             </div>
             <button
@@ -195,7 +195,7 @@ function LoginPageContent() {
             </button>
           </form>
 
-          <p className="mt-5 text-sm text-white/55">
+          <p className="mt-5 text-sm text-neutral-600 dark:text-white/55">
             {mode === "signin" ? "Need an account?" : "Already have an account?"}{" "}
             <button
               type="button"
@@ -206,7 +206,7 @@ function LoginPageContent() {
             </button>
           </p>
 
-          <p className="mt-2 text-sm text-white/55">
+          <p className="mt-2 text-sm text-neutral-600 dark:text-white/55">
             Continue browsing?{" "}
             <Link href="/" className="font-semibold text-amber-400/90 underline-offset-2 hover:underline">
               Back home

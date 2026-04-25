@@ -21,28 +21,28 @@ export default async function ProvidersPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black pb-16 pt-[var(--header-offset)] text-white">
+      <main className="min-h-screen bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         <section className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-          <div className="mb-8 border-b border-white/10 pb-6 pt-6">
+          <div className="mb-8 border-b border-neutral-200 pb-6 pt-6 dark:border-white/10">
             <nav className="mb-4 text-sm" aria-label="Breadcrumb">
               <Link href="/" className="text-amber-300/95 no-underline transition hover:text-amber-200">
                 Home
               </Link>
-              <span className="px-1 text-white/35" aria-hidden>
+              <span className="px-1 text-neutral-400 dark:text-white/35" aria-hidden>
                 /
               </span>
-              <span className="text-white/65">Providers</span>
+              <span className="text-neutral-600 dark:text-white/65">Providers</span>
             </nav>
             <h1 className="m-0 text-3xl tracking-tight sm:text-5xl">Local providers</h1>
-            <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
+            <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed text-neutral-600 dark:text-white/70 sm:text-lg">
               Discover curated experiences hosted by trusted local partners. Open any card to view the full details and
               booking options.
             </p>
           </div>
 
           {providers.length === 0 ? (
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center" role="status">
-              <p className="m-0 text-white/70">No providers are available yet. Check back shortly.</p>
+            <div className="rounded-2xl border border-neutral-200 bg-white p-8 text-center dark:border-white/10 dark:bg-white/[0.03]" role="status">
+              <p className="m-0 text-neutral-600 dark:text-white/70">No providers are available yet. Check back shortly.</p>
             </div>
           ) : (
             <ul className="m-0 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2 lg:grid-cols-3">
@@ -57,7 +57,7 @@ export default async function ProvidersPage() {
                   <li key={slug} className="min-w-0">
                     <Link
                       href={`/providers/${slug}`}
-                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] no-underline transition hover:-translate-y-0.5 hover:border-white/25"
+                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white no-underline transition hover:-translate-y-0.5 hover:border-neutral-300 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/25"
                     >
                       <div className="relative aspect-[4/3] w-full bg-neutral-900">
                         <Image

@@ -23,7 +23,7 @@ export default function CuratedExperiencesRail({ providers }: CuratedExperiences
   return (
     <div className="relative">
       <div
-        className="flex gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-1 pt-0.5 [-webkit-overflow-scrolling:touch] [scrollbar-color:rgba(255,255,255,0.22)_transparent] [scrollbar-width:thin] sm:gap-5 md:gap-6 md:snap-none snap-x snap-mandatory"
+        className="flex gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-1 pt-0.5 [-webkit-overflow-scrolling:touch] [scrollbar-color:rgba(115,115,115,0.45)_transparent] [scrollbar-width:thin] dark:[scrollbar-color:rgba(255,255,255,0.22)_transparent] sm:gap-5 md:gap-6 md:snap-none snap-x snap-mandatory"
         role="list"
         aria-label="Curated experience cards"
       >
@@ -39,9 +39,9 @@ export default function CuratedExperiencesRail({ providers }: CuratedExperiences
             >
               <Link
                 href={`/providers/${p.slug}`}
-                className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-black"
               >
-                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-neutral-900 ring-1 ring-white/10 sm:rounded-2xl">
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-neutral-200 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10 sm:rounded-2xl">
                   <Image
                     src={imgSrc}
                     alt={imgAlt}
@@ -69,7 +69,7 @@ export default function CuratedExperiencesRail({ providers }: CuratedExperiences
           );
         })}
       </div>
-      <p className="mt-2 text-center text-[0.7rem] text-white/35 md:hidden" aria-hidden>
+      <p className="mt-2 text-center text-[0.7rem] text-neutral-500 dark:text-white/35 md:hidden" aria-hidden>
         Swipe for more
       </p>
     </div>

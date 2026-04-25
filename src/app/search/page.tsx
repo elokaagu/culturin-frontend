@@ -49,8 +49,8 @@ function SearchSection({
   return (
     <section className="mt-8">
       <header className="mb-4 flex items-center justify-between gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-white">{title}</h2>
-        <span className="text-xs font-medium uppercase tracking-[0.12em] text-white/45">{count} result{count === 1 ? "" : "s"}</span>
+        <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">{title}</h2>
+        <span className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/45">{count} result{count === 1 ? "" : "s"}</span>
       </header>
       {children}
     </section>
@@ -59,9 +59,9 @@ function SearchSection({
 
 function EmptyResults({ query }: { query: string }) {
   return (
-    <div className="mt-10 rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-10 text-center">
-      <p className="text-lg text-white/80">No results found for &quot;{query}&quot;.</p>
-      <p className="mt-2 text-sm text-white/55">Try a broader term like a city, culture topic, or category.</p>
+    <div className="mt-10 rounded-2xl border border-neutral-200 bg-white px-5 py-10 text-center dark:border-white/10 dark:bg-white/[0.03]">
+      <p className="text-lg text-neutral-700 dark:text-white/80">No results found for &quot;{query}&quot;.</p>
+      <p className="mt-2 text-sm text-neutral-500 dark:text-white/55">Try a broader term like a city, culture topic, or category.</p>
     </div>
   );
 }
@@ -90,10 +90,10 @@ export default async function SearchResultsPage({
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black pb-16 pt-[var(--header-offset)] text-white">
+      <main className="min-h-screen bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
           <h1 className="text-3xl font-semibold tracking-tight">Search Results</h1>
-          <p className="mt-2 text-sm text-white/60">
+          <p className="mt-2 text-sm text-neutral-600 dark:text-white/60">
             {query ? `Showing results for "${rawQuery}"` : "Search articles, videos, and experiences."}
           </p>
 

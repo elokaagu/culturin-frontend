@@ -50,7 +50,7 @@ export default function TopVideosRail({ videos }: TopVideosRailProps) {
     <div className="relative">
       <div
         ref={railRef}
-        className="flex gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-1 pt-0.5 [-webkit-overflow-scrolling:touch] [scrollbar-color:rgba(255,255,255,0.22)_transparent] [scrollbar-width:thin] sm:gap-5 md:gap-6 md:snap-none snap-x snap-mandatory"
+        className="flex gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-1 pt-0.5 [-webkit-overflow-scrolling:touch] [scrollbar-color:rgba(115,115,115,0.45)_transparent] [scrollbar-width:thin] dark:[scrollbar-color:rgba(255,255,255,0.22)_transparent] sm:gap-5 md:gap-6 md:snap-none snap-x snap-mandatory"
         role="list"
         aria-label="Featured video cards"
         onMouseEnter={() => setIsPaused(true)}
@@ -67,7 +67,7 @@ export default function TopVideosRail({ videos }: TopVideosRailProps) {
               role="listitem"
               className="w-48 shrink-0 snap-center sm:w-52 md:w-56"
             >
-              <div className="group relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-neutral-900 ring-1 ring-white/10 sm:rounded-2xl">
+              <div className="group relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-neutral-200 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10 sm:rounded-2xl">
                 <Image
                   src={thumbSrc}
                   alt={video.title}
@@ -108,7 +108,7 @@ export default function TopVideosRail({ videos }: TopVideosRailProps) {
           );
         })}
       </div>
-      <p className="mt-2 text-center text-[0.7rem] text-white/35 md:hidden" aria-hidden>
+      <p className="mt-2 text-center text-[0.7rem] text-neutral-500 dark:text-white/35 md:hidden" aria-hidden>
         Swipe for more - auto scroll pauses on touch
       </p>
     </div>
