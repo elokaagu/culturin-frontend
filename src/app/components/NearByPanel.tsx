@@ -156,7 +156,7 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-white/5">
                   <Image
                     src={spot.imageUrl}
-                    alt=""
+                    alt={spot.imageAlt}
                     fill
                     className="object-cover transition duration-500 group-hover:scale-105"
                     sizes="(max-width: 640px) 42vw, 11.6rem"

@@ -16,8 +16,8 @@ export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Travel Guides | Culturin",
-    description: "Explore editorial travel guides, cultural stories, and local inspiration from around the world.",
+    title: "Articles | Culturin",
+    description: "Explore all Culturin articles, including editorial stories, city insights, and travel guidance.",
   };
 }
 
@@ -33,9 +33,9 @@ export default async function ArticlesPage() {
       <main className="min-h-screen bg-black pb-20 pt-[var(--header-offset)] text-white">
         <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
           <header className="mb-8 border-b border-white/10 pb-8 sm:mb-10">
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Travel Guides</h1>
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Articles</h1>
             <p className="mt-3 max-w-3xl text-base leading-relaxed text-white/65 sm:text-lg">
-              Stories, city insights, and cultural guides to help you explore with more context and less noise.
+              All stories, city insights, and cultural guides in one place.
             </p>
           </header>
 
@@ -55,7 +55,7 @@ export default async function ArticlesPage() {
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
               </div>
               <div className="p-5 sm:p-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-amber-400/80">Featured guide</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-amber-400/80">Featured article</p>
                 <h2 className="mt-2 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
                   {featured.title}
                 </h2>
@@ -65,8 +65,8 @@ export default async function ArticlesPage() {
           ) : null}
 
           {rest.length > 0 ? (
-            <section aria-label="Latest guides">
-              <h2 className="mb-4 text-xl font-semibold tracking-tight text-white/90 sm:text-2xl">Latest guides</h2>
+            <section aria-label="Latest articles">
+              <h2 className="mb-4 text-xl font-semibold tracking-tight text-white/90 sm:text-2xl">Latest articles</h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {rest.map((article) => (
                   <Link

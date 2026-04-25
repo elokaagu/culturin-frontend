@@ -4,6 +4,7 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 
 import Header from "../../components/Header";
+import SiteFooter from "../../components/SiteFooter";
 
 export default function AdvisorsPage() {
   const [email, setEmail] = useState("");
@@ -139,6 +140,7 @@ export default function AdvisorsPage() {
           </section>
         </div>
       </main>
+      <SiteFooter />
     </>
   );
 }
