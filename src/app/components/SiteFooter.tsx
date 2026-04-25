@@ -19,6 +19,7 @@ const footerLinkItems = [
   { label: "Destinations", href: "/destinations" },
   { label: "Articles", href: "/articles" },
   { label: "About", href: "/about" },
+  { label: "Agency", href: "/agency" },
   { label: "Partner with us", href: "/join-us/advisors" },
   { label: "Privacy", href: "/privacy" },
 ] as const;
