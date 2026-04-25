@@ -325,7 +325,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                       href={bookUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#ff385c] px-5 text-sm font-semibold text-white no-underline transition hover:bg-[#e61e4d] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#ff385c]/40"
+                      className="inline-flex h-12 w-full items-center justify-center rounded-full bg-amber-400 px-5 text-sm font-semibold text-neutral-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     >
                       Reserve
                     </a>
