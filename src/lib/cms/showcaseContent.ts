@@ -1,4 +1,10 @@
-import type { fullBlog, fullVideo, simpleBlogCard, videoCard } from "@/lib/interface";
+import type {
+  fullBlog,
+  fullVideo,
+  providerHeroCard,
+  simpleBlogCard,
+  videoCard,
+} from "@/lib/interface";
 import { REMOTE_DEMO_IMAGES } from "../remoteImageUrls";
 
 /** Same public Mux asset used on `/stream` for consistent demo playback. */
@@ -318,6 +324,42 @@ const SHOWCASE_VIDEOS: Record<string, ShowcaseVideo> = {
   },
 };
 
+const SHOWCASE_PROVIDERS: providerHeroCard[] = [
+  {
+    name: "Culturin Collective",
+    eventName: "Sunrise food trail",
+    slug: "sunrise-food-trail",
+    bannerImage: {
+      image: {
+        url: IMAGES.texture,
+        alt: "A curated culinary experience with local hosts",
+      },
+    },
+  },
+  {
+    name: "Local Lens Studio",
+    eventName: "Street culture photo walk",
+    slug: "street-culture-photo-walk",
+    bannerImage: {
+      image: {
+        url: IMAGES.fitness,
+        alt: "Participants exploring city streets during a guided photo walk",
+      },
+    },
+  },
+  {
+    name: "Roots & Routes",
+    eventName: "Hidden neighbourhood stories",
+    slug: "hidden-neighbourhood-stories",
+    bannerImage: {
+      image: {
+        url: IMAGES.portrait,
+        alt: "A guided local storytelling experience",
+      },
+    },
+  },
+];
+
 /** Shown on the home page when the CMS returns no blog rows. */
 export function getShowcaseBlogCards(): simpleBlogCard[] {
   return Object.values(SHOWCASE_ARTICLES).map((a) => a.card);
@@ -326,6 +368,11 @@ export function getShowcaseBlogCards(): simpleBlogCard[] {
 /** Shown on the home page when the CMS returns no video rows. */
 export function getShowcaseVideoCards(): videoCard[] {
   return Object.values(SHOWCASE_VIDEOS).map((v) => v.card);
+}
+
+/** Shown on the home page when the CMS returns no provider rows. */
+export function getShowcaseProviderCards(): providerHeroCard[] {
+  return SHOWCASE_PROVIDERS;
 }
 
 export function getShowcaseFullBlog(slug: string): fullBlog | null {

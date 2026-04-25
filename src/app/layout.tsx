@@ -1,5 +1,5 @@
 import React from "react";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./styles/globals.css";
@@ -13,7 +13,27 @@ import { ThemeProvider } from "./styles/ThemeContext";
 
 const themeInitScript = `(function(){try{var k='culturin-theme';var v=localStorage.getItem(k);var r=document.documentElement;if(v==='light')r.classList.remove('dark');else r.classList.add('dark');}catch(e){document.documentElement.classList.add('dark');}})();`;
 
-const inter = Inter({ subsets: ["latin"] });
+const twkEverett = localFont({
+  variable: "--font-sans",
+  display: "swap",
+  src: [
+    { path: "../../public/fonts/TWKEverett-Light copy.ttf", weight: "300", style: "normal" },
+    { path: "../../public/fonts/TWKEverett-Book copy.ttf", weight: "400", style: "normal" },
+    { path: "../../public/fonts/TWKEverett-Medium copy.ttf", weight: "500", style: "normal" },
+    { path: "../../public/fonts/TWKEverett-Bold copy.ttf", weight: "700", style: "normal" },
+  ],
+});
+
+const recoleta = localFont({
+  variable: "--font-display",
+  display: "swap",
+  src: [
+    { path: "../../public/fonts/Recoleta Regular copy.otf", weight: "400", style: "normal" },
+    { path: "../../public/fonts/Recoleta Medium copy.otf", weight: "500", style: "normal" },
+    { path: "../../public/fonts/Recoleta SemiBold copy.otf", weight: "600", style: "normal" },
+    { path: "../../public/fonts/Recoleta Bold copy.otf", weight: "700", style: "normal" },
+  ],
+});
 
 export const metadata: Metadata = {
   title: "Culturin | Where Inspiration Meets Exploration",
@@ -46,7 +66,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${twkEverett.variable} ${recoleta.variable} font-sans`}>
         <Script id="culturin-theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>

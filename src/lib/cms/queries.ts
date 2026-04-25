@@ -29,6 +29,18 @@ function mergeBlogRows(rows: CmsBlogRow[]): simpleBlogCard[] {
   return Array.from(byId.values()).map(mapBlogRowToCard);
 }
 
+function mergeVideoRows(rows: CmsVideoRow[]): videoCard[] {
+  const byId = new Map<string, CmsVideoRow>();
+  for (const r of rows) byId.set(r.id, r);
+  return Array.from(byId.values()).map(mapVideoRowToCard);
+}
+
+function mergeProviderRows(rows: CmsProviderRow[]): providerHeroCard[] {
+  const byId = new Map<string, CmsProviderRow>();
+  for (const r of rows) byId.set(r.id, r);
+  return Array.from(byId.values()).map(mapProviderRowToHero);
+}
+
 export async function listBlogs(db: CmsDb): Promise<simpleBlogCard[]> {
   const { data, error } = await db
     .from("cms_blogs")
@@ -107,4 +119,40 @@ export async function searchBlogs(db: CmsDb, term: string): Promise<simpleBlogCa
   ]);
   const rows = [...(byTitle.data as CmsBlogRow[] | null | undefined) ?? [], ...(bySummary.data as CmsBlogRow[] | null | undefined) ?? []];
   return mergeBlogRows(rows);
+}
+
+export async function searchVideos(db: CmsDb, term: string): Promise<videoCard[]> {
+  const t = term.trim();
+  if (!t) return listVideos(db);
+  const p = ilikePattern(t);
+  const [byTitle, byUploader, byDescription] = await Promise.all([
+    db.from("cms_videos").select(videoSelect).ilike("title", p),
+    db.from("cms_videos").select(videoSelect).ilike("uploader", p),
+    db.from("cms_videos").select(videoSelect).ilike("description", p),
+  ]);
+  const rows = [
+    ...((byTitle.data as CmsVideoRow[] | null | undefined) ?? []),
+    ...((byUploader.data as CmsVideoRow[] | null | undefined) ?? []),
+    ...((byDescription.data as CmsVideoRow[] | null | undefined) ?? []),
+  ];
+  return mergeVideoRows(rows);
+}
+
+export async function searchProviders(db: CmsDb, term: string): Promise<providerHeroCard[]> {
+  const t = term.trim();
+  if (!t) return listProviders(db);
+  const p = ilikePattern(t);
+  const [byEventName, byName, byLocation, byDescription] = await Promise.all([
+    db.from("cms_providers").select(providerSelect).ilike("event_name", p),
+    db.from("cms_providers").select(providerSelect).ilike("name", p),
+    db.from("cms_providers").select(providerSelect).ilike("location", p),
+    db.from("cms_providers").select(providerSelect).ilike("description", p),
+  ]);
+  const rows = [
+    ...((byEventName.data as CmsProviderRow[] | null | undefined) ?? []),
+    ...((byName.data as CmsProviderRow[] | null | undefined) ?? []),
+    ...((byLocation.data as CmsProviderRow[] | null | undefined) ?? []),
+    ...((byDescription.data as CmsProviderRow[] | null | undefined) ?? []),
+  ];
+  return mergeProviderRows(rows);
 }
