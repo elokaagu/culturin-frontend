@@ -1,3 +1,5 @@
+import { NEARBY_CARD_IMAGES } from "./remoteImageUrls";
+
 /**
  * Placeholder “nearby” spots for the header panel. Wire to a maps/places API later.
  */
@@ -20,8 +22,7 @@ export const nearbySpots: NearbySpot[] = [
     title: "KKINI",
     city: "London",
     category: "Restaurant",
-    imageUrl:
-      "https://images.unsplash.com/photo-1514933651103-00551306c1b3?auto=format&fit=crop&w=800&q=80",
+    imageUrl: NEARBY_CARD_IMAGES.dining,
     imageAlt: "Dining at night, warm light",
     href: "/nearby/kkini",
     showMore: true,
@@ -31,8 +32,7 @@ export const nearbySpots: NearbySpot[] = [
     title: "Sushi & More",
     city: "London",
     category: "Restaurant",
-    imageUrl:
-      "https://images.unsplash.com/photo-1579027614696-ffceca4a8870?auto=format&fit=crop&w=800&q=80",
+    imageUrl: NEARBY_CARD_IMAGES.sushi,
     imageAlt: "Sushi and Japanese dining",
     href: "/nearby/sushi-more",
     showMore: false,
@@ -42,8 +42,7 @@ export const nearbySpots: NearbySpot[] = [
     title: "Casa Spa",
     city: "London",
     category: "Spa",
-    imageUrl:
-      "https://images.unsplash.com/photo-1544161515-4ab6d4deb28f?auto=format&fit=crop&w=800&q=80",
+    imageUrl: NEARBY_CARD_IMAGES.spa,
     imageAlt: "Spa interior with archway",
     href: "/nearby/casa-spa",
     showMore: false,

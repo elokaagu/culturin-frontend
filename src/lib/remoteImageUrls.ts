@@ -19,3 +19,10 @@ export const SPOTLIGHT_DEMO = {
 
 /** Provider / marketing static examples */
 export const PROVIDER_DEMO_COVER = REMOTE_DEMO_IMAGES.fitness;
+
+/** Header Nearby rail — verified Unsplash IDs + `auto=format` for Next/Image optimizer. */
+export const NEARBY_CARD_IMAGES = {
+  dining: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+  sushi: "https://images.unsplash.com/photo-1579584425555-c978ce30b65b?auto=format&fit=crop&w=800&q=80",
+  spa: "https://images.unsplash.com/photo-1540555707088-92751458b712?auto=format&fit=crop&w=800&q=80",
+} as const;

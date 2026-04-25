@@ -83,14 +83,26 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
   if (!open) return null;
 
   return (
-    <div
-      id="nearby-experience-panel"
-      className="fixed inset-x-0 top-[var(--header-bar-height)] z-[1320] px-2 pt-2 sm:px-4"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={titleId}
-    >
-      <div ref={rootRef} className="mx-auto w-full max-w-[1760px] rounded-xl border border-white/10 bg-black/95 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.85)] backdrop-blur">
+    <>
+      <div
+        className="fixed inset-x-0 bottom-0 top-[var(--header-bar-height)] z-[1310] animate-in fade-in duration-300 ease-out"
+        style={{ animationDuration: "280ms" }}
+        aria-hidden
+      >
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-sm transition-opacity dark:bg-black/65" />
+      </div>
+      <div
+        id="nearby-experience-panel"
+        className="fixed inset-x-0 top-[var(--header-bar-height)] z-[1320] px-2 pt-2 sm:px-4"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+      >
+        <div
+          ref={rootRef}
+          className="mx-auto w-full max-w-[1760px] animate-in fade-in slide-in-from-top-3 zoom-in-95 rounded-xl border border-white/10 bg-black/95 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.85)] backdrop-blur duration-300 ease-out fill-mode-both"
+          style={{ animationDuration: "360ms", animationDelay: "40ms" }}
+        >
         <div className="grid min-h-12 shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 pt-2 sm:px-5">
           <h2
             id={titleId}
@@ -146,11 +158,12 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
             style={{ WebkitOverflowScrolling: "touch" }}
             aria-describedby={listId}
           >
-            {nearbySpots.map((spot) => (
+            {nearbySpots.map((spot, index) => (
               <Link
                 key={spot.title + spot.href}
                 href={spot.href}
-                className="group flex w-[min(11rem,42vw)] shrink-0 flex-col sm:w-[11.6rem]"
+                className="group flex w-[min(11rem,42vw)] shrink-0 flex-col animate-in fade-in slide-in-from-bottom-2 fill-mode-both sm:w-[11.6rem]"
+                style={{ animationDuration: "420ms", animationDelay: `${120 + index * 55}ms` }}
                 onClick={onClose}
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-white/5">
@@ -190,6 +203,7 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
