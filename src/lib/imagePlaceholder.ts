@@ -32,3 +32,27 @@ export function resolveVideoThumbnailSrc(src: string | null | undefined): string
 export function isBundledPlaceholderSrc(src: string): boolean {
   return src.startsWith("/placeholders/");
 }
+
+/**
+ * Hosts allowed for Next.js `<Image>` optimization (must stay in sync with `next.config.js` `images.remotePatterns`).
+ * Any other https URL is served with `unoptimized` so production does not throw "hostname is not configured".
+ */
+export function isRemoteHostAllowedForNextImage(src: string): boolean {
+  const t = trimOrEmpty(src);
+  if (!t.startsWith("http://") && !t.startsWith("https://")) return true;
+  try {
+    const host = new URL(t).hostname.toLowerCase();
+    if (host === "images.unsplash.com") return true;
+    if (host === "www.forbes.com") return true;
+    if (host === "cdn.sanity.io") return true;
+    if (host.endsWith(".supabase.co")) return true;
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+/** Use with `<Image unoptimized={...} />` for CMS URLs that may point at arbitrary CDNs. */
+export function cmsImageUnoptimized(src: string): boolean {
+  return isBundledPlaceholderSrc(src) || !isRemoteHostAllowedForNextImage(src);
+}

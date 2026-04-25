@@ -28,3 +28,12 @@ export function getSupabaseAdmin(): SupabaseClient {
 
   return cachedClient;
 }
+
+/** Same as {@link getSupabaseAdmin} but returns null when env is missing (avoid server 500s on admin routes). */
+export function getSupabaseAdminOrNull(): SupabaseClient | null {
+  try {
+    return getSupabaseAdmin();
+  } catch {
+    return null;
+  }
+}

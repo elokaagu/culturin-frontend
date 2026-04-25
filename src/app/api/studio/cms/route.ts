@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { getCurrentAdminState } from "@/lib/studio/admin";
-import { getSupabaseAdmin } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 type CmsType = "blog" | "video" | "provider";
 
@@ -38,7 +38,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Slug or title/name is required." }, { status: 400 });
   }
 
-  const admin = getSupabaseAdmin();
+  const admin = getSupabaseAdminOrNull();
+  if (!admin) {
+    return NextResponse.json(
+      { message: "CMS is not configured (missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY)." },
+      { status: 503 },
+    );
+  }
 
   if (type === "blog") {
     const payload = {

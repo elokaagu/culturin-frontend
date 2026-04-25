@@ -10,10 +10,14 @@ import { listBlogs } from "../../lib/cms/queries";
 import type { simpleBlogCard } from "@/lib/interface";
 import {
   IMAGE_BLUR_DATA_URL,
-  isBundledPlaceholderSrc,
+  cmsImageUnoptimized,
   resolveContentImageSrc,
 } from "../../lib/imagePlaceholder";
 import { travelGuideCategories } from "../../lib/travelGuidesCategories";
+
+function hasValidArticleSlug(article: simpleBlogCard): boolean {
+  return typeof article.currentSlug === "string" && article.currentSlug.trim().length > 0;
+}
 
 export const revalidate = 300;
 
@@ -58,7 +62,7 @@ function ArticleCard({
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           placeholder="blur"
           blurDataURL={IMAGE_BLUR_DATA_URL}
-          unoptimized={isBundledPlaceholderSrc(src)}
+          unoptimized={cmsImageUnoptimized(src)}
         />
         <div
           className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-80 dark:from-black/60"
@@ -86,8 +90,10 @@ function ArticleCard({
 export default async function ArticlesPage() {
   const db = getCmsDbOrNull();
   const cmsArticles = db ? await listBlogs(db) : [];
-  const articles: simpleBlogCard[] = cmsArticles.length > 0 ? cmsArticles : getShowcaseBlogCards();
+  const rawArticles: simpleBlogCard[] = cmsArticles.length > 0 ? cmsArticles : getShowcaseBlogCards();
+  const articles = rawArticles.filter(hasValidArticleSlug);
   const [featured, ...rest] = articles;
+  const featuredHeroSrc = featured ? resolveContentImageSrc(featured.titleImageUrl) : "";
 
   return (
     <>
@@ -166,7 +172,7 @@ export default async function ArticlesPage() {
                   >
                     <div className="relative min-h-[14rem] overflow-hidden sm:min-h-[18rem] lg:min-h-[22rem]">
                       <Image
-                        src={resolveContentImageSrc(featured.titleImageUrl)}
+                        src={featuredHeroSrc}
                         alt={featured.title}
                         fill
                         className="object-cover transition duration-700 group-hover:scale-[1.02]"
@@ -174,7 +180,7 @@ export default async function ArticlesPage() {
                         priority
                         placeholder="blur"
                         blurDataURL={IMAGE_BLUR_DATA_URL}
-                        unoptimized={isBundledPlaceholderSrc(resolveContentImageSrc(featured.titleImageUrl))}
+                        unoptimized={cmsImageUnoptimized(featuredHeroSrc)}
                       />
                       <div
                         className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-black/10 lg:to-black/55"

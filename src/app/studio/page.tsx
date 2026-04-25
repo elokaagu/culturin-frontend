@@ -4,12 +4,15 @@ import Header from "@/app/components/Header";
 import SiteFooter from "@/app/components/SiteFooter";
 import StudioManager from "@/app/studio/StudioManager";
 import { getCurrentAdminState } from "@/lib/studio/admin";
-import { getSupabaseAdmin } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 export const dynamic = "force-dynamic";
 
 async function getStudioCounts() {
-  const db = getSupabaseAdmin();
+  const db = getSupabaseAdminOrNull();
+  if (!db) {
+    return { blogs: 0, videos: 0, providers: 0 };
+  }
   const [blogs, videos, providers] = await Promise.all([
     db.from("cms_blogs").select("id", { count: "exact", head: true }),
     db.from("cms_videos").select("id", { count: "exact", head: true }),
