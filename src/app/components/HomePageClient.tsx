@@ -177,9 +177,23 @@ export default function HomePageClient({
           </div>
         </section>
 
+        {/* Full-bleed cinematic handoff: soft gradient + masked blur between hero and Discover */}
+        <div className="relative left-1/2 -ml-[50vw] w-screen max-w-[100vw] overflow-hidden" aria-hidden>
+          <div className="pointer-events-none relative h-16 w-full sm:h-24 md:h-28">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neutral-200/55 to-neutral-50 dark:from-transparent dark:via-zinc-950/90 dark:to-black" />
+            <div
+              className="absolute inset-0 supports-[backdrop-filter]:backdrop-blur-2xl"
+              style={{
+                maskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 100%)",
+              }}
+            />
+          </div>
+        </div>
+
         <section
           id="discover"
-          className="scroll-mt-[var(--header-offset)] border-y border-neutral-200 bg-neutral-50 py-8 sm:py-10 dark:border-white/10 dark:bg-black"
+          className="scroll-mt-[var(--header-offset)] -mt-10 border-b border-neutral-200 bg-neutral-50 pb-8 pt-4 sm:-mt-14 sm:pb-10 sm:pt-6 dark:border-white/10 dark:bg-black"
           aria-labelledby="explore-world-heading"
         >
           <div className={containerClass}>
