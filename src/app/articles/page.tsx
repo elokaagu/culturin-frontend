@@ -1,84 +1,102 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { Link } from "next-view-transitions";
 
-import TravelGuidesCategoryGrid from "../components/TravelGuidesCategoryGrid";
-import { ContentPageShell } from "../components/layout/ContentPageShell";
-import { BackToHomeLink } from "../components/nav/BackToHomeLink";
+import Header from "../components/Header";
+import { getShowcaseBlogCards } from "../../lib/cms/showcaseContent";
+import { getCmsDbOrNull } from "../../lib/cms/server";
+import { listBlogs } from "../../lib/cms/queries";
 import {
-  getArticlesLandingPage,
-  type ArticlesLandingCmsStatus,
-} from "../../lib/cms/articlesLandingPage";
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "../../lib/imagePlaceholder";
 
 export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getArticlesLandingPage();
-  const description =
-    page.intro.length > 160 ? `${page.intro.slice(0, 157)}…` : page.intro;
-
   return {
-    title: `${page.headline} | Culturin`,
-    description,
-    openGraph: {
-      title: page.headline,
-      description,
-    },
+    title: "Travel Guides | Culturin",
+    description: "Explore editorial travel guides, cultural stories, and local inspiration from around the world.",
   };
-}
-
-function CmsStatusNote({ status }: { status: ArticlesLandingCmsStatus }) {
-  if (process.env.NODE_ENV !== "development") return null;
-  if (status === "ok") return null;
-
-  const messages: Record<ArticlesLandingCmsStatus, string> = {
-    missing_base_url:
-      "CMS: set NEXT_PUBLIC_CMS_BASE_URL to load the hub headline and intro from your API.",
-    bad_response:
-      "CMS: the pages API returned an unexpected shape or non-OK status; showing bundled fallbacks.",
-    network_error:
-      "CMS: network error while fetching the landing page; showing bundled fallbacks.",
-    ok: "",
-  };
-
-  return (
-    <aside
-      className="mb-2 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-950 dark:text-amber-100"
-      role="status"
-    >
-      {messages[status]}
-    </aside>
-  );
 }
 
 export default async function ArticlesPage() {
-  const page = await getArticlesLandingPage();
+  const db = getCmsDbOrNull();
+  const cmsArticles = db ? await listBlogs(db) : [];
+  const articles = cmsArticles.length > 0 ? cmsArticles : getShowcaseBlogCards();
+  const [featured, ...rest] = articles;
 
   return (
-    <ContentPageShell
-      mainClassName="min-h-screen bg-black pb-20 pt-[var(--header-offset)] text-white"
-      innerClassName="flex w-full max-w-[78rem] flex-col gap-0 px-4 sm:px-7 lg:px-8"
-    >
-      <CmsStatusNote status={page.cmsStatus} />
-      <nav aria-label="Back to home" className="mb-6 mt-2 flex justify-start sm:mb-7">
-        <BackToHomeLink className="inline-flex items-center gap-2 rounded-lg text-sm font-medium text-amber-400/90 transition-colors hover:text-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400/70" />
-      </nav>
+    <>
+      <Header />
+      <main className="min-h-screen bg-black pb-20 pt-[var(--header-offset)] text-white">
+        <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
+          <header className="mb-8 border-b border-white/10 pb-8 sm:mb-10">
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Travel Guides</h1>
+            <p className="mt-3 max-w-3xl text-base leading-relaxed text-white/65 sm:text-lg">
+              Stories, city insights, and cultural guides to help you explore with more context and less noise.
+            </p>
+          </header>
 
-      <header className="mb-7 border-b border-white/10 pb-7 sm:mb-8 sm:pb-8">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_1fr] md:items-end md:gap-10">
-          <h1
-            id="article-heading"
-            className="m-0 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl lg:text-[3.45rem]"
-          >
-            {page.headline}
-          </h1>
-          <p className="m-0 max-w-xl text-base leading-relaxed text-white/62 md:justify-self-end md:text-right lg:text-[1.72rem] lg:leading-[1.25]">
-            {page.intro}
-          </p>
+          {featured ? (
+            <Link href={`/articles/${featured.currentSlug}`} className="group mb-8 block overflow-hidden rounded-2xl border border-white/10 bg-neutral-950 no-underline sm:mb-10">
+              <div className="relative aspect-[16/8] w-full overflow-hidden">
+                <Image
+                  src={resolveContentImageSrc(featured.titleImageUrl)}
+                  alt={featured.title}
+                  fill
+                  className="object-cover transition duration-500 group-hover:scale-[1.02]"
+                  sizes="100vw"
+                  placeholder="blur"
+                  blurDataURL={IMAGE_BLUR_DATA_URL}
+                  unoptimized={isBundledPlaceholderSrc(resolveContentImageSrc(featured.titleImageUrl))}
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              </div>
+              <div className="p-5 sm:p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-amber-400/80">Featured guide</p>
+                <h2 className="mt-2 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
+                  {featured.title}
+                </h2>
+                <p className="mt-3 max-w-3xl text-base leading-relaxed text-white/75">{featured.summary}</p>
+              </div>
+            </Link>
+          ) : null}
+
+          {rest.length > 0 ? (
+            <section aria-label="Latest guides">
+              <h2 className="mb-4 text-xl font-semibold tracking-tight text-white/90 sm:text-2xl">Latest guides</h2>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {rest.map((article) => (
+                  <Link
+                    key={article.currentSlug}
+                    href={`/articles/${article.currentSlug}`}
+                    className="group overflow-hidden rounded-xl border border-white/10 bg-neutral-950/70 no-underline"
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden">
+                      <Image
+                        src={resolveContentImageSrc(article.titleImageUrl)}
+                        alt={article.title}
+                        fill
+                        className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        placeholder="blur"
+                        blurDataURL={IMAGE_BLUR_DATA_URL}
+                        unoptimized={isBundledPlaceholderSrc(resolveContentImageSrc(article.titleImageUrl))}
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="line-clamp-2 text-lg font-semibold leading-tight text-white">{article.title}</h3>
+                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-white/70">{article.summary}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          ) : null}
         </div>
-      </header>
-
-      <section aria-label="Guide categories" className="w-full min-w-0 pb-2">
-        <TravelGuidesCategoryGrid />
-      </section>
-    </ContentPageShell>
+      </main>
+    </>
   );
 }

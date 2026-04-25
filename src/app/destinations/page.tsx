@@ -9,36 +9,40 @@ const destinationsCount = destinations.length;
 
 export const metadata: Metadata = {
   title: "Destinations | Culturin",
-  description: "Explore places around the world with Culturin. Hover a destination to see a preview.",
+  description: "Explore destinations around the world with custom local insight from Culturin.",
 };
 
 export default function DestinationsPage() {
   return (
     <ContentPageShell
-      innerClassName="w-full max-w-7xl flex flex-col gap-0 px-4 sm:px-6"
-      mainClassName="flex min-h-screen justify-center bg-white px-0 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
+      innerClassName="w-full max-w-7xl px-4 sm:px-6"
+      mainClassName="min-h-screen bg-black px-0 pb-16 pt-[var(--header-offset)] text-white"
     >
-      <div className="mb-6 flex items-center justify-between gap-4 pt-4 sm:pt-5">
-        <h1 className="m-0 text-2xl font-semibold tracking-tight sm:text-3xl">Destinations</h1>
-        <p className="m-0 hidden text-sm text-neutral-500 sm:block dark:text-white/55">
-          <span className="rounded-md bg-neutral-100 px-2 py-0.5 font-mono text-xs text-neutral-700 dark:bg-white/10 dark:text-white/80">
+      <div className="mb-8 border-b border-white/10 pb-6 pt-6">
+        <nav className="mb-5" aria-label="Breadcrumb">
+          <Link href="/" className="text-sm font-medium text-amber-300/95 no-underline hover:underline">
+            Home
+          </Link>
+          <span className="px-1 text-white/35" aria-hidden>
+            /
+          </span>
+          <span className="text-sm text-white/60">Destinations</span>
+        </nav>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="max-w-2xl">
+            <h1 className="m-0 text-3xl tracking-tight sm:text-5xl">Destinations</h1>
+            <p className="m-0 mt-3 text-base leading-relaxed text-white/70 sm:text-lg">
+              Browse cities, discover local context, and open detailed destination pages with tailored recommendations.
+            </p>
+          </div>
+          <p className="m-0 text-sm text-white/60">
+            <span className="rounded-md bg-white/10 px-2 py-0.5 font-mono text-xs text-white/90">
             {destinationsCount}
-          </span>{" "}
+            </span>{" "}
           places
-        </p>
+          </p>
+        </div>
       </div>
-      <nav className="mb-6" aria-label="Breadcrumb">
-        <Link
-          href="/"
-          className="text-sm font-medium text-amber-800 no-underline hover:underline dark:text-amber-300/95"
-        >
-          Home
-        </Link>
-        <span className="px-1 text-neutral-400" aria-hidden>
-          /
-        </span>
-        <span className="text-sm text-neutral-600 dark:text-white/60">Destinations</span>
-      </nav>
       <DestinationsClient />
     </ContentPageShell>
   );

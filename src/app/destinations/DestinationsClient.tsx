@@ -10,14 +10,15 @@ import {
   getDestinationBySlug,
   groupDestinationsByLetter,
 } from "../../lib/destinationsData";
+import { getDestinationContent } from "../../lib/destinationContent";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 
 const nameRowClass = (isActive: boolean) =>
   [
     "block w-full py-1.5 text-left text-2xl font-light tracking-tight no-underline transition-colors sm:py-2 sm:text-3xl md:text-4xl",
     isActive
-      ? "text-neutral-900 dark:text-white"
-      : "text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300",
+      ? "text-white"
+      : "text-white/45 hover:text-white/75",
   ].join(" ");
 
 const stickyTop = "top-[calc(var(--header-offset)+0.5rem)]";
@@ -29,9 +30,11 @@ function DestinationPreviewImage({
   destination: (typeof destinations)[0];
   className?: string;
 }) {
+  const content = getDestinationContent(destination.slug);
+
   return (
     <div
-      className={`relative aspect-[3/4] w-full max-w-sm overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-800 sm:max-w-md ${className}`}
+      className={`relative aspect-[3/4] w-full max-w-sm overflow-hidden rounded-2xl bg-neutral-900 sm:max-w-md ${className}`}
     >
       <Image
         src={destination.imageUrl}
@@ -43,9 +46,10 @@ function DestinationPreviewImage({
         blurDataURL={IMAGE_BLUR_DATA_URL}
       />
       {destination.country ? (
-        <p className="absolute bottom-0 left-0 right-0 m-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3 text-sm font-medium text-white">
-          {destination.country}
-        </p>
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent px-4 py-3">
+          <p className="m-0 text-sm font-medium text-white">{destination.country}</p>
+          {content?.vibe ? <p className="m-0 mt-1 text-xs text-white/75">{content.vibe}</p> : null}
+        </div>
       ) : null}
     </div>
   );
@@ -97,7 +101,7 @@ export default function DestinationsClient() {
             onClick={() =>
               sectionRefs.current[L]?.scrollIntoView({ behavior: "smooth", block: "start" })
             }
-            className="min-w-[1.5rem] shrink-0 rounded px-1.5 py-0.5 text-center text-xs font-medium uppercase tracking-wider text-neutral-500 transition hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-400 dark:text-white/55 dark:hover:text-white lg:min-w-0 lg:px-0.5 lg:py-0.5 lg:text-left"
+            className="min-w-[1.5rem] shrink-0 rounded px-1.5 py-0.5 text-center text-xs font-medium uppercase tracking-wider text-white/45 transition hover:text-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-400 lg:min-w-0 lg:px-0.5 lg:py-0.5 lg:text-left"
           >
             {L}
           </button>
@@ -118,7 +122,7 @@ export default function DestinationsClient() {
                 sectionRefs.current[L] = el;
               }}
             >
-              <h2 className="m-0 mb-4 text-5xl font-extralight text-neutral-300 sm:text-6xl dark:text-white/20">
+              <h2 className="m-0 mb-4 text-5xl font-extralight text-white/25 sm:text-6xl">
                 {L}
               </h2>
               <ul className="m-0 list-none p-0" role="list">
@@ -155,10 +159,10 @@ export default function DestinationsClient() {
               key={preview.slug}
               destination={preview}
             />
-            <p className="mt-2 text-sm text-neutral-500 dark:text-white/50">
+            <p className="mt-2 text-sm text-white/55">
               {hoveredSlug
                 ? `View ${preview.name} details`
-                : "Hover a place to see it here — click through for more"}
+                : "Hover a destination to preview it, then open the full guide"}
             </p>
           </div>
         )}

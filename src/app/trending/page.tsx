@@ -1,44 +1,170 @@
-/* eslint-disable react/no-unescaped-entities */
-"use client";
+import type { Metadata } from "next";
+import Image from "next/image";
+import { Link } from "next-view-transitions";
 
-import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import { simpleBlogCard } from "@/lib/interface";
-import { getCmsBrowserClient } from "../../lib/cms/browser";
-import { listBlogs } from "../../lib/cms/queries";
-import { ArticleCardFromBlog } from "@/components/cms/ArticleCard";
+import { getCmsDbOrNull } from "../../lib/cms/server";
+import { listBlogs, listProviders, listVideos } from "../../lib/cms/queries";
+import {
+  getShowcaseBlogCards,
+  getShowcaseProviderCards,
+  getShowcaseVideoCards,
+} from "../../lib/cms/showcaseContent";
+import {
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+  resolveVideoThumbnailSrc,
+} from "../../lib/imagePlaceholder";
 
-export default function Trending() {
-  const [data, setData] = useState<simpleBlogCard[]>([]);
+export const revalidate = 120;
 
-  useEffect(() => {
-    async function fetchData() {
-      const db = getCmsBrowserClient();
-      if (!db) return;
-      setData(await listBlogs(db));
-    }
-    void fetchData();
-  }, []);
+export const metadata: Metadata = {
+  title: "Trending | Culturin",
+  description: "What is trending now across travel stories, curated experiences, and videos.",
+};
+
+function TrendingSection({
+  title,
+  countLabel,
+  children,
+}: {
+  title: string;
+  countLabel: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="mt-10">
+      <header className="mb-4 flex items-center justify-between">
+        <h2 className="text-xl font-semibold tracking-tight text-white sm:text-2xl">{title}</h2>
+        <span className="text-xs font-medium uppercase tracking-[0.12em] text-white/45">{countLabel}</span>
+      </header>
+      {children}
+    </section>
+  );
+}
+
+export default async function TrendingPage() {
+  const db = getCmsDbOrNull();
+  const [blogsFromCms, videosFromCms, providersFromCms] = db
+    ? await Promise.all([listBlogs(db), listVideos(db), listProviders(db)])
+    : [[], [], []];
+
+  const blogs = blogsFromCms.length > 0 ? blogsFromCms : getShowcaseBlogCards();
+  const videos = videosFromCms.length > 0 ? videosFromCms : getShowcaseVideoCards();
+  const providers = providersFromCms.length > 0 ? providersFromCms : getShowcaseProviderCards();
 
   return (
     <>
       <Header />
-      <div className="flex min-h-full flex-col items-center bg-background px-10 py-10 pt-[var(--header-offset)] text-foreground max-[428px]:items-start max-[428px]:pl-0">
-        <div className="flex w-full cursor-pointer flex-col items-start pr-5 max-[428px]:ml-0 max-[428px]:mt-5 max-[428px]:w-full">
-          <h1 className="text-2xl max-[428px]:ml-7">Trending</h1>
+      <main className="min-h-screen bg-black pb-20 pt-[var(--header-offset)] text-white">
+        <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
+          <header className="border-b border-white/10 pb-8">
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Trending</h1>
+            <p className="mt-3 max-w-3xl text-base leading-relaxed text-white/65 sm:text-lg">
+              What the Culturin community is reading, watching, and booking right now.
+            </p>
+          </header>
+
+          <TrendingSection title="Trending stories" countLabel={`${blogs.length} stories`}>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {blogs.slice(0, 6).map((story) => {
+                const imageSrc = resolveContentImageSrc(story.titleImageUrl);
+                return (
+                  <Link
+                    key={story.currentSlug}
+                    href={`/articles/${story.currentSlug}`}
+                    className="group overflow-hidden rounded-xl border border-white/10 bg-neutral-950/80 no-underline"
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-900">
+                      <Image
+                        src={imageSrc}
+                        alt={story.title}
+                        fill
+                        className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        placeholder="blur"
+                        blurDataURL={IMAGE_BLUR_DATA_URL}
+                        unoptimized={isBundledPlaceholderSrc(imageSrc)}
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="line-clamp-2 text-lg font-semibold leading-tight text-white">{story.title}</h3>
+                      <p className="mt-2 line-clamp-2 text-sm text-white/70">{story.summary}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </TrendingSection>
+
+          <TrendingSection title="Trending videos" countLabel={`${videos.length} videos`}>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {videos.slice(0, 6).map((video) => {
+                const imageSrc = resolveVideoThumbnailSrc(video.videoThumbnailUrl);
+                return (
+                  <Link
+                    key={video.currentSlug}
+                    href={`/stream?play=${video.currentSlug}`}
+                    className="group overflow-hidden rounded-xl border border-white/10 bg-neutral-950/80 no-underline"
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-900">
+                      <Image
+                        src={imageSrc}
+                        alt={video.title}
+                        fill
+                        className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        placeholder="blur"
+                        blurDataURL={IMAGE_BLUR_DATA_URL}
+                        unoptimized={isBundledPlaceholderSrc(imageSrc)}
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="line-clamp-2 text-lg font-semibold leading-tight text-white">{video.title}</h3>
+                      <p className="mt-1 text-sm text-white/65">{video.uploader}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </TrendingSection>
+
+          <TrendingSection title="Trending experiences" countLabel={`${providers.length} experiences`}>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {providers.slice(0, 6).map((provider) => {
+                const imageSrc = resolveContentImageSrc(provider.bannerImage?.image?.url);
+                return (
+                  <Link
+                    key={provider.slug}
+                    href={`/providers/${provider.slug}`}
+                    className="group overflow-hidden rounded-xl border border-white/10 bg-neutral-950/80 no-underline"
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-900">
+                      <Image
+                        src={imageSrc}
+                        alt={provider.bannerImage?.image?.alt || provider.eventName || provider.name || "Experience"}
+                        fill
+                        className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        placeholder="blur"
+                        blurDataURL={IMAGE_BLUR_DATA_URL}
+                        unoptimized={isBundledPlaceholderSrc(imageSrc)}
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="line-clamp-2 text-lg font-semibold leading-tight text-white">
+                        {provider.eventName || provider.name}
+                      </h3>
+                      {provider.name ? <p className="mt-1 text-sm text-white/65">{provider.name}</p> : null}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </TrendingSection>
         </div>
-        <div className="mb-5 flex w-full flex-col items-start pr-5 max-[428px]:ml-[3.75rem] max-[428px]:w-full">
-          <p className="text-xl text-muted-foreground">Trending on Culturin</p>
-        </div>
-        <div
-          className="mx-auto grid w-[80%] grid-cols-1 place-items-center gap-5 py-5 max-[428px]:w-full max-[428px]:p-5 min-[800px]:grid-cols-3"
-          style={{ lineHeight: 2 }}
-        >
-          {data.map((card) => (
-            <ArticleCardFromBlog key={card.currentSlug} card={card} layout="grid" />
-          ))}
-        </div>
-      </div>
+      </main>
     </>
   );
 }

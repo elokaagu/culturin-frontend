@@ -2,10 +2,9 @@
 
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
-import { Link } from "next-view-transitions";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
-import { Bookmark, Share2, Clock, ChevronRight } from "lucide-react";
+import { Bookmark, Share2, Clock } from "lucide-react";
 
 import { useAppAuth } from "../../components/SupabaseAuthProvider";
 import Header from "../../components/Header";
@@ -41,9 +40,6 @@ function estimateReadMinutesFromBody(body: unknown): number {
   return Math.max(1, Math.min(60, Math.round(words / 200) || 1));
 }
 
-const breadcrumbLinkClass =
-  "inline-flex items-center text-sm font-medium text-amber-400/90 no-underline transition hover:text-amber-300/95 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-amber-500/50";
-
 const proseLinkClass =
   "font-medium text-amber-400/90 underline decoration-amber-400/35 underline-offset-[3px] transition hover:text-amber-200 hover:decoration-amber-200/50";
 
@@ -58,12 +54,12 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
     () => ({
       block: {
         h2: ({ children }) => (
-          <h2 className="mt-10 scroll-mt-24 text-2xl font-semibold leading-snug tracking-tight text-white sm:text-[1.65rem]">
+          <h2 className="mt-10 scroll-mt-24 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-[2.2rem]">
             {children}
           </h2>
         ),
         h3: ({ children }) => (
-          <h3 className="mt-8 scroll-mt-24 text-xl font-semibold leading-snug text-white/95">
+          <h3 className="mt-8 scroll-mt-24 text-2xl font-semibold leading-snug text-white/95">
             {children}
           </h3>
         ),
@@ -178,7 +174,7 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
       <main className="min-h-screen bg-black text-white antialiased selection:bg-amber-500/30">
         <article itemScope itemType="https://schema.org/Article">
           <section className="relative w-full pt-[var(--header-offset)]">
-            <div className="relative aspect-[16/10] min-h-[18rem] w-full sm:aspect-[16/8] sm:min-h-[22rem] lg:min-h-[30rem]">
+            <div className="relative aspect-[16/9] min-h-[18rem] w-full sm:min-h-[24rem] lg:min-h-[35rem]">
               <Image
                 src={coverSrc}
                 alt={data.title ? `${data.title} — cover` : "Article cover"}
@@ -194,35 +190,20 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
             </div>
           </section>
 
-          <div className="mx-auto flex w-full max-w-2xl flex-col gap-8 px-4 py-8 sm:gap-10 sm:px-6 sm:py-10">
-            <nav
-              className="flex min-w-0 items-center gap-0.5 text-sm text-white/40"
-              aria-label="Breadcrumb"
-            >
-              <Link href="/" className={breadcrumbLinkClass}>
-                Home
-              </Link>
-              <ChevronRight className="h-4 w-4 shrink-0 text-white/25" aria-hidden />
-              <Link href="/articles" className={breadcrumbLinkClass}>
-                Travel guides
-              </Link>
-              <ChevronRight className="h-4 w-4 shrink-0 text-white/25" aria-hidden />
-              <span className="line-clamp-1 pl-0.5 text-sm font-medium text-white/50">{data.title}</span>
-            </nav>
-
-            <header className="flex flex-col gap-4 sm:gap-5">
+          <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-8 px-4 py-8 sm:gap-10 sm:px-6 sm:py-10">
+            <header className="flex flex-col gap-4">
               <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-amber-400/75">
                 Travel guide
               </p>
               <h1
-                className="m-0 text-[1.6rem] font-medium leading-tight tracking-tight text-white sm:text-[1.9rem] md:text-[2.1rem]"
+                className="m-0 text-[2rem] font-semibold leading-[1.04] tracking-tight text-white sm:text-[2.7rem]"
                 itemProp="headline"
               >
                 {data.title}
               </h1>
               {data.summary ? (
                 <p
-                  className="m-0 max-w-2xl text-base font-normal leading-relaxed text-[#9a9a9a] sm:text-lg"
+                  className="m-0 max-w-3xl text-lg font-normal leading-relaxed text-white/72"
                   itemProp="description"
                 >
                   {data.summary}
@@ -246,15 +227,12 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
               </div>
             </header>
 
-            <div
-              className="mx-auto w-full max-w-[min(100%,38rem)] pt-2 [&>blockquote:first-child]:!mt-0 [&>h2:first-child]:!mt-0 [&>h3:first-child]:!mt-0 [&>h4:first-child]:!mt-0 [&>p:first-child]:!mt-0 [&>p+p]:mt-4 [&>ul:first-child]:!mt-0"
-              itemProp="articleBody"
-            >
+            <div className="border-t border-white/10 pt-8" itemProp="articleBody">
               <PortableText value={data.body as PortableTextBlock[]} components={portableTextComponents} />
             </div>
 
             <div
-              className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-8 sm:mt-12"
+              className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-7 sm:mt-10"
               aria-label="Article actions"
             >
               <p className="m-0 text-sm font-medium text-white/40">Save or share this guide</p>
