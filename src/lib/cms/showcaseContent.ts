@@ -1,5 +1,6 @@
 import type {
   fullBlog,
+  fullProvider,
   fullVideo,
   providerHeroCard,
   simpleBlogCard,
@@ -324,41 +325,121 @@ const SHOWCASE_VIDEOS: Record<string, ShowcaseVideo> = {
   },
 };
 
-const SHOWCASE_PROVIDERS: providerHeroCard[] = [
-  {
-    name: "Culturin Collective",
-    eventName: "Sunrise food trail",
-    slug: "sunrise-food-trail",
-    bannerImage: {
-      image: {
-        url: IMAGES.texture,
-        alt: "A curated culinary experience with local hosts",
+type ShowcaseProvider = {
+  card: providerHeroCard;
+  full: fullProvider;
+};
+
+const SHOWCASE_PROVIDERS: Record<string, ShowcaseProvider> = {
+  "sunrise-food-trail": {
+    card: {
+      name: "Culturin Collective",
+      eventName: "Sunrise food trail",
+      slug: "sunrise-food-trail",
+      bannerImage: {
+        image: {
+          url: IMAGES.texture,
+          alt: "A curated culinary experience with local hosts",
+        },
+      },
+    },
+    full: {
+      name: "Culturin Collective",
+      eventName: "Sunrise food trail",
+      slug: "sunrise-food-trail",
+      description:
+        "A local-led morning route through independent bakeries, markets, and hidden breakfast spots. Designed for travelers who want stories with their coffee.",
+      location: "London, United Kingdom",
+      contactEmail: "hello@culturin.example",
+      contactPhone: "+44 20 7946 0123",
+      contactWebsite: "https://culturin.example/sunrise-food-trail",
+      prices: [35, 55, 80],
+      images: [
+        { _id: "showcase-sunrise-1", url: IMAGES.texture, dimensions: { width: 1200, height: 800 } },
+        { _id: "showcase-sunrise-2", url: IMAGES.fitness, dimensions: { width: 1200, height: 800 } },
+        { _id: "showcase-sunrise-3", url: IMAGES.portrait, dimensions: { width: 1200, height: 800 } },
+      ],
+      bannerImage: {
+        image: {
+          url: IMAGES.texture,
+          alt: "A curated culinary experience with local hosts",
+        },
       },
     },
   },
-  {
-    name: "Local Lens Studio",
-    eventName: "Street culture photo walk",
-    slug: "street-culture-photo-walk",
-    bannerImage: {
-      image: {
-        url: IMAGES.fitness,
-        alt: "Participants exploring city streets during a guided photo walk",
+  "street-culture-photo-walk": {
+    card: {
+      name: "Local Lens Studio",
+      eventName: "Street culture photo walk",
+      slug: "street-culture-photo-walk",
+      bannerImage: {
+        image: {
+          url: IMAGES.fitness,
+          alt: "Participants exploring city streets during a guided photo walk",
+        },
+      },
+    },
+    full: {
+      name: "Local Lens Studio",
+      eventName: "Street culture photo walk",
+      slug: "street-culture-photo-walk",
+      description:
+        "Capture local neighborhoods through a community-first lens with guided prompts, portrait moments, and storytelling stops.",
+      location: "Lagos, Nigeria",
+      contactEmail: "bookings@locallens.example",
+      contactPhone: "+234 800 555 4433",
+      contactWebsite: "https://culturin.example/street-culture-photo-walk",
+      prices: [45, 70, 110],
+      images: [
+        { _id: "showcase-photo-1", url: IMAGES.fitness, dimensions: { width: 1200, height: 800 } },
+        { _id: "showcase-photo-2", url: IMAGES.texture, dimensions: { width: 1200, height: 800 } },
+        { _id: "showcase-photo-3", url: IMAGES.portrait, dimensions: { width: 1200, height: 800 } },
+      ],
+      bannerImage: {
+        image: {
+          url: IMAGES.fitness,
+          alt: "Participants exploring city streets during a guided photo walk",
+        },
       },
     },
   },
-  {
-    name: "Roots & Routes",
-    eventName: "Hidden neighbourhood stories",
-    slug: "hidden-neighbourhood-stories",
-    bannerImage: {
-      image: {
-        url: IMAGES.portrait,
-        alt: "A guided local storytelling experience",
+  "hidden-neighbourhood-stories": {
+    card: {
+      name: "Roots & Routes",
+      eventName: "Hidden neighbourhood stories",
+      slug: "hidden-neighbourhood-stories",
+      bannerImage: {
+        image: {
+          url: IMAGES.portrait,
+          alt: "A guided local storytelling experience",
+        },
+      },
+    },
+    full: {
+      name: "Roots & Routes",
+      eventName: "Hidden neighbourhood stories",
+      slug: "hidden-neighbourhood-stories",
+      description:
+        "An intimate walk through overlooked neighborhoods, meeting community historians and makers who bring local culture to life.",
+      location: "Lisbon, Portugal",
+      contactEmail: "hello@rootsroutes.example",
+      contactPhone: "+351 21 900 1234",
+      contactWebsite: "https://culturin.example/hidden-neighbourhood-stories",
+      prices: [30, 50, 75],
+      images: [
+        { _id: "showcase-roots-1", url: IMAGES.portrait, dimensions: { width: 1200, height: 800 } },
+        { _id: "showcase-roots-2", url: IMAGES.texture, dimensions: { width: 1200, height: 800 } },
+        { _id: "showcase-roots-3", url: IMAGES.fitness, dimensions: { width: 1200, height: 800 } },
+      ],
+      bannerImage: {
+        image: {
+          url: IMAGES.portrait,
+          alt: "A guided local storytelling experience",
+        },
       },
     },
   },
-];
+};
 
 /** Shown on the home page when the CMS returns no blog rows. */
 export function getShowcaseBlogCards(): simpleBlogCard[] {
@@ -372,7 +453,7 @@ export function getShowcaseVideoCards(): videoCard[] {
 
 /** Shown on the home page when the CMS returns no provider rows. */
 export function getShowcaseProviderCards(): providerHeroCard[] {
-  return SHOWCASE_PROVIDERS;
+  return Object.values(SHOWCASE_PROVIDERS).map((p) => p.card);
 }
 
 export function getShowcaseFullBlog(slug: string): fullBlog | null {
@@ -385,4 +466,8 @@ export function getShowcaseFullVideo(slug: string): fullVideo | null {
 
 export function getShowcaseFullVideos(): fullVideo[] {
   return Object.values(SHOWCASE_VIDEOS).map((v) => v.full);
+}
+
+export function getShowcaseFullProvider(slug: string): fullProvider | null {
+  return SHOWCASE_PROVIDERS[slug]?.full ?? null;
 }

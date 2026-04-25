@@ -3,14 +3,18 @@ import { notFound } from "next/navigation";
 
 import { getCmsDbOrNull } from "../../../lib/cms/server";
 import { getProviderBySlug } from "../../../lib/cms/queries";
+import { getShowcaseFullProvider } from "../../../lib/cms/showcaseContent";
 import type { fullProvider } from "@/lib/interface";
 import { normalizeSlugParam } from "../../../lib/slug";
 import ProviderDetailClient from "./ProviderDetailClient";
 
 async function getProvider(slug: string): Promise<fullProvider | null> {
   const db = getCmsDbOrNull();
-  if (!db) return null;
-  return getProviderBySlug(db, slug);
+  if (db) {
+    const fromDb = await getProviderBySlug(db, slug);
+    if (fromDb) return fromDb;
+  }
+  return getShowcaseFullProvider(slug);
 }
 
 export async function generateMetadata({
