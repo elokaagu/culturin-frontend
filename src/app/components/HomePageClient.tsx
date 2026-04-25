@@ -180,22 +180,22 @@ export default function HomePageClient({
 
         <section
           id="discover"
-          className="scroll-mt-[var(--header-offset)] border-y border-neutral-200 bg-neutral-50 py-8 sm:py-10"
+          className="scroll-mt-[var(--header-offset)] border-y border-white/10 bg-black py-8 sm:py-10"
           aria-labelledby="explore-world-heading"
         >
           <div className={containerClass}>
             <header className="mb-5 flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1 pr-2">
-                <h2 id="explore-world-heading" className="text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl">
+                <h2 id="explore-world-heading" className="text-xl font-semibold tracking-tight text-white sm:text-2xl">
                   Explore the World
                 </h2>
-                <p className="mt-1 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:mt-1.5 sm:text-[0.95rem]">
+                <p className="mt-1 max-w-2xl text-sm leading-relaxed text-white/60 sm:mt-1.5 sm:text-[0.95rem]">
                   A snapshot of places, cultures, and stories to inspire your next trip.
                 </p>
               </div>
               <Link
                 href="/trending"
-                className="inline-flex min-h-[34px] min-w-[4.25rem] items-center justify-center rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white no-underline transition-colors hover:bg-neutral-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-500"
+                className="inline-flex min-h-[34px] min-w-[4.25rem] items-center justify-center rounded-full border border-white/20 bg-white/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white no-underline transition-colors hover:bg-white/[0.14] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
               >
                 See all
               </Link>
@@ -204,15 +204,15 @@ export default function HomePageClient({
               <ExploreWorldRail stories={exploreWorldStories} />
             ) : (
               <div
-                className="rounded-xl border border-neutral-200 bg-white px-4 py-10 text-center shadow-none sm:px-6"
+                className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-10 text-center shadow-none sm:px-6"
                 role="status"
               >
-                <p className="text-sm text-neutral-600 sm:text-base">
+                <p className="text-sm text-white/70 sm:text-base">
                   No stories are available yet. Check back soon or open the full trending feed.
                 </p>
                 <Link
                   href="/trending"
-                  className="mt-5 inline-flex min-h-[38px] min-w-[8.5rem] items-center justify-center rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white no-underline transition-colors hover:bg-neutral-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-500"
+                  className="mt-5 inline-flex min-h-[38px] min-w-[8.5rem] items-center justify-center rounded-full border border-white/20 bg-white/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white no-underline transition-colors hover:bg-white/[0.14] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
                 >
                   Go to trending
                 </Link>

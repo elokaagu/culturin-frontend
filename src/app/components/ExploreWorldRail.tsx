@@ -30,9 +30,9 @@ export default function ExploreWorldRail({ stories }: ExploreWorldRailProps) {
             <article key={story.currentSlug} role="listitem" className="min-w-0">
               <Link
                 href={`/articles/${story.currentSlug}`}
-                className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50"
+                className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               >
-                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg bg-neutral-200 ring-1 ring-neutral-200">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg bg-neutral-900 ring-1 ring-white/15">
                   <Image
                     src={thumbSrc}
                     alt={story.title}
@@ -45,10 +45,10 @@ export default function ExploreWorldRail({ stories }: ExploreWorldRailProps) {
                     unoptimized={isBundledPlaceholderSrc(thumbSrc)}
                   />
                 </div>
-                <h3 className="mt-3 line-clamp-2 text-[1.04rem] font-medium leading-tight tracking-tight text-neutral-900">
+                <h3 className="mt-3 line-clamp-2 text-[1.04rem] font-medium leading-tight tracking-tight text-white">
                   {story.title}
                 </h3>
-                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-700">{subtitle}</p>
+                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-white/70">{subtitle}</p>
               </Link>
             </article>
           );
@@ -58,9 +58,9 @@ export default function ExploreWorldRail({ stories }: ExploreWorldRailProps) {
           <article role="listitem" className="min-w-0">
             <Link
               href={`/articles/${featuredStory.currentSlug}`}
-              className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50"
+              className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-neutral-200 ring-1 ring-neutral-200">
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-neutral-900 ring-1 ring-white/15">
                 <Image
                   src={resolveContentImageSrc(featuredStory.titleImageUrl)}
                   alt={featuredStory.title}
@@ -74,10 +74,10 @@ export default function ExploreWorldRail({ stories }: ExploreWorldRailProps) {
                 />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/45 to-transparent" />
               </div>
-              <h3 className="mt-3 line-clamp-2 text-[2.8rem] font-medium leading-[0.98] tracking-tight text-neutral-900 sm:text-[3.1rem]">
+              <h3 className="mt-3 line-clamp-2 text-[2.8rem] font-medium leading-[0.98] tracking-tight text-white sm:text-[3.1rem]">
                 {featuredStory.title}
               </h3>
-              <p className="mt-2 max-w-4xl text-[1.06rem] leading-relaxed text-neutral-800">
+              <p className="mt-2 max-w-4xl text-[1.06rem] leading-relaxed text-white/80">
                 {(featuredStory.summary || "").trim() || "Move through culture differently with stories, local guides, and curated perspectives."}
               </p>
             </Link>

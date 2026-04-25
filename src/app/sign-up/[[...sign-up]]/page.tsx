@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
 export default function LegacySignUpRoute() {
-  redirect("/register");
+  redirect("/login?mode=signup");
 }
 

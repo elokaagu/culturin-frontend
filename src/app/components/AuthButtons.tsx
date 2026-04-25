@@ -2,6 +2,8 @@
 
 import { Link } from "next-view-transitions";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 
 import { useAppAuth, useSupabaseAuth } from "./SupabaseAuthProvider";
 
@@ -62,14 +64,22 @@ type GoogleSignInButtonProps = {
   className?: string;
   /** `header`: compact top-bar style. `default`: wide solid card (e.g. mobile menu). */
   appearance?: "default" | "header";
+  /** When true, trigger Google OAuth directly; otherwise route to `/login`. */
+  directOAuth?: boolean;
 };
 
 /**
  * Google OAuth (Supabase) + signed-in account menu.
  */
-export function GoogleSignInButton({ className, appearance = "default" }: GoogleSignInButtonProps) {
+export function GoogleSignInButton({
+  className,
+  appearance = "default",
+  directOAuth = false,
+}: GoogleSignInButtonProps) {
   const { data: session, status } = useAppAuth();
   const { supabase } = useSupabaseAuth();
+  const pathname = usePathname();
+  const router = useTransitionRouter();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -84,7 +94,15 @@ export function GoogleSignInButton({ className, appearance = "default" }: Google
   const triggerCn = [base, className].filter(Boolean).join(" ");
 
   const signInGoogle = useCallback(() => {
-    if (!supabase) return;
+    if (!directOAuth) {
+      const next = pathname || "/";
+      router.push(`/login?next=${encodeURIComponent(next)}`);
+      return;
+    }
+    if (!supabase) {
+      router.push("/login");
+      return;
+    }
     const origin = typeof window !== "undefined" ? window.location.origin : "";
     void supabase.auth.signInWithOAuth({
       provider: "google",
@@ -92,7 +110,7 @@ export function GoogleSignInButton({ className, appearance = "default" }: Google
         redirectTo: `${origin}/auth/callback`,
       },
     });
-  }, [supabase]);
+  }, [directOAuth, pathname, router, supabase]);
 
   if (status === "loading") {
     const loadCn = [

@@ -242,7 +242,7 @@ export default function Header() {
             Close
           </button>
           <div
-            className="mx-auto mt-20 w-[min(100%-2rem,32rem)] px-2"
+            className="absolute left-1/2 top-[20vh] w-[min(92vw,34rem)] -translate-x-1/2"
             onClick={(e) => e.stopPropagation()}
             role="presentation"
           >

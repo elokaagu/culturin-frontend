@@ -54,23 +54,23 @@ export default async function ArticlesPage() {
 
   return (
     <ContentPageShell
-      mainClassName="min-h-screen bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
-      innerClassName="flex w-full max-w-6xl flex-col gap-0 px-4 sm:px-6 lg:px-8"
+      mainClassName="min-h-screen bg-black pb-20 pt-[var(--header-offset)] text-white"
+      innerClassName="flex w-full max-w-[78rem] flex-col gap-0 px-4 sm:px-7 lg:px-8"
     >
       <CmsStatusNote status={page.cmsStatus} />
-      <nav aria-label="Back to home" className="mb-5 flex justify-start sm:mb-6">
-        <BackToHomeLink className="inline-flex items-center gap-2 rounded-lg text-sm font-semibold text-amber-700 transition-colors hover:text-amber-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500/70 dark:text-amber-400/90 dark:hover:text-amber-300" />
+      <nav aria-label="Back to home" className="mb-6 mt-2 flex justify-start sm:mb-7">
+        <BackToHomeLink className="inline-flex items-center gap-2 rounded-lg text-sm font-medium text-amber-400/90 transition-colors hover:text-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400/70" />
       </nav>
 
-      <header className="mb-8 border-b border-neutral-200 pb-8 sm:mb-10 sm:pb-10 dark:border-white/10">
-        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between md:gap-8">
+      <header className="mb-7 border-b border-white/10 pb-7 sm:mb-8 sm:pb-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_1fr] md:items-end md:gap-10">
           <h1
             id="article-heading"
-            className="m-0 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
+            className="m-0 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl lg:text-[3.45rem]"
           >
             {page.headline}
           </h1>
-          <p className="m-0 max-w-xl text-base leading-relaxed text-neutral-600 md:text-right lg:text-lg dark:text-white/70">
+          <p className="m-0 max-w-xl text-base leading-relaxed text-white/62 md:justify-self-end md:text-right lg:text-[1.72rem] lg:leading-[1.25]">
             {page.intro}
           </p>
         </div>

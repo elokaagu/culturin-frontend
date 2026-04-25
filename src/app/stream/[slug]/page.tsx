@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import { getCmsDbOrNull } from "../../../lib/cms/server";
 import { getVideoBySlug } from "../../../lib/cms/queries";
 import { getShowcaseFullVideo } from "../../../lib/cms/showcaseContent";
 import type { fullVideo } from "@/lib/interface";
 import { normalizeSlugParam } from "../../../lib/slug";
-import VideoDetailClient from "./VideoDetailClient";
 
 async function getVideo(slug: string): Promise<fullVideo | null> {
   const db = getCmsDbOrNull();
@@ -37,9 +36,6 @@ export default async function StreamVideoPage({
 }: {
   params: { slug: string };
 }) {
-  const data = await getVideo(normalizeSlugParam(params.slug));
-  if (!data) {
-    notFound();
-  }
-  return <VideoDetailClient data={data} />;
+  const slug = normalizeSlugParam(params.slug);
+  redirect(`/stream?play=${encodeURIComponent(slug)}`);
 }

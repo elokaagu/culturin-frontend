@@ -36,7 +36,7 @@ export default function TopVideosRail({ videos }: TopVideosRailProps) {
               className="w-48 shrink-0 snap-center sm:w-52 md:w-56"
             >
               <Link
-                href={`/stream/${video.currentSlug}`}
+                href={`/stream?play=${video.currentSlug}`}
                 className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               >
                 <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-neutral-900 ring-1 ring-white/10 sm:rounded-2xl">

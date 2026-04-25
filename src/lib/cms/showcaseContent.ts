@@ -335,3 +335,7 @@ export function getShowcaseFullBlog(slug: string): fullBlog | null {
 export function getShowcaseFullVideo(slug: string): fullVideo | null {
   return SHOWCASE_VIDEOS[slug]?.full ?? null;
 }
+
+export function getShowcaseFullVideos(): fullVideo[] {
+  return Object.values(SHOWCASE_VIDEOS).map((v) => v.full);
+}

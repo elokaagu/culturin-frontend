@@ -55,6 +55,16 @@ export async function listVideos(db: CmsDb): Promise<videoCard[]> {
   return (data as CmsVideoRow[]).map(mapVideoRowToCard);
 }
 
+export async function listFullVideos(db: CmsDb): Promise<fullVideo[]> {
+  const { data, error } = await db
+    .from("cms_videos")
+    .select(videoSelect)
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+  if (error || !data) return [];
+  return (data as CmsVideoRow[]).map(mapVideoRowToFull);
+}
+
 export async function getVideoBySlug(db: CmsDb, slug: string): Promise<fullVideo | null> {
   const { data, error } = await db.from("cms_videos").select(videoSelect).eq("slug", slug).maybeSingle();
   if (error || !data) return null;
