@@ -6,10 +6,11 @@ import { useCallback, type ReactNode } from "react";
 
 import Header from "./Header";
 import SiteFooter from "./SiteFooter";
-import ExploreWorldRail from "./ExploreWorldRail";
+import ExploreWorldCountriesRail from "./ExploreWorldCountriesRail";
 import CuratedExperiencesRail from "./CuratedExperiencesRail";
 import TopVideosRail from "./TopVideosRail";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
+import { exploreWorldCountries } from "@/lib/exploreWorldCountries";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 
 type HomePageClientProps = {
@@ -101,15 +102,13 @@ function HomeSection({
 }
 
 export default function HomePageClient({
-  initialBlogs,
+  initialBlogs: _initialBlogs,
   initialVideos,
   initialProviders,
 }: HomePageClientProps) {
   const scrollToDiscover = useCallback(() => {
     document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" });
   }, []);
-
-  const exploreWorldStories = initialBlogs;
 
   return (
     <>
@@ -190,34 +189,17 @@ export default function HomePageClient({
                   Explore the World
                 </h2>
                 <p className="mt-1 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:mt-1.5 sm:text-[0.95rem] dark:text-white/60">
-                  A snapshot of places, cultures, and stories to inspire your next trip.
+                  Choose a country to open curated articles and guides for that place.
                 </p>
               </div>
               <Link
-                href="/trending"
+                href="/destinations"
                 className="inline-flex min-h-[34px] min-w-[4.25rem] items-center justify-center rounded-full border border-neutral-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-neutral-900 no-underline transition-colors hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:border-white/20 dark:bg-white/[0.08] dark:text-white dark:hover:bg-white/[0.14]"
               >
                 See all
               </Link>
             </header>
-            {exploreWorldStories.length > 0 ? (
-              <ExploreWorldRail stories={exploreWorldStories} />
-            ) : (
-              <div
-                className="rounded-xl border border-neutral-200 bg-white px-4 py-10 text-center shadow-none sm:px-6 dark:border-white/10 dark:bg-white/[0.04]"
-                role="status"
-              >
-                <p className="text-sm text-neutral-600 sm:text-base dark:text-white/70">
-                  No stories are available yet. Check back soon or open the full trending feed.
-                </p>
-                <Link
-                  href="/trending"
-                  className="mt-5 inline-flex min-h-[38px] min-w-[8.5rem] items-center justify-center rounded-full border border-neutral-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-neutral-900 no-underline transition-colors hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:border-white/20 dark:bg-white/[0.08] dark:text-white dark:hover:bg-white/[0.14]"
-                >
-                  Go to trending
-                </Link>
-              </div>
-            )}
+            <ExploreWorldCountriesRail countries={exploreWorldCountries} />
           </div>
         </section>
 

@@ -71,9 +71,11 @@ export default async function SearchResultsPage({
 }: {
   searchParams?: {
     query?: string;
+    /** Browse editorial stories by country/place (home “Explore the World”). */
+    country?: string;
   };
 }) {
-  const rawQuery = searchParams?.query || "";
+  const rawQuery = (searchParams?.country || searchParams?.query || "").trim();
   const query = normalizeQuery(rawQuery);
   const db = getCmsDbOrNull();
 
@@ -94,7 +96,11 @@ export default async function SearchResultsPage({
         <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
           <h1 className="text-3xl font-semibold tracking-tight">Search Results</h1>
           <p className="mt-2 text-sm text-neutral-600 dark:text-white/60">
-            {query ? `Showing results for "${rawQuery}"` : "Search articles, videos, and experiences."}
+            {searchParams?.country && rawQuery
+              ? `Stories and guides related to ${rawQuery}`
+              : query
+                ? `Showing results for "${rawQuery}"`
+                : "Search articles, videos, and experiences — or open a country from the home page."}
           </p>
 
           {!hasResults && query ? <EmptyResults query={rawQuery} /> : null}

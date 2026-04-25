@@ -23,7 +23,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
     card: {
       title: "Kyoto beyond the crowds: three walks that still feel like a secret",
       summary:
-        "Side streets, small temples, and teahouse districts where the city slows down — without the usual checklist.",
+        "Japan — side streets, small temples, and teahouse districts where Kyoto slows down — without the usual checklist.",
       currentSlug: "kyoto-quiet-corners",
       titleImageUrl: IMAGES.portrait,
     },
@@ -32,7 +32,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       title: "Kyoto beyond the crowds: three walks that still feel like a secret",
       currentSlug: "kyoto-quiet-corners",
       summary:
-        "Side streets, small temples, and teahouse districts where the city slows down — without the usual checklist.",
+        "Japan — side streets, small temples, and teahouse districts where Kyoto slows down — without the usual checklist.",
       titleImageUrl: IMAGES.portrait,
       body: [
         {
@@ -101,7 +101,8 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
   "lisbon-light-and-tiles": {
     card: {
       title: "Lisbon in winter light: tiles, trams, and the long Atlantic afternoon",
-      summary: "A colour-forward weekend that stays walkable — miradouros, vintage shops, and seafood without the summer rush.",
+      summary:
+        "Portugal — a colour-forward Lisbon weekend that stays walkable: miradouros, vintage shops, and seafood without the summer rush.",
       currentSlug: "lisbon-light-and-tiles",
       titleImageUrl: IMAGES.fitness,
     },
@@ -110,7 +111,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       title: "Lisbon in winter light: tiles, trams, and the long Atlantic afternoon",
       currentSlug: "lisbon-light-and-tiles",
       summary:
-        "A colour-forward weekend that stays walkable — miradouros, vintage shops, and seafood without the summer rush.",
+        "Portugal — a colour-forward Lisbon weekend that stays walkable: miradouros, vintage shops, and seafood without the summer rush.",
       titleImageUrl: IMAGES.fitness,
       body: [
         {
@@ -156,7 +157,8 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
   "marrakech-rose-dusk": {
     card: {
       title: "Marrakech at rose dusk: souks, courtyards, and when to put the map away",
-      summary: "How to love the medina’s energy without burning out — rhythm, rest, and honest prices.",
+      summary:
+        "Morocco — how to love Marrakech’s medina energy without burning out — rhythm, rest, and honest prices.",
       currentSlug: "marrakech-rose-dusk",
       titleImageUrl: IMAGES.texture,
     },
@@ -164,7 +166,8 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       _id: "showcase-marrakech-rose-dusk",
       title: "Marrakech at rose dusk: souks, courtyards, and when to put the map away",
       currentSlug: "marrakech-rose-dusk",
-      summary: "How to love the medina’s energy without burning out — rhythm, rest, and honest prices.",
+      summary:
+        "Morocco — how to love Marrakech’s medina energy without burning out — rhythm, rest, and honest prices.",
       titleImageUrl: IMAGES.texture,
       body: [
         {
@@ -210,7 +213,8 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
   "patagonia-wind-trail": {
     card: {
       title: "Patagonia’s wind trail: how to plan a trek that respects the weather",
-      summary: "Layering, lodge spacing, and the one rule experienced hikers agree on before the first mile.",
+      summary:
+        "Argentina — Patagonia trekking: layering, lodge spacing, and the one rule experienced hikers agree on before the first mile.",
       currentSlug: "patagonia-wind-trail",
       titleImageUrl: IMAGES.portrait,
     },
@@ -218,7 +222,8 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       _id: "showcase-patagonia-wind-trail",
       title: "Patagonia’s wind trail: how to plan a trek that respects the weather",
       currentSlug: "patagonia-wind-trail",
-      summary: "Layering, lodge spacing, and the one rule experienced hikers agree on before the first mile.",
+      summary:
+        "Argentina — Patagonia trekking: layering, lodge spacing, and the one rule experienced hikers agree on before the first mile.",
       titleImageUrl: IMAGES.portrait,
       body: [
         {
@@ -254,6 +259,286 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
               _type: "span",
               _key: "p3c",
               text: "Build buffer days. If a window opens, you will be glad you stayed flexible. If it does not, you will still be warm, dry, and ready for the next sunrise.",
+              marks: [],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  "iceland-coastal-quiet": {
+    card: {
+      title: "Iceland’s coastal quiet: hot pools, long light, and when to skip the crowds",
+      summary:
+        "Iceland — ring-road pacing, weather-wise stops, and small harbours where the North Atlantic feels personal.",
+      currentSlug: "iceland-coastal-quiet",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1504893524553-b855314a8b66?auto=format&fit=crop&w=1200&q=80",
+    },
+    full: {
+      _id: "showcase-iceland-coastal-quiet",
+      title: "Iceland’s coastal quiet: hot pools, long light, and when to skip the crowds",
+      currentSlug: "iceland-coastal-quiet",
+      summary:
+        "Iceland — ring-road pacing, weather-wise stops, and small harbours where the North Atlantic feels personal.",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1504893524553-b855314a8b66?auto=format&fit=crop&w=1200&q=80",
+      body: [
+        {
+          _type: "block",
+          _key: "i1",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "i1c",
+              text: "Iceland rewards short drives and long pauses. Build days around daylight, wind, and one generous soak — the landscape will rearrange your sense of time.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "i2",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "i2c", text: "A kinder pace", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "i3",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "i3c",
+              text: "Skip the checklist. Choose two anchors per day — a coastal walk, a pool, a bakery in a fishing village — and let weather be the editor.",
+              marks: [],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  "italy-lake-como-slow": {
+    card: {
+      title: "Italy’s lake rhythm: Como slow days, ferries, and aperitivo on the water",
+      summary:
+        "Italy — Lake Como without the rush: ferry hops, shaded walks, and the art of doing very little extremely well.",
+      currentSlug: "italy-lake-como-slow",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=1200&q=80",
+    },
+    full: {
+      _id: "showcase-italy-lake-como-slow",
+      title: "Italy’s lake rhythm: Como slow days, ferries, and aperitivo on the water",
+      currentSlug: "italy-lake-como-slow",
+      summary:
+        "Italy — Lake Como without the rush: ferry hops, shaded walks, and the art of doing very little extremely well.",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=1200&q=80",
+      body: [
+        {
+          _type: "block",
+          _key: "t1",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "t1c",
+              text: "The lake teaches interval thinking: cross by boat, rest in shade, cross again. Italy here is quieter than the cities — but no less vivid.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "t2",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "t2c", text: "One slow arc", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "t3",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "t3c",
+              text: "Pick a base, then let ferries choose the corners. Afternoons are for swimming, reading, or watching light change on the opposite shore.",
+              marks: [],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  "mexico-oaxaca-market-dawn": {
+    card: {
+      title: "Mexico’s Oaxaca dawn: markets, mole, and the hour before the city wakes",
+      summary:
+        "Mexico — Oaxaca through scent and sound: early mercados, family kitchens, and the walk home before the heat arrives.",
+      currentSlug: "mexico-oaxaca-market-dawn",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1512813195386-3cf96fad478d?auto=format&fit=crop&w=1200&q=80",
+    },
+    full: {
+      _id: "showcase-mexico-oaxaca-market-dawn",
+      title: "Mexico’s Oaxaca dawn: markets, mole, and the hour before the city wakes",
+      currentSlug: "mexico-oaxaca-market-dawn",
+      summary:
+        "Mexico — Oaxaca through scent and sound: early mercados, family kitchens, and the walk home before the heat arrives.",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1512813195386-3cf96fad478d?auto=format&fit=crop&w=1200&q=80",
+      body: [
+        {
+          _type: "block",
+          _key: "x1",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "x1c",
+              text: "Oaxaca is a morning city. Arrive before steam rises from the comal, carry small bills, and let vendors suggest what is best that hour.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "x2",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "x2c", text: "Taste as map", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "x3",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "x3c",
+              text: "Mexico rewards curiosity over conquest. One neighborhood, one market, one long lunch — then repeat tomorrow with a different door.",
+              marks: [],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  "south-africa-cape-light": {
+    card: {
+      title: "South Africa’s Cape light: peninsula drives, wind, and long ocean afternoons",
+      summary:
+        "South Africa — Cape Town and the peninsula: cliff roads, wine pockets, and when to stop chasing the perfect photo.",
+      currentSlug: "south-africa-cape-light",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1580060839134-75a51eda4105?auto=format&fit=crop&w=1200&q=80",
+    },
+    full: {
+      _id: "showcase-south-africa-cape-light",
+      title: "South Africa’s Cape light: peninsula drives, wind, and long ocean afternoons",
+      currentSlug: "south-africa-cape-light",
+      summary:
+        "South Africa — Cape Town and the peninsula: cliff roads, wine pockets, and when to stop chasing the perfect photo.",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1580060839134-75a51eda4105?auto=format&fit=crop&w=1200&q=80",
+      body: [
+        {
+          _type: "block",
+          _key: "s1",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "s1c",
+              text: "The Cape is contrast: warm stone, cold water, bright wind. Plan fewer stops and longer looks — the light will do the rest.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "s2",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "s2c", text: "Drive as meditation", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "s3",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "s3c",
+              text: "South Africa asks for patience on the road and generosity at the table. Give both, and the peninsula opens in chapters instead of clips.",
+              marks: [],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  "vietnam-hanoi-street-dawn": {
+    card: {
+      title: "Vietnam’s Hanoi streets: dawn phở, old-quarter corners, and the rhythm of scooters",
+      summary:
+        "Vietnam — Hanoi before rush hour: soup steam, sidewalk stools, and the blocks where history still feels lived-in.",
+      currentSlug: "vietnam-hanoi-street-dawn",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1559592419-2d97adc4792d?auto=format&fit=crop&w=1200&q=80",
+    },
+    full: {
+      _id: "showcase-vietnam-hanoi-street-dawn",
+      title: "Vietnam’s Hanoi streets: dawn phở, old-quarter corners, and the rhythm of scooters",
+      currentSlug: "vietnam-hanoi-street-dawn",
+      summary:
+        "Vietnam — Hanoi before rush hour: soup steam, sidewalk stools, and the blocks where history still feels lived-in.",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1559592419-2d97adc4792d?auto=format&fit=crop&w=1200&q=80",
+      body: [
+        {
+          _type: "block",
+          _key: "v1",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "v1c",
+              text: "Hanoi is best met early. Follow steam, then shade, then coffee. Vietnam here is intimate — a bowl, a plastic stool, a whole city waking beside you.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "v2",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "v2c", text: "Walk small grids", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "v3",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "v3c",
+              text: "Pick three blocks and repeat them at different hours. Streets change personality; your map should not pretend otherwise.",
               marks: [],
             },
           ],
