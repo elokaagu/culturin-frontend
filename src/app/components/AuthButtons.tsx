@@ -13,7 +13,7 @@ const solidTriggerClass =
   "flex w-full min-w-0 cursor-pointer flex-col items-center justify-center rounded-[10px] bg-white px-2.5 py-2.5 font-semibold text-black outline-none transition-colors duration-200 ease-out hover:bg-neutral-200 focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-black max-[428px]:w-[100px]";
 
 const headerTriggerClass =
-  "inline-flex h-9 min-w-[5rem] max-w-[10rem] shrink-0 items-center justify-center gap-1.5 rounded-md border border-neutral-200/90 bg-white px-3.5 text-sm font-medium text-neutral-900 shadow-sm transition-colors outline-none hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/20 dark:bg-white/5 dark:text-white dark:shadow-none dark:hover:bg-white/10 dark:focus-visible:ring-amber-400/40 dark:focus-visible:ring-offset-neutral-950";
+  "inline-flex h-10 min-w-[5rem] max-w-[10rem] shrink-0 items-center justify-center gap-1.5 rounded-md border border-neutral-200/90 bg-white px-3.5 text-sm font-medium text-neutral-900 shadow-sm transition-colors outline-none hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/20 dark:bg-white/5 dark:text-white dark:shadow-none dark:hover:bg-white/10 dark:focus-visible:ring-amber-400/40 dark:focus-visible:ring-offset-neutral-950";
 
 const menuPanelClass =
   "absolute right-0 top-full z-[100] mt-1.5 w-[min(100vw-1rem,14rem)] rounded-lg border border-neutral-200/90 bg-white py-1 shadow-lg dark:border-white/15 dark:bg-neutral-950 dark:shadow-black/30";

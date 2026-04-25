@@ -36,10 +36,10 @@ const navLinkClass = (active: boolean) =>
   ].join(" ");
 
 const iconButtonClass =
-  "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-200/80 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:text-white/80 dark:hover:bg-white/10 dark:focus-visible:ring-amber-400/50";
+  "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-200/80 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:text-white/80 dark:hover:bg-white/10 dark:focus-visible:ring-amber-400/50";
 
 const nearbyPillClass =
-  "inline-flex h-9 shrink-0 items-center justify-center rounded-full bg-neutral-900 px-3.5 text-xs font-semibold text-white transition hover:bg-neutral-800 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200";
+  "inline-flex h-10 shrink-0 items-center justify-center rounded-full bg-neutral-900 px-3.5 text-xs font-semibold text-white transition hover:bg-neutral-800 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200";
 
 function SearchIcon({ className }: { className?: string }) {
   return (
@@ -80,9 +80,9 @@ function Logo() {
       <Image
         src="/culturin_logo.svg"
         alt="Culturin"
-        width={100}
-        height={22}
-        className="h-5 w-auto max-w-[7rem] opacity-95 transition-opacity group-hover:opacity-100 sm:h-6 sm:max-w-[7.5rem]"
+        width={84}
+        height={18}
+        className="h-4 w-auto max-w-[5.75rem] opacity-95 transition-opacity group-hover:opacity-100 sm:h-[1.1rem] sm:max-w-[6.25rem]"
         unoptimized
         priority
       />
@@ -168,11 +168,11 @@ export default function Header() {
             : " supports-[backdrop-filter]:bg-white/95 dark:supports-[backdrop-filter]:bg-neutral-950/90")
         }
       >
-        <div className="mx-auto flex h-[var(--header-bar-height)] max-w-[1720px] items-center justify-between gap-3 px-3 sm:gap-4 sm:px-5 md:px-8">
-          <div className="flex min-w-0 flex-1 items-center gap-4 sm:gap-8 md:gap-10">
+        <div className="mx-auto flex h-[var(--header-bar-height)] max-w-[1720px] flex-nowrap items-center justify-between gap-3 px-3 sm:gap-4 sm:px-5 md:px-8">
+          <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-4 sm:gap-8 md:gap-10">
             <Logo />
             <nav
-              className="hidden min-w-0 items-center gap-5 md:flex md:gap-6"
+              className="hidden min-w-0 items-center gap-5 whitespace-nowrap md:flex md:gap-6"
               aria-label="Main navigation"
             >
               <LeftNavLink href="/destinations">Destinations</LeftNavLink>
@@ -181,7 +181,7 @@ export default function Header() {
             </nav>
           </div>
 
-          <div className="flex flex-none items-center gap-0.5 sm:gap-1.5">
+          <div className="flex flex-none flex-nowrap items-center gap-0.5 whitespace-nowrap sm:gap-1.5">
             <button
               type="button"
               onClick={openSearch}
@@ -208,7 +208,7 @@ export default function Header() {
               <GoogleSignInButton appearance="header" />
             </div>
 
-            <div className="flex h-9 w-9 items-center justify-center text-neutral-800 md:hidden dark:text-white">
+            <div className="flex h-10 w-10 items-center justify-center text-neutral-800 md:hidden dark:text-white">
               <Hamburger
                 toggled={mobileMenuOpen}
                 toggle={() => setMobileMenuOpen((o) => !o)}

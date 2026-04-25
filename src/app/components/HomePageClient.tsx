@@ -30,7 +30,7 @@ const heroShellClass =
   "mx-auto w-full max-w-7xl px-4 sm:px-6 sm:pb-2 sm:pt-2 md:pt-4";
 
 const homeSectionSeeAllClass =
-  "shrink-0 self-center rounded-full bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white no-underline transition-colors hover:bg-neutral-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 min-h-[44px] min-w-[4.5rem] inline-flex items-center justify-center dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200";
+  "shrink-0 self-center inline-flex min-h-[38px] min-w-[4.5rem] items-center justify-center rounded-full border border-white/20 bg-white/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white no-underline transition-colors hover:bg-white/[0.14] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400";
 
 function EmptyRail({
   message,
@@ -43,10 +43,10 @@ function EmptyRail({
 }) {
   return (
     <div
-      className="rounded-xl border border-neutral-200 bg-white px-4 py-10 text-center shadow-sm sm:px-6 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none"
+      className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-10 text-center shadow-none sm:px-6"
       role="status"
     >
-      <p className="text-sm text-neutral-600 sm:text-base dark:text-white/70">{message}</p>
+      <p className="text-sm text-white/70 sm:text-base">{message}</p>
       <Link href={href} className={`mt-5 ${homeSectionSeeAllClass}`}>
         {linkLabel}
       </Link>
@@ -72,19 +72,19 @@ function HomeSection({
   return (
     <section
       id={id}
-      className="border-t border-neutral-200 py-10 sm:py-12 dark:border-white/10"
+      className="py-8 sm:py-10"
       aria-labelledby={headingId}
     >
       <div className={containerClass}>
-        <header className="flex items-start justify-between gap-4">
+        <header className="mb-4 flex items-start justify-between gap-4 sm:mb-5">
           <div className="min-w-0 flex-1 pr-2">
             <h2
               id={headingId}
-              className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl dark:text-white"
+              className="text-xl font-semibold tracking-tight text-white sm:text-2xl"
             >
               {title}
             </h2>
-            <p className="mt-1 max-w-2xl text-sm leading-relaxed text-neutral-500 sm:mt-1.5 sm:text-base dark:text-white/55">
+            <p className="mt-1 max-w-2xl text-sm leading-relaxed text-white/55 sm:mt-1.5 sm:text-[0.95rem]">
               {description}
             </p>
           </div>
@@ -92,7 +92,7 @@ function HomeSection({
             See all
           </Link>
         </header>
-        <div className="mt-6 min-h-[1px] sm:mt-7">
+        <div className="min-h-[1px]">
           {children}
         </div>
       </div>
@@ -178,7 +178,7 @@ export default function HomePageClient({
           </div>
         </section>
 
-        <div id="discover" className="scroll-mt-[var(--header-offset)]">
+        <div id="discover" className="scroll-mt-[var(--header-offset)] bg-black pb-4 pt-2 sm:pt-3">
           <HomeSection
             id="trending-stories"
             title="Trending stories"

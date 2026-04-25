@@ -7,7 +7,7 @@
 @layer base {
   :root {
     /* Main content `padding-top` below fixed header (slightly more than bar height). */
-    --header-bar-height: 3.5rem;
+    --header-bar-height: 3.9rem;
     --header-offset: calc(var(--header-bar-height) + 4.75rem);
     /* shadcn — HSL numbers only (no hsl() wrapper). */
     --background: 0 0% 98%;
