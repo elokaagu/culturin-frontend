@@ -2,10 +2,13 @@
 
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import { Bookmark, Share2, Clock } from "lucide-react";
 
+import { SaveFavoriteModal } from "../../components/detail/SaveFavoriteModal";
+import { ShareLinkModal } from "../../components/detail/ShareLinkModal";
 import { useAppAuth } from "../../components/SupabaseAuthProvider";
 import Header from "../../components/Header";
 import {
@@ -44,8 +47,12 @@ const proseLinkClass =
   "font-medium text-amber-400/90 underline decoration-amber-400/35 underline-offset-[3px] transition hover:text-amber-200 hover:decoration-amber-200/50";
 
 export default function ArticleClient({ data }: { data: fullBlog }) {
+  const pathname = usePathname();
   const { data: session, status } = useAppAuth();
   const [toast, setToast] = useState<ToastState>({ open: false });
+  const [activeModal, setActiveModal] = useState<"share" | "save" | null>(null);
+  const [pageUrl, setPageUrl] = useState("");
+  const [savePending, setSavePending] = useState(false);
 
   const coverSrc = useMemo(() => resolveContentImageSrc(data?.titleImageUrl), [data?.titleImageUrl]);
   const readMinutes = useMemo(() => estimateReadMinutesFromBody(data.body), [data.body]);
@@ -126,7 +133,17 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
     window.setTimeout(() => setToast({ open: false }), 3000);
   };
 
-  const handleSaveArticle = async () => {
+  const openShareModal = () => {
+    setPageUrl(typeof window !== "undefined" ? window.location.href : "");
+    setActiveModal("share");
+  };
+
+  const openSaveModal = () => {
+    setPageUrl(typeof window !== "undefined" ? window.location.href : "");
+    setActiveModal("save");
+  };
+
+  const performSaveArticle = async () => {
     if (status === "loading") return;
     if (status !== "authenticated" || !session?.user) {
       showToast({
@@ -135,6 +152,7 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
       });
       return;
     }
+    setSavePending(true);
     try {
       const res = await fetch("/api/save-article", {
         method: "POST",
@@ -142,29 +160,13 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
         body: JSON.stringify({ articleId: data._id }),
       });
       if (!res.ok) throw new Error("Failed to save the article.");
+      setActiveModal(null);
       showToast({ variant: "success", message: "Saved to your profile." });
     } catch (error) {
       console.error("Error saving article:", error);
       showToast({ variant: "error", message: "Could not save this article." });
-    }
-  };
-
-  const handleShareArticle = async () => {
-    const articleUrl = window.location.href;
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: data.title,
-          text: "Check out this story on Culturin.",
-          url: articleUrl,
-        });
-        return;
-      }
-      await navigator.clipboard.writeText(articleUrl);
-      showToast({ variant: "info", message: "Link copied to clipboard." });
-    } catch (error) {
-      console.error("Error sharing article:", error);
-      showToast({ variant: "error", message: "Could not share or copy link." });
+    } finally {
+      setSavePending(false);
     }
   };
 
@@ -239,7 +241,7 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
-                  onClick={handleSaveArticle}
+                  onClick={openSaveModal}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-amber-400/35 hover:bg-white/12 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:translate-y-px"
                 >
                   <Bookmark className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
@@ -247,7 +249,7 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
                 </button>
                 <button
                   type="button"
-                  onClick={handleShareArticle}
+                  onClick={openShareModal}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-amber-400/35 hover:bg-white/12 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:translate-y-px"
                 >
                   <Share2 className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
@@ -258,6 +260,38 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
           </div>
         </article>
       </main>
+
+      <ShareLinkModal
+        open={activeModal === "share"}
+        onClose={() => setActiveModal(null)}
+        url={pageUrl}
+        title={data.title}
+      />
+      <SaveFavoriteModal
+        open={activeModal === "save"}
+        onClose={() => setActiveModal(null)}
+        title="Save guide"
+        description={
+          status === "authenticated" && session?.user ? (
+            <>
+              Add <span className="font-medium text-white/90">&ldquo;{data.title}&rdquo;</span> to your saved articles so you can
+              return to it from your profile.
+            </>
+          ) : (
+            <>Sign in to save Culturin guides to your profile and pick them up on any device.</>
+          )
+        }
+        primaryAction={
+          status === "authenticated" && session?.user
+            ? { label: "Save to profile", onClick: performSaveArticle, pending: savePending }
+            : undefined
+        }
+        loginHref={pathname ? `/login?next=${encodeURIComponent(pathname)}` : "/login"}
+        onCopyLink={async () => {
+          const u = pageUrl || (typeof window !== "undefined" ? window.location.href : "");
+          if (u) await navigator.clipboard.writeText(u);
+        }}
+      />
 
       {toast.open ? (
         <div

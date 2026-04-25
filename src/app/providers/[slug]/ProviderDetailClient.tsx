@@ -2,8 +2,12 @@
 
 import Image from "next/image";
 import { Link } from "next-view-transitions";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 import Header from "../../components/Header";
+import { SaveFavoriteModal } from "../../components/detail/SaveFavoriteModal";
+import { ShareLinkModal } from "../../components/detail/ShareLinkModal";
 import type { fullProvider, imageAsset } from "@/lib/interface";
 import {
   IMAGE_BLUR_DATA_URL,
@@ -77,6 +81,21 @@ function formatPrice(value: number) {
 }
 
 export default function ProviderDetailClient({ data }: { data: fullProvider }) {
+  const pathname = usePathname();
+  const [shareOpen, setShareOpen] = useState(false);
+  const [saveOpen, setSaveOpen] = useState(false);
+  const [pageUrl, setPageUrl] = useState("");
+
+  const openShareModal = () => {
+    setPageUrl(typeof window !== "undefined" ? window.location.href : "");
+    setShareOpen(true);
+  };
+
+  const openSaveModal = () => {
+    setPageUrl(typeof window !== "undefined" ? window.location.href : "");
+    setSaveOpen(true);
+  };
+
   const bookUrl = externalBookHref(data.contactWebsite);
   const gallery = buildGallery(data);
   const subtitle = subtitleText(data);
@@ -111,13 +130,15 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
             <div className="flex items-center gap-2 text-sm font-medium text-white/80">
               <button
                 type="button"
-                className="rounded-lg px-3 py-1.5 underline underline-offset-2 transition hover:bg-white/10"
+                onClick={openShareModal}
+                className="rounded-lg px-3 py-1.5 underline underline-offset-2 transition hover:bg-white/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50"
               >
                 Share
               </button>
               <button
                 type="button"
-                className="rounded-lg px-3 py-1.5 underline underline-offset-2 transition hover:bg-white/10"
+                onClick={openSaveModal}
+                className="rounded-lg px-3 py-1.5 underline underline-offset-2 transition hover:bg-white/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50"
               >
                 Save
               </button>
@@ -324,6 +345,24 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
           </div>
         </div>
       </main>
+
+      <ShareLinkModal open={shareOpen} onClose={() => setShareOpen(false)} url={pageUrl} title={title} />
+      <SaveFavoriteModal
+        open={saveOpen}
+        onClose={() => setSaveOpen(false)}
+        title="Save experience"
+        description={
+          <>
+            Keep this curated experience handy. Profile saves for providers are on the way — for now, copy the link or sign in
+            so we can connect your account when the feature ships.
+          </>
+        }
+        loginHref={pathname ? `/login?next=${encodeURIComponent(pathname)}` : "/login"}
+        onCopyLink={async () => {
+          const u = pageUrl || (typeof window !== "undefined" ? window.location.href : "");
+          if (u) await navigator.clipboard.writeText(u);
+        }}
+      />
     </>
   );
 }
