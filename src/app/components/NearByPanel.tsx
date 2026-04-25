@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 import {
-  useCallback,
   useEffect,
   useId,
   useRef,

@@ -3,13 +3,13 @@
 import { Link } from "next-view-transitions";
 import { useSearchParams } from "next/navigation";
 import { useTransitionRouter } from "next-view-transitions";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 
 import { GoogleSignInButton } from "../components/AuthButtons";
 import Header from "../components/Header";
 import { useSupabaseAuth } from "../components/SupabaseAuthProvider";
 
-export default function LoginPage() {
+function LoginPageContent() {
   const { supabase } = useSupabaseAuth();
   const router = useTransitionRouter();
   const searchParams = useSearchParams();
@@ -215,5 +215,13 @@ export default function LoginPage() {
         </div>
       </main>
     </>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black pt-[var(--header-offset)]" />}>
+      <LoginPageContent />
+    </Suspense>
   );
 }
