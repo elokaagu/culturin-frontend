@@ -54,28 +54,29 @@ export default async function ArticlesPage() {
 
   return (
     <ContentPageShell
-      mainClassName="min-h-screen bg-white pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
-      innerClassName="flex w-full max-w-7xl flex-col gap-0 px-4 sm:px-6"
+      mainClassName="min-h-screen bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
+      innerClassName="flex w-full max-w-6xl flex-col gap-0 px-4 sm:px-6 lg:px-8"
     >
       <CmsStatusNote status={page.cmsStatus} />
-
-      <nav aria-label="Back to home" className="mb-2 flex justify-start sm:mb-0">
-        <BackToHomeLink />
+      <nav aria-label="Back to home" className="mb-5 flex justify-start sm:mb-6">
+        <BackToHomeLink className="inline-flex items-center gap-2 rounded-lg text-sm font-semibold text-amber-700 transition-colors hover:text-amber-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500/70 dark:text-amber-400/90 dark:hover:text-amber-300" />
       </nav>
 
-      <header className="mb-10 flex flex-col gap-5 pt-2 sm:mb-12 sm:pt-0 md:mb-14 md:flex-row md:items-end md:justify-between md:gap-8">
-        <h1
-          id="article-heading"
-          className="m-0 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
-        >
-          {page.headline}
-        </h1>
-        <p className="m-0 max-w-md text-base leading-relaxed text-neutral-600 md:max-w-lg md:shrink-0 md:text-right md:text-base lg:text-lg dark:text-white/70">
-          {page.intro}
-        </p>
+      <header className="mb-8 border-b border-neutral-200 pb-8 sm:mb-10 sm:pb-10 dark:border-white/10">
+        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between md:gap-8">
+          <h1
+            id="article-heading"
+            className="m-0 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
+          >
+            {page.headline}
+          </h1>
+          <p className="m-0 max-w-xl text-base leading-relaxed text-neutral-600 md:text-right lg:text-lg dark:text-white/70">
+            {page.intro}
+          </p>
+        </div>
       </header>
 
-      <section aria-label="Guide categories" className="w-full min-w-0">
+      <section aria-label="Guide categories" className="w-full min-w-0 pb-2">
         <TravelGuidesCategoryGrid />
       </section>
     </ContentPageShell>

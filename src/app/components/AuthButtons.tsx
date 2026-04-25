@@ -58,7 +58,7 @@ function useDismissOnEscapeAndOutside(
   }, [open, rootRef, setOpen, triggerRef]);
 }
 
-export type GoogleSignInButtonProps = {
+type GoogleSignInButtonProps = {
   className?: string;
   /** `header`: compact top-bar style. `default`: wide solid card (e.g. mobile menu). */
   appearance?: "default" | "header";

@@ -177,7 +177,6 @@ export default function Header() {
             >
               <LeftNavLink href="/destinations">Destinations</LeftNavLink>
               <LeftNavLink href="/articles">Travel Guides</LeftNavLink>
-              <LeftNavLink href="/create">For creators</LeftNavLink>
             </nav>
           </div>
 
