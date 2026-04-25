@@ -38,50 +38,49 @@ function ArticleCard({
 }) {
   const src = resolveContentImageSrc(article.titleImageUrl);
   const summary = (article.summary || "").trim();
+  const frameClass =
+    variant === "compact"
+      ? "min-h-[17rem] aspect-[3/4] sm:min-h-[19rem] sm:aspect-[2/3]"
+      : "min-h-[19rem] aspect-[3/4] sm:min-h-[21rem] sm:aspect-[2/3] lg:aspect-[3/4]";
 
   return (
     <Link
       href={`/articles/${article.currentSlug}`}
       className={[
-        "group flex flex-col overflow-hidden rounded-2xl border no-underline transition",
-        "border-neutral-200 bg-white shadow-sm hover:border-neutral-300 hover:shadow-md",
-        "dark:border-white/10 dark:bg-neutral-950/80 dark:shadow-none dark:hover:border-white/20 dark:hover:bg-neutral-950",
+        "group relative block overflow-hidden rounded-2xl border no-underline transition",
+        "border-neutral-200 bg-neutral-900 shadow-sm hover:border-neutral-300 hover:shadow-md",
+        "dark:border-white/10 dark:shadow-none dark:hover:border-white/25",
       ].join(" ")}
     >
-      <div
-        className={[
-          "relative w-full shrink-0 overflow-hidden bg-neutral-100 dark:bg-neutral-900",
-          variant === "compact" ? "aspect-[16/10]" : "aspect-[4/3] sm:aspect-[16/10]",
-        ].join(" ")}
-      >
+      <div className={["relative w-full overflow-hidden bg-neutral-900", frameClass].join(" ")}>
         <Image
           src={src}
           alt={article.title}
           fill
-          className="object-cover transition duration-500 group-hover:scale-[1.03]"
+          className="object-cover transition duration-500 group-hover:scale-[1.04]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           placeholder="blur"
           blurDataURL={IMAGE_BLUR_DATA_URL}
           unoptimized={cmsImageUnoptimized(src)}
         />
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-80 dark:from-black/60"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/15"
           aria-hidden
         />
-      </div>
-      <div className="flex min-h-0 flex-1 flex-col p-4 sm:p-5">
-        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-400/90">
-          Story
-        </span>
-        <h3 className="mt-2 line-clamp-3 text-lg font-semibold leading-snug tracking-tight text-neutral-900 dark:text-white sm:text-xl">
-          {article.title}
-        </h3>
-        {summary ? (
-          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-600 dark:text-white/70">{summary}</p>
-        ) : null}
-        <span className="mt-auto pt-4 text-xs font-medium text-neutral-500 group-hover:text-neutral-800 dark:text-white/50 dark:group-hover:text-white/80">
-          Read article →
-        </span>
+        <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col p-4 sm:p-5">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-300/95">
+            Story
+          </span>
+          <h3 className="mt-2 line-clamp-3 text-lg font-semibold leading-snug tracking-tight text-white drop-shadow-sm sm:text-xl">
+            {article.title}
+          </h3>
+          {summary ? (
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-white/85 drop-shadow-sm">{summary}</p>
+          ) : null}
+          <span className="mt-3 text-xs font-semibold text-white/90 underline decoration-white/40 underline-offset-2 transition group-hover:text-white group-hover:decoration-white/70">
+            Read article →
+          </span>
+        </div>
       </div>
     </Link>
   );
