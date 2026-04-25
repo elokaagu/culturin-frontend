@@ -92,12 +92,12 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-white pb-16 pt-[var(--header-offset)] text-neutral-900">
+      <main className="min-h-screen !bg-black pb-16 pt-[var(--header-offset)] !text-white">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           <nav className="mb-6 pt-4" aria-label="Breadcrumb">
             <Link
               href="/providers"
-              className="text-sm text-neutral-600 no-underline transition hover:text-neutral-900 focus-visible:outline focus-visible:ring-2 focus-visible:ring-neutral-400"
+              className="text-sm text-white/65 no-underline transition hover:text-white focus-visible:outline focus-visible:ring-2 focus-visible:ring-white/50"
             >
               ← All experiences
             </Link>
@@ -105,19 +105,19 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
 
           <header className="mb-6 flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h1 className="m-0 text-[1.95rem] font-semibold tracking-tight text-neutral-900 sm:text-[2.05rem]">{title}</h1>
-              {subtitle ? <p className="mt-2 text-base text-neutral-600">{subtitle}</p> : null}
+              <h1 className="m-0 text-[1.95rem] font-semibold tracking-tight text-white sm:text-[2.05rem]">{title}</h1>
+              {subtitle ? <p className="mt-2 text-base text-white/65">{subtitle}</p> : null}
             </div>
-            <div className="flex items-center gap-2 text-sm font-medium text-neutral-700">
+            <div className="flex items-center gap-2 text-sm font-medium text-white/80">
               <button
                 type="button"
-                className="rounded-lg px-3 py-1.5 underline underline-offset-2 transition hover:bg-neutral-100"
+                className="rounded-lg px-3 py-1.5 underline underline-offset-2 transition hover:bg-white/10"
               >
                 Share
               </button>
               <button
                 type="button"
-                className="rounded-lg px-3 py-1.5 underline underline-offset-2 transition hover:bg-neutral-100"
+                className="rounded-lg px-3 py-1.5 underline underline-offset-2 transition hover:bg-white/10"
               >
                 Save
               </button>
@@ -159,7 +159,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                     </div>
                   ))}
                   {secondaryGallery.length === 0 ? (
-                    <div className="col-span-2 flex min-h-[9.25rem] items-center justify-center rounded-lg border border-dashed border-neutral-300 bg-neutral-50 text-sm text-neutral-500 md:min-h-[13.3rem]">
+                    <div className="col-span-2 flex min-h-[9.25rem] items-center justify-center rounded-lg border border-dashed border-white/20 bg-white/5 text-sm text-white/60 md:min-h-[13.3rem]">
                       No additional photos
                     </div>
                   ) : null}
@@ -169,7 +169,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
               {hasMorePhotos ? (
                 <a
                   href="#all-photos"
-                  className="absolute bottom-4 right-4 inline-flex items-center rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-900 no-underline shadow-sm transition hover:bg-neutral-100 focus-visible:outline focus-visible:ring-2 focus-visible:ring-neutral-400"
+                  className="absolute bottom-4 right-4 inline-flex items-center rounded-lg border border-white/20 bg-black/80 px-3 py-2 text-sm font-medium text-white no-underline shadow-sm transition hover:bg-black focus-visible:outline focus-visible:ring-2 focus-visible:ring-white/50"
                 >
                   Show all photos
                 </a>
@@ -179,36 +179,36 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
 
           <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_23rem]">
             <section className="min-w-0">
-              <div className="border-b border-neutral-200 pb-6">
-                <h2 className="m-0 text-[1.9rem] font-semibold leading-tight text-neutral-900">{listingTitle}</h2>
-                <p className="mt-2 text-sm text-neutral-600">
+              <div className="border-b border-white/10 pb-6">
+                <h2 className="m-0 text-[1.9rem] font-semibold leading-tight text-white">{listingTitle}</h2>
+                <p className="mt-2 text-sm text-white/65">
                   {data.name ? `Hosted by ${data.name}` : "Hosted experience"} · Curated by Culturin
                 </p>
               </div>
 
-              <div className="mt-6 rounded-xl border border-neutral-200 px-5 py-4">
-                <p className="m-0 text-base font-semibold text-neutral-900">Guest favourite</p>
-                <p className="m-0 mt-1 text-sm text-neutral-600">
+              <div className="mt-6 rounded-xl border border-white/15 bg-black px-5 py-4">
+                <p className="m-0 text-base font-semibold text-white">Guest favourite</p>
+                <p className="m-0 mt-1 text-sm text-white/65">
                   One of the most loved curated experiences on Culturin.
                 </p>
               </div>
 
               {data.description ? (
-                <section className="border-b border-neutral-200 py-6" aria-labelledby="exp-about">
-                  <h3 id="exp-about" className="m-0 text-xl font-semibold text-neutral-900">
+                <section className="border-b border-white/10 py-6" aria-labelledby="exp-about">
+                  <h3 id="exp-about" className="m-0 text-xl font-semibold text-white">
                     About this experience
                   </h3>
-                  <p className="mb-0 mt-4 text-base leading-7 text-neutral-700">{data.description}</p>
+                  <p className="mb-0 mt-4 text-base leading-7 text-white/80">{data.description}</p>
                 </section>
               ) : null}
 
               <section className="py-6" aria-label="Contact information">
-                <h3 className="m-0 text-xl font-semibold text-neutral-900">Contact</h3>
-                <div className="mt-4 space-y-3 text-[0.96rem] text-neutral-700">
+                <h3 className="m-0 text-xl font-semibold text-white">Contact</h3>
+                <div className="mt-4 space-y-3 text-[0.96rem] text-white/75">
                   {data.contactEmail ? (
                     <p className="m-0">
                       Email:{" "}
-                      <a className="text-neutral-900 underline decoration-neutral-400 underline-offset-2" href={`mailto:${data.contactEmail}`}>
+                      <a className="text-white underline decoration-white/40 underline-offset-2" href={`mailto:${data.contactEmail}`}>
                         {data.contactEmail}
                       </a>
                     </p>
@@ -217,7 +217,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                     <p className="m-0">
                       Phone:{" "}
                       <a
-                        className="text-neutral-900 underline decoration-neutral-400 underline-offset-2"
+                        className="text-white underline decoration-white/40 underline-offset-2"
                         href={`tel:${data.contactPhone.replace(/\s+/g, "")}`}
                       >
                         {data.contactPhone}
@@ -228,7 +228,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                     <p className="m-0 break-all">
                       Website:{" "}
                       <a
-                        className="text-neutral-900 underline decoration-neutral-400 underline-offset-2"
+                        className="text-white underline decoration-white/40 underline-offset-2"
                         href={bookUrl || `https://${data.contactWebsite}`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -241,11 +241,11 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
               </section>
 
               {gallery.length > 0 ? (
-                <section id="all-photos" className="border-t border-neutral-200 pt-6" aria-label="All photos">
-                  <h3 className="m-0 text-xl font-semibold text-neutral-900">All photos</h3>
+                <section id="all-photos" className="border-t border-white/10 pt-6" aria-label="All photos">
+                  <h3 className="m-0 text-xl font-semibold text-white">All photos</h3>
                   <ul className="mt-4 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-3">
                     {gallery.map((g, i) => (
-                      <li key={g.key + i} className="relative overflow-hidden rounded-xl bg-neutral-100">
+                      <li key={g.key + i} className="relative overflow-hidden rounded-xl bg-neutral-900">
                         <div className="relative aspect-[4/3]">
                           <Image
                             src={g.src}
@@ -268,33 +268,33 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
             </section>
 
             <aside className="lg:sticky lg:top-[calc(var(--header-offset)+1.5rem)]">
-              <div className="mb-4 rounded-xl border border-pink-100 bg-pink-50/70 px-4 py-3 text-sm font-medium text-neutral-700">
+              <div className="mb-4 rounded-xl border border-pink-200/20 bg-pink-500/10 px-4 py-3 text-sm font-medium text-white/80">
                 Rare find! This experience is usually booked.
               </div>
-              <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-                <p className="m-0 text-2xl font-semibold text-neutral-900">
+              <div className="rounded-2xl border border-white/15 bg-black p-6 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
+                <p className="m-0 text-2xl font-semibold text-white">
                   {displayPrice ?? "Contact for pricing"}
-                  {displayPrice ? <span className="ml-1 text-base font-normal text-neutral-500">/ person</span> : null}
+                  {displayPrice ? <span className="ml-1 text-base font-normal text-white/60">/ person</span> : null}
                 </p>
                 {priceLine ? (
-                  <p className="mt-2 text-sm text-neutral-500" aria-label="Indicative pricing">
+                  <p className="mt-2 text-sm text-white/60" aria-label="Indicative pricing">
                     Other rates: {priceLine}
                   </p>
                 ) : null}
-                <div className="mt-5 overflow-hidden rounded-xl border border-neutral-300">
-                  <div className="grid grid-cols-2 divide-x divide-neutral-300 border-b border-neutral-300">
+                <div className="mt-5 overflow-hidden rounded-xl border border-white/20">
+                  <div className="grid grid-cols-2 divide-x divide-white/20 border-b border-white/20">
                     <div className="px-3 py-2.5">
-                      <p className="m-0 text-[0.64rem] font-semibold uppercase tracking-wide text-neutral-500">Check-in</p>
-                      <p className="m-0 mt-0.5 text-sm text-neutral-900">Flexible</p>
+                      <p className="m-0 text-[0.64rem] font-semibold uppercase tracking-wide text-white/55">Check-in</p>
+                      <p className="m-0 mt-0.5 text-sm text-white">Flexible</p>
                     </div>
                     <div className="px-3 py-2.5">
-                      <p className="m-0 text-[0.64rem] font-semibold uppercase tracking-wide text-neutral-500">Checkout</p>
-                      <p className="m-0 mt-0.5 text-sm text-neutral-900">Flexible</p>
+                      <p className="m-0 text-[0.64rem] font-semibold uppercase tracking-wide text-white/55">Checkout</p>
+                      <p className="m-0 mt-0.5 text-sm text-white">Flexible</p>
                     </div>
                   </div>
                   <div className="px-3 py-2.5">
-                    <p className="m-0 text-[0.64rem] font-semibold uppercase tracking-wide text-neutral-500">Guests</p>
-                    <p className="m-0 mt-0.5 text-sm text-neutral-900">1 guest</p>
+                    <p className="m-0 text-[0.64rem] font-semibold uppercase tracking-wide text-white/55">Guests</p>
+                    <p className="m-0 mt-0.5 text-sm text-white">1 guest</p>
                   </div>
                 </div>
 
@@ -312,13 +312,13 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                   {data.contactEmail ? (
                     <a
                       href={`mailto:${data.contactEmail}`}
-                      className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-neutral-300 bg-white px-5 text-sm font-semibold text-neutral-900 no-underline transition hover:bg-neutral-100 focus-visible:outline focus-visible:ring-2 focus-visible:ring-neutral-500"
+                      className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-white/20 bg-black px-5 text-sm font-semibold text-white no-underline transition hover:bg-white/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-white/50"
                     >
                       Ask a question
                     </a>
                   ) : null}
                 </div>
-                <p className="m-0 mt-3 text-center text-xs text-neutral-500">You won&apos;t be charged yet</p>
+                <p className="m-0 mt-3 text-center text-xs text-white/55">You won&apos;t be charged yet</p>
               </div>
             </aside>
           </div>
