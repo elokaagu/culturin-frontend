@@ -8,7 +8,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 import { Bookmark, Share2, Clock, ChevronRight } from "lucide-react";
 
 import { useAppAuth } from "../../components/SupabaseAuthProvider";
-import { DetailPageShell } from "../../components/detail/DetailPageShell";
+import Header from "../../components/Header";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,
@@ -174,116 +174,112 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
 
   return (
     <>
-      <DetailPageShell contentMaxClassName="max-w-2xl sm:max-w-2xl">
-        <nav
-          className="flex min-w-0 items-center gap-0.5 text-sm text-white/40"
-          aria-label="Breadcrumb"
-        >
-          <Link href="/" className={breadcrumbLinkClass}>
-            Home
-          </Link>
-          <ChevronRight className="h-4 w-4 shrink-0 text-white/25" aria-hidden />
-          <Link href="/articles" className={breadcrumbLinkClass}>
-            Travel guides
-          </Link>
-          <ChevronRight className="h-4 w-4 shrink-0 text-white/25" aria-hidden />
-          <span className="line-clamp-1 pl-0.5 text-sm font-medium text-white/50">{data.title}</span>
-        </nav>
-
-        <article
-          className="flex flex-col gap-8 sm:gap-10"
-          itemScope
-          itemType="https://schema.org/Article"
-        >
-          <header className="flex flex-col gap-4 sm:gap-5">
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-amber-400/75">
-              Travel guide
-            </p>
-            <h1
-              className="m-0 text-[1.6rem] font-medium leading-tight tracking-tight text-white sm:text-[1.9rem] md:text-[2.1rem]"
-              itemProp="headline"
-            >
-              {data.title}
-            </h1>
-            {data.summary ? (
-              <p
-                className="m-0 max-w-2xl text-base font-normal leading-relaxed text-[#9a9a9a] sm:text-lg"
-                itemProp="description"
-              >
-                {data.summary}
-              </p>
-            ) : null}
-
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-white/45">
-              <span className="inline-flex items-center gap-1.5">
-                <Clock className="h-4 w-4 text-amber-400/75" aria-hidden />
-                <span>{readMinutes} min read</span>
-              </span>
-              <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:inline" aria-hidden />
-              <span
-                className="text-white/40"
-                itemProp="publisher"
-                itemScope
-                itemType="https://schema.org/Organization"
-              >
-                <span itemProp="name">Culturin</span>
-              </span>
-            </div>
-          </header>
-
-          <div className="overflow-hidden rounded-3xl bg-neutral-950/80 ring-1 ring-white/[0.08]">
-            <div className="relative aspect-[16/9] w-full sm:aspect-[2/1]">
+      <Header />
+      <main className="min-h-screen bg-black text-white antialiased selection:bg-amber-500/30">
+        <article itemScope itemType="https://schema.org/Article">
+          <section className="relative w-full pt-[var(--header-offset)]">
+            <div className="relative aspect-[16/10] min-h-[18rem] w-full sm:aspect-[16/8] sm:min-h-[22rem] lg:min-h-[30rem]">
               <Image
                 src={coverSrc}
                 alt={data.title ? `${data.title} — cover` : "Article cover"}
                 fill
                 className="object-cover"
-                sizes="(max-width: 640px) 100vw, 42rem"
+                sizes="100vw"
                 priority
                 placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
                 unoptimized={isBundledPlaceholderSrc(coverSrc)}
               />
-              <div
-                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"
-                aria-hidden
-              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-black/10" aria-hidden />
             </div>
-          </div>
+          </section>
 
-          <div
-            className="mx-auto w-full max-w-[min(100%,38rem)] pt-2 [&>blockquote:first-child]:!mt-0 [&>h2:first-child]:!mt-0 [&>h3:first-child]:!mt-0 [&>h4:first-child]:!mt-0 [&>p:first-child]:!mt-0 [&>p+p]:mt-4 [&>ul:first-child]:!mt-0"
-            itemProp="articleBody"
-          >
-            <PortableText value={data.body as PortableTextBlock[]} components={portableTextComponents} />
-          </div>
+          <div className="mx-auto flex w-full max-w-2xl flex-col gap-8 px-4 py-8 sm:gap-10 sm:px-6 sm:py-10">
+            <nav
+              className="flex min-w-0 items-center gap-0.5 text-sm text-white/40"
+              aria-label="Breadcrumb"
+            >
+              <Link href="/" className={breadcrumbLinkClass}>
+                Home
+              </Link>
+              <ChevronRight className="h-4 w-4 shrink-0 text-white/25" aria-hidden />
+              <Link href="/articles" className={breadcrumbLinkClass}>
+                Travel guides
+              </Link>
+              <ChevronRight className="h-4 w-4 shrink-0 text-white/25" aria-hidden />
+              <span className="line-clamp-1 pl-0.5 text-sm font-medium text-white/50">{data.title}</span>
+            </nav>
 
-          <div
-            className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-8 sm:mt-12"
-            aria-label="Article actions"
-          >
-            <p className="m-0 text-sm font-medium text-white/40">Save or share this guide</p>
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={handleSaveArticle}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-amber-400/35 hover:bg-white/12 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:translate-y-px"
+            <header className="flex flex-col gap-4 sm:gap-5">
+              <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-amber-400/75">
+                Travel guide
+              </p>
+              <h1
+                className="m-0 text-[1.6rem] font-medium leading-tight tracking-tight text-white sm:text-[1.9rem] md:text-[2.1rem]"
+                itemProp="headline"
               >
-                <Bookmark className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
-                Add to profile
-              </button>
-              <button
-                type="button"
-                onClick={handleShareArticle}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-amber-400/35 hover:bg-white/12 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:translate-y-px"
-              >
-                <Share2 className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
-                Share
-              </button>
+                {data.title}
+              </h1>
+              {data.summary ? (
+                <p
+                  className="m-0 max-w-2xl text-base font-normal leading-relaxed text-[#9a9a9a] sm:text-lg"
+                  itemProp="description"
+                >
+                  {data.summary}
+                </p>
+              ) : null}
+
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-white/45">
+                <span className="inline-flex items-center gap-1.5">
+                  <Clock className="h-4 w-4 text-amber-400/75" aria-hidden />
+                  <span>{readMinutes} min read</span>
+                </span>
+                <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:inline" aria-hidden />
+                <span
+                  className="text-white/40"
+                  itemProp="publisher"
+                  itemScope
+                  itemType="https://schema.org/Organization"
+                >
+                  <span itemProp="name">Culturin</span>
+                </span>
+              </div>
+            </header>
+
+            <div
+              className="mx-auto w-full max-w-[min(100%,38rem)] pt-2 [&>blockquote:first-child]:!mt-0 [&>h2:first-child]:!mt-0 [&>h3:first-child]:!mt-0 [&>h4:first-child]:!mt-0 [&>p:first-child]:!mt-0 [&>p+p]:mt-4 [&>ul:first-child]:!mt-0"
+              itemProp="articleBody"
+            >
+              <PortableText value={data.body as PortableTextBlock[]} components={portableTextComponents} />
+            </div>
+
+            <div
+              className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-8 sm:mt-12"
+              aria-label="Article actions"
+            >
+              <p className="m-0 text-sm font-medium text-white/40">Save or share this guide</p>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleSaveArticle}
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-amber-400/35 hover:bg-white/12 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:translate-y-px"
+                >
+                  <Bookmark className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
+                  Add to profile
+                </button>
+                <button
+                  type="button"
+                  onClick={handleShareArticle}
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-amber-400/35 hover:bg-white/12 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:translate-y-px"
+                >
+                  <Share2 className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
+                  Share
+                </button>
+              </div>
             </div>
           </div>
         </article>
-      </DetailPageShell>
+      </main>
 
       {toast.open ? (
         <div
