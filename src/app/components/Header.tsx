@@ -235,11 +235,16 @@ export default function Header() {
             : " supports-[backdrop-filter]:bg-white/95 dark:supports-[backdrop-filter]:bg-neutral-950/90")
         }
       >
-        <div className="mx-auto flex h-[var(--header-bar-height)] max-w-[1720px] flex-nowrap items-center gap-2 pl-[var(--gutter-l)] pr-[var(--gutter-r)] sm:gap-3 md:gap-4">
-          <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-3 sm:gap-8 md:gap-10">
+        <div className="mx-auto flex h-[var(--header-bar-height)] w-full min-w-0 max-w-[1720px] items-center gap-2 pl-[var(--gutter-l)] pr-[var(--gutter-r)] sm:gap-3">
+          {/*
+            Avoid md-only “desktop” chrome: 768–1023px is too tight for inline nav + pill + actions.
+            Compact row (search icon, hamburger) below lg. From lg: inline nav, pill search, header sign-in.
+            Row layout: [logo+nav: shrink-0] [search: flex-1] [actions: shrink-0] — never shrink nav text.
+          */}
+          <div className="flex shrink-0 items-center gap-2 sm:gap-4 lg:gap-8">
             <Logo />
             <nav
-              className="hidden min-w-0 items-center gap-5 whitespace-nowrap md:flex md:gap-6"
+              className="hidden items-center gap-4 whitespace-nowrap sm:gap-5 lg:flex lg:gap-6"
               aria-label="Main navigation"
             >
               <LeftNavLink href="/destinations">Destinations</LeftNavLink>
@@ -247,33 +252,35 @@ export default function Header() {
             </nav>
           </div>
 
-          <div className="hidden w-full max-w-[min(26rem,40vw)] shrink-0 md:block">
-            <button
-              type="button"
-              onClick={openSearch}
-              className={searchPillRowClass}
-              aria-label="Open search"
-              aria-haspopup="dialog"
-              aria-expanded={searchOpen}
-            >
-              <span className="shrink-0 text-neutral-400 dark:text-white/35" aria-hidden>
-                <SearchIcon />
-              </span>
-              <span className="min-w-0 flex-1 truncate text-left font-normal text-neutral-500 dark:text-white/45">
-                Search Culturin…
-              </span>
-              <span className="flex shrink-0 items-center gap-1 pr-0.5 text-neutral-500 dark:text-white/40" aria-hidden>
-                <ScanSearch className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={1.75} />
-                <PaletteDotsIcon className="h-5 w-5 opacity-95" />
-              </span>
-            </button>
+          <div className="mx-1 hidden min-w-0 max-w-2xl flex-1 items-center justify-center self-center px-1 lg:flex">
+            <div className="w-full min-w-0 max-w-2xl">
+              <button
+                type="button"
+                onClick={openSearch}
+                className={searchPillRowClass}
+                aria-label="Open search"
+                aria-haspopup="dialog"
+                aria-expanded={searchOpen}
+              >
+                <span className="shrink-0 text-neutral-400 dark:text-white/35" aria-hidden>
+                  <SearchIcon />
+                </span>
+                <span className="min-w-0 flex-1 truncate text-left font-normal text-neutral-500 dark:text-white/45">
+                  Search Culturin…
+                </span>
+                <span className="flex shrink-0 items-center gap-1 pr-0.5 text-neutral-500 dark:text-white/40" aria-hidden>
+                  <ScanSearch className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={1.75} />
+                  <PaletteDotsIcon className="h-5 w-5 opacity-95" />
+                </span>
+              </button>
+            </div>
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-nowrap items-center justify-end gap-0.5 whitespace-nowrap sm:gap-1.5">
+          <div className="ml-auto flex min-w-0 shrink-0 items-center justify-end gap-0.5 sm:gap-1.5">
             <button
               type="button"
               onClick={openSearch}
-              className={`${iconButtonClass} md:hidden`}
+              className={`${iconButtonClass} lg:hidden`}
               aria-label="Open search"
               aria-haspopup="dialog"
               aria-expanded={searchOpen}
@@ -292,11 +299,11 @@ export default function Header() {
               Nearby
             </button>
 
-            <div className="hidden pl-0.5 md:block">
+            <div className="hidden pl-0.5 lg:block">
               <GoogleSignInButton appearance="header" />
             </div>
 
-            <div className="flex h-10 w-10 items-center justify-center text-neutral-800 md:hidden dark:text-white">
+            <div className="flex h-10 w-10 items-center justify-center text-neutral-800 lg:hidden dark:text-white">
               <Hamburger
                 toggled={mobileMenuOpen}
                 toggle={() => setMobileMenuOpen((o) => !o)}
