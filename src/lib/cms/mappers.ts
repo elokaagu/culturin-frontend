@@ -23,11 +23,13 @@ export function mapBlogRowToFull(row: CmsBlogRow): fullBlog {
 }
 
 export function mapVideoRowToCard(row: CmsVideoRow): videoCard {
+  const pid = row.playback_id?.trim();
   return {
     title: row.title,
     currentSlug: row.slug,
     uploader: row.uploader ?? "",
     description: row.description ?? "",
+    playbackId: pid || undefined,
     videoThumbnailUrl: row.thumbnail_url,
     videoThumbnail: row.thumbnail,
   };

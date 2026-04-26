@@ -23,6 +23,8 @@ export interface videoCard {
   currentSlug: string;
   uploader: string;
   description: string;
+  /** Mux asset id; when set, the top videos rail can play in a hero dialog. */
+  playbackId?: string;
   videoThumbnailUrl?: string | null;
   /** @deprecated Legacy Sanity asset; prefer videoThumbnailUrl. */
   videoThumbnail?: unknown;

@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { Link } from "next-view-transitions";
 import { useEffect, useRef, useState } from "react";
 
 import { appPageFullBleedClass, appPageRailScrollPadClass } from "@/lib/appLayout";
+import { VideoHeroDialog } from "./detail/VideoHeroDialog";
 import type { videoCard } from "@/lib/interface";
 import {
   IMAGE_BLUR_DATA_URL,
@@ -22,7 +22,7 @@ type TopVideosRailProps = {
 
 
 /**
- * Home and library “Top videos” rail: server-fed, horizontal scroll, full-card links to the stream experience.
+ * Home and library “Top videos” rail: server-fed, horizontal scroll; each card opens a hero dialog with the Mux player (or stream fallback if no `playbackId`).
  * Auto-advances slowly; pauses on hover or focus. Disabled when the user prefers reduced motion.
  */
 export default function TopVideosRail({
@@ -33,6 +33,7 @@ export default function TopVideosRail({
   const railRef = useRef<HTMLDivElement | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(true);
+  const [heroVideo, setHeroVideo] = useState<videoCard | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -86,7 +87,12 @@ export default function TopVideosRail({
             role="listitem"
             className="w-[min(14rem,64vw)] shrink-0 snap-start sm:w-52 md:w-56"
           >
-            <div className="group relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-neutral-200 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10 sm:rounded-2xl">
+            <button
+              type="button"
+              onClick={() => setHeroVideo(video)}
+              aria-label={`Play ${video.title}`}
+              className="group relative block aspect-[3/4] w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-200 text-left ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10 sm:rounded-2xl"
+            >
               <Image
                 src={thumbSrc}
                 alt={video.title}
@@ -99,25 +105,17 @@ export default function TopVideosRail({
                 unoptimized={isBundledPlaceholderSrc(thumbSrc)}
               />
 
-              <Link
-                href={`/stream?play=${encodeURIComponent(video.currentSlug)}`}
-                className="absolute left-3 top-3 z-[1] inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/60 text-white no-underline shadow-sm backdrop-blur-sm transition hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
-                aria-label={`Play ${video.title}`}
+              <span
+                className="absolute left-3 top-3 z-[1] inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/60 text-white shadow-sm backdrop-blur-sm"
+                aria-hidden
               >
-                <span className="ml-0.5 text-xs" aria-hidden>
-                  ▶
-                </span>
-              </Link>
+                <span className="ml-0.5 text-xs">▶</span>
+              </span>
 
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-3.5 pb-3.5 pt-10 sm:px-4 sm:pb-4">
-                <Link
-                  href={`/stream?play=${encodeURIComponent(video.currentSlug)}`}
-                  className="no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-                >
-                  <h3 className="line-clamp-2 text-sm font-semibold leading-snug tracking-tight text-white sm:text-base">
-                    {video.title}
-                  </h3>
-                </Link>
+                <h3 className="line-clamp-2 text-sm font-semibold leading-snug tracking-tight text-white sm:text-base">
+                  {video.title}
+                </h3>
                 {video.uploader ? (
                   <p className="mt-1 line-clamp-1 text-xs font-medium text-white/70 sm:text-sm">{video.uploader}</p>
                 ) : null}
@@ -125,7 +123,7 @@ export default function TopVideosRail({
                   <p className="mt-1 line-clamp-2 text-[0.7rem] leading-relaxed text-white/55 sm:text-xs">{video.description}</p>
                 ) : null}
               </div>
-            </div>
+            </button>
           </article>
         );
       })}
@@ -135,6 +133,7 @@ export default function TopVideosRail({
   return (
     <div className="relative">
       {fullBleed ? <div className={appPageFullBleedClass}>{track}</div> : track}
+      <VideoHeroDialog open={heroVideo !== null} onClose={() => setHeroVideo(null)} video={heroVideo} />
       <p className="mt-2 text-center text-[0.7rem] text-neutral-500 dark:text-white/35 md:hidden" aria-hidden>
         Swipe for more; auto scroll pauses while you touch or hover
       </p>

@@ -733,7 +733,10 @@ export function getShowcaseBlogCards(): simpleBlogCard[] {
 
 /** Shown on the home page when the CMS returns no video rows. */
 export function getShowcaseVideoCards(): videoCard[] {
-  return Object.values(SHOWCASE_VIDEOS).map((v) => v.card);
+  return Object.values(SHOWCASE_VIDEOS).map((v) => ({
+    ...v.card,
+    playbackId: v.full.playbackId,
+  }));
 }
 
 /** Shown on the home page when the CMS returns no provider rows. */

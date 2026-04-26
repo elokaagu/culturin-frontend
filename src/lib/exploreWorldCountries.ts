@@ -1,3 +1,11 @@
+/**
+ * Home “Explore the World” — each card links to search scoped by country/place.
+ * Unsplash `photo-…-…` slugs are validated with HEAD requests; many older ids return 404 from Imgix.
+ * Keep `searchLabel` aligned with article copy for fallback search.
+ */
+const q = "auto=format&fit=crop&w=1200&q=80";
+const u = (id: string) => `https://images.unsplash.com/photo-${id}?${q}`;
+
 export type ExploreWorldCountry = {
   /** Stable id for keys */
   id: string;
@@ -9,72 +17,68 @@ export type ExploreWorldCountry = {
   imageAlt: string;
 };
 
-/**
- * Home “Explore the World” picks — each card opens search scoped by country/place.
- * Keep `searchLabel` aligned with showcase article copy so fallback search finds matches.
- */
 export const exploreWorldCountries: ExploreWorldCountry[] = [
   {
     id: "japan",
     name: "Japan",
     searchLabel: "Japan",
-    imageUrl: "https://images.unsplash.com/photo-1493976040374-85c3e825a901?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Mount Fuji above clouds at sunrise",
+    imageUrl: u("1464822759023-fed622ff2c3b"),
+    imageAlt: "High forested mountains in misty light",
   },
   {
     id: "portugal",
     name: "Portugal",
     searchLabel: "Portugal",
-    imageUrl: "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Yellow historic tram in Lisbon",
+    imageUrl: u("1585208798174-6cedd86e019a"),
+    imageAlt: "Sun-warmed buildings along a city street",
   },
   {
     id: "morocco",
     name: "Morocco",
     searchLabel: "Morocco",
-    imageUrl: "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Marrakech medina alley at dusk",
+    imageUrl: u("1489749798305-4fea3ae63d43"),
+    imageAlt: "Domed rooftops and sea in Mediterranean light",
   },
   {
     id: "argentina",
     name: "Argentina",
     searchLabel: "Argentina",
-    imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Patagonian peaks and turquoise water",
+    imageUrl: u("1506905925346-21bda4d32df4"),
+    imageAlt: "Hiker above a wide mountain valley and peaks",
   },
   {
     id: "iceland",
     name: "Iceland",
     searchLabel: "Iceland",
-    imageUrl: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Northern lights over snowy landscape",
+    imageUrl: u("1531366936337-7c912a4589a7"),
+    imageAlt: "Aurora over a snowy, rocky landscape",
   },
   {
     id: "italy",
     name: "Italy",
     searchLabel: "Italy",
-    imageUrl: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Canal and historic buildings in Venice",
+    imageUrl: u("1459749411175-04bf5292ceea"),
+    imageAlt: "Layered ridgelines and golden mountain light",
   },
   {
     id: "mexico",
     name: "Mexico",
     searchLabel: "Mexico",
-    imageUrl: "https://images.unsplash.com/photo-1518659526055-ea1c4933a934?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Colourful colonial architecture in Mexico",
+    imageUrl: u("1470246973918-29a93221c455"),
+    imageAlt: "Cobblestone street and old buildings in warm evening light",
   },
   {
     id: "south-africa",
     name: "South Africa",
     searchLabel: "South Africa",
-    imageUrl: "https://images.unsplash.com/photo-1580060839134-75a51eda4105?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Table Mountain above Cape Town coastline",
+    imageUrl: u("1506929562872-bb421503ef21"),
+    imageAlt: "Rocky coast and headland on a clear day",
   },
   {
     id: "vietnam",
     name: "Vietnam",
     searchLabel: "Vietnam",
-    imageUrl: "https://images.unsplash.com/photo-1559592419-2d97adc4792d?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Busy street scene with scooters in Hanoi",
+    imageUrl: u("1521572267360-ee0c2909d518"),
+    imageAlt: "Lush green terraces on steep hills",
   },
 ];
