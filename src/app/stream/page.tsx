@@ -1,5 +1,8 @@
+import { notFound } from "next/navigation";
+
 import Header from "../components/Header";
 import StreamClient from "./StreamClient";
+import { isVideoHiddenFromSite, filterPublicVideos } from "../../lib/cms/blockedFromSite";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listFullVideos } from "../../lib/cms/queries";
 import { getShowcaseFullVideos } from "../../lib/cms/showcaseContent";
@@ -11,8 +14,16 @@ export default async function StreamLandingPage({
 }) {
   const db = getCmsDbOrNull();
   const videos = db ? await listFullVideos(db) : [];
-  const allVideos = videos.length > 0 ? videos : getShowcaseFullVideos();
-  const selectedSlug = typeof searchParams?.play === "string" ? searchParams.play : undefined;
+  const raw = videos.length > 0 ? videos : getShowcaseFullVideos();
+  const playParam = typeof searchParams?.play === "string" ? searchParams.play : undefined;
+  if (playParam) {
+    const bySlug = raw.find((v) => v.currentSlug === playParam);
+    if (!bySlug || isVideoHiddenFromSite(bySlug)) {
+      notFound();
+    }
+  }
+  const allVideos = filterPublicVideos(raw);
+  const selectedSlug = playParam;
 
   return (
     <>

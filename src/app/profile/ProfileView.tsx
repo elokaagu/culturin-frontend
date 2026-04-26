@@ -13,6 +13,7 @@ import { Link } from "next-view-transitions";
 import { ArticleCardFromBlog } from "@/components/cms/ArticleCard";
 import type { simpleBlogCard } from "@/lib/interface";
 import { getCmsBrowserClient } from "@/lib/cms/browser";
+import { filterPublicBlogs } from "@/lib/cms/blockedFromSite";
 import { listBlogs } from "@/lib/cms/queries";
 import { SUPABASE_PUBLIC_MEDIA_BUCKET } from "@/lib/storageConstants";
 
@@ -69,7 +70,7 @@ export default function ProfileView() {
       try {
         const db = getCmsBrowserClient();
         if (!db) return;
-        setArticles(await listBlogs(db));
+        setArticles(filterPublicBlogs(await listBlogs(db)));
       } catch {
         setArticles([]);
       }

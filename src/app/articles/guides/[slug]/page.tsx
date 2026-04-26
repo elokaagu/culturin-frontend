@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import Header from "../../../components/Header";
 import { getTravelGuideCategory, getTravelGuideContent } from "../../../../lib/travelGuideContent";
 import { getShowcaseBlogCards } from "../../../../lib/cms/showcaseContent";
+import { filterPublicBlogs } from "@/lib/cms/blockedFromSite";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,
@@ -36,8 +37,8 @@ export default function GuideDetailPage({
   const category = getTravelGuideCategory(params.slug);
   if (!content || !category) notFound();
 
-  const featuredCards = getShowcaseBlogCards().filter((card) =>
-    content.featuredArticleSlugs.includes(card.currentSlug),
+  const featuredCards = filterPublicBlogs(
+    getShowcaseBlogCards().filter((card) => content.featuredArticleSlugs.includes(card.currentSlug)),
   );
 
   return (

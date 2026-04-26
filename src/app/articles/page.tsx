@@ -14,6 +14,7 @@ import {
   resolveContentImageSrc,
 } from "../../lib/imagePlaceholder";
 import { travelGuideCategories } from "../../lib/travelGuidesCategories";
+import { filterPublicBlogs } from "@/lib/cms/blockedFromSite";
 
 function hasValidArticleSlug(article: simpleBlogCard): boolean {
   return typeof article.currentSlug === "string" && article.currentSlug.trim().length > 0;
@@ -94,9 +95,7 @@ export default async function ArticlesPage() {
   const db = getCmsDbOrNull();
   const cmsArticles = db ? await listBlogs(db) : [];
   const rawArticles: simpleBlogCard[] = cmsArticles.length > 0 ? cmsArticles : getShowcaseBlogCards();
-  const articles = rawArticles.filter(hasValidArticleSlug);
-  const [featured, ...rest] = articles;
-  const featuredHeroSrc = featured ? resolveContentImageSrc(featured.titleImageUrl) : "";
+  const articles = filterPublicBlogs(rawArticles.filter(hasValidArticleSlug));
 
   return (
     <>
@@ -163,71 +162,25 @@ export default async function ArticlesPage() {
               </Link>
             </div>
           ) : (
-            <>
-              {featured ? (
-                <section className="mb-14 sm:mb-16" aria-labelledby="articles-featured-heading">
-                  <h2 id="articles-featured-heading" className="sr-only">
-                    Featured article
-                  </h2>
-                  <Link
-                    href={`/articles/${featured.currentSlug}`}
-                    className="group grid overflow-hidden rounded-3xl border border-neutral-200 bg-white no-underline shadow-[0_20px_60px_-24px_rgba(0,0,0,0.12)] dark:border-white/10 dark:bg-neutral-950 dark:shadow-[0_24px_80px_-28px_rgba(0,0,0,0.65)] lg:grid-cols-[1.15fr_1fr]"
-                  >
-                    <div className="relative min-h-[14rem] overflow-hidden sm:min-h-[18rem] lg:min-h-[22rem]">
-                      <Image
-                        src={featuredHeroSrc}
-                        alt={featured.title}
-                        fill
-                        className="object-cover transition duration-700 group-hover:scale-[1.02]"
-                        sizes="(max-width: 1024px) 100vw, 55vw"
-                        priority
-                        placeholder="blur"
-                        blurDataURL={IMAGE_BLUR_DATA_URL}
-                        unoptimized={cmsImageUnoptimized(featuredHeroSrc)}
-                      />
-                      <div
-                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-black/10 lg:to-black/55"
-                        aria-hidden
-                      />
-                    </div>
-                    <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
-                      <p className="m-0 text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 dark:text-amber-400/90">
-                        Lead story
-                      </p>
-                      <h3 className="m-0 mt-3 text-2xl font-semibold leading-tight tracking-tight text-neutral-900 dark:text-white sm:text-3xl lg:text-[2.1rem] lg:leading-[1.12]">
-                        {featured.title}
-                      </h3>
-                      {(featured.summary || "").trim() ? (
-                        <p className="m-0 mt-4 max-w-xl text-base leading-relaxed text-neutral-600 dark:text-white/75">
-                          {featured.summary}
-                        </p>
-                      ) : null}
-                      <span className="mt-6 inline-flex w-fit items-center text-sm font-semibold text-neutral-900 underline decoration-neutral-400 underline-offset-4 transition group-hover:decoration-neutral-900 dark:text-white dark:decoration-white/40 dark:group-hover:decoration-white">
-                        Continue reading
-                      </span>
-                    </div>
-                  </Link>
-                </section>
-              ) : null}
-
-              {rest.length > 0 ? (
-                <section aria-labelledby="articles-all-heading">
-                  <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-neutral-200 pb-4 dark:border-white/10">
-                    <h2 id="articles-all-heading" className="m-0 text-2xl font-semibold tracking-tight sm:text-3xl">
-                      All stories
-                    </h2>
-                    <p className="m-0 text-sm text-neutral-500 dark:text-white/55">{rest.length} more</p>
-                  </div>
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-                    {rest.map((article, index) => (
-                      <ArticleCard key={article.currentSlug} article={article} variant={index % 3 === 0 ? "standard" : "compact"} />
-                    ))}
-                  </div>
-                </section>
-              ) : featured ? (
-                <p className="m-0 text-center text-sm text-neutral-500 dark:text-white/55">More articles coming soon.</p>
-              ) : null}
-            </>
+            <section aria-labelledby="articles-all-heading">
+              <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-neutral-200 pb-4 dark:border-white/10">
+                <h2 id="articles-all-heading" className="m-0 text-2xl font-semibold tracking-tight sm:text-3xl">
+                  All stories
+                </h2>
+                <p className="m-0 text-sm text-neutral-500 dark:text-white/55">
+                  {articles.length} {articles.length === 1 ? "article" : "articles"}
+                </p>
+              </div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+                {articles.map((article, index) => (
+                  <ArticleCard
+                    key={article.currentSlug}
+                    article={article}
+                    variant={index % 3 === 0 ? "standard" : "compact"}
+                  />
+                ))}
+              </div>
+            </section>
           )}
         </div>
       </main>

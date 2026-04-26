@@ -7,6 +7,7 @@ import { appPageContainerClass } from "@/lib/appLayout";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { searchBlogs, searchProviders, searchVideos } from "../../lib/cms/queries";
+import { filterPublicBlogs, filterPublicVideos } from "@/lib/cms/blockedFromSite";
 import {
   getShowcaseBlogCards,
   getShowcaseProviderCards,
@@ -148,8 +149,8 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
     fromDbProviders = filterFallbackProviders(getShowcaseProviderCards(), query);
   }
 
-  const articles = withShowcaseIfEmpty(fromDbBlogs, query, filterFallbackBlogs);
-  const videos = withShowcaseVideosIfEmpty(fromDbVideos, query);
+  const articles = filterPublicBlogs(withShowcaseIfEmpty(fromDbBlogs, query, filterFallbackBlogs));
+  const videos = filterPublicVideos(withShowcaseVideosIfEmpty(fromDbVideos, query));
   const providers = withShowcaseProvidersIfEmpty(fromDbProviders, query);
 
   const allCmsSearchesEmpty =

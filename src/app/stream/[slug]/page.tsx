@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
+import { isVideoHiddenFromSite } from "@/lib/cms/blockedFromSite";
 import { getCmsDbOrNull } from "../../../lib/cms/server";
 import { getVideoBySlug } from "../../../lib/cms/queries";
 import { getShowcaseFullVideo } from "../../../lib/cms/showcaseContent";
@@ -25,6 +26,9 @@ export async function generateMetadata({
   if (!video) {
     return { title: "Video" };
   }
+  if (isVideoHiddenFromSite({ title: video.title, currentSlug: video.currentSlug })) {
+    return { title: "Video" };
+  }
   return {
     title: `${video.title} | Culturin`,
     description: video.description ?? undefined,
@@ -37,5 +41,9 @@ export default async function StreamVideoPage({
   params: { slug: string };
 }) {
   const slug = normalizeSlugParam(params.slug);
+  const video = await getVideo(slug);
+  if (!video || isVideoHiddenFromSite({ title: video.title, currentSlug: video.currentSlug })) {
+    notFound();
+  }
   redirect(`/stream?play=${encodeURIComponent(slug)}`);
 }

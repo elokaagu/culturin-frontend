@@ -5,6 +5,7 @@ import { Link } from "next-view-transitions";
 import Header from "../components/Header";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listBlogs, listProviders, listVideos } from "../../lib/cms/queries";
+import { filterPublicBlogs, filterPublicVideos } from "../../lib/cms/blockedFromSite";
 import {
   getShowcaseBlogCards,
   getShowcaseProviderCards,
@@ -50,8 +51,8 @@ export default async function TrendingPage() {
     ? await Promise.all([listBlogs(db), listVideos(db), listProviders(db)])
     : [[], [], []];
 
-  const blogs = blogsFromCms.length > 0 ? blogsFromCms : getShowcaseBlogCards();
-  const videos = videosFromCms.length > 0 ? videosFromCms : getShowcaseVideoCards();
+  const blogs = filterPublicBlogs(blogsFromCms.length > 0 ? blogsFromCms : getShowcaseBlogCards());
+  const videos = filterPublicVideos(videosFromCms.length > 0 ? videosFromCms : getShowcaseVideoCards());
   const providers = providersFromCms.length > 0 ? providersFromCms : getShowcaseProviderCards();
 
   return (
