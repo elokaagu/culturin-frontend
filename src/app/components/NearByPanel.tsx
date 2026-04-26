@@ -44,11 +44,12 @@ function CloseIcon() {
   );
 }
 
+/** Pills sit on the image with a bottom gradient; keep high contrast on both themes. */
 const pillClass =
-  "rounded-full border border-white/90 bg-black/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white shadow-sm backdrop-blur-sm sm:text-[11px]";
+  "rounded-full border border-white/90 bg-black/35 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white shadow-sm backdrop-blur-sm sm:text-[11px]";
 
 const moreBtnClass =
-  "inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/80 text-white/95 backdrop-blur-sm transition hover:bg-white/10";
+  "inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/80 text-white/95 backdrop-blur-sm transition hover:bg-white/20";
 
 /**
  * Header-attached "Nearby" dropdown: compact controls + horizontal place cards.
@@ -89,7 +90,7 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
         style={{ animationDuration: "280ms" }}
         aria-hidden
       >
-        <div className="absolute inset-0 bg-black/55 backdrop-blur-sm transition-opacity dark:bg-black/65" />
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity dark:bg-black/60" />
       </div>
       <div
         id="nearby-experience-panel"
@@ -100,18 +101,18 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
       >
         <div
           ref={rootRef}
-          className="mx-auto w-full max-w-[1760px] animate-in fade-in slide-in-from-top-3 zoom-in-95 rounded-xl border border-white/10 bg-black/95 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.85)] backdrop-blur duration-300 ease-out fill-mode-both"
+          className="mx-auto w-full max-w-[1760px] animate-in fade-in slide-in-from-top-3 zoom-in-95 rounded-xl border border-neutral-200/90 bg-white/95 text-neutral-900 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.12)] backdrop-blur duration-300 ease-out fill-mode-both dark:border-white/10 dark:bg-black/95 dark:text-white dark:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.85)]"
           style={{ animationDuration: "360ms", animationDelay: "40ms" }}
         >
-        <div className="grid min-h-12 shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 pt-2 sm:px-5">
+        <div className="grid min-h-12 shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 border-b border-neutral-200/90 px-3 pt-2 dark:border-white/10 sm:px-5">
           <h2
             id={titleId}
-            className="m-0 w-max min-w-0 pl-0.5 text-sm font-medium tracking-tight text-white sm:text-base"
+            className="m-0 w-max min-w-0 pl-0.5 text-sm font-medium tracking-tight text-neutral-900 dark:text-white sm:text-base"
           >
             Nearby
           </h2>
 
-          <div className="flex min-w-0 justify-center px-1 text-xs text-white/95 sm:px-2 sm:text-sm">
+          <div className="flex min-w-0 justify-center px-1 text-xs text-neutral-800 dark:text-white/95 sm:px-2 sm:text-sm">
             <label
               className="flex min-w-0 max-w-full flex-wrap items-baseline justify-center gap-x-0.5"
               htmlFor="nearby-radius"
@@ -121,28 +122,28 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
               <span className="relative inline-flex shrink-0 items-center">
                 <select
                   id="nearby-radius"
-                  className="max-w-[3.5rem] cursor-pointer appearance-none border-0 border-b border-white/50 bg-transparent py-0.5 pl-0.5 pr-4 text-sm font-semibold text-white outline-none focus:ring-0 sm:max-w-[4rem] sm:pr-5"
+                  className="max-w-[3.5rem] cursor-pointer appearance-none border-0 border-b border-neutral-400/90 bg-transparent py-0.5 pl-0.5 pr-4 text-sm font-semibold text-neutral-900 outline-none focus:ring-0 dark:border-white/50 dark:text-white sm:max-w-[4rem] sm:pr-5"
                   value={String(radius)}
                   onChange={(e) => setRadius(Number(e.target.value))}
                 >
                   {NEARBY_RADIUS_KM.map((km) => (
-                    <option key={km} value={String(km)} className="text-black">
+                    <option key={km} value={String(km)} className="text-neutral-900">
                       {km}
                     </option>
                   ))}
                 </select>
                 <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2">
-                  <ChevronDown className="h-3.5 w-3.5 text-white" />
+                  <ChevronDown className="h-3.5 w-3.5 text-neutral-600 dark:text-white" />
                 </span>
               </span>
-              <span className="pl-0.5 font-medium text-white/80"> km</span>
+              <span className="pl-0.5 font-medium text-neutral-500 dark:text-white/80"> km</span>
             </label>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex h-8 w-8 shrink-0 items-center justify-center justify-self-end rounded-full text-white transition hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center justify-self-end rounded-full text-neutral-600 transition hover:bg-neutral-200/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500/60 dark:text-white dark:hover:bg-white/10 dark:focus-visible:outline-white/80"
             aria-label="Close nearby"
           >
             <CloseIcon />
@@ -154,7 +155,7 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
             Spots around you within {radius} kilometres, scroll horizontally.
           </p>
           <div
-            className="flex w-full min-h-0 gap-3 overflow-x-auto overflow-y-hidden scroll-smooth px-3 py-2 pb-4 [scrollbar-color:rgba(255,255,255,0.25)_transparent] [scrollbar-width:thin] sm:gap-4 sm:px-5 sm:pb-5"
+            className="flex w-full min-h-0 gap-3 overflow-x-auto overflow-y-hidden scroll-smooth px-3 py-2 pb-4 [scrollbar-color:rgba(0,0,0,0.25)_transparent] [scrollbar-width:thin] sm:gap-4 sm:px-5 sm:pb-5 dark:[scrollbar-color:rgba(255,255,255,0.25)_transparent]"
             style={{ WebkitOverflowScrolling: "touch" }}
             aria-describedby={listId}
           >
@@ -168,7 +169,7 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
                 style={{ animationDuration: "420ms", animationDelay: `${120 + index * 55}ms` }}
                 onClick={onClose}
               >
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-white/5">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-neutral-200/90 bg-neutral-100/50 dark:border-white/10 dark:bg-white/5">
                   <Image
                     src={imageSrc}
                     alt={spot.imageAlt}
@@ -198,7 +199,7 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
                     ) : null}
                   </div>
                 </div>
-                <p className="m-0 mt-2 min-h-[2.2rem] text-left text-[0.98rem] font-medium leading-tight text-white">
+                <p className="m-0 mt-2 min-h-[2.2rem] text-left text-[0.98rem] font-medium leading-tight text-neutral-900 dark:text-white">
                   {spot.title}
                 </p>
               </Link>

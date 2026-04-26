@@ -18,8 +18,8 @@ const nameRowClass = (isActive: boolean) =>
   [
     "block w-full py-1.5 text-left text-2xl font-light tracking-tight no-underline transition-colors sm:py-2 sm:text-3xl md:text-4xl",
     isActive
-      ? "text-white"
-      : "text-white/45 hover:text-white/75",
+      ? "text-neutral-900 dark:text-white"
+      : "text-neutral-500 hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/75",
   ].join(" ");
 
 const stickyTop = "top-[calc(var(--header-offset)+0.5rem)]";
@@ -113,7 +113,7 @@ export default function DestinationsClient() {
             onClick={() =>
               sectionRefs.current[L]?.scrollIntoView({ behavior: "smooth", block: "start" })
             }
-            className="min-w-[1.5rem] shrink-0 rounded px-1.5 py-0.5 text-center text-xs font-medium uppercase tracking-wider text-white/45 transition hover:text-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-400 lg:min-w-0 lg:px-0.5 lg:py-0.5 lg:text-left"
+            className="min-w-[1.5rem] shrink-0 rounded px-1.5 py-0.5 text-center text-xs font-medium uppercase tracking-wider text-neutral-500 transition hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500 dark:text-white/45 dark:hover:text-white/90 dark:focus-visible:outline-amber-400 lg:min-w-0 lg:px-0.5 lg:py-0.5 lg:text-left"
           >
             {L}
           </button>
@@ -134,7 +134,7 @@ export default function DestinationsClient() {
                 sectionRefs.current[L] = el;
               }}
             >
-              <h2 className="m-0 mb-4 text-5xl font-extralight text-white/25 sm:text-6xl">
+              <h2 className="m-0 mb-4 text-5xl font-extralight text-neutral-300 dark:text-white/25 sm:text-6xl">
                 {L}
               </h2>
               <ul className="m-0 list-none p-0" role="list">
@@ -171,7 +171,7 @@ export default function DestinationsClient() {
               key={preview.slug}
               destination={preview}
             />
-            <p className="mt-2 text-sm text-white/55">
+            <p className="mt-2 text-sm text-neutral-600 dark:text-white/55">
               {hoveredSlug
                 ? `View ${preview.name} details`
                 : "Hover a destination to preview it, then open the full guide"}

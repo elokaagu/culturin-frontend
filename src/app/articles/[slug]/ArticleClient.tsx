@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
@@ -45,7 +45,7 @@ function estimateReadMinutesFromBody(body: unknown): number {
 }
 
 const proseLinkClass =
-  "font-medium text-amber-400/90 underline decoration-amber-400/35 underline-offset-[3px] transition hover:text-amber-200 hover:decoration-amber-200/50";
+  "font-medium text-amber-700 underline decoration-amber-600/40 underline-offset-[3px] transition hover:text-amber-900 hover:decoration-amber-800/50 dark:text-amber-400/90 dark:decoration-amber-400/35 dark:hover:text-amber-200 dark:hover:decoration-amber-200/50";
 
 export default function ArticleClient({ data }: { data: fullBlog }) {
   const pathname = usePathname();
@@ -57,40 +57,47 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
 
   const coverSrc = useMemo(() => resolveContentImageSrc(data?.titleImageUrl), [data?.titleImageUrl]);
   const readMinutes = useMemo(() => estimateReadMinutesFromBody(data.body), [data.body]);
+  const isSignedIn = status === "authenticated" && Boolean(session?.user);
+
+  useEffect(() => {
+    if (!isSignedIn) setActiveModal(null);
+  }, [isSignedIn]);
 
   const portableTextComponents: PortableTextComponents = useMemo(
     () => ({
       block: {
         h2: ({ children }) => (
-          <h2 className="mt-10 scroll-mt-24 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-[2.2rem]">
+          <h2 className="mt-10 scroll-mt-24 text-3xl font-semibold leading-tight tracking-tight text-neutral-900 sm:text-[2.2rem] dark:text-white">
             {children}
           </h2>
         ),
         h3: ({ children }) => (
-          <h3 className="mt-8 scroll-mt-24 text-2xl font-semibold leading-snug text-white/95">
+          <h3 className="mt-8 scroll-mt-24 text-2xl font-semibold leading-snug text-neutral-900 dark:text-white/95">
             {children}
           </h3>
         ),
         h4: ({ children }) => (
-          <h4 className="mt-6 text-lg font-semibold text-white/90">{children}</h4>
+          <h4 className="mt-6 text-lg font-semibold text-neutral-800 dark:text-white/90">{children}</h4>
         ),
         blockquote: ({ children }) => (
-          <blockquote className="my-8 border-l-[3px] border-amber-500/50 pl-5 text-lg leading-relaxed text-white/78">
+          <blockquote className="my-8 border-l-[3px] border-amber-600/45 pl-5 text-lg leading-relaxed text-neutral-700 dark:border-amber-500/50 dark:text-white/78">
             {children}
           </blockquote>
         ),
         normal: ({ children }) => (
-          <p className="text-[1.05rem] leading-[1.75] text-white/[0.86] [&+p]:mt-4">{children}</p>
+          <p className="text-[1.05rem] leading-[1.75] text-neutral-800 [&+p]:mt-4 dark:text-white/[0.86]">
+            {children}
+          </p>
         ),
       },
       list: {
         bullet: ({ children }) => (
-          <ul className="my-4 list-outside list-disc space-y-2.5 pl-5 text-[1.05rem] leading-relaxed text-white/[0.86] marker:text-amber-400/80">
+          <ul className="my-4 list-outside list-disc space-y-2.5 pl-5 text-[1.05rem] leading-relaxed text-neutral-800 marker:text-amber-700 dark:text-white/[0.86] dark:marker:text-amber-400/80">
             {children}
           </ul>
         ),
         number: ({ children }) => (
-          <ol className="my-4 list-outside list-decimal space-y-2.5 pl-5 text-[1.05rem] leading-relaxed text-white/[0.86] marker:font-medium marker:text-amber-400/90">
+          <ol className="my-4 list-outside list-decimal space-y-2.5 pl-5 text-[1.05rem] leading-relaxed text-neutral-800 marker:font-medium marker:text-amber-700 dark:text-white/[0.86] dark:marker:text-amber-400/90">
             {children}
           </ol>
         ),
@@ -101,9 +108,11 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
       },
       marks: {
         strong: ({ children }) => (
-          <strong className="font-semibold text-white">{children}</strong>
+          <strong className="font-semibold text-neutral-950 dark:text-white">{children}</strong>
         ),
-        em: ({ children }) => <em className="italic text-white/90">{children}</em>,
+        em: ({ children }) => (
+          <em className="italic text-neutral-800 dark:text-white/90">{children}</em>
+        ),
         link: ({ value, children }) => {
           const href = value && typeof (value as { href?: string }).href === "string" ? (value as { href: string }).href : "#";
           const isExternal = /^https?:\/\//i.test(href);
@@ -118,9 +127,11 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
             </a>
           );
         },
-        underline: ({ children }) => <span className="underline decoration-white/30 underline-offset-2">{children}</span>,
+        underline: ({ children }) => (
+          <span className="underline decoration-neutral-400 underline-offset-2 dark:decoration-white/30">{children}</span>
+        ),
         code: ({ children }) => (
-          <code className="rounded-md bg-white/10 px-1.5 py-0.5 font-mono text-[0.9em] text-amber-100/95">
+          <code className="rounded-md bg-neutral-200 px-1.5 py-0.5 font-mono text-[0.9em] text-amber-900/95 dark:bg-white/10 dark:text-amber-100/95">
             {children}
           </code>
         ),
@@ -135,11 +146,13 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
   };
 
   const openShareModal = () => {
+    if (status === "loading" || status !== "authenticated" || !session?.user) return;
     setPageUrl(typeof window !== "undefined" ? window.location.href : "");
     setActiveModal("share");
   };
 
   const openSaveModal = () => {
+    if (status === "loading" || status !== "authenticated" || !session?.user) return;
     setPageUrl(typeof window !== "undefined" ? window.location.href : "");
     setActiveModal("save");
   };
@@ -185,11 +198,11 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-black text-white antialiased selection:bg-amber-500/30">
+      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased selection:bg-amber-500/20 dark:bg-black dark:text-white dark:selection:bg-amber-500/30">
         <article itemScope itemType="https://schema.org/Article">
           <div className={appPageContainerClass}>
             <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-8 pt-[calc(var(--header-offset)+1.5rem)] pb-10 sm:gap-10 sm:pt-[calc(var(--header-offset)+2rem)] sm:pb-12">
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-neutral-900 ring-1 ring-white/10">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-neutral-200 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10">
                 <Image
                   src={coverSrc}
                   alt={data.title ? `${data.title} — cover` : "Article cover"}
@@ -204,32 +217,32 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
               </div>
 
               <header className="flex flex-col gap-4">
-                <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-amber-400/75">
+                <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-amber-700 dark:text-amber-400/75">
                   Travel guide
                 </p>
                 <h1
-                  className="m-0 text-[2rem] font-semibold leading-[1.04] tracking-tight text-white sm:text-[2.7rem]"
+                  className="m-0 text-[2rem] font-semibold leading-[1.04] tracking-tight text-neutral-900 sm:text-[2.7rem] dark:text-white"
                   itemProp="headline"
                 >
                   {data.title}
                 </h1>
                 {data.summary ? (
                   <p
-                    className="m-0 max-w-3xl text-lg font-normal leading-relaxed text-white/72"
+                    className="m-0 max-w-3xl text-lg font-normal leading-relaxed text-neutral-600 dark:text-white/72"
                     itemProp="description"
                   >
                     {data.summary}
                   </p>
                 ) : null}
 
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-white/45">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-neutral-500 dark:text-white/45">
                   <span className="inline-flex items-center gap-1.5">
-                    <Clock className="h-4 w-4 text-amber-400/75" aria-hidden />
+                    <Clock className="h-4 w-4 text-amber-700 dark:text-amber-400/75" aria-hidden />
                     <span>{readMinutes} min read</span>
                   </span>
-                  <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:inline" aria-hidden />
+                  <span className="hidden h-1 w-1 rounded-full bg-neutral-300 sm:inline dark:bg-white/20" aria-hidden />
                   <span
-                    className="text-white/40"
+                    className="text-neutral-500 dark:text-white/40"
                     itemProp="publisher"
                     itemScope
                     itemType="https://schema.org/Organization"
@@ -239,34 +252,41 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
                 </div>
               </header>
 
-              <div className="border-t border-white/10 pt-8" itemProp="articleBody">
+              <div
+                className="border-t border-neutral-200 pt-8 dark:border-white/10"
+                itemProp="articleBody"
+              >
                 <PortableText value={data.body as PortableTextBlock[]} components={portableTextComponents} />
               </div>
 
-              <div
-                className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-7 sm:mt-10"
-                aria-label="Article actions"
-              >
-                <p className="m-0 text-sm font-medium text-white/40">Save or share this guide</p>
-                <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={openSaveModal}
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-amber-400/35 hover:bg-white/12 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:translate-y-px"
-                  >
-                    <Bookmark className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
-                    Add to profile
-                  </button>
-                  <button
-                    type="button"
-                    onClick={openShareModal}
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-amber-400/35 hover:bg-white/12 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:translate-y-px"
-                  >
-                    <Share2 className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
-                    Share
-                  </button>
+              {isSignedIn ? (
+                <div
+                  className="mt-8 flex flex-col gap-4 border-t border-neutral-200 pt-7 sm:mt-10 dark:border-white/10"
+                  aria-label="Article actions"
+                >
+                  <p className="m-0 text-sm font-medium text-neutral-500 dark:text-white/40">
+                    Save or share this guide
+                  </p>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={openSaveModal}
+                      className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-300 bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900 shadow-sm transition hover:border-amber-500/50 hover:bg-amber-50/60 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 active:translate-y-px dark:border-white/15 dark:bg-white/[0.08] dark:text-white dark:shadow-none dark:hover:border-amber-400/35 dark:hover:bg-white/12 dark:focus-visible:ring-offset-black"
+                    >
+                      <Bookmark className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
+                      Add to profile
+                    </button>
+                    <button
+                      type="button"
+                      onClick={openShareModal}
+                      className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-300 bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900 shadow-sm transition hover:border-amber-500/50 hover:bg-amber-50/60 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 active:translate-y-px dark:border-white/15 dark:bg-white/[0.08] dark:text-white dark:shadow-none dark:hover:border-amber-400/35 dark:hover:bg-white/12 dark:focus-visible:ring-offset-black"
+                    >
+                      <Share2 className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
+                      Share
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
           </div>
         </article>
@@ -285,8 +305,9 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
         description={
           status === "authenticated" && session?.user ? (
             <>
-              Add <span className="font-medium text-white/90">&ldquo;{data.title}&rdquo;</span> to your saved articles so you can
-              return to it from your profile.
+              Add{" "}
+              <span className="font-medium text-neutral-900 dark:text-white/90">&ldquo;{data.title}&rdquo;</span> to your saved
+              articles so you can return to it from your profile.
             </>
           ) : (
             <>Sign in to save Culturin guides to your profile and pick them up on any device.</>
@@ -311,9 +332,9 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
           data-variant={toast.variant}
           className={[
             "fixed bottom-6 left-1/2 z-[2000] w-[min(720px,calc(100vw-32px))] -translate-x-1/2 rounded-xl border px-3.5 py-3 text-sm shadow-2xl",
-            "border-white/12 bg-neutral-950/90 text-white backdrop-blur-sm",
+            "border-neutral-200 bg-white/95 text-neutral-900 backdrop-blur-sm dark:border-white/12 dark:bg-neutral-950/90 dark:text-white",
             toast.variant === "success" ? "border-emerald-500/30" : "",
-            toast.variant === "info" ? "border-amber-400/35" : "",
+            toast.variant === "info" ? "border-amber-500/40 dark:border-amber-400/35" : "",
             toast.variant === "error" ? "border-rose-500/30" : "",
           ].join(" ")}
         >

@@ -1,75 +1,83 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { Link } from "next-view-transitions";
 
-import Header from "@/app/components/Header";
-import SiteFooter from "@/app/components/SiteFooter";
-import StudioManager from "@/app/studio/StudioManager";
-import { getCurrentAdminState } from "@/lib/studio/admin";
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getStudioCounts } from "@/lib/studio/getStudioCounts";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Culturin Studio",
-  description: "Create and update travel guides, videos, and provider listings (admin only).",
-  robots: { index: false, follow: false },
+  title: "Overview",
+  description: "Studio home — create content and jump to public pages from one place.",
 };
 
-async function getStudioCounts() {
-  const db = getSupabaseAdminOrNull();
-  if (!db) {
-    return { blogs: 0, videos: 0, providers: 0 };
-  }
-  const [blogs, videos, providers] = await Promise.all([
-    db.from("cms_blogs").select("id", { count: "exact", head: true }),
-    db.from("cms_videos").select("id", { count: "exact", head: true }),
-    db.from("cms_providers").select("id", { count: "exact", head: true }),
-  ]);
-
-  return {
-    blogs: blogs.count ?? 0,
-    videos: videos.count ?? 0,
-    providers: providers.count ?? 0,
-  };
-}
-
-export default async function StudioPage() {
-  const state = await getCurrentAdminState();
-
-  if (!state.userId) {
-    redirect("/login?next=/studio");
-  }
-
-  if (!state.isAdmin) {
-    return (
-      <>
-        <Header />
-        <main className="min-h-dvh bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white sm:px-6">
-          <div className="mx-auto mt-10 w-full max-w-2xl rounded-2xl border border-neutral-200 bg-white p-6 dark:border-white/10 dark:bg-neutral-950/90">
-            <p className="text-sm font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">Culturin Studio</p>
-            <h1 className="mt-2 text-2xl font-semibold">Access denied</h1>
-            <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
-              Your account is signed in, but does not have admin access yet.
-            </p>
-          </div>
-        </main>
-        <SiteFooter />
-      </>
-    );
-  }
-
+export default async function StudioOverviewPage() {
   const counts = await getStudioCounts();
 
   return (
-    <>
-      <Header />
-      <StudioManager
-        blogCount={counts.blogs}
-        videoCount={counts.videos}
-        providerCount={counts.providers}
-        email={state.email}
-      />
-      <SiteFooter />
-    </>
+    <div className="p-4 sm:p-6 md:max-w-3xl md:p-8">
+      <p className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">Overview</p>
+      <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Culturin Studio</h1>
+      <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
+        Use the sidebar to create articles, videos, and provider listings, upload images, and open public pages. Everything is
+        connected to the same site experience.
+      </p>
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        <Link
+          href="/studio/articles"
+          className="block rounded-xl border border-neutral-200 p-4 no-underline transition hover:border-amber-400/40 dark:border-white/10 dark:hover:border-amber-400/30"
+        >
+          <p className="m-0 text-xs uppercase tracking-wide text-neutral-500 dark:text-white/50">Articles</p>
+          <p className="m-0 mt-1 text-2xl font-semibold text-neutral-900 tabular-nums dark:text-white">{counts.blogs}</p>
+        </Link>
+        <Link
+          href="/studio/videos"
+          className="block rounded-xl border border-neutral-200 p-4 no-underline transition hover:border-amber-400/40 dark:border-white/10 dark:hover:border-amber-400/30"
+        >
+          <p className="m-0 text-xs uppercase tracking-wide text-neutral-500 dark:text-white/50">Videos</p>
+          <p className="m-0 mt-1 text-2xl font-semibold text-neutral-900 tabular-nums dark:text-white">{counts.videos}</p>
+        </Link>
+        <Link
+          href="/studio/providers"
+          className="block rounded-xl border border-neutral-200 p-4 no-underline transition hover:border-amber-400/40 dark:border-white/10 dark:hover:border-amber-400/30"
+        >
+          <p className="m-0 text-xs uppercase tracking-wide text-neutral-500 dark:text-white/50">Providers</p>
+          <p className="m-0 mt-1 text-2xl font-semibold text-neutral-900 tabular-nums dark:text-white">{counts.providers}</p>
+        </Link>
+      </div>
+
+      <ul className="m-0 mt-8 list-none space-y-2.5 p-0 text-sm text-neutral-600 dark:text-white/65">
+        <li>
+          <Link
+            className="font-medium text-amber-700 no-underline hover:underline dark:text-amber-300/95"
+            href="/studio/articles"
+          >
+            Create an article
+          </Link>{" "}
+          — add guides and editorial pieces that show on the Articles and home rails.
+        </li>
+        <li>
+          <Link className="font-medium text-amber-700 no-underline hover:underline dark:text-amber-300/95" href="/studio/videos">
+            Add a video
+          </Link>{" "}
+          — Mux playback ID and metadata for the video library and streams.
+        </li>
+        <li>
+          <Link
+            className="font-medium text-amber-700 no-underline hover:underline dark:text-amber-300/95"
+            href="/studio/providers"
+          >
+            Add a provider
+          </Link>{" "}
+          — experiences, bookings, and curated pages across the app.
+        </li>
+        <li>
+          <Link className="font-medium text-amber-700 no-underline hover:underline dark:text-amber-300/95" href="/create/upload">
+            Upload images
+          </Link>{" "}
+          — get public URLs to paste into CMS fields and cards site-wide.
+        </li>
+      </ul>
+    </div>
   );
 }
