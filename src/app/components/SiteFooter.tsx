@@ -21,6 +21,7 @@ const footerLinkItems = [
   { label: "Articles", href: "/articles" },
   { label: "About", href: "/about" },
   { label: "Agency", href: "/agency" },
+  { label: "Culturin Studio", href: "/studio" },
   { label: "Partner with us", href: "/join-us/advisors" },
   { label: "Privacy", href: "/privacy" },
 ] as const;
@@ -91,9 +92,10 @@ function FooterNewsletter() {
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     if (!agreed) {
@@ -104,13 +106,39 @@ function FooterNewsletter() {
       setError("Enter a valid email address.");
       return;
     }
-    setSubmitted(true);
+
+    setPending(true);
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), marketingConsent: true }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        alreadySubscribed?: boolean;
+        ok?: boolean;
+      };
+      if (!res.ok) {
+        setError(typeof data.error === "string" ? data.error : "Something went wrong. Try again.");
+        return;
+      }
+      if (data.alreadySubscribed) {
+        setSuccess("You're already subscribed. Thanks for staying in touch.");
+      } else {
+        setSuccess("Thanks. You are on the list.");
+      }
+    } catch {
+      setError("Network error. Check your connection and try again.");
+    } finally {
+      setPending(false);
+    }
   }
 
-  if (submitted) {
+  if (success) {
     return (
       <p className="text-sm text-neutral-700 dark:text-white/80" role="status">
-        Thanks. You are on the list.
+        {success}
       </p>
     );
   }
@@ -132,12 +160,15 @@ function FooterNewsletter() {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="min-w-0 flex-1 border-0 bg-transparent py-1.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-0 dark:text-white dark:placeholder:text-white/45"
+          disabled={pending}
+          className="min-w-0 flex-1 border-0 bg-transparent py-1.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-0 disabled:cursor-wait disabled:opacity-60 dark:text-white dark:placeholder:text-white/45"
         />
         <button
           type="submit"
-          className="inline-flex h-9 w-9 shrink-0 items-center justify-center text-neutral-900 transition hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:text-white dark:hover:bg-white/10"
+          disabled={pending}
+          className="inline-flex h-9 w-9 shrink-0 items-center justify-center text-neutral-900 transition hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 disabled:cursor-wait disabled:opacity-50 dark:text-white dark:hover:bg-white/10"
           aria-label="Subscribe"
+          aria-busy={pending}
         >
           <ArrowSubmitIcon className="h-4 w-4" />
         </button>

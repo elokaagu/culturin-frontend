@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import Header from "@/app/components/Header";
@@ -7,6 +8,12 @@ import { getCurrentAdminState } from "@/lib/studio/admin";
 import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Culturin Studio",
+  description: "Create and update travel guides, videos, and provider listings (admin only).",
+  robots: { index: false, follow: false },
+};
 
 async function getStudioCounts() {
   const db = getSupabaseAdminOrNull();
