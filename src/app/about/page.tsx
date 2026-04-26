@@ -134,7 +134,7 @@ export default function AboutPage() {
               Destinations
             </Link>
             <Link
-              href="/articles"
+              href="/travel-guides"
               className="inline-flex min-h-[42px] items-center rounded-full border border-white/20 bg-white/[0.06] px-5 text-sm font-semibold text-white no-underline transition hover:bg-white/[0.12]"
             >
               Travel guides

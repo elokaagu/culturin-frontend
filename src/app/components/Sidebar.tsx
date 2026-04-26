@@ -91,7 +91,7 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
           </li>
 
           <li className="p-1">
-            <Link href="/articles" className={linkClass} onClick={onClose}>
+            <Link href="/travel-guides" className={linkClass} onClick={onClose}>
               Travel Guides
             </Link>
           </li>

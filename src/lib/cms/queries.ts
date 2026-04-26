@@ -8,6 +8,8 @@ import {
   mapVideoRowToCard,
   mapVideoRowToFull,
 } from "./mappers";
+import { tokenizeSearchQuery } from "@/lib/searchTokenize";
+
 import type { CmsDb } from "./types";
 import type { CmsBlogRow, CmsProviderRow, CmsVideoRow } from "./types";
 
@@ -39,6 +41,62 @@ function mergeProviderRows(rows: CmsProviderRow[]): providerHeroCard[] {
   const byId = new Map<string, CmsProviderRow>();
   for (const r of rows) byId.set(r.id, r);
   return Array.from(byId.values()).map(mapProviderRowToHero);
+}
+
+/** All rows for one token: title or summary/fields ilike. */
+function mergeBlogRowsToMap(rows: CmsBlogRow[]): Map<string, CmsBlogRow> {
+  const m = new Map<string, CmsBlogRow>();
+  for (const r of rows) m.set(r.id, r);
+  return m;
+}
+
+async function blogIdRowsForToken(db: CmsDb, token: string): Promise<Map<string, CmsBlogRow>> {
+  const p = ilikePattern(token);
+  const [byTitle, bySummary] = await Promise.all([
+    db.from("cms_blogs").select(blogSelect).ilike("title", p),
+    db.from("cms_blogs").select(blogSelect).ilike("summary", p),
+  ]);
+  const rows: CmsBlogRow[] = [
+    ...((byTitle.data as CmsBlogRow[] | null | undefined) ?? []),
+    ...((bySummary.data as CmsBlogRow[] | null | undefined) ?? []),
+  ];
+  return mergeBlogRowsToMap(rows);
+}
+
+async function videoIdRowsForToken(db: CmsDb, token: string): Promise<Map<string, CmsVideoRow>> {
+  const p = ilikePattern(token);
+  const [byTitle, byUploader, byDescription] = await Promise.all([
+    db.from("cms_videos").select(videoSelect).ilike("title", p),
+    db.from("cms_videos").select(videoSelect).ilike("uploader", p),
+    db.from("cms_videos").select(videoSelect).ilike("description", p),
+  ]);
+  const rows: CmsVideoRow[] = [
+    ...((byTitle.data as CmsVideoRow[] | null | undefined) ?? []),
+    ...((byUploader.data as CmsVideoRow[] | null | undefined) ?? []),
+    ...((byDescription.data as CmsVideoRow[] | null | undefined) ?? []),
+  ];
+  const m = new Map<string, CmsVideoRow>();
+  for (const r of rows) m.set(r.id, r);
+  return m;
+}
+
+async function providerIdRowsForToken(db: CmsDb, token: string): Promise<Map<string, CmsProviderRow>> {
+  const p = ilikePattern(token);
+  const [byEventName, byName, byLocation, byDescription] = await Promise.all([
+    db.from("cms_providers").select(providerSelect).ilike("event_name", p),
+    db.from("cms_providers").select(providerSelect).ilike("name", p),
+    db.from("cms_providers").select(providerSelect).ilike("location", p),
+    db.from("cms_providers").select(providerSelect).ilike("description", p),
+  ]);
+  const rows: CmsProviderRow[] = [
+    ...((byEventName.data as CmsProviderRow[] | null | undefined) ?? []),
+    ...((byName.data as CmsProviderRow[] | null | undefined) ?? []),
+    ...((byLocation.data as CmsProviderRow[] | null | undefined) ?? []),
+    ...((byDescription.data as CmsProviderRow[] | null | undefined) ?? []),
+  ];
+  const m = new Map<string, CmsProviderRow>();
+  for (const r of rows) m.set(r.id, r);
+  return m;
 }
 
 export async function listBlogs(db: CmsDb): Promise<simpleBlogCard[]> {
@@ -112,47 +170,77 @@ export async function getProviderBySlug(db: CmsDb, slug: string): Promise<fullPr
 export async function searchBlogs(db: CmsDb, term: string): Promise<simpleBlogCard[]> {
   const t = term.trim();
   if (!t) return listBlogs(db);
-  const p = ilikePattern(t);
-  const [byTitle, bySummary] = await Promise.all([
-    db.from("cms_blogs").select(blogSelect).ilike("title", p),
-    db.from("cms_blogs").select(blogSelect).ilike("summary", p),
-  ]);
-  const rows = [...(byTitle.data as CmsBlogRow[] | null | undefined) ?? [], ...(bySummary.data as CmsBlogRow[] | null | undefined) ?? []];
-  return mergeBlogRows(rows);
+  const tokens = tokenizeSearchQuery(t);
+  if (tokens.length === 0) return [];
+  if (tokens.length === 1) {
+    const p = ilikePattern(tokens[0]!);
+    const [byTitle, bySummary] = await Promise.all([
+      db.from("cms_blogs").select(blogSelect).ilike("title", p),
+      db.from("cms_blogs").select(blogSelect).ilike("summary", p),
+    ]);
+    const rows = [
+      ...((byTitle.data as CmsBlogRow[] | null | undefined) ?? []),
+      ...((bySummary.data as CmsBlogRow[] | null | undefined) ?? []),
+    ];
+    return mergeBlogRows(rows);
+  }
+  const perToken = await Promise.all(tokens.map((tok) => blogIdRowsForToken(db, tok)));
+  const [first, ...rest] = perToken;
+  if (!first) return [];
+  const ids = Array.from(first.keys()).filter((id) => rest.every((m) => m.has(id)));
+  return ids.map((id) => mapBlogRowToCard(first.get(id)!));
 }
 
 export async function searchVideos(db: CmsDb, term: string): Promise<videoCard[]> {
   const t = term.trim();
   if (!t) return listVideos(db);
-  const p = ilikePattern(t);
-  const [byTitle, byUploader, byDescription] = await Promise.all([
-    db.from("cms_videos").select(videoSelect).ilike("title", p),
-    db.from("cms_videos").select(videoSelect).ilike("uploader", p),
-    db.from("cms_videos").select(videoSelect).ilike("description", p),
-  ]);
-  const rows = [
-    ...((byTitle.data as CmsVideoRow[] | null | undefined) ?? []),
-    ...((byUploader.data as CmsVideoRow[] | null | undefined) ?? []),
-    ...((byDescription.data as CmsVideoRow[] | null | undefined) ?? []),
-  ];
-  return mergeVideoRows(rows);
+  const tokens = tokenizeSearchQuery(t);
+  if (tokens.length === 0) return [];
+  if (tokens.length === 1) {
+    const p = ilikePattern(tokens[0]!);
+    const [byTitle, byUploader, byDescription] = await Promise.all([
+      db.from("cms_videos").select(videoSelect).ilike("title", p),
+      db.from("cms_videos").select(videoSelect).ilike("uploader", p),
+      db.from("cms_videos").select(videoSelect).ilike("description", p),
+    ]);
+    const rows = [
+      ...((byTitle.data as CmsVideoRow[] | null | undefined) ?? []),
+      ...((byUploader.data as CmsVideoRow[] | null | undefined) ?? []),
+      ...((byDescription.data as CmsVideoRow[] | null | undefined) ?? []),
+    ];
+    return mergeVideoRows(rows);
+  }
+  const perToken = await Promise.all(tokens.map((tok) => videoIdRowsForToken(db, tok)));
+  const [first, ...rest] = perToken;
+  if (!first) return [];
+  const ids = Array.from(first.keys()).filter((id) => rest.every((m) => m.has(id)));
+  return ids.map((id) => mapVideoRowToCard(first.get(id)!));
 }
 
 export async function searchProviders(db: CmsDb, term: string): Promise<providerHeroCard[]> {
   const t = term.trim();
   if (!t) return listProviders(db);
-  const p = ilikePattern(t);
-  const [byEventName, byName, byLocation, byDescription] = await Promise.all([
-    db.from("cms_providers").select(providerSelect).ilike("event_name", p),
-    db.from("cms_providers").select(providerSelect).ilike("name", p),
-    db.from("cms_providers").select(providerSelect).ilike("location", p),
-    db.from("cms_providers").select(providerSelect).ilike("description", p),
-  ]);
-  const rows = [
-    ...((byEventName.data as CmsProviderRow[] | null | undefined) ?? []),
-    ...((byName.data as CmsProviderRow[] | null | undefined) ?? []),
-    ...((byLocation.data as CmsProviderRow[] | null | undefined) ?? []),
-    ...((byDescription.data as CmsProviderRow[] | null | undefined) ?? []),
-  ];
-  return mergeProviderRows(rows);
+  const tokens = tokenizeSearchQuery(t);
+  if (tokens.length === 0) return [];
+  if (tokens.length === 1) {
+    const p = ilikePattern(tokens[0]!);
+    const [byEventName, byName, byLocation, byDescription] = await Promise.all([
+      db.from("cms_providers").select(providerSelect).ilike("event_name", p),
+      db.from("cms_providers").select(providerSelect).ilike("name", p),
+      db.from("cms_providers").select(providerSelect).ilike("location", p),
+      db.from("cms_providers").select(providerSelect).ilike("description", p),
+    ]);
+    const rows = [
+      ...((byEventName.data as CmsProviderRow[] | null | undefined) ?? []),
+      ...((byName.data as CmsProviderRow[] | null | undefined) ?? []),
+      ...((byLocation.data as CmsProviderRow[] | null | undefined) ?? []),
+      ...((byDescription.data as CmsProviderRow[] | null | undefined) ?? []),
+    ];
+    return mergeProviderRows(rows);
+  }
+  const perToken = await Promise.all(tokens.map((tok) => providerIdRowsForToken(db, tok)));
+  const [first, ...rest] = perToken;
+  if (!first) return [];
+  const ids = Array.from(first.keys()).filter((id) => rest.every((m) => m.has(id)));
+  return ids.map((id) => mapProviderRowToHero(first.get(id)!));
 }

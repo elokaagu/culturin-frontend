@@ -458,7 +458,7 @@ export default function ProfileView() {
         {tab === "elements" && articles.length === 0 ? (
           <p className="mt-8 text-center text-sm text-white/45">
             No stories loaded yet. Open{" "}
-            <Link href="/articles" className="font-medium text-amber-400/90 underline-offset-2 hover:underline">
+            <Link href="/travel-guides" className="font-medium text-amber-400/90 underline-offset-2 hover:underline">
               Travel Guides
             </Link>{" "}
             to explore.

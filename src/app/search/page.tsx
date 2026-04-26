@@ -4,6 +4,7 @@ import { Link } from "next-view-transitions";
 import type { ReactNode } from "react";
 
 import { appPageContainerClass } from "@/lib/appLayout";
+import { textMatchesAllTokens, tokenizeSearchQuery } from "@/lib/searchTokenize";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { searchBlogs, searchProviders, searchVideos } from "../../lib/cms/queries";
@@ -24,34 +25,38 @@ import SiteFooter from "../components/SiteFooter";
 
 export const revalidate = 120;
 
-function containsTerm(value: string | null | undefined, term: string) {
-  return (value || "").toLowerCase().includes(term);
-}
-
 function normalizeQuery(query: string | undefined): string {
   return (query || "").trim().toLowerCase();
 }
 
 function filterFallbackBlogs(items: simpleBlogCard[], term: string) {
   if (!term) return items;
-  return items.filter((item) => containsTerm(item.title, term) || containsTerm(item.summary, term));
+  const tokens = tokenizeSearchQuery(term);
+  if (tokens.length === 0) return [];
+  return items.filter((item) => {
+    const blob = [item.title, item.summary, item.currentSlug].filter(Boolean).join(" ");
+    return textMatchesAllTokens(blob, tokens);
+  });
 }
 
 function filterFallbackVideos(items: videoCard[], term: string) {
   if (!term) return items;
-  return items.filter(
-    (item) =>
-      containsTerm(item.title, term) ||
-      containsTerm(item.uploader, term) ||
-      containsTerm(item.description, term),
-  );
+  const tokens = tokenizeSearchQuery(term);
+  if (tokens.length === 0) return [];
+  return items.filter((item) => {
+    const blob = [item.title, item.uploader, item.description, item.currentSlug].filter(Boolean).join(" ");
+    return textMatchesAllTokens(blob, tokens);
+  });
 }
 
 function filterFallbackProviders(items: providerHeroCard[], term: string) {
   if (!term) return items;
-  return items.filter(
-    (item) => containsTerm(item.name, term) || containsTerm(item.eventName, term),
-  );
+  const tokens = tokenizeSearchQuery(term);
+  if (tokens.length === 0) return [];
+  return items.filter((item) => {
+    const blob = [item.name, item.eventName, item.slug].filter(Boolean).join(" ");
+    return textMatchesAllTokens(blob, tokens);
+  });
 }
 
 /**
@@ -209,10 +214,10 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
               </p>
               <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
                 <Link
-                  href="/articles"
+                  href="/travel-guides"
                   className="inline-flex min-h-10 items-center justify-center rounded-full border border-neutral-300 bg-white px-5 text-sm font-semibold text-neutral-900 no-underline transition hover:bg-neutral-50 dark:border-white/20 dark:bg-white/[0.1] dark:text-white dark:hover:bg-white/[0.16]"
                 >
-                  Browse articles
+                  Browse travel guides
                 </Link>
                 <Link
                   href="/destinations"

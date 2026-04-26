@@ -13,7 +13,6 @@ import {
   cmsImageUnoptimized,
   resolveContentImageSrc,
 } from "../../lib/imagePlaceholder";
-import { travelGuideCategories } from "../../lib/travelGuidesCategories";
 import { filterPublicBlogs } from "@/lib/cms/blockedFromSite";
 
 function hasValidArticleSlug(article: simpleBlogCard): boolean {
@@ -135,7 +134,7 @@ export default async function ArticlesPage() {
                 Trending
               </Link>
               <Link
-                href={travelGuideCategories[0]?.href ?? "/trending"}
+                href="/travel-guides"
                 className="inline-flex min-h-[40px] items-center rounded-full border border-transparent bg-neutral-900 px-5 text-sm font-semibold text-white no-underline transition hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
               >
                 Travel guides

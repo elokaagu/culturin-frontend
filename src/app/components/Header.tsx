@@ -120,6 +120,17 @@ function LeftNavLink({ href, children }: { href: string; children: ReactNode }) 
   );
 }
 
+function TravelGuidesNavLink() {
+  const pathname = usePathname();
+  const active =
+    pathnameMatches(pathname, "/travel-guides") || pathnameMatches(pathname, "/articles/guides");
+  return (
+    <Link href="/travel-guides" className={navLinkClass(active)} aria-current={active ? "page" : undefined}>
+      Travel Guides
+    </Link>
+  );
+}
+
 function Logo() {
   return (
     <Link
@@ -237,22 +248,20 @@ export default function Header() {
       >
         <div className="mx-auto flex h-[var(--header-bar-height)] w-full min-w-0 max-w-[1720px] items-center gap-2 pl-[var(--gutter-l)] pr-[var(--gutter-r)] sm:gap-3">
           {/*
-            Avoid md-only “desktop” chrome: 768–1023px is too tight for inline nav + pill + actions.
-            Compact row (search icon, hamburger) below lg. From lg: inline nav, pill search, header sign-in.
-            Row layout: [logo+nav: shrink-0] [search: flex-1] [actions: shrink-0] — never shrink nav text.
+            <lg: logo+nav (shrink-0) and actions (ml-auto). lg+: three equal flex-1 columns; search is centered in the true middle.
           */}
-          <div className="flex shrink-0 items-center gap-2 sm:gap-4 lg:gap-8">
+          <div className="flex shrink-0 items-center justify-start gap-2 sm:gap-4 lg:min-w-0 lg:flex-1 lg:gap-8">
             <Logo />
             <nav
               className="hidden items-center gap-4 whitespace-nowrap sm:gap-5 lg:flex lg:gap-6"
               aria-label="Main navigation"
             >
               <LeftNavLink href="/destinations">Destinations</LeftNavLink>
-              <LeftNavLink href="/articles">Travel Guides</LeftNavLink>
+              <TravelGuidesNavLink />
             </nav>
           </div>
 
-          <div className="mx-1 hidden min-w-0 max-w-2xl flex-1 items-center justify-center self-center px-1 lg:flex">
+          <div className="hidden min-w-0 max-w-2xl flex-1 items-center justify-center self-center px-1 lg:flex">
             <div className="w-full min-w-0 max-w-2xl">
               <button
                 type="button"
@@ -276,7 +285,7 @@ export default function Header() {
             </div>
           </div>
 
-          <div className="ml-auto flex min-w-0 shrink-0 items-center justify-end gap-0.5 sm:gap-1.5">
+          <div className="ml-auto flex min-w-0 shrink-0 items-center justify-end gap-0.5 sm:gap-1.5 lg:ml-0 lg:min-w-0 lg:flex-1">
             <button
               type="button"
               onClick={openSearch}

@@ -47,7 +47,7 @@ export default function GuideDetailPage({
       <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white">
         <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
           <Link
-            href="/articles"
+            href="/travel-guides"
             className="inline-flex items-center text-sm font-medium text-amber-700 no-underline transition hover:text-amber-900 dark:text-amber-400/85 dark:hover:text-amber-300"
           >
             ← Back to travel guides
