@@ -4,6 +4,8 @@ import { createBrowserClient } from "@supabase/ssr";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
+import { getSupabasePublicConfig } from "@/lib/supabase/publicConfig";
+
 type SupabaseAuthContextValue = {
   supabase: SupabaseClient | null;
   user: User | null;
@@ -13,12 +15,11 @@ type SupabaseAuthContextValue = {
 const SupabaseAuthContext = createContext<SupabaseAuthContextValue | null>(null);
 
 function createBrowserClientSafe(): SupabaseClient | null {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) {
+  const { url, anonKey } = getSupabasePublicConfig();
+  if (!url || !anonKey) {
     return null;
   }
-  return createBrowserClient(url, key);
+  return createBrowserClient(url, anonKey);
 }
 
 export default function SupabaseAuthProvider({

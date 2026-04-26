@@ -204,7 +204,7 @@ export default function SiteFooter() {
 
   return (
     <footer
-      className="mt-8 border-t border-neutral-200/90 bg-gradient-to-b from-white to-neutral-50/90 pt-12 pb-10 text-neutral-900 shadow-[0_-4px_24px_-8px_rgba(0,0,0,0.06)] dark:border-white/10 dark:from-black dark:to-neutral-950 dark:text-white dark:shadow-[0_-4px_32px_-12px_rgba(0,0,0,0.4)]"
+      className="mt-8 border-t border-neutral-200/90 bg-gradient-to-b from-white to-neutral-50/90 pt-12 pb-[max(2.5rem,env(safe-area-inset-bottom,0px))] text-neutral-900 shadow-[0_-4px_24px_-8px_rgba(0,0,0,0.06)] dark:border-white/10 dark:from-black dark:to-neutral-950 dark:text-white dark:shadow-[0_-4px_32px_-12px_rgba(0,0,0,0.4)]"
       role="contentinfo"
     >
       <div className={appPageContainerClass}>

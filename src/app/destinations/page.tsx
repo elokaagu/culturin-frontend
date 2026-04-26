@@ -17,7 +17,7 @@ export default function DestinationsPage() {
   return (
     <ContentPageShell
       innerClassName={appPageContainerClass}
-      mainClassName="min-h-screen bg-black px-0 pb-16 pt-[var(--header-offset)] text-white"
+      mainClassName="min-h-dvh bg-black px-0 pb-16 pt-[var(--header-offset)] text-white"
     >
       <div className="mb-8 border-b border-white/10 pb-6 pt-6">
         <nav className="mb-5" aria-label="Breadcrumb">

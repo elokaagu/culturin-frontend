@@ -71,7 +71,7 @@ export default function StudioManager({ blogCount, videoCount, providerCount, em
   }
 
   return (
-    <main className="min-h-screen bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white sm:px-6">
+    <main className="min-h-dvh bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white sm:px-6">
       <div className="mx-auto w-full max-w-4xl">
         <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-[0_24px_64px_-30px_rgba(0,0,0,0.22)] dark:border-white/10 dark:bg-neutral-950/90 dark:shadow-[0_24px_64px_-30px_rgba(0,0,0,0.8)]">
           <p className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">Culturin Studio</p>

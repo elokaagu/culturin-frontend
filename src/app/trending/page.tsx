@@ -57,7 +57,7 @@ export default async function TrendingPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
           <header className="border-b border-neutral-200 pb-8 dark:border-white/10">
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Trending</h1>

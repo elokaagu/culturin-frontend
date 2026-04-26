@@ -168,7 +168,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
     <>
       <Header />
       <main
-        className="min-h-screen bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased selection:bg-amber-500/25 dark:bg-black dark:text-white"
+        className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased selection:bg-amber-500/25 dark:bg-black dark:text-white"
         id="main-content"
       >
         <div className={appPageContainerClass}>

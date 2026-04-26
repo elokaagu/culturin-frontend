@@ -3,7 +3,7 @@ import { ContentPageShell } from "../components/layout/ContentPageShell";
 export default function ArticlesLoading() {
   return (
     <ContentPageShell
-      mainClassName="min-h-screen bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
+      mainClassName="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
       innerClassName="flex w-full max-w-6xl flex-col gap-0 px-4 sm:px-6 lg:px-8"
     >
       <div className="mb-5 h-4 w-24 animate-pulse rounded bg-neutral-200 dark:bg-white/10 sm:mb-6" aria-hidden="true" />

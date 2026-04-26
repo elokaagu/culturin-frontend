@@ -28,7 +28,7 @@ export default async function VideosPage() {
     <>
       <Header />
       <main
-        className="min-h-screen w-full bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white"
+        className="min-h-dvh w-full bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white"
         id="main-content"
       >
         <div className={`${container} pt-6 sm:pt-10`}>

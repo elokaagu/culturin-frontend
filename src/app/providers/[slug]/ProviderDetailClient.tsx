@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import Header from "../../components/Header";
+import { CulturinBookingDateField } from "../../components/detail/CulturinBookingDateField";
 import { ProviderGalleryLightbox } from "../../components/detail/ProviderGalleryLightbox";
 import { SaveFavoriteModal } from "../../components/detail/SaveFavoriteModal";
 import { ShareLinkModal } from "../../components/detail/ShareLinkModal";
@@ -201,7 +202,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
   return (
     <>
       <Header />
-      <main className="min-h-screen !bg-black pb-16 pt-[var(--header-offset)] !text-white">
+      <main className="min-h-dvh !bg-black pb-16 pt-[var(--header-offset)] !text-white">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           <nav className="mb-6 pt-4" aria-label="Breadcrumb">
             <Link
@@ -398,45 +399,29 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                     Other rates: {priceLine}
                   </p>
                 ) : null}
-                <div className="mt-5 overflow-hidden rounded-xl border border-white/20 [color-scheme:dark]">
+                <div className="mt-5 rounded-xl border border-white/20">
                   <div className="grid grid-cols-2 divide-x divide-white/20 border-b border-white/20">
                     <div className="px-3 py-2.5">
-                      <label
-                        htmlFor="book-checkin"
-                        className="m-0 block text-[0.64rem] font-semibold uppercase tracking-wide text-white/55"
-                      >
-                        Check-in
-                      </label>
-                      <input
+                      <CulturinBookingDateField
                         id="book-checkin"
-                        type="date"
-                        min={todayIso()}
+                        label="Check-in"
                         value={checkIn}
-                        onChange={(e) => {
-                          const v = e.target.value;
+                        minIso={todayIso()}
+                        onChange={(v) => {
                           setCheckIn(v);
                           if (checkOut && v && checkOut < v) setCheckOut(v);
                         }}
-                        className="mt-1.5 w-full min-h-[2rem] rounded-md border-0 border-white/0 bg-white/[0.04] px-1 py-0.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/50"
-                        aria-label="Check-in date, optional"
+                        helpText="Leave open for flexible timing (optional)"
                       />
-                      <p className="m-0 mt-0.5 text-xs text-white/40">Leave open for flexible timing</p>
                     </div>
                     <div className="px-3 py-2.5">
-                      <label
-                        htmlFor="book-checkout"
-                        className="m-0 block text-[0.64rem] font-semibold uppercase tracking-wide text-white/55"
-                      >
-                        Checkout
-                      </label>
-                      <input
+                      <CulturinBookingDateField
                         id="book-checkout"
-                        type="date"
-                        min={minOutDate}
+                        label="Checkout"
                         value={checkOut}
-                        onChange={(e) => setCheckOut(e.target.value)}
-                        className="mt-1.5 w-full min-h-[2rem] rounded-md border-0 border-white/0 bg-white/[0.04] px-1 py-0.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/50"
-                        aria-label="Check-out date, optional"
+                        minIso={minOutDate}
+                        onChange={setCheckOut}
+                        alignEnd
                       />
                     </div>
                   </div>

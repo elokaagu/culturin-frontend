@@ -55,7 +55,7 @@ export default function AgencyPage() {
   return (
     <>
       <ContentPageShell
-        mainClassName="min-h-screen bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white"
+        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white"
         innerClassName="mx-auto w-full max-w-6xl px-4 sm:px-6"
       >
         <nav aria-label="Breadcrumb" className="mb-6 pt-6">

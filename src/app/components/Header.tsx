@@ -229,13 +229,13 @@ export default function Header() {
     <>
       <header
         className={
-          `fixed inset-x-0 top-0 z-[1100] w-full border-b border-neutral-200/90 bg-white transition-[box-shadow,background] duration-200 dark:border-white/10 dark:bg-neutral-950` +
+          `fixed inset-x-0 top-0 z-[1100] w-full border-b border-neutral-200/90 bg-white pt-[env(safe-area-inset-top,0px)] transition-[box-shadow,background] duration-200 dark:border-white/10 dark:bg-neutral-950` +
           (elevated
             ? " shadow-sm shadow-neutral-900/5 backdrop-blur dark:shadow-black/20"
             : " supports-[backdrop-filter]:bg-white/95 dark:supports-[backdrop-filter]:bg-neutral-950/90")
         }
       >
-        <div className="mx-auto flex h-[var(--header-bar-height)] max-w-[1720px] flex-nowrap items-center gap-2 px-3 sm:gap-3 sm:px-5 md:gap-4 md:px-8">
+        <div className="mx-auto flex h-[var(--header-bar-height)] max-w-[1720px] flex-nowrap items-center gap-2 pl-[var(--gutter-l)] pr-[var(--gutter-r)] sm:gap-3 md:gap-4">
           <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-3 sm:gap-8 md:gap-10">
             <Logo />
             <nav
@@ -325,13 +325,13 @@ export default function Header() {
         >
           <button
             type="button"
-            className="absolute right-3 top-3 z-[1] rounded-full px-3 py-1.5 text-sm font-medium text-neutral-700 transition hover:bg-neutral-200/80 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:text-white/75 dark:hover:bg-white/10 dark:focus-visible:ring-amber-400/50 sm:right-5 sm:top-4"
+            className="absolute right-[max(0.75rem,env(safe-area-inset-right,0px))] top-[max(0.75rem,env(safe-area-inset-top,0px))] z-[1] rounded-full px-3 py-1.5 text-sm font-medium text-neutral-700 transition hover:bg-neutral-200/80 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:text-white/75 dark:hover:bg-white/10 dark:focus-visible:ring-amber-400/50 sm:top-4"
             onClick={() => setSearchOpen(false)}
           >
             Close
           </button>
           <div
-            className="absolute left-1/2 top-[calc(var(--header-bar-height)+0.75rem)] w-[min(92vw,40rem)] -translate-x-1/2 sm:top-[calc(var(--header-bar-height)+1rem)]"
+            className="absolute left-1/2 top-[calc(var(--header-total-height)+0.75rem)] w-[min(92dvw,40rem)] -translate-x-1/2 sm:top-[calc(var(--header-total-height)+1rem)]"
             onClick={(e) => e.stopPropagation()}
             role="presentation"
           >
@@ -354,7 +354,7 @@ export default function Header() {
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder="Search Culturin…"
-                  className="min-w-0 flex-1 border-0 bg-transparent py-0.5 text-[0.9375rem] font-normal text-neutral-900 outline-none placeholder:text-neutral-500 dark:text-white dark:placeholder:text-white/40"
+                  className="min-w-0 flex-1 border-0 bg-transparent py-0.5 text-base font-normal text-neutral-900 outline-none placeholder:text-neutral-500 dark:text-white dark:placeholder:text-white/40"
                   autoFocus
                   autoComplete="off"
                 />

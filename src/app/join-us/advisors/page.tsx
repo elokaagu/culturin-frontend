@@ -49,7 +49,7 @@ export default function AdvisorsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         <div className="mx-auto w-full max-w-[52rem] px-4 pt-8 sm:px-6 sm:pt-10">
           <header className="max-w-[40rem]">
             <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 sm:text-[2.7rem] dark:text-white">

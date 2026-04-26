@@ -85,7 +85,7 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
   return (
     <>
       <div
-        className="fixed inset-x-0 bottom-0 top-[var(--header-bar-height)] z-[1310] animate-in fade-in duration-300 ease-out"
+        className="fixed inset-x-0 bottom-0 top-[var(--header-total-height)] z-[1310] animate-in fade-in duration-300 ease-out"
         style={{ animationDuration: "280ms" }}
         aria-hidden
       >
@@ -93,7 +93,7 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
       </div>
       <div
         id="nearby-experience-panel"
-        className="fixed inset-x-0 top-[var(--header-bar-height)] z-[1320] px-2 pt-2 sm:px-4"
+        className="fixed inset-x-0 top-[var(--header-total-height)] z-[1320] pl-[max(0.5rem,env(safe-area-inset-left,0px))] pr-[max(0.5rem,env(safe-area-inset-right,0px))] pt-2 sm:pl-4 sm:pr-4"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}

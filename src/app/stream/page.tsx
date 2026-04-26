@@ -17,7 +17,7 @@ export default async function StreamLandingPage({
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black pb-16 pt-[var(--header-offset)] text-white">
+      <main className="min-h-dvh bg-black pb-16 pt-[var(--header-offset)] text-white">
         <StreamClient videos={allVideos} selectedSlug={selectedSlug} />
       </main>
     </>

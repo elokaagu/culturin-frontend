@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./styles/globals.css";
-import { Metadata } from "next";
+import { Metadata, type Viewport } from "next";
 
 import { createSupabaseServerClient } from "../lib/supabase/server";
 import SupabaseAuthProvider from "./components/SupabaseAuthProvider";
@@ -45,6 +45,18 @@ export const metadata: Metadata = {
   },
 };
 
+/** Device width + safe areas (notch / home indicator) for mobile browsers. */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
+};
+
 async function getInitialAuthUser() {
   try {
     const supabase = await createSupabaseServerClient();
@@ -66,7 +78,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${twkEverett.variable} ${recoleta.variable} font-sans`}>
+      <body
+        className={`${twkEverett.variable} ${recoleta.variable} font-sans`}
+      >
         <Script id="culturin-theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>

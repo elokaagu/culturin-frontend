@@ -44,7 +44,7 @@ export default async function StudioPage() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white sm:px-6">
+        <main className="min-h-dvh bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white sm:px-6">
           <div className="mx-auto mt-10 w-full max-w-2xl rounded-2xl border border-neutral-200 bg-white p-6 dark:border-white/10 dark:bg-neutral-950/90">
             <p className="text-sm font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">Culturin Studio</p>
             <h1 className="mt-2 text-2xl font-semibold">Access denied</h1>

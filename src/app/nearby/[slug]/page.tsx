@@ -37,7 +37,7 @@ export default function NearbyResultPage({ params }: PageProps) {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         <section className="mx-auto w-full max-w-5xl px-4 sm:px-6">
           <nav className="mb-6 pt-6 text-sm text-neutral-600 dark:text-white/65" aria-label="Breadcrumb">
             <Link href="/" className="text-amber-300/95 no-underline transition hover:text-amber-200">

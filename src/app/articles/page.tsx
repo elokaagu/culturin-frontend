@@ -101,7 +101,7 @@ export default async function ArticlesPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-neutral-50 text-neutral-900 antialiased dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-black dark:text-white">
         {/* Masthead */}
         <div className="border-b border-neutral-200 bg-white dark:border-white/10 dark:bg-neutral-950/40">
           <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-[calc(var(--header-offset)+1.5rem)] sm:px-6 sm:pb-12 sm:pt-[calc(var(--header-offset)+2rem)]">

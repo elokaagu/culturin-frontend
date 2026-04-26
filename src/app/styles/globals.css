@@ -6,9 +6,17 @@
 
 @layer base {
   :root {
-    /* Main content `padding-top` below fixed header (slightly more than bar height). */
+    /* Inner bar height (use with safe-area: --header-total-height). */
     --header-bar-height: 3.9rem;
-    --header-offset: calc(var(--header-bar-height) + 4.75rem);
+    /* Fixed header: inner bar + notch / status area. */
+    --header-total-height: calc(
+      var(--header-bar-height) + env(safe-area-inset-top, 0px)
+    );
+    /* Main content `padding-top` below fixed header (slightly more than total bar height). */
+    --header-offset: calc(var(--header-total-height) + 4.75rem);
+    /* In sync with `appPageGutterXClass` / `Header` row padding. */
+    --gutter-l: max(0.75rem, env(safe-area-inset-left, 0px));
+    --gutter-r: max(0.75rem, env(safe-area-inset-right, 0px));
     /* shadcn — HSL numbers only (no hsl() wrapper). */
     --background: 0 0% 98%;
     --foreground: 0 0% 8%;
@@ -35,13 +43,22 @@
 
   @media (min-width: 640px) {
     :root {
-      --header-offset: calc(var(--header-bar-height) + 3.5rem);
+      --header-offset: calc(var(--header-total-height) + 3.5rem);
+      --gutter-l: max(1.25rem, env(safe-area-inset-left, 0px));
+      --gutter-r: max(1.25rem, env(safe-area-inset-right, 0px));
+    }
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --gutter-l: max(2rem, env(safe-area-inset-left, 0px));
+      --gutter-r: max(2rem, env(safe-area-inset-right, 0px));
     }
   }
 
   /* Light default; `html.dark` toggled by ThemeProvider + inline script. */
   html {
-    @apply bg-background text-foreground;
+    @apply overflow-x-clip bg-background text-foreground;
     color-scheme: light;
   }
 
@@ -74,16 +91,18 @@
     }
   }
 
-  html,
   body {
-    height: 100%;
-  }
-
-  body {
-    @apply bg-transparent text-inherit antialiased;
+    @apply min-h-dvh overflow-x-clip bg-transparent text-inherit antialiased;
     font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
       BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
       "Segoe UI Emoji";
+  }
+
+  /* 16px minimum on form controls to reduce iOS Safari zooming focused inputs. */
+  input,
+  textarea,
+  select {
+    @apply text-base;
   }
 
   h1,

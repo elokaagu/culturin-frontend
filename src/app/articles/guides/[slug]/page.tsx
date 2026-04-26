@@ -43,7 +43,7 @@ export default function GuideDetailPage({
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black pb-16 pt-[var(--header-offset)] text-white">
+      <main className="min-h-dvh bg-black pb-16 pt-[var(--header-offset)] text-white">
         <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
           <Link
             href="/articles"

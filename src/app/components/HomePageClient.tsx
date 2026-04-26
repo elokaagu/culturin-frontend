@@ -24,7 +24,7 @@ const HERO_IMAGE =
   "https://www.forbes.com/advisor/wp-content/uploads/2021/03/traveling-based-on-fare-deals.jpg";
 
 const mainClass =
-  "min-h-screen w-full bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white";
+  "min-h-dvh w-full min-w-0 overflow-x-clip bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white";
 
 const containerClass = appPageContainerClass;
 
@@ -175,7 +175,10 @@ export default function HomePageClient({
         </section>
 
         {/* Full-bleed cinematic handoff: soft gradient + masked blur between hero and Discover */}
-        <div className="relative left-1/2 -ml-[50vw] w-screen max-w-[100vw] overflow-hidden" aria-hidden>
+        <div
+          className="pointer-events-none relative left-1/2 w-[100dvw] max-w-[100dvw] -translate-x-1/2 overflow-x-clip"
+          aria-hidden
+        >
           <div className="pointer-events-none relative h-16 w-full sm:h-24 md:h-28">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neutral-200/55 to-neutral-50 dark:from-transparent dark:via-zinc-950/90 dark:to-black" />
             <div

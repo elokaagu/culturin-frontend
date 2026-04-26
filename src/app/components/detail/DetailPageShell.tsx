@@ -22,7 +22,7 @@ export function DetailPageShell({
     <>
       <Header />
       <main
-        className="min-h-screen bg-black text-white antialiased selection:bg-amber-500/30"
+        className="min-h-dvh bg-black text-white antialiased selection:bg-amber-500/30"
         data-detail-page
       >
         <div

@@ -9,6 +9,22 @@ import { GoogleSignInButton } from "../components/AuthButtons";
 import Header from "../components/Header";
 import { useSupabaseAuth } from "../components/SupabaseAuthProvider";
 
+function SupabaseConfigBanner() {
+  const { supabase } = useSupabaseAuth();
+  if (supabase) return null;
+  return (
+    <p
+      className="mb-4 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2.5 text-sm text-amber-100"
+      role="status"
+    >
+      Supabase isn&apos;t available in the browser. Add <code className="text-amber-50/95">NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
+      <code className="text-amber-50/95">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to <code className="text-amber-50/95">.env.local</code> (or
+      set <code className="text-amber-50/95">SUPABASE_URL</code> and the project mirrors them in <code className="text-amber-50/95">next.config.js</code>).
+      Restart <code className="text-amber-50/95">next dev</code> after changes.
+    </p>
+  );
+}
+
 function LoginPageContent() {
   const { supabase } = useSupabaseAuth();
   const router = useTransitionRouter();
@@ -30,7 +46,7 @@ function LoginPageContent() {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!supabase) {
-      setError("Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+      setError("Supabase isn’t configured. Check .env.local for NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then restart the dev server.");
       return;
     }
 
@@ -87,7 +103,7 @@ function LoginPageContent() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white sm:px-6">
+      <main className="min-h-dvh bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white sm:px-6">
         <div className="mx-auto mt-8 w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-6 shadow-[0_24px_64px_-30px_rgba(0,0,0,0.22)] dark:border-white/10 dark:bg-neutral-950/90 dark:shadow-[0_24px_64px_-30px_rgba(0,0,0,0.8)] sm:mt-12 sm:p-7">
           <div className="mb-6 flex rounded-full bg-neutral-100 p-1 dark:bg-white/[0.06]">
             <button
@@ -114,6 +130,10 @@ function LoginPageContent() {
 
           <h1 className="text-2xl font-semibold tracking-tight">{heading}</h1>
           <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">{subtext}</p>
+
+          <div className="mt-4">
+            <SupabaseConfigBanner />
+          </div>
 
           <div className="mt-5">
             <GoogleSignInButton
@@ -220,7 +240,7 @@ function LoginPageContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black pt-[var(--header-offset)]" />}>
+    <Suspense fallback={<div className="min-h-dvh bg-black pt-[var(--header-offset)]" />}>
       <LoginPageContent />
     </Suspense>
   );

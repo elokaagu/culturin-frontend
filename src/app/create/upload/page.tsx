@@ -54,7 +54,7 @@ export default function UploadPage() {
   return (
     <>
       <Header />
-      <main className="flex min-h-screen flex-col bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 sm:px-6 dark:bg-black dark:text-white">
+      <main className="flex min-h-dvh flex-col bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 sm:px-6 dark:bg-black dark:text-white">
         <div className="mx-auto w-full max-w-md">
           <header className="mb-8">
             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Upload</h1>

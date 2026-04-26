@@ -39,7 +39,7 @@ export default function SettingsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-neutral-50 px-5 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 px-5 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
           <h1 className="text-2xl font-semibold sm:text-3xl">
             {sectionTitle(session?.user?.name)}

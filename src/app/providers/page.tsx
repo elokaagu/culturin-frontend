@@ -21,7 +21,7 @@ export default async function ProvidersPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         <section className="mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="mb-8 border-b border-neutral-200 pb-6 pt-6 dark:border-white/10">
             <nav className="mb-4 text-sm" aria-label="Breadcrumb">

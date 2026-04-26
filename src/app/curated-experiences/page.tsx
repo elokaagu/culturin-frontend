@@ -18,7 +18,7 @@ export default async function CuratedExperiencesPage() {
   return (
     <>
       <Header />
-      <main className="flex min-h-screen flex-col bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 sm:px-6 lg:px-10 dark:bg-black dark:text-white">
+      <main className="flex min-h-dvh flex-col bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 sm:px-6 lg:px-10 dark:bg-black dark:text-white">
         <header className="mx-auto mb-8 w-full max-w-6xl">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Curated experiences</h1>
           <p className="mt-2 text-sm text-neutral-400 sm:text-base">Handpicked by the Culturin team</p>
