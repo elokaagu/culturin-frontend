@@ -6,8 +6,9 @@ import { ContentPageShell } from "../components/layout/ContentPageShell";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 import SiteFooter from "../components/SiteFooter";
 
+/** Same Unsplash + query pattern as /about; concert/crowd asset used elsewhere in the app. */
 const HERO_SRC =
-  "https://images.unsplash.com/photo-1540575467063-27a0e4f7adf9?auto=format&fit=crop&w=2200&q=80";
+  "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=2200&q=80";
 
 const pillars = [
   {
@@ -73,13 +74,14 @@ export default function AgencyPage() {
           <div className="relative min-h-[18rem] sm:min-h-[24rem]">
             <Image
               src={HERO_SRC}
-              alt="Audience at a live event with warm stage lighting"
+              alt="Live music event with crowd, stage, and warm lighting"
               fill
               className="object-cover"
               priority
               sizes="(max-width: 1200px) 100vw, 1200px"
               placeholder="blur"
               blurDataURL={IMAGE_BLUR_DATA_URL}
+              unoptimized
             />
             <div
               className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/20 dark:from-black/85 dark:via-black/40 dark:to-black/25"

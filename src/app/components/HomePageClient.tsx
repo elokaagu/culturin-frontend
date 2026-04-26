@@ -11,7 +11,7 @@ import CuratedExperiencesRail from "./CuratedExperiencesRail";
 import TopVideosRail from "./TopVideosRail";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import { exploreWorldCountries } from "@/lib/exploreWorldCountries";
-import { appPageContainerClass } from "@/lib/appLayout";
+import { appPageContainerClass, homeSectionSeeAllClass } from "@/lib/appLayout";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 
 type HomePageClientProps = {
@@ -29,9 +29,6 @@ const mainClass =
 const containerClass = appPageContainerClass;
 
 const heroShellClass = `${appPageContainerClass} sm:pb-2 sm:pt-2 md:pt-4`;
-
-const homeSectionSeeAllClass =
-  "shrink-0 self-center inline-flex min-h-[38px] min-w-[4.5rem] items-center justify-center rounded-full border border-neutral-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-neutral-900 no-underline transition-colors hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:border-white/20 dark:bg-white/[0.08] dark:text-white dark:hover:bg-white/[0.14]";
 
 function EmptyRail({
   message,
@@ -197,23 +194,13 @@ export default function HomePageClient({
           aria-labelledby="explore-world-heading"
         >
           <div className={containerClass}>
-            <header className="mb-5 flex items-start justify-between gap-4">
-              <div className="min-w-0 flex-1 pr-2">
-                <h2 id="explore-world-heading" className="text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
-                  Explore the World
-                </h2>
-                <p className="mt-1 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:mt-1.5 sm:text-[0.95rem] dark:text-white/60">
-                  Choose a country to open curated articles and guides for that place.
-                </p>
-              </div>
-              <Link
-                href="/destinations"
-                className="inline-flex min-h-[34px] min-w-[4.25rem] items-center justify-center rounded-full border border-neutral-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-neutral-900 no-underline transition-colors hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:border-white/20 dark:bg-white/[0.08] dark:text-white dark:hover:bg-white/[0.14]"
-              >
-                See all
-              </Link>
-            </header>
-            <ExploreWorldCountriesRail countries={exploreWorldCountries} />
+            <ExploreWorldCountriesRail
+              countries={exploreWorldCountries}
+              title="Explore the World"
+              description="Choose a country to open curated articles and guides for that place."
+              viewAllHref="/destinations"
+              headingId="explore-world-heading"
+            />
           </div>
         </section>
 

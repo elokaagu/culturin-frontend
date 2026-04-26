@@ -8,7 +8,7 @@ import {
   nearbyResultsBySlug,
   nearbySpots,
 } from "../../../lib/nearbySpotsData";
-import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
+import { cmsImageUnoptimized, IMAGE_BLUR_DATA_URL, resolveContentImageSrc } from "../../../lib/imagePlaceholder";
 
 type PageProps = {
   params: { slug: string };
@@ -31,6 +31,8 @@ export default function NearbyResultPage({ params }: PageProps) {
 
   const data = nearbyResultsBySlug[spot.slug];
   if (!data) notFound();
+
+  const heroSrc = resolveContentImageSrc(spot.imageUrl);
 
   return (
     <>
@@ -74,7 +76,7 @@ export default function NearbyResultPage({ params }: PageProps) {
 
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-neutral-900">
               <Image
-                src={spot.imageUrl}
+                src={heroSrc}
                 alt={spot.imageAlt}
                 fill
                 className="object-cover"
@@ -82,6 +84,7 @@ export default function NearbyResultPage({ params }: PageProps) {
                 placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
                 sizes="(max-width: 1024px) 100vw, 28rem"
+                unoptimized={cmsImageUnoptimized(heroSrc)}
               />
             </div>
           </div>

@@ -160,12 +160,23 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ articleId: data._id }),
       });
-      if (!res.ok) throw new Error("Failed to save the article.");
+      const body = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
+      if (!res.ok) {
+        const errMsg =
+          (typeof body.error === "string" && body.error) ||
+          (typeof body.message === "string" && body.message) ||
+          "Failed to save the article.";
+        throw new Error(errMsg);
+      }
       setActiveModal(null);
       showToast({ variant: "success", message: "Saved to your profile." });
     } catch (error) {
       console.error("Error saving article:", error);
-      showToast({ variant: "error", message: "Could not save this article." });
+      const message =
+        error instanceof Error && error.message.trim()
+          ? error.message.trim()
+          : "Could not save this article.";
+      showToast({ variant: "error", message });
     } finally {
       setSavePending(false);
     }

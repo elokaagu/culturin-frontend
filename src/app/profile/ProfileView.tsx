@@ -1,15 +1,29 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEventHandler,
+} from "react";
 import { Link } from "next-view-transitions";
 
 import { ArticleCardFromBlog } from "@/components/cms/ArticleCard";
 import type { simpleBlogCard } from "@/lib/interface";
 import { getCmsBrowserClient } from "@/lib/cms/browser";
 import { listBlogs } from "@/lib/cms/queries";
+import { SUPABASE_PUBLIC_MEDIA_BUCKET } from "@/lib/storageConstants";
 
 import { GoogleSignInButton } from "../components/AuthButtons";
 import { useAppAuth, useSupabaseAuth } from "../components/SupabaseAuthProvider";
+
+const BIO_MAX_LEN = 500;
+
+function sanitizeFileName(name: string): string {
+  return name.replace(/[^\w.+-]+/g, "-").replace(/^-+|-+$/g, "") || "upload.bin";
+}
 
 type TabId = "elements" | "collections";
 
@@ -25,11 +39,17 @@ function initialsFromName(name: string, email: string) {
 
 export default function ProfileView() {
   const { data: session, status } = useAppAuth();
-  const { user } = useSupabaseAuth();
+  const { supabase, user } = useSupabaseAuth();
   const [userData, setUserData] = useState({ name: "", email: "" });
   const [articles, setArticles] = useState<simpleBlogCard[]>([]);
   const [tab, setTab] = useState<TabId>("elements");
   const [density, setDensity] = useState<GridDensity>(3);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [profileMessage, setProfileMessage] = useState<string | null>(null);
+  const [editingBio, setEditingBio] = useState(false);
+  const [bioDraft, setBioDraft] = useState("");
+  const [savingBio, setSavingBio] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!session?.user?.id) return;
@@ -80,6 +100,75 @@ export default function ProfileView() {
 
   const setDensityCb = useCallback((d: GridDensity) => () => setDensity(d), []);
 
+  const onAvatarFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    async (e) => {
+      const file = e.target.files?.[0];
+      e.target.value = "";
+      if (!file) return;
+      if (!supabase || !user) {
+        setProfileMessage("Connect Supabase in your environment to change your photo.");
+        return;
+      }
+      if (!file.type.startsWith("image/")) {
+        setProfileMessage("Please choose an image (JPEG, PNG, WebP, or GIF).");
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setProfileMessage("Image must be 5MB or smaller.");
+        return;
+      }
+      setAvatarUploading(true);
+      setProfileMessage(null);
+      const path = `${user.id}/avatar/${Date.now()}-${sanitizeFileName(file.name)}`;
+      const { error, data } = await supabase.storage
+        .from(SUPABASE_PUBLIC_MEDIA_BUCKET)
+        .upload(path, file, { cacheControl: "3600", upsert: false, contentType: file.type });
+      if (error) {
+        setAvatarUploading(false);
+        setProfileMessage(error.message);
+        return;
+      }
+      const { data: pub } = supabase.storage.from(SUPABASE_PUBLIC_MEDIA_BUCKET).getPublicUrl(data.path);
+      const meta = { ...user.user_metadata, avatar_url: pub.publicUrl };
+      const { error: updateErr } = await supabase.auth.updateUser({ data: meta });
+      setAvatarUploading(false);
+      if (updateErr) {
+        setProfileMessage(updateErr.message);
+      }
+    },
+    [supabase, user],
+  );
+
+  const startBioEdit = useCallback(() => {
+    const current = typeof user?.user_metadata?.bio === "string" ? user.user_metadata.bio : "";
+    setBioDraft(current.slice(0, BIO_MAX_LEN));
+    setEditingBio(true);
+    setProfileMessage(null);
+  }, [user?.user_metadata?.bio]);
+
+  const cancelBioEdit = useCallback(() => {
+    setEditingBio(false);
+    setBioDraft("");
+  }, []);
+
+  const saveBio = useCallback(async () => {
+    if (!supabase || !user) {
+      setProfileMessage("Connect Supabase to save your bio.");
+      return;
+    }
+    const trimmed = bioDraft.trim().slice(0, BIO_MAX_LEN);
+    setSavingBio(true);
+    setProfileMessage(null);
+    const meta = { ...user.user_metadata, bio: trimmed || "" };
+    const { error } = await supabase.auth.updateUser({ data: meta });
+    setSavingBio(false);
+    if (error) {
+      setProfileMessage(error.message);
+      return;
+    }
+    setEditingBio(false);
+  }, [supabase, user, bioDraft]);
+
   if (status === "loading") {
     return (
       <main className="min-h-screen bg-black pb-20 pt-[var(--header-offset)] text-white">
@@ -123,33 +212,154 @@ export default function ProfileView() {
     <main className="min-h-screen bg-black pb-24 pt-[var(--header-offset)] text-white">
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <header className="flex flex-col items-center gap-6 border-b border-white/[0.08] pb-10 pt-8 sm:flex-row sm:items-start sm:gap-10">
-          <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 via-indigo-500 to-sky-400 p-[2px] shadow-lg shadow-violet-900/40 sm:h-36 sm:w-36">
-            <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-black">
-              {avatarUrl ? (
-                // OAuth avatars often use hosts outside `next/image` remotePatterns.
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={avatarUrl}
-                  alt={`${displayName} profile photo`}
-                  className="h-full w-full object-cover"
-                  referrerPolicy="no-referrer"
+          <div className="flex flex-col items-center gap-2 sm:items-start">
+            {supabase && user ? (
+              <>
+                <input
+                  ref={avatarInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  className="sr-only"
+                  id="profile-avatar-upload"
+                  onChange={onAvatarFileChange}
+                  disabled={avatarUploading}
+                  aria-label="Upload profile photo"
                 />
-              ) : (
-                <span className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
-                  {initials}
-                </span>
-              )}
-            </div>
+                <label
+                  htmlFor="profile-avatar-upload"
+                  className={
+                    avatarUploading
+                      ? "pointer-events-none relative h-32 w-32 shrink-0 cursor-wait sm:h-36 sm:w-36"
+                      : "group relative h-32 w-32 shrink-0 cursor-pointer sm:h-36 sm:w-36"
+                  }
+                >
+                  <div className="relative h-32 w-32 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 via-indigo-500 to-sky-400 p-[2px] shadow-lg shadow-violet-900/40 sm:h-36 sm:w-36">
+                    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-black">
+                      {avatarUrl ? (
+                        // OAuth avatars often use hosts outside `next/image` remotePatterns.
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={avatarUrl}
+                          alt={`${displayName} profile photo`}
+                          className="h-full w-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <span className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+                          {initials}
+                        </span>
+                      )}
+                      {avatarUploading ? (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                          <span className="h-6 w-6 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                        </div>
+                      ) : null}
+                    </div>
+                    <span className="sr-only">Change profile photo</span>
+                  </div>
+                  <span
+                    className="pointer-events-none absolute inset-0 flex items-end justify-center rounded-full bg-gradient-to-t from-black/60 to-transparent pb-2 opacity-0 transition group-hover:opacity-100"
+                    aria-hidden
+                  >
+                    <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white/95 backdrop-blur-sm sm:text-xs">
+                      Change
+                    </span>
+                  </span>
+                </label>
+              </>
+            ) : (
+              <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 via-indigo-500 to-sky-400 p-[2px] shadow-lg shadow-violet-900/40 sm:h-36 sm:w-36">
+                <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-black">
+                  {avatarUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={avatarUrl}
+                      alt={`${displayName} profile photo`}
+                      className="h-full w-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <span className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+                      {initials}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+            {supabase && user ? (
+              <button
+                type="button"
+                onClick={() => avatarInputRef.current?.click()}
+                disabled={avatarUploading}
+                className="text-xs font-medium text-white/50 underline-offset-2 hover:text-white/80 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {avatarUploading ? "Uploading…" : "Change photo"}
+              </button>
+            ) : null}
           </div>
 
           <div className="min-w-0 flex-1 text-center sm:pt-1 sm:text-left">
             <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{displayName}</h1>
             <p className="mt-1.5 text-sm text-white/45">{handle}</p>
-            {bio ? (
+            {editingBio ? (
+              <div className="mt-4 w-full max-w-xl sm:mx-0">
+                <textarea
+                  value={bioDraft}
+                  onChange={(ev) => setBioDraft(ev.target.value.slice(0, BIO_MAX_LEN))}
+                  placeholder="Add a short bio…"
+                  rows={4}
+                  className="w-full resize-y rounded-xl border border-white/15 bg-white/[0.06] px-3.5 py-2.5 text-sm leading-relaxed text-white/90 placeholder:text-white/30 focus:border-white/25 focus:outline-none focus:ring-1 focus:ring-violet-400/40"
+                  disabled={savingBio}
+                />
+                <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-xs text-white/35">
+                    {bioDraft.length}/{BIO_MAX_LEN}
+                  </span>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={cancelBioEdit}
+                      disabled={savingBio}
+                      className="rounded-full border border-white/15 bg-transparent px-4 py-1.5 text-sm font-medium text-white/70 transition hover:border-white/30 hover:text-white disabled:opacity-50"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => void saveBio()}
+                      disabled={savingBio}
+                      className="rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {savingBio ? "Saving…" : "Save bio"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : bio ? (
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/70 sm:mx-0">{bio}</p>
             ) : (
               <p className="mt-4 max-w-xl text-sm text-white/40 sm:mx-0">Add a bio…</p>
             )}
+            {!editingBio && supabase && user ? (
+              <p className="mt-2 max-w-xl sm:mx-0">
+                <button
+                  type="button"
+                  onClick={startBioEdit}
+                  className="text-sm font-medium text-amber-400/90 underline-offset-2 hover:underline"
+                >
+                  {bio ? "Edit bio" : "Add bio"}
+                </button>
+              </p>
+            ) : !editingBio && !supabase ? (
+              <p className="mt-2 max-w-xl text-xs text-white/35 sm:mx-0">
+                Sign in with Supabase configured to edit your bio.
+              </p>
+            ) : null}
+            {profileMessage ? (
+              <p className="mt-2 max-w-xl text-sm text-amber-200/90 sm:mx-0" role="status">
+                {profileMessage}
+              </p>
+            ) : null}
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
               <Link
                 href="/settings"

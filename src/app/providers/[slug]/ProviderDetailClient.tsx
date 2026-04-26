@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import Header from "../../components/Header";
+import { ProviderGalleryLightbox } from "../../components/detail/ProviderGalleryLightbox";
 import { SaveFavoriteModal } from "../../components/detail/SaveFavoriteModal";
 import { ShareLinkModal } from "../../components/detail/ShareLinkModal";
 import type { fullProvider, imageAsset } from "@/lib/interface";
@@ -117,11 +118,54 @@ function formatPrice(value: number) {
   }).format(value);
 }
 
+const GUEST_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16] as const;
+
+function todayIso() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function buildMailtoInquiry(
+  email: string,
+  opts: { title: string; guests: number; checkIn: string; checkOut: string; kind: "book" | "ask" }
+) {
+  if (opts.kind === "ask") {
+    const p = new URLSearchParams();
+    p.set("subject", `Question about: ${opts.title}`);
+    p.set("body", `I'm interested in ${opts.title} and have a quick question.`);
+    return `mailto:${email}?${p.toString()}`;
+  }
+  const dateLine =
+    opts.checkIn && opts.checkOut
+      ? `Dates: check-in ${opts.checkIn} → check-out ${opts.checkOut}`
+      : opts.checkIn
+        ? `Preferred check-in: ${opts.checkIn} (checkout to be agreed)`
+        : "Preferred dates: flexible (please suggest options)";
+
+  const lines = [
+    `I would like to enquire about: ${opts.title}.`,
+    "",
+    `Guests: ${opts.guests} ${opts.guests === 1 ? "guest" : "guests"}`,
+    dateLine,
+  ];
+  const p = new URLSearchParams();
+  p.set("subject", `Booking request: ${opts.title}`);
+  p.set("body", lines.join("\n"));
+  return `mailto:${email}?${p.toString()}`;
+}
+
 export default function ProviderDetailClient({ data }: { data: fullProvider }) {
   const pathname = usePathname();
   const [shareOpen, setShareOpen] = useState(false);
   const [saveOpen, setSaveOpen] = useState(false);
   const [pageUrl, setPageUrl] = useState("");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [guests, setGuests] = useState(1);
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
 
   const openShareModal = () => {
     setPageUrl(typeof window !== "undefined" ? window.location.href : "");
@@ -144,6 +188,15 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
   const secondaryGallery = gallery.slice(1, 5);
   const hasMorePhotos = gallery.length > 5;
   const listingTitle = subtitle ? `Entire curated experience in ${subtitle}` : "Entire curated experience";
+  const email = (data.contactEmail || "").trim();
+  const bookMailtoHref = email
+    ? buildMailtoInquiry(email, { title, guests, checkIn, checkOut, kind: "book" })
+    : "";
+  const askMailtoHref = email
+    ? buildMailtoInquiry(email, { title, guests, checkIn, checkOut, kind: "ask" })
+    : "";
+  const phoneTel = (data.contactPhone || "").replace(/\s+/g, "");
+  const minOutDate = checkIn && checkIn >= todayIso() ? checkIn : todayIso();
 
   return (
     <>
@@ -186,6 +239,14 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
             <section className="relative mb-8 overflow-hidden rounded-2xl" aria-label="Image gallery preview">
               <div className="grid gap-2 md:grid-cols-[2fr_1fr]">
                 <div className="relative min-h-[19rem] md:min-h-[27rem]">
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex(0)}
+                    className="absolute inset-0 z-[1] cursor-zoom-in border-0 bg-transparent p-0 text-left outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    aria-label={`View full size: ${primaryGallery.alt}`}
+                  >
+                    <span className="sr-only">Open in photo viewer</span>
+                  </button>
                   <BlurInGalleryImage
                     src={primaryGallery.src}
                     alt={primaryGallery.alt}
@@ -196,6 +257,14 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                 <div className="grid grid-cols-2 gap-2">
                   {secondaryGallery.map((item, index) => (
                     <div key={item.key + index} className="relative min-h-[9.25rem] md:min-h-[13.3rem]">
+                      <button
+                        type="button"
+                        onClick={() => setLightboxIndex(1 + index)}
+                        className="absolute inset-0 z-[1] cursor-zoom-in border-0 bg-transparent p-0 text-left outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                        aria-label={`View full size: ${item.alt}`}
+                      >
+                        <span className="sr-only">Open in photo viewer</span>
+                      </button>
                       <BlurInGalleryImage
                         src={item.src}
                         alt={item.alt}
@@ -215,7 +284,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
               {hasMorePhotos ? (
                 <a
                   href="#all-photos"
-                  className="absolute bottom-4 right-4 inline-flex items-center rounded-lg border border-white/20 bg-black/80 px-3 py-2 text-sm font-medium text-white no-underline shadow-sm transition hover:bg-black focus-visible:outline focus-visible:ring-2 focus-visible:ring-white/50"
+                  className="absolute bottom-4 right-4 z-[2] inline-flex items-center rounded-lg border border-white/20 bg-black/80 px-3 py-2 text-sm font-medium text-white no-underline shadow-sm transition hover:bg-black focus-visible:outline focus-visible:ring-2 focus-visible:ring-white/50"
                 >
                   Show all photos
                 </a>
@@ -248,7 +317,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                 </section>
               ) : null}
 
-              <section className="py-6" aria-label="Contact information">
+              <section id="contact" className="py-6" aria-label="Contact information">
                 <h3 className="m-0 text-xl font-semibold text-white">Contact</h3>
                 <div className="mt-4 space-y-3 text-[0.96rem] text-white/75">
                   {data.contactEmail ? (
@@ -292,7 +361,15 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                   <ul className="mt-4 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-3">
                     {gallery.map((g, i) => (
                       <li key={g.key + i} className="relative overflow-hidden rounded-xl bg-neutral-900">
-                        <div className="relative aspect-[4/3]">
+                        <div className="relative aspect-[4/3] w-full">
+                          <button
+                            type="button"
+                            onClick={() => setLightboxIndex(i)}
+                            className="absolute inset-0 z-[1] cursor-zoom-in border-0 bg-transparent p-0 text-left outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                            aria-label={`View full size: ${g.alt}`}
+                          >
+                            <span className="sr-only">Open in photo viewer</span>
+                          </button>
                           <BlurInGalleryImage
                             src={g.src}
                             alt={g.alt}
@@ -321,20 +398,67 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                     Other rates: {priceLine}
                   </p>
                 ) : null}
-                <div className="mt-5 overflow-hidden rounded-xl border border-white/20">
+                <div className="mt-5 overflow-hidden rounded-xl border border-white/20 [color-scheme:dark]">
                   <div className="grid grid-cols-2 divide-x divide-white/20 border-b border-white/20">
                     <div className="px-3 py-2.5">
-                      <p className="m-0 text-[0.64rem] font-semibold uppercase tracking-wide text-white/55">Check-in</p>
-                      <p className="m-0 mt-0.5 text-sm text-white">Flexible</p>
+                      <label
+                        htmlFor="book-checkin"
+                        className="m-0 block text-[0.64rem] font-semibold uppercase tracking-wide text-white/55"
+                      >
+                        Check-in
+                      </label>
+                      <input
+                        id="book-checkin"
+                        type="date"
+                        min={todayIso()}
+                        value={checkIn}
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          setCheckIn(v);
+                          if (checkOut && v && checkOut < v) setCheckOut(v);
+                        }}
+                        className="mt-1.5 w-full min-h-[2rem] rounded-md border-0 border-white/0 bg-white/[0.04] px-1 py-0.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                        aria-label="Check-in date, optional"
+                      />
+                      <p className="m-0 mt-0.5 text-xs text-white/40">Leave open for flexible timing</p>
                     </div>
                     <div className="px-3 py-2.5">
-                      <p className="m-0 text-[0.64rem] font-semibold uppercase tracking-wide text-white/55">Checkout</p>
-                      <p className="m-0 mt-0.5 text-sm text-white">Flexible</p>
+                      <label
+                        htmlFor="book-checkout"
+                        className="m-0 block text-[0.64rem] font-semibold uppercase tracking-wide text-white/55"
+                      >
+                        Checkout
+                      </label>
+                      <input
+                        id="book-checkout"
+                        type="date"
+                        min={minOutDate}
+                        value={checkOut}
+                        onChange={(e) => setCheckOut(e.target.value)}
+                        className="mt-1.5 w-full min-h-[2rem] rounded-md border-0 border-white/0 bg-white/[0.04] px-1 py-0.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                        aria-label="Check-out date, optional"
+                      />
                     </div>
                   </div>
                   <div className="px-3 py-2.5">
-                    <p className="m-0 text-[0.64rem] font-semibold uppercase tracking-wide text-white/55">Guests</p>
-                    <p className="m-0 mt-0.5 text-sm text-white">1 guest</p>
+                    <label
+                      htmlFor="book-guests"
+                      className="m-0 block text-[0.64rem] font-semibold uppercase tracking-wide text-white/55"
+                    >
+                      Guests
+                    </label>
+                    <select
+                      id="book-guests"
+                      value={guests}
+                      onChange={(e) => setGuests(Number(e.target.value))}
+                      className="mt-1.5 w-full cursor-pointer border-0 bg-white/[0.04] py-1.5 pl-1 pr-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                    >
+                      {GUEST_OPTIONS.map((n) => (
+                        <option key={n} value={n} className="bg-neutral-900 text-white">
+                          {n} {n === 1 ? "guest" : "guests"}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
@@ -346,25 +470,57 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                       rel="noopener noreferrer"
                       className="inline-flex h-12 w-full items-center justify-center rounded-full bg-amber-400 px-5 text-sm font-semibold text-neutral-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     >
-                      Reserve
+                      {displayPrice ? "Reserve" : "Book on website"}
                     </a>
                   ) : null}
-                  {data.contactEmail ? (
+                  {!bookUrl && bookMailtoHref ? (
                     <a
-                      href={`mailto:${data.contactEmail}`}
+                      href={bookMailtoHref}
+                      className="inline-flex h-12 w-full items-center justify-center rounded-full bg-amber-400 px-5 text-sm font-semibold text-neutral-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    >
+                      {displayPrice ? "Request to book" : "Contact to reserve"}
+                    </a>
+                  ) : null}
+                  {!bookUrl && !bookMailtoHref && phoneTel ? (
+                    <a
+                      href={`tel:${phoneTel}`}
+                      className="inline-flex h-12 w-full items-center justify-center rounded-full bg-amber-400 px-5 text-sm font-semibold text-neutral-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    >
+                      Call to book
+                    </a>
+                  ) : null}
+                  {!bookUrl && !bookMailtoHref && !phoneTel ? (
+                    <a
+                      href="#contact"
+                      className="inline-flex h-12 w-full items-center justify-center rounded-full bg-amber-400 px-5 text-sm font-semibold text-neutral-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    >
+                      Get in touch below
+                    </a>
+                  ) : null}
+                  {askMailtoHref ? (
+                    <a
+                      href={askMailtoHref}
                       className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-white/20 bg-black px-5 text-sm font-semibold text-white no-underline transition hover:bg-white/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-white/50"
                     >
                       Ask a question
                     </a>
                   ) : null}
                 </div>
-                <p className="m-0 mt-3 text-center text-xs text-white/55">You won&apos;t be charged yet</p>
+                <p className="m-0 mt-3 text-center text-xs text-white/55">You won&apos;t be charged here — requests go to the host.</p>
               </div>
             </aside>
           </div>
         </div>
       </main>
 
+      <ProviderGalleryLightbox
+        open={lightboxIndex !== null}
+        onClose={() => setLightboxIndex(null)}
+        items={gallery}
+        activeIndex={lightboxIndex ?? 0}
+        onActiveIndexChange={setLightboxIndex}
+        title={title}
+      />
       <ShareLinkModal open={shareOpen} onClose={() => setShareOpen(false)} url={pageUrl} title={title} />
       <SaveFavoriteModal
         open={saveOpen}

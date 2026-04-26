@@ -273,7 +273,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
         "Iceland — ring-road pacing, weather-wise stops, and small harbours where the North Atlantic feels personal.",
       currentSlug: "iceland-coastal-quiet",
       titleImageUrl:
-        "https://images.unsplash.com/photo-1504893524553-b855314a8b66?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1200&q=80",
     },
     full: {
       _id: "showcase-iceland-coastal-quiet",
@@ -282,7 +282,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       summary:
         "Iceland — ring-road pacing, weather-wise stops, and small harbours where the North Atlantic feels personal.",
       titleImageUrl:
-        "https://images.unsplash.com/photo-1504893524553-b855314a8b66?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1200&q=80",
       body: [
         {
           _type: "block",
@@ -385,7 +385,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
         "Mexico — Oaxaca through scent and sound: early mercados, family kitchens, and the walk home before the heat arrives.",
       currentSlug: "mexico-oaxaca-market-dawn",
       titleImageUrl:
-        "https://images.unsplash.com/photo-1512813195386-3cf96fad478d?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
     },
     full: {
       _id: "showcase-mexico-oaxaca-market-dawn",
@@ -394,7 +394,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       summary:
         "Mexico — Oaxaca through scent and sound: early mercados, family kitchens, and the walk home before the heat arrives.",
       titleImageUrl:
-        "https://images.unsplash.com/photo-1512813195386-3cf96fad478d?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
       body: [
         {
           _type: "block",
@@ -441,7 +441,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
         "South Africa — Cape Town and the peninsula: cliff roads, wine pockets, and when to stop chasing the perfect photo.",
       currentSlug: "south-africa-cape-light",
       titleImageUrl:
-        "https://images.unsplash.com/photo-1580060839134-75a51eda4105?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1200&q=80",
     },
     full: {
       _id: "showcase-south-africa-cape-light",
@@ -450,7 +450,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       summary:
         "South Africa — Cape Town and the peninsula: cliff roads, wine pockets, and when to stop chasing the perfect photo.",
       titleImageUrl:
-        "https://images.unsplash.com/photo-1580060839134-75a51eda4105?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1200&q=80",
       body: [
         {
           _type: "block",
@@ -497,7 +497,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
         "Vietnam — Hanoi before rush hour: soup steam, sidewalk stools, and the blocks where history still feels lived-in.",
       currentSlug: "vietnam-hanoi-street-dawn",
       titleImageUrl:
-        "https://images.unsplash.com/photo-1559592419-2d97adc4792d?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80",
     },
     full: {
       _id: "showcase-vietnam-hanoi-street-dawn",
@@ -506,7 +506,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       summary:
         "Vietnam — Hanoi before rush hour: soup steam, sidewalk stools, and the blocks where history still feels lived-in.",
       titleImageUrl:
-        "https://images.unsplash.com/photo-1559592419-2d97adc4792d?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80",
       body: [
         {
           _type: "block",

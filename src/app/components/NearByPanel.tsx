@@ -10,7 +10,7 @@ import {
 } from "react";
 
 import { NEARBY_RADIUS_KM, nearbySpots } from "../../lib/nearbySpotsData";
-import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+import { cmsImageUnoptimized, IMAGE_BLUR_DATA_URL, resolveContentImageSrc } from "../../lib/imagePlaceholder";
 
 type NearByPanelProps = {
   open: boolean;
@@ -158,7 +158,9 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
             style={{ WebkitOverflowScrolling: "touch" }}
             aria-describedby={listId}
           >
-            {nearbySpots.map((spot, index) => (
+            {nearbySpots.map((spot, index) => {
+              const imageSrc = resolveContentImageSrc(spot.imageUrl);
+              return (
               <Link
                 key={spot.title + spot.href}
                 href={spot.href}
@@ -168,13 +170,14 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-white/5">
                   <Image
-                    src={spot.imageUrl}
+                    src={imageSrc}
                     alt={spot.imageAlt}
                     fill
                     className="object-cover transition duration-500 group-hover:scale-105"
                     sizes="(max-width: 640px) 42vw, 11.6rem"
                     placeholder="blur"
                     blurDataURL={IMAGE_BLUR_DATA_URL}
+                    unoptimized={cmsImageUnoptimized(imageSrc)}
                   />
                   <div
                     className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent"
@@ -199,7 +202,8 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
                   {spot.title}
                 </p>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

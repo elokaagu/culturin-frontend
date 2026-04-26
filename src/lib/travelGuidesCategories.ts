@@ -68,7 +68,7 @@ export const travelGuideCategories: TravelGuideCategory[] = [
     title: "Art and design city breaks",
     articleCount: 8,
     imageUrl:
-      "https://images.unsplash.com/photo-1504198266285-165a7f0f4f6f?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80",
     imageAlt: "Museum interior and modern architecture",
     href: "/articles/guides/art-design-city-breaks",
     overlayClass: "bg-cyan-900/65 mix-blend-multiply",
