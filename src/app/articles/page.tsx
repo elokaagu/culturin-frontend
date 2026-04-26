@@ -47,7 +47,7 @@ function ArticleCard({
     <Link
       href={`/articles/${article.currentSlug}`}
       className={[
-        "group relative block overflow-hidden rounded-2xl border no-underline transition",
+        "group relative isolate block overflow-hidden rounded-2xl border no-underline transition",
         "border-neutral-200 bg-neutral-900 shadow-sm hover:border-neutral-300 hover:shadow-md",
         "dark:border-white/10 dark:shadow-none dark:hover:border-white/25",
       ].join(" ")}
@@ -57,27 +57,31 @@ function ArticleCard({
           src={src}
           alt={article.title}
           fill
-          className="object-cover transition duration-500 group-hover:scale-[1.04]"
+          className="z-0 object-cover transition duration-500 group-hover:scale-[1.04]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           placeholder="blur"
           blurDataURL={IMAGE_BLUR_DATA_URL}
           unoptimized={cmsImageUnoptimized(src)}
         />
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/15"
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/95 via-black/70 to-black/25"
           aria-hidden
         />
-        <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col p-4 sm:p-5">
+        <div
+          className="absolute inset-x-0 bottom-0 z-10 flex flex-col bg-gradient-to-t from-black/90 to-transparent p-4 pt-12 sm:p-5 sm:pt-14 [text-shadow:0_1px_3px_rgba(0,0,0,0.85)]"
+        >
           <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-300/95">
             Story
           </span>
-          <h3 className="mt-2 line-clamp-3 text-lg font-semibold leading-snug tracking-tight text-white drop-shadow-sm sm:text-xl">
+          <h3 className="mt-2 line-clamp-3 text-lg font-semibold leading-snug tracking-tight text-white sm:text-xl">
             {article.title}
           </h3>
           {summary ? (
-            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-white/85 drop-shadow-sm">{summary}</p>
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-white/95">
+              {summary}
+            </p>
           ) : null}
-          <span className="mt-3 text-xs font-semibold text-white/90 underline decoration-white/40 underline-offset-2 transition group-hover:text-white group-hover:decoration-white/70">
+          <span className="mt-3 text-xs font-semibold text-white underline decoration-white/50 underline-offset-2 transition group-hover:decoration-white/90">
             Read article →
           </span>
         </div>

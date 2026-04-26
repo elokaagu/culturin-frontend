@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Link } from "next-view-transitions";
 
+import { appPageContainerClass } from "@/lib/appLayout";
 import { destinations } from "../../lib/destinationsData";
 import { ContentPageShell } from "../components/layout/ContentPageShell";
 import DestinationsClient from "./DestinationsClient";
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 export default function DestinationsPage() {
   return (
     <ContentPageShell
-      innerClassName="w-full max-w-7xl px-4 sm:px-6"
+      innerClassName={appPageContainerClass}
       mainClassName="min-h-screen bg-black px-0 pb-16 pt-[var(--header-offset)] text-white"
     >
       <div className="mb-8 border-b border-white/10 pb-6 pt-6">

@@ -5,6 +5,7 @@ import { Link } from "next-view-transitions";
 
 import { destinations, getDestinationBySlug } from "../../../lib/destinationsData";
 import { getDestinationContent } from "../../../lib/destinationContent";
+import { appPageContainerClass } from "@/lib/appLayout";
 import { ContentPageShell } from "../../components/layout/ContentPageShell";
 import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
 
@@ -38,7 +39,7 @@ export default function DestinationDetailPage({ params }: PageProps) {
   return (
     <ContentPageShell
       mainClassName="bg-black pb-20 pt-[var(--header-offset)] text-white"
-      innerClassName="mx-auto w-full max-w-6xl px-4 sm:px-6"
+      innerClassName={appPageContainerClass}
     >
       <nav className="mb-8 pt-6 text-sm text-white/50" aria-label="Breadcrumb">
         <div className="flex flex-wrap items-center gap-1.5">

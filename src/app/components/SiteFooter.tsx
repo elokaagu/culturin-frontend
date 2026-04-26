@@ -3,6 +3,7 @@
 import { Link } from "next-view-transitions";
 import { useState, type FormEvent } from "react";
 
+import { appPageContainerClass } from "@/lib/appLayout";
 import { useTheme } from "../styles/ThemeContext";
 
 const aboutCopy =
@@ -175,7 +176,7 @@ export default function SiteFooter() {
       className="mt-8 border-t border-neutral-200/90 bg-gradient-to-b from-white to-neutral-50/90 pt-12 pb-10 text-neutral-900 shadow-[0_-4px_24px_-8px_rgba(0,0,0,0.06)] dark:border-white/10 dark:from-black dark:to-neutral-950 dark:text-white dark:shadow-[0_-4px_32px_-12px_rgba(0,0,0,0.4)]"
       role="contentinfo"
     >
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+      <div className={appPageContainerClass}>
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:items-start lg:gap-8 lg:gap-y-0">
           <div className="min-w-0 sm:col-span-2 lg:col-span-4">
             <h2 className={headingClass}>About</h2>

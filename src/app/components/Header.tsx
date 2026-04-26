@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
+import { ScanSearch } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { useTransitionRouter } from "next-view-transitions";
@@ -20,6 +21,31 @@ const suggestionTags = [
   "Restaurant",
   "Cafe",
 ];
+
+const SEARCH_RECENT_KEY = "culturin-search-recent";
+const MAX_RECENT = 10;
+
+function readSearchRecent(): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(SEARCH_RECENT_KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed)
+      ? parsed.filter((x): x is string => typeof x === "string" && x.trim().length > 0)
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeSearchRecent(items: string[]) {
+  try {
+    localStorage.setItem(SEARCH_RECENT_KEY, JSON.stringify(items));
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
 
 function pathnameMatches(pathname: string | null, href: string) {
   if (!pathname) return false;
@@ -44,9 +70,7 @@ const nearbyPillClass =
 function SearchIcon({ className }: { className?: string }) {
   return (
     <svg
-      className={className}
-      width="18"
-      height="18"
+      className={["h-[18px] w-[18px] shrink-0", className].filter(Boolean).join(" ")}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -59,6 +83,32 @@ function SearchIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+function PaletteDotsIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <circle cx="6.5" cy="7" r="2.2" fill="#38bdf8" />
+      <circle cx="12.5" cy="6" r="1.8" fill="#f472b6" />
+      <circle cx="10" cy="11.5" r="2" fill="#fbbf24" />
+      <circle cx="14.5" cy="12" r="1.6" fill="#a78bfa" />
+      <circle cx="6" cy="13" r="1.7" fill="#4ade80" />
+    </svg>
+  );
+}
+
+const searchPillRowClass =
+  "flex w-full min-h-[2.5rem] items-center gap-2 rounded-full border border-neutral-200/90 bg-neutral-100 py-1.5 pl-3 pr-1.5 text-sm shadow-sm shadow-neutral-900/5 transition-[border-color,box-shadow] dark:border-white/[0.08] dark:bg-[#1a1a1a] dark:shadow-none sm:min-h-[2.65rem] sm:gap-2.5 sm:pl-3.5 sm:pr-2";
+
+const searchPillRowFocusClass =
+  "focus-within:border-amber-500/35 focus-within:ring-2 focus-within:ring-amber-500/20 dark:focus-within:border-amber-400/25 dark:focus-within:ring-amber-400/15";
 
 function LeftNavLink({ href, children }: { href: string; children: ReactNode }) {
   const pathname = usePathname();
@@ -98,6 +148,7 @@ export default function Header() {
   const [nearbyOpen, setNearbyOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [recent, setRecent] = useState<string[]>([]);
 
   useEffect(() => {
     const onScroll = () => setElevated(window.scrollY > 2);
@@ -133,11 +184,22 @@ export default function Header() {
     };
   }, [searchOpen]);
 
+  useEffect(() => {
+    if (!searchOpen) return;
+    setRecent(readSearchRecent());
+  }, [searchOpen]);
+
   const closeMobile = useCallback(() => setMobileMenuOpen(false), []);
 
   const runSearch = useCallback(
     (query: string) => {
       const trimmed = query.trim();
+      if (trimmed) {
+        const prev = readSearchRecent();
+        const next = [trimmed, ...prev.filter((x) => x !== trimmed)].slice(0, MAX_RECENT);
+        writeSearchRecent(next);
+        setRecent(next);
+      }
       setSearchOpen(false);
       if (!trimmed) {
         router.push("/search");
@@ -147,6 +209,11 @@ export default function Header() {
     },
     [router],
   );
+
+  const clearRecent = useCallback(() => {
+    writeSearchRecent([]);
+    setRecent([]);
+  }, []);
 
   const openSearch = useCallback(() => {
     setNearbyOpen(false);
@@ -168,8 +235,8 @@ export default function Header() {
             : " supports-[backdrop-filter]:bg-white/95 dark:supports-[backdrop-filter]:bg-neutral-950/90")
         }
       >
-        <div className="mx-auto flex h-[var(--header-bar-height)] max-w-[1720px] flex-nowrap items-center justify-between gap-3 px-3 sm:gap-4 sm:px-5 md:px-8">
-          <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-4 sm:gap-8 md:gap-10">
+        <div className="mx-auto flex h-[var(--header-bar-height)] max-w-[1720px] flex-nowrap items-center gap-2 px-3 sm:gap-3 sm:px-5 md:gap-4 md:px-8">
+          <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-3 sm:gap-8 md:gap-10">
             <Logo />
             <nav
               className="hidden min-w-0 items-center gap-5 whitespace-nowrap md:flex md:gap-6"
@@ -180,11 +247,33 @@ export default function Header() {
             </nav>
           </div>
 
-          <div className="flex flex-none flex-nowrap items-center gap-0.5 whitespace-nowrap sm:gap-1.5">
+          <div className="hidden w-full max-w-[min(26rem,40vw)] shrink-0 md:block">
             <button
               type="button"
               onClick={openSearch}
-              className={iconButtonClass}
+              className={searchPillRowClass}
+              aria-label="Open search"
+              aria-haspopup="dialog"
+              aria-expanded={searchOpen}
+            >
+              <span className="shrink-0 text-neutral-400 dark:text-white/35" aria-hidden>
+                <SearchIcon />
+              </span>
+              <span className="min-w-0 flex-1 truncate text-left font-normal text-neutral-500 dark:text-white/45">
+                Search Culturin…
+              </span>
+              <span className="flex shrink-0 items-center gap-1 pr-0.5 text-neutral-500 dark:text-white/40" aria-hidden>
+                <ScanSearch className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={1.75} />
+                <PaletteDotsIcon className="h-5 w-5 opacity-95" />
+              </span>
+            </button>
+          </div>
+
+          <div className="flex min-w-0 flex-1 flex-nowrap items-center justify-end gap-0.5 whitespace-nowrap sm:gap-1.5">
+            <button
+              type="button"
+              onClick={openSearch}
+              className={`${iconButtonClass} md:hidden`}
               aria-label="Open search"
               aria-haspopup="dialog"
               aria-expanded={searchOpen}
@@ -231,67 +320,121 @@ export default function Header() {
           role="dialog"
           aria-modal="true"
           aria-label="Search"
-          className="fixed inset-0 z-[1300] bg-white/90 backdrop-blur dark:bg-black/80"
+          className="fixed inset-0 z-[1300] bg-neutral-950/55 backdrop-blur-md dark:bg-black/75"
           onClick={() => setSearchOpen(false)}
         >
           <button
             type="button"
-            className="absolute right-4 top-4 rounded-md px-2 py-1.5 text-sm font-medium text-neutral-600 transition hover:text-neutral-900 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:text-white/80 dark:hover:text-white"
+            className="absolute right-3 top-3 z-[1] rounded-full px-3 py-1.5 text-sm font-medium text-neutral-700 transition hover:bg-neutral-200/80 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:text-white/75 dark:hover:bg-white/10 dark:focus-visible:ring-amber-400/50 sm:right-5 sm:top-4"
             onClick={() => setSearchOpen(false)}
           >
             Close
           </button>
           <div
-            className="absolute left-1/2 top-[20vh] w-[min(92vw,34rem)] -translate-x-1/2"
+            className="absolute left-1/2 top-[calc(var(--header-bar-height)+0.75rem)] w-[min(92vw,40rem)] -translate-x-1/2 sm:top-[calc(var(--header-bar-height)+1rem)]"
             onClick={(e) => e.stopPropagation()}
             role="presentation"
           >
             <form
-              className="rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xl shadow-neutral-900/5 dark:border-white/10 dark:bg-neutral-900 dark:shadow-black/30"
               onSubmit={(e) => {
                 e.preventDefault();
                 runSearch(searchValue);
               }}
             >
               <label className="sr-only" htmlFor="header-search-input">
-                Search
+                Search Culturin
               </label>
-              <div className="flex items-center gap-2 border-b border-neutral-200 pb-3 dark:border-white/15">
-                <div className="shrink-0 text-neutral-400">
+              <div className={`${searchPillRowClass} ${searchPillRowFocusClass}`}>
+                <span className="shrink-0 text-neutral-400 dark:text-white/35" aria-hidden>
                   <SearchIcon />
-                </div>
+                </span>
                 <input
                   id="header-search-input"
                   type="search"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder="Destinations, guides, culture…"
-                  className="min-w-0 flex-1 border-0 bg-transparent text-base font-medium text-neutral-900 outline-none placeholder:text-neutral-400 sm:text-lg dark:text-white dark:placeholder:text-white/40"
+                  placeholder="Search Culturin…"
+                  className="min-w-0 flex-1 border-0 bg-transparent py-0.5 text-[0.9375rem] font-normal text-neutral-900 outline-none placeholder:text-neutral-500 dark:text-white dark:placeholder:text-white/40"
                   autoFocus
+                  autoComplete="off"
                 />
-                <button
-                  type="submit"
-                  className="shrink-0 rounded-md px-2 py-1.5 text-sm font-medium text-amber-700 hover:bg-amber-50 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:text-amber-400/90 dark:hover:bg-amber-950/40"
-                >
-                  Go
-                </button>
-              </div>
-              <p className="pt-3 text-xs font-medium uppercase tracking-wide text-neutral-400 dark:text-white/50">
-                Suggestions
-              </p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {suggestionTags.map((tag) => (
+                <span className="flex shrink-0 items-center gap-0.5 pr-0.5">
                   <button
-                    key={tag}
                     type="button"
-                    className="rounded-full border border-neutral-200/90 bg-white px-3 py-1.5 text-xs font-medium text-neutral-800 transition hover:bg-neutral-100 dark:border-white/15 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10"
-                    onClick={() => runSearch(tag)}
+                    className="rounded-full p-1.5 text-neutral-500 transition hover:bg-neutral-200/80 dark:text-white/45 dark:hover:bg-white/10"
+                    aria-label="Visual search (coming soon)"
                   >
-                    {tag}
+                    <ScanSearch className="h-[18px] w-[18px]" strokeWidth={1.75} />
                   </button>
-                ))}
+                  <span
+                    className="rounded-full p-1.5 text-neutral-500 dark:text-white/45"
+                    aria-hidden
+                    title="Culturin"
+                  >
+                    <PaletteDotsIcon className="h-5 w-5 opacity-95" />
+                  </span>
+                </span>
               </div>
             </form>
+
+            <div className="mt-3 rounded-3xl border border-neutral-200/90 bg-white p-5 shadow-2xl shadow-neutral-900/10 dark:border-white/[0.08] dark:bg-[#141414] dark:shadow-black/50 sm:p-6">
+              <div className="space-y-6">
+                {recent.length > 0 ? (
+                  <section aria-labelledby="search-recent-heading">
+                    <div className="flex items-center justify-between gap-3">
+                      <h2
+                        id="search-recent-heading"
+                        className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/45"
+                      >
+                        Recent
+                      </h2>
+                      <button
+                        type="button"
+                        className="text-xs font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/80"
+                        onClick={clearRecent}
+                      >
+                        Clear
+                      </button>
+                    </div>
+                    <div className="mt-3 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                      {recent.map((q) => (
+                        <button
+                          key={q}
+                          type="button"
+                          className="inline-flex max-w-[11rem] shrink-0 items-center gap-2 rounded-full border border-neutral-200/90 bg-neutral-100 px-3 py-2 text-left text-sm font-medium text-neutral-800 transition hover:bg-neutral-200/80 dark:border-white/10 dark:bg-white/[0.06] dark:text-white/90 dark:hover:bg-white/10"
+                          onClick={() => runSearch(q)}
+                        >
+                          <SearchIcon className="h-3.5 w-3.5 shrink-0 text-neutral-400 dark:text-white/40" />
+                          <span className="truncate">{q}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                ) : null}
+
+                <section aria-labelledby="search-suggestions-heading">
+                  <h2
+                    id="search-suggestions-heading"
+                    className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/45"
+                  >
+                    Suggestions
+                  </h2>
+                  <div className="mt-3 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    {suggestionTags.map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        className="inline-flex shrink-0 items-center gap-2 rounded-full border border-neutral-200/90 bg-neutral-100 px-3 py-2 text-sm font-medium text-neutral-800 transition hover:bg-neutral-200/80 dark:border-white/10 dark:bg-white/[0.06] dark:text-white/90 dark:hover:bg-white/10"
+                        onClick={() => runSearch(tag)}
+                      >
+                        <SearchIcon className="h-3.5 w-3.5 shrink-0 text-neutral-400 dark:text-white/40" />
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              </div>
+            </div>
           </div>
         </div>
       ) : null}

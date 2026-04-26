@@ -11,6 +11,7 @@ import CuratedExperiencesRail from "./CuratedExperiencesRail";
 import TopVideosRail from "./TopVideosRail";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import { exploreWorldCountries } from "@/lib/exploreWorldCountries";
+import { appPageContainerClass } from "@/lib/appLayout";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
 
 type HomePageClientProps = {
@@ -25,10 +26,9 @@ const HERO_IMAGE =
 const mainClass =
   "min-h-screen w-full bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white";
 
-const containerClass = "mx-auto w-full max-w-6xl px-4 sm:px-6";
+const containerClass = appPageContainerClass;
 
-const heroShellClass =
-  "mx-auto w-full max-w-7xl px-4 sm:px-6 sm:pb-2 sm:pt-2 md:pt-4";
+const heroShellClass = `${appPageContainerClass} sm:pb-2 sm:pt-2 md:pt-4`;
 
 const homeSectionSeeAllClass =
   "shrink-0 self-center inline-flex min-h-[38px] min-w-[4.5rem] items-center justify-center rounded-full border border-neutral-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-neutral-900 no-underline transition-colors hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:border-white/20 dark:bg-white/[0.08] dark:text-white dark:hover:bg-white/[0.14]";
