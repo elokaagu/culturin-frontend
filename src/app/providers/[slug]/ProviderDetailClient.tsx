@@ -9,9 +9,10 @@ import Header from "../../components/Header";
 import { SaveFavoriteModal } from "../../components/detail/SaveFavoriteModal";
 import { ShareLinkModal } from "../../components/detail/ShareLinkModal";
 import type { fullProvider, imageAsset } from "@/lib/interface";
+import { cn } from "@/lib/utils";
 import {
+  cmsImageUnoptimized,
   IMAGE_BLUR_DATA_URL,
-  isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../../lib/imagePlaceholder";
 
@@ -48,6 +49,42 @@ function buildGallery(data: fullProvider): { src: string; alt: string; key: stri
     }
   }
   return items;
+}
+
+function BlurInGalleryImage({
+  src,
+  alt,
+  className,
+  sizes,
+  loading,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  sizes: string;
+  loading?: "eager" | "lazy" | undefined;
+}) {
+  const [revealed, setRevealed] = useState(false);
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      sizes={sizes}
+      placeholder="blur"
+      blurDataURL={IMAGE_BLUR_DATA_URL}
+      draggable={false}
+      unoptimized={cmsImageUnoptimized(src)}
+      loading={loading}
+      onLoadingComplete={() => setRevealed(true)}
+      className={cn(
+        "object-cover transition-[opacity,filter] duration-500 ease-out will-change-[opacity,filter] motion-reduce:transition-none",
+        revealed ? "opacity-100 [filter:blur(0px)]" : "opacity-0 [filter:blur(6px)]",
+        "motion-reduce:opacity-100 motion-reduce:[filter:blur(0px)]",
+        className,
+      )}
+    />
+  );
 }
 
 function externalBookHref(raw: string | undefined): string {
@@ -149,33 +186,21 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
             <section className="relative mb-8 overflow-hidden rounded-2xl" aria-label="Image gallery preview">
               <div className="grid gap-2 md:grid-cols-[2fr_1fr]">
                 <div className="relative min-h-[19rem] md:min-h-[27rem]">
-                  <Image
+                  <BlurInGalleryImage
                     src={primaryGallery.src}
                     alt={primaryGallery.alt}
-                    fill
                     sizes="(max-width: 768px) 100vw, 66vw"
-                    className="object-cover"
-                    priority
-                    placeholder="blur"
-                    blurDataURL={IMAGE_BLUR_DATA_URL}
-                    draggable={false}
-                    unoptimized={isBundledPlaceholderSrc(primaryGallery.src)}
+                    loading="lazy"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {secondaryGallery.map((item, index) => (
                     <div key={item.key + index} className="relative min-h-[9.25rem] md:min-h-[13.3rem]">
-                      <Image
+                      <BlurInGalleryImage
                         src={item.src}
                         alt={item.alt}
-                        fill
                         sizes="(max-width: 768px) 50vw, 17vw"
-                        className="object-cover"
                         loading="lazy"
-                        placeholder="blur"
-                        blurDataURL={IMAGE_BLUR_DATA_URL}
-                        draggable={false}
-                        unoptimized={isBundledPlaceholderSrc(item.src)}
                       />
                     </div>
                   ))}
@@ -268,17 +293,11 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                     {gallery.map((g, i) => (
                       <li key={g.key + i} className="relative overflow-hidden rounded-xl bg-neutral-900">
                         <div className="relative aspect-[4/3]">
-                          <Image
+                          <BlurInGalleryImage
                             src={g.src}
                             alt={g.alt}
-                            fill
                             sizes="(max-width: 640px) 50vw, 30vw"
-                            className="object-cover"
                             loading="lazy"
-                            placeholder="blur"
-                            blurDataURL={IMAGE_BLUR_DATA_URL}
-                            draggable={false}
-                            unoptimized={isBundledPlaceholderSrc(g.src)}
                           />
                         </div>
                       </li>

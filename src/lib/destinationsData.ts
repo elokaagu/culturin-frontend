@@ -1,7 +1,11 @@
 /**
  * Curated list for the destinations index. Images are from Unsplash (credited in UI via alt text).
+ * URL ids are spot-checked: Unsplash occasionally retires old photo slugs, which break next/image.
  * Replace with CMS data when available.
  */
+const q = "auto=format&fit=crop&w=1200&q=80";
+const u = (id: string) => `https://images.unsplash.com/photo-${id}?${q}`;
+
 type Destination = {
   name: string;
   /** URL segment: /destinations/[slug] */
@@ -21,177 +25,155 @@ export const destinations: Destination[] = [
   {
     name: "Abidjan",
     slug: "abidjan",
-    imageUrl:
-      "https://images.unsplash.com/photo-1500382017468-9049fed7be5c?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Palm trees and city skyline in West Africa",
+    imageUrl: u("1531366936337-7c912a4589a7"),
+    imageAlt: "Aerial view of a coastal city and water",
     country: "Côte d'Ivoire",
   },
   {
     name: "Addis Ababa",
     slug: "addis-ababa",
-    imageUrl:
-      "https://images.unsplash.com/photo-1605149859407-5fc7a34fd16c?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Hills and urban landscape in Ethiopia",
+    imageUrl: u("1459749411175-04bf5292ceea"),
+    imageAlt: "Ridges of high mountains in soft light",
     country: "Ethiopia",
   },
   {
     name: "Abuja",
     slug: "abuja",
-    imageUrl:
-      "https://images.unsplash.com/photo-1590069261209-11e0f0f9d7a5?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Modern architecture and sky",
+    imageUrl: u("1518709268805-4e9042af9f23"),
+    imageAlt: "Evening light over a modern skyline",
     country: "Nigeria",
   },
   {
     name: "Accra",
     slug: "accra",
-    imageUrl:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Tropical leaves and light",
+    imageUrl: u("1500530855697-b586d89ba3ee"),
+    imageAlt: "Tropical leaves in bright sunlight",
     country: "Ghana",
   },
   {
     name: "Amman",
     slug: "amman",
-    imageUrl:
-      "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Desert and ancient buildings",
+    imageUrl: u("1509316785289-025f5b846b35"),
+    imageAlt: "Desert hills and historic stone",
     country: "Jordan",
   },
   {
     name: "Amsterdam",
     slug: "amsterdam",
-    imageUrl:
-      "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Canal houses in Amsterdam",
+    imageUrl: u("1534351590666-13e3e96b5017"),
+    imageAlt: "Canal houses and boats in Amsterdam",
     country: "Netherlands",
   },
   {
     name: "Athens",
     slug: "athens",
-    imageUrl:
-      "https://images.unsplash.com/photo-1603561586033-0eb50b7f3a1d?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Acropolis at sunset",
+    imageUrl: u("1489749798305-4fea3ae63d43"),
+    imageAlt: "Sunset light over a Mediterranean coastal town",
     country: "Greece",
   },
   {
     name: "Atlanta",
     slug: "atlanta",
-    imageUrl:
-      "https://images.unsplash.com/photo-1559827260-dc66d52befd6?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "City skyline with trees",
+    imageUrl: u("1514565131-fce0801e5785"),
+    imageAlt: "Downtown at night, lights and freeways",
     country: "United States",
   },
   {
     name: "Auckland",
     slug: "auckland",
-    imageUrl:
-      "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Harbour and city in New Zealand",
+    imageUrl: u("1507699622108-4be3abd695ad"),
+    imageAlt: "Harbour, hills, and city in New Zealand",
     country: "New Zealand",
   },
   {
     name: "Bali",
     slug: "bali",
-    imageUrl:
-      "https://images.unsplash.com/photo-1537996194471-e657df975ab3?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Balinese gate and path",
+    imageUrl: u("1521572267360-ee0c2909d518"),
+    imageAlt: "Lush green terraces in tropical hills",
     country: "Indonesia",
   },
   {
     name: "Barcelona",
     slug: "barcelona",
-    imageUrl:
-      "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Park and architecture in Barcelona",
+    imageUrl: u("1558642452-9d2a7deb7f62"),
+    imageAlt: "Park, sculpture, and architecture in Barcelona",
     country: "Spain",
   },
   {
     name: "Beirut",
     slug: "beirut",
-    imageUrl:
-      "https://images.unsplash.com/photo-1544984243-ec57b16a88ae?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Coastline and city at dusk",
+    imageUrl: u("1555396273-367ea4eb4db5"),
+    imageAlt: "Outdoor evening dining in a city street",
     country: "Lebanon",
   },
   {
     name: "Berlin",
     slug: "berlin",
-    imageUrl:
-      "https://images.unsplash.com/photo-1528728329032-2972fdb51c41?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Berlin TV tower and sunset",
+    imageUrl: u("1506126613408-eca07ce68773"),
+    imageAlt: "Open hills, trees, and soft light at dusk",
     country: "Germany",
   },
   {
     name: "Bogotá",
     slug: "bogota",
-    imageUrl:
-      "https://images.unsplash.com/photo-1564056146413-0d7d0d2d1e5d?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Mountain view over a city in Colombia",
+    imageUrl: u("1509042239860-f550ce710b93"),
+    imageAlt: "Warm light on a drink and a small table",
     country: "Colombia",
   },
   {
     name: "Casablanca",
     slug: "casablanca",
-    imageUrl:
-      "https://images.unsplash.com/photo-1587330979470-3595ac45ab0e?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Hassan II mosque by the sea",
+    imageUrl: u("1585208798174-6cedd86e019a"),
+    imageAlt: "Sunlit facades in a city street",
     country: "Morocco",
   },
   {
     name: "Cape Town",
     slug: "cape-town",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Table Mountain and bay",
+    imageUrl: u("1506929562872-bb421503ef21"),
+    imageAlt: "Mountain and blue bay in South Africa",
     country: "South Africa",
   },
   {
     name: "Dakar",
     slug: "dakar",
-    imageUrl:
-      "https://images.unsplash.com/photo-1509030450997-ddc1da1d0e0d?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Ocean and coastline",
+    imageUrl: u("1513104890138-7c749659a591"),
+    imageAlt: "A narrow street and buildings in dappled light",
     country: "Senegal",
   },
   {
     name: "Dublin",
     slug: "dublin",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Georgian street and color doors",
+    imageUrl: u("1506905925346-21bda4d32df4"),
+    imageAlt: "Person on a trail above a wide mountain valley",
     country: "Ireland",
   },
   {
     name: "Lagos",
     slug: "lagos",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506744038136-4627384b0d0?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Busy city streets and light",
+    imageUrl: u("1476514525535-07fb3b4ae5f1"),
+    imageAlt: "A dense modern skyline from above",
     country: "Nigeria",
   },
   {
     name: "Lisbon",
     slug: "lisbon",
-    imageUrl:
-      "https://images.unsplash.com/photo-1444837886038-49a1f7f29a6d?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Tram in Lisbon",
+    imageUrl: u("1470246973918-29a93221c455"),
+    imageAlt: "A cobbled street in evening light",
     country: "Portugal",
   },
   {
     name: "London",
     slug: "london",
-    imageUrl:
-      "https://images.unsplash.com/photo-1529655683826-aba9b3e77283?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Thames and London buildings",
+    imageUrl: u("1449824913935-59a10b8d2000"),
+    imageAlt: "Urban streets in the evening glow",
     country: "United Kingdom",
   },
   {
     name: "Mexico City",
     slug: "mexico-city",
-    imageUrl:
-      "https://images.unsplash.com/photo-1528728329032-2972fdb51c41?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Urban skyline and evening light in a major city",
+    imageUrl: u("1469854523086-cc02fe5d8800"),
+    imageAlt: "Road, river, and wide mountain country",
     country: "Mexico",
   },
 ];

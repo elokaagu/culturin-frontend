@@ -46,9 +46,13 @@ export default function ProfileView() {
 
   useEffect(() => {
     void (async () => {
-      const db = getCmsBrowserClient();
-      if (!db) return;
-      setArticles(await listBlogs(db));
+      try {
+        const db = getCmsBrowserClient();
+        if (!db) return;
+        setArticles(await listBlogs(db));
+      } catch {
+        setArticles([]);
+      }
     })();
   }, []);
 
