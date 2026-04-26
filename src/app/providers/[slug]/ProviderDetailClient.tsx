@@ -3,10 +3,11 @@
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 
 import Header from "../../components/Header";
 import { CulturinBookingDateField } from "../../components/detail/CulturinBookingDateField";
+import { CulturinGuestSelect } from "../../components/detail/CulturinGuestSelect";
 import { ProviderGalleryLightbox } from "../../components/detail/ProviderGalleryLightbox";
 import { SaveFavoriteModal } from "../../components/detail/SaveFavoriteModal";
 import { ShareLinkModal } from "../../components/detail/ShareLinkModal";
@@ -129,26 +130,57 @@ function todayIso() {
   return `${y}-${m}-${day}`;
 }
 
-function buildMailtoInquiry(
-  email: string,
-  opts: { title: string; guests: number; checkIn: string; checkOut: string; kind: "book" | "ask" }
-) {
+type InquiryOpts = {
+  title: string;
+  guests: number;
+  checkIn: string;
+  checkOut: string;
+  kind: "book" | "ask";
+  /** Full URL to this listing (filled client-side). */
+  listingUrl?: string;
+};
+
+function dateContextLines(checkIn: string, checkOut: string, forAsk: boolean) {
+  if (checkIn && checkOut) {
+    return forAsk
+      ? `Dates I’m considering: ${checkIn} → ${checkOut}`
+      : `Dates: check-in ${checkIn} → check-out ${checkOut}`;
+  }
+  if (checkIn) {
+    return forAsk
+      ? `Preferred check-in: ${checkIn} (checkout to be confirmed)`
+      : `Preferred check-in: ${checkIn} (checkout to be agreed)`;
+  }
+  return forAsk ? "Dates: flexible — happy to hear what you suggest" : "Preferred dates: flexible (please suggest options)";
+}
+
+function buildMailtoInquiry(email: string, opts: InquiryOpts) {
+  const listingLine = opts.listingUrl?.trim() ? `Listing: ${opts.listingUrl.trim()}` : "";
+
   if (opts.kind === "ask") {
+    const dateLine = dateContextLines(opts.checkIn, opts.checkOut, true);
+    const lines = [
+      `Hi — I have a question about «${opts.title}».`,
+      "",
+      ...(listingLine ? [listingLine, ""] : []),
+      `Guests: ${opts.guests} ${opts.guests === 1 ? "guest" : "guests"}`,
+      dateLine,
+      "",
+      "My question:",
+      "",
+      "[Please write your question here]",
+    ];
     const p = new URLSearchParams();
-    p.set("subject", `Question about: ${opts.title}`);
-    p.set("body", `I'm interested in ${opts.title} and have a quick question.`);
+    p.set("subject", `Question: ${opts.title}`);
+    p.set("body", lines.join("\n"));
     return `mailto:${email}?${p.toString()}`;
   }
-  const dateLine =
-    opts.checkIn && opts.checkOut
-      ? `Dates: check-in ${opts.checkIn} → check-out ${opts.checkOut}`
-      : opts.checkIn
-        ? `Preferred check-in: ${opts.checkIn} (checkout to be agreed)`
-        : "Preferred dates: flexible (please suggest options)";
 
+  const dateLine = dateContextLines(opts.checkIn, opts.checkOut, false);
   const lines = [
     `I would like to enquire about: ${opts.title}.`,
     "",
+    ...(listingLine ? [listingLine, ""] : []),
     `Guests: ${opts.guests} ${opts.guests === 1 ? "guest" : "guests"}`,
     dateLine,
   ];
@@ -156,6 +188,23 @@ function buildMailtoInquiry(
   p.set("subject", `Booking request: ${opts.title}`);
   p.set("body", lines.join("\n"));
   return `mailto:${email}?${p.toString()}`;
+}
+
+/** SMS / Messages app — short body; host can reply in thread. */
+function buildSmsAskHref(
+  phone: string,
+  opts: Pick<InquiryOpts, "title" | "guests" | "checkIn" | "checkOut" | "listingUrl">,
+) {
+  const listing = opts.listingUrl?.trim() ? ` ${opts.listingUrl.trim()}` : "";
+  const dates =
+    opts.checkIn && opts.checkOut
+      ? ` Dates: ${opts.checkIn}–${opts.checkOut}.`
+      : opts.checkIn
+        ? ` From: ${opts.checkIn}.`
+        : "";
+  const body = `Question about «${opts.title}». Guests: ${opts.guests}.${dates}${listing} My question: `;
+  const enc = encodeURIComponent(body);
+  return `sms:${phone}?body=${enc}`;
 }
 
 export default function ProviderDetailClient({ data }: { data: fullProvider }) {
@@ -167,6 +216,12 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
   const [guests, setGuests] = useState(1);
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
+  const [listingPageUrl, setListingPageUrl] = useState("");
+
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
+    setListingPageUrl(`${window.location.origin}${pathname || ""}`);
+  }, [pathname]);
 
   const openShareModal = () => {
     setPageUrl(typeof window !== "undefined" ? window.location.href : "");
@@ -190,14 +245,36 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
   const hasMorePhotos = gallery.length > 5;
   const listingTitle = subtitle ? `Entire curated experience in ${subtitle}` : "Entire curated experience";
   const email = (data.contactEmail || "").trim();
+  const listingUrlForMessage = listingPageUrl.trim() || undefined;
   const bookMailtoHref = email
-    ? buildMailtoInquiry(email, { title, guests, checkIn, checkOut, kind: "book" })
-    : "";
-  const askMailtoHref = email
-    ? buildMailtoInquiry(email, { title, guests, checkIn, checkOut, kind: "ask" })
+    ? buildMailtoInquiry(email, {
+        title,
+        guests,
+        checkIn,
+        checkOut,
+        kind: "book",
+        listingUrl: listingUrlForMessage,
+      })
     : "";
   const phoneTel = (data.contactPhone || "").replace(/\s+/g, "");
   const minOutDate = checkIn && checkIn >= todayIso() ? checkIn : todayIso();
+
+  const askAction = useMemo(() => {
+    const ctx = { title, guests, checkIn, checkOut, listingUrl: listingUrlForMessage };
+    if (email) {
+      return {
+        href: buildMailtoInquiry(email, { ...ctx, kind: "ask" }),
+        external: false,
+      } as const;
+    }
+    if (phoneTel) {
+      return { href: buildSmsAskHref(phoneTel, ctx), external: false } as const;
+    }
+    if (bookUrl) {
+      return { href: bookUrl, external: true } as const;
+    }
+    return { href: "#contact", external: false } as const;
+  }, [email, phoneTel, bookUrl, title, guests, checkIn, checkOut, listingUrlForMessage]);
 
   return (
     <>
@@ -426,24 +503,13 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                     </div>
                   </div>
                   <div className="px-3 py-2.5">
-                    <label
-                      htmlFor="book-guests"
-                      className="m-0 block text-[0.64rem] font-semibold uppercase tracking-wide text-white/55"
-                    >
-                      Guests
-                    </label>
-                    <select
+                    <CulturinGuestSelect
                       id="book-guests"
+                      label="Guests"
                       value={guests}
-                      onChange={(e) => setGuests(Number(e.target.value))}
-                      className="mt-1.5 w-full cursor-pointer border-0 bg-white/[0.04] py-1.5 pl-1 pr-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/50"
-                    >
-                      {GUEST_OPTIONS.map((n) => (
-                        <option key={n} value={n} className="bg-neutral-900 text-white">
-                          {n} {n === 1 ? "guest" : "guests"}
-                        </option>
-                      ))}
-                    </select>
+                      options={GUEST_OPTIONS}
+                      onChange={setGuests}
+                    />
                   </div>
                 </div>
 
@@ -482,14 +548,14 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                       Get in touch below
                     </a>
                   ) : null}
-                  {askMailtoHref ? (
-                    <a
-                      href={askMailtoHref}
-                      className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-white/20 bg-black px-5 text-sm font-semibold text-white no-underline transition hover:bg-white/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-white/50"
-                    >
-                      Ask a question
-                    </a>
-                  ) : null}
+                  <a
+                    href={askAction.href}
+                    target={askAction.external ? "_blank" : undefined}
+                    rel={askAction.external ? "noopener noreferrer" : undefined}
+                    className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-white/20 bg-black px-5 text-sm font-semibold text-white no-underline transition hover:bg-white/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-white/50"
+                  >
+                    Ask a question
+                  </a>
                 </div>
                 <p className="m-0 mt-3 text-center text-xs text-white/55">You won&apos;t be charged here — requests go to the host.</p>
               </div>

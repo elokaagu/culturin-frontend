@@ -2,12 +2,13 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
-import { ScanSearch } from "lucide-react";
+import { Moon, ScanSearch, Sun } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { useTransitionRouter } from "next-view-transitions";
 import Hamburger from "hamburger-react";
 
+import { useTheme } from "../styles/ThemeContext";
 import { GoogleSignInButton } from "./AuthButtons";
 import NearByPanel from "./NearByPanel";
 import Sidebar from "./Sidebar";
@@ -154,6 +155,8 @@ function Logo() {
 export default function Header() {
   const pathname = usePathname();
   const router = useTransitionRouter();
+  const { mode, toggleTheme } = useTheme();
+  const isDark = mode === "dark";
   const [elevated, setElevated] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [nearbyOpen, setNearbyOpen] = useState(false);
@@ -306,6 +309,19 @@ export default function Header() {
               aria-expanded={nearbyOpen}
             >
               Nearby
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className={iconButtonClass}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDark ? (
+                <Sun className="h-[18px] w-[18px]" strokeWidth={2} aria-hidden />
+              ) : (
+                <Moon className="h-[18px] w-[18px]" strokeWidth={2} aria-hidden />
+              )}
             </button>
 
             <div className="hidden pl-0.5 lg:block">

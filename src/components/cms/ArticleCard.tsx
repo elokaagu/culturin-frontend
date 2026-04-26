@@ -35,7 +35,7 @@ export function ArticleCardFromBlog({
       >
         <Link href={`/articles/${card.currentSlug}`} className="group block">
           <CardContent className="p-0">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-neutral-900 ring-1 ring-white/10">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-neutral-900 ring-1 ring-neutral-200/90 dark:ring-white/10">
               <Image
                 src={imgSrc}
                 alt={card.title}

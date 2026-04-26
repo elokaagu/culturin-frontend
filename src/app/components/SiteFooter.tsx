@@ -4,7 +4,6 @@ import { Link } from "next-view-transitions";
 import { useState, type FormEvent } from "react";
 
 import { appPageContainerClass } from "@/lib/appLayout";
-import { useTheme } from "../styles/ThemeContext";
 
 const aboutCopy =
   "Culturin is a platform for travel, culture, and inspiration. We connect people to places through stories, guides, and experiences, and to communities that help you explore with curiosity and care—locally, and around the world.";
@@ -48,45 +47,6 @@ const headingClass =
 
 const linkClass =
   "text-sm text-neutral-900 no-underline transition-colors hover:text-neutral-600 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:text-white/90 dark:hover:text-white";
-
-const themeBtnBase =
-  "min-h-9 min-w-[4.5rem] rounded-full border px-3.5 text-xs font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400";
-
-function themeLightBtnClasses(isSelected: boolean): string {
-  if (isSelected) {
-    return `${themeBtnBase} border-neutral-900 bg-neutral-900 text-white dark:border-white dark:bg-white dark:text-neutral-950`;
-  }
-  return `${themeBtnBase} border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300 hover:bg-neutral-50 dark:border-white/15 dark:bg-white/[0.03] dark:text-white/55 dark:hover:border-white/25 dark:hover:bg-white/5`;
-}
-
-function themeDarkBtnClasses(isSelected: boolean): string {
-  if (isSelected) {
-    return `${themeBtnBase} border-neutral-900 bg-neutral-900 text-white dark:border-white/25 dark:bg-white/15 dark:text-white`;
-  }
-  return themeLightBtnClasses(false);
-}
-
-function FooterThemeToggle() {
-  const { mode, setMode } = useTheme();
-
-  return (
-    <div
-      className="flex items-center justify-center gap-1.5"
-      role="group"
-      aria-label="Site color theme"
-    >
-      <span className="hidden pr-0.5 text-xs font-medium uppercase tracking-wider text-neutral-500 sm:inline dark:text-white/50">
-        Theme
-      </span>
-      <button type="button" onClick={() => setMode("light")} className={themeLightBtnClasses(mode === "light")} aria-pressed={mode === "light"}>
-        Light
-      </button>
-      <button type="button" onClick={() => setMode("dark")} className={themeDarkBtnClasses(mode === "dark")} aria-pressed={mode === "dark"}>
-        Dark
-      </button>
-    </div>
-  );
-}
 
 function FooterNewsletter() {
   const [email, setEmail] = useState("");
@@ -251,16 +211,13 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 border-t border-neutral-200/80 pt-8 text-xs dark:border-white/10 sm:mt-16 sm:grid-cols-3 sm:items-center sm:gap-4">
-          <p className="m-0 font-medium uppercase tracking-wider text-neutral-500 dark:text-white/50 sm:justify-self-start">
+        <div className="mt-14 flex flex-col gap-4 border-t border-neutral-200/80 pt-8 text-xs dark:border-white/10 sm:mt-16 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <p className="m-0 font-medium uppercase tracking-wider text-neutral-500 dark:text-white/50">
             {year} Culturin — all rights reserved
           </p>
-          <div className="sm:justify-self-center">
-            <FooterThemeToggle />
-          </div>
           <Link
             href="/about"
-            className="justify-self-start text-neutral-500 no-underline transition hover:text-neutral-800 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 sm:justify-self-end dark:text-white/50 dark:hover:text-white/90"
+            className="text-neutral-500 no-underline transition hover:text-neutral-800 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:text-white/50 dark:hover:text-white/90"
           >
             Site credit
           </Link>

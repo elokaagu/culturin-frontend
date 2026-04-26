@@ -45,6 +45,8 @@ export interface providerCard {
   name: string;
   eventName: string;
   slug: { current: string };
+  /** Free-text from CMS, often "City, Country". */
+  location?: string;
   bannerImage?: {
     image?: { url?: string; alt?: string };
   };

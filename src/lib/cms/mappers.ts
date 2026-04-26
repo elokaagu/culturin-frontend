@@ -68,6 +68,7 @@ export function mapProviderRowToCard(row: CmsProviderRow): providerCard {
     name: row.name ?? "",
     eventName: row.event_name ?? "",
     slug: { current: row.slug },
+    location: row.location ?? "",
     bannerImage: {
       image: { url, alt },
     },
