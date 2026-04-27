@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
@@ -11,9 +10,11 @@ import { SaveFavoriteModal } from "../../components/detail/SaveFavoriteModal";
 import { ShareLinkModal } from "../../components/detail/ShareLinkModal";
 import { useAppAuth } from "../../components/SupabaseAuthProvider";
 import Header from "../../components/Header";
+import SafeContentImage from "../../components/SafeContentImage";
 import { appPageContainerClass } from "@/lib/appLayout";
 import {
   IMAGE_BLUR_DATA_URL,
+  cmsImageUnoptimized,
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../../lib/imagePlaceholder";
@@ -203,16 +204,13 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
           <div className={appPageContainerClass}>
             <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-8 pt-[calc(var(--header-offset)+1.5rem)] pb-10 sm:gap-10 sm:pt-[calc(var(--header-offset)+2rem)] sm:pb-12">
               <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-neutral-200 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10">
-                <Image
+                <SafeContentImage
                   src={coverSrc}
                   alt={data.title ? `${data.title} — cover` : "Article cover"}
-                  fill
                   className="object-cover"
                   sizes="(max-width: 736px) 100vw, 736px"
-                  priority
-                  placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
-                  unoptimized={isBundledPlaceholderSrc(coverSrc)}
+                  unoptimized={isBundledPlaceholderSrc(coverSrc) || cmsImageUnoptimized(coverSrc)}
                 />
               </div>
 

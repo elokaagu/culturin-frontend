@@ -5,6 +5,7 @@ import { Link } from "next-view-transitions";
 import type { providerHeroCard } from "@/lib/interface";
 import {
   IMAGE_BLUR_DATA_URL,
+  cmsImageUnoptimized,
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../lib/imagePlaceholder";
@@ -48,7 +49,7 @@ export default function CuratedExperiencesRail({ providers }: CuratedExperiences
                     blurDataURL={IMAGE_BLUR_DATA_URL}
                     className="object-cover transition duration-300 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                     sizes="(max-width: 640px) 12rem, 14rem"
-                    unoptimized={isBundledPlaceholderSrc(imgSrc)}
+                    unoptimized={isBundledPlaceholderSrc(imgSrc) || cmsImageUnoptimized(imgSrc)}
                   />
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-3.5 pb-3.5 pt-10 sm:px-4 sm:pb-4">
                     <h3 className="line-clamp-2 text-sm font-semibold leading-snug tracking-tight text-white sm:text-base">

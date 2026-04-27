@@ -159,7 +159,7 @@ export default function AgencyEventsPage() {
                   unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
-                <div className="absolute bottom-3 left-3 flex flex-wrap gap-2">
+                <div className="absolute left-3 top-3 z-[2] flex flex-wrap gap-2">
                   {item.primary ? (
                     <span className="rounded-full border border-amber-300/80 bg-amber-300/20 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-100">
                       Primary

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 import {
   useEffect,
@@ -12,6 +11,7 @@ import { Check } from "lucide-react";
 
 import { NEARBY_RADIUS_KM, nearbySpots } from "../../lib/nearbySpotsData";
 import { cmsImageUnoptimized, IMAGE_BLUR_DATA_URL, resolveContentImageSrc } from "../../lib/imagePlaceholder";
+import SafeContentImage from "./SafeContentImage";
 
 type NearByPanelProps = {
   open: boolean;
@@ -214,13 +214,11 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
                 onClick={onClose}
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-neutral-200/90 bg-neutral-100/50 dark:border-white/10 dark:bg-white/5">
-                  <Image
+                  <SafeContentImage
                     src={imageSrc}
                     alt={spot.imageAlt}
-                    fill
                     className="object-cover transition duration-500 group-hover:scale-105"
                     sizes="(max-width: 640px) 42vw, 11.6rem"
-                    placeholder="blur"
                     blurDataURL={IMAGE_BLUR_DATA_URL}
                     unoptimized={cmsImageUnoptimized(imageSrc)}
                   />

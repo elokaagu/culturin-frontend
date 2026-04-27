@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { notFound } from "next/navigation";
 
 import Header from "../../../components/Header";
+import SafeContentImage from "../../../components/SafeContentImage";
 import { getTravelGuideCategory, getTravelGuideContent } from "../../../../lib/travelGuideContent";
 import { getShowcaseBlogCards } from "../../../../lib/cms/showcaseContent";
 import { filterPublicBlogs } from "@/lib/cms/blockedFromSite";
 import {
   IMAGE_BLUR_DATA_URL,
+  cmsImageUnoptimized,
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../../../lib/imagePlaceholder";
@@ -68,15 +69,13 @@ export default function GuideDetailPage({
 
             <div className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100 dark:border-white/10 dark:bg-neutral-950">
               {category.imageUrl ? (
-                <Image
+                <SafeContentImage
                   src={category.imageUrl}
                   alt={category.imageAlt}
-                  fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 40vw"
-                  placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
-                  unoptimized={isBundledPlaceholderSrc(category.imageUrl)}
+                  unoptimized={isBundledPlaceholderSrc(category.imageUrl) || cmsImageUnoptimized(category.imageUrl)}
                 />
               ) : (
                 <div className={`absolute inset-0 ${category.overlayClass}`} />
@@ -130,15 +129,13 @@ export default function GuideDetailPage({
                       className="group overflow-hidden rounded-xl border border-neutral-200 bg-white no-underline shadow-sm transition hover:border-amber-200 dark:border-white/10 dark:bg-neutral-950/70 dark:shadow-none"
                     >
                       <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
-                        <Image
+                        <SafeContentImage
                           src={imageSrc}
                           alt={card.title}
-                          fill
                           className="object-cover transition duration-300 group-hover:scale-[1.03]"
                           sizes="(max-width: 768px) 100vw, 50vw"
-                          placeholder="blur"
                           blurDataURL={IMAGE_BLUR_DATA_URL}
-                          unoptimized={isBundledPlaceholderSrc(imageSrc)}
+                          unoptimized={isBundledPlaceholderSrc(imageSrc) || cmsImageUnoptimized(imageSrc)}
                         />
                       </div>
                       <div className="p-4">

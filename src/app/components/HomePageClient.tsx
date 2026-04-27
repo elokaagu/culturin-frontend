@@ -10,7 +10,6 @@ import ExploreWorldCountriesRail from "./ExploreWorldCountriesRail";
 import CuratedExperiencesRail from "./CuratedExperiencesRail";
 import TopVideosRail from "./TopVideosRail";
 import TrendingStoriesRail from "./TrendingStoriesRail";
-import TravelGuidesCategoryGrid from "./TravelGuidesCategoryGrid";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import { exploreWorldCountries } from "@/lib/exploreWorldCountries";
 import { appPageContainerClass, homeSectionSeeAllClass } from "@/lib/appLayout";
@@ -261,14 +260,6 @@ export default function HomePageClient({
             )}
           </HomeSection>
 
-          <HomeSection
-            id="travel-guide-categories"
-            title="Travel guides by theme"
-            description="Jump into guide collections built around food, wellness, culture, and nightlife."
-            viewAllHref="/travel-guides"
-          >
-            <TravelGuidesCategoryGrid />
-          </HomeSection>
         </div>
 
         <SiteFooter />

@@ -7,6 +7,7 @@ import { VideoHeroDialog } from "./detail/VideoHeroDialog";
 import type { videoCard } from "@/lib/interface";
 import {
   IMAGE_BLUR_DATA_URL,
+  cmsImageUnoptimized,
   isBundledPlaceholderSrc,
   resolveVideoThumbnailSrc,
 } from "../../lib/imagePlaceholder";
@@ -99,7 +100,7 @@ export default function TopVideosRail({
                 blurDataURL={IMAGE_BLUR_DATA_URL}
                 className="object-cover transition duration-300 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 sizes="(max-width: 640px) 80vw, 20rem"
-                unoptimized={isBundledPlaceholderSrc(thumbSrc)}
+                unoptimized={isBundledPlaceholderSrc(thumbSrc) || cmsImageUnoptimized(thumbSrc)}
               />
 
               <span

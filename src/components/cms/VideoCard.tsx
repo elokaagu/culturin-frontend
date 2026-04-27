@@ -1,15 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
   IMAGE_BLUR_DATA_URL,
+  cmsImageUnoptimized,
   isBundledPlaceholderSrc,
   resolveVideoThumbnailSrc,
 } from "@/lib/imagePlaceholder";
 import type { videoCard } from "@/lib/interface";
+import SafeContentImage from "@/app/components/SafeContentImage";
 
 export function VideoCardFromCms({ video, className }: { video: videoCard; className?: string }) {
   const thumbSrc = resolveVideoThumbnailSrc(video.videoThumbnailUrl);
@@ -29,16 +30,13 @@ export function VideoCardFromCms({ video, className }: { video: videoCard; class
               "max-[428px]:h-[200px] max-[428px]:w-[min(100%,300px)]",
             )}
           >
-            <Image
+            <SafeContentImage
               src={thumbSrc}
               alt={video.title}
-              fill
-              loading="lazy"
               className="object-cover"
               sizes="(max-width: 640px) 100vw, 33vw"
-              placeholder="blur"
               blurDataURL={IMAGE_BLUR_DATA_URL}
-              unoptimized={isBundledPlaceholderSrc(thumbSrc)}
+              unoptimized={isBundledPlaceholderSrc(thumbSrc) || cmsImageUnoptimized(thumbSrc)}
             />
           </div>
         </CardContent>

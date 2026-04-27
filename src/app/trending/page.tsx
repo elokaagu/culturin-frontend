@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 
 import Header from "../components/Header";
+import SafeContentImage from "../components/SafeContentImage";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listBlogs, listProviders, listVideos } from "../../lib/cms/queries";
 import { filterPublicBlogs, filterPublicVideos } from "../../lib/cms/blockedFromSite";
@@ -13,6 +13,7 @@ import {
 } from "../../lib/cms/showcaseContent";
 import {
   IMAGE_BLUR_DATA_URL,
+  cmsImageUnoptimized,
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
   resolveVideoThumbnailSrc,
@@ -78,15 +79,13 @@ export default async function TrendingPage() {
                     className="group overflow-hidden rounded-xl border border-white/10 bg-neutral-950/80 no-underline"
                   >
                     <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-900">
-                      <Image
+                      <SafeContentImage
                         src={imageSrc}
                         alt={story.title}
-                        fill
                         className="object-cover transition duration-300 group-hover:scale-[1.03]"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        placeholder="blur"
                         blurDataURL={IMAGE_BLUR_DATA_URL}
-                        unoptimized={isBundledPlaceholderSrc(imageSrc)}
+                        unoptimized={isBundledPlaceholderSrc(imageSrc) || cmsImageUnoptimized(imageSrc)}
                       />
                     </div>
                     <div className="p-4">
@@ -110,15 +109,13 @@ export default async function TrendingPage() {
                     className="group overflow-hidden rounded-xl border border-white/10 bg-neutral-950/80 no-underline"
                   >
                     <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-900">
-                      <Image
+                      <SafeContentImage
                         src={imageSrc}
                         alt={video.title}
-                        fill
                         className="object-cover transition duration-300 group-hover:scale-[1.03]"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        placeholder="blur"
                         blurDataURL={IMAGE_BLUR_DATA_URL}
-                        unoptimized={isBundledPlaceholderSrc(imageSrc)}
+                        unoptimized={isBundledPlaceholderSrc(imageSrc) || cmsImageUnoptimized(imageSrc)}
                       />
                     </div>
                     <div className="p-4">
@@ -142,15 +139,13 @@ export default async function TrendingPage() {
                     className="group overflow-hidden rounded-xl border border-white/10 bg-neutral-950/80 no-underline"
                   >
                     <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-900">
-                      <Image
+                      <SafeContentImage
                         src={imageSrc}
                         alt={provider.bannerImage?.image?.alt || provider.eventName || provider.name || "Experience"}
-                        fill
                         className="object-cover transition duration-300 group-hover:scale-[1.03]"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        placeholder="blur"
                         blurDataURL={IMAGE_BLUR_DATA_URL}
-                        unoptimized={isBundledPlaceholderSrc(imageSrc)}
+                        unoptimized={isBundledPlaceholderSrc(imageSrc) || cmsImageUnoptimized(imageSrc)}
                       />
                     </div>
                     <div className="p-4">

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 
 import Header from "../components/Header";
+import SafeContentImage from "../components/SafeContentImage";
 import SiteFooter from "../components/SiteFooter";
 import { getShowcaseBlogCards } from "../../lib/cms/showcaseContent";
 import { getCmsDbOrNull } from "../../lib/cms/server";
@@ -53,13 +53,11 @@ function ArticleCard({
       ].join(" ")}
     >
       <div className={["relative w-full overflow-hidden bg-neutral-900", frameClass].join(" ")}>
-        <Image
+        <SafeContentImage
           src={src}
           alt={article.title}
-          fill
           className="z-0 object-cover transition duration-500 group-hover:scale-[1.04]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          placeholder="blur"
           blurDataURL={IMAGE_BLUR_DATA_URL}
           unoptimized={cmsImageUnoptimized(src)}
         />

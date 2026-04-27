@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Link } from "next-view-transitions";
 
 import Header from "../../components/Header";
+import SafeContentImage from "../../components/SafeContentImage";
 import {
   getNearbySpotBySlug,
   nearbyResultsBySlug,
@@ -75,13 +75,10 @@ export default function NearbyResultPage({ params }: PageProps) {
             </div>
 
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-neutral-900">
-              <Image
+              <SafeContentImage
                 src={heroSrc}
                 alt={spot.imageAlt}
-                fill
                 className="object-cover"
-                priority
-                placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
                 sizes="(max-width: 1024px) 100vw, 28rem"
                 unoptimized={cmsImageUnoptimized(heroSrc)}

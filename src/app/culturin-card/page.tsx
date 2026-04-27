@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Link } from "next-view-transitions";
 
 import { ContentPageShell } from "../components/layout/ContentPageShell";
@@ -54,27 +55,44 @@ export default function CulturinCardPage() {
         </nav>
 
         <section className="rounded-3xl border border-neutral-200 bg-gradient-to-br from-neutral-900 via-neutral-900 to-neutral-800 p-6 text-white sm:p-10 dark:border-white/10">
-          <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-amber-300/90">Member Rewards</p>
-          <h1 className="m-0 mt-3 max-w-3xl font-display text-3xl font-semibold tracking-tight sm:text-5xl">
-            Culturin Card
-          </h1>
-          <p className="m-0 mt-4 max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base">
-            A credit card-style membership program for travelers who want culture-rich perks. Earn rewards when you explore and
-            redeem them across partner destinations in multiple countries.
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link
-              href="/join-us/advisors"
-              className="inline-flex min-h-[42px] items-center rounded-full border border-amber-300/40 bg-amber-300/20 px-5 text-sm font-semibold text-white no-underline transition hover:bg-amber-300/30"
-            >
-              Join waitlist
-            </Link>
-            <Link
-              href="/travel-guides"
-              className="inline-flex min-h-[42px] items-center rounded-full border border-white/30 bg-white/10 px-5 text-sm font-semibold text-white no-underline transition hover:bg-white/15"
-            >
-              See eligible experiences
-            </Link>
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,460px)] lg:items-center">
+            <div>
+              <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-amber-300/90">Member Rewards</p>
+              <h1 className="m-0 mt-3 max-w-3xl font-display text-3xl font-semibold tracking-tight sm:text-5xl">
+                Culturin Card
+              </h1>
+              <p className="m-0 mt-4 max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base">
+                A credit card-style membership program for travelers who want culture-rich perks. Earn rewards when you explore
+                and redeem them across partner destinations in multiple countries.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link
+                  href="/join-us/advisors"
+                  className="inline-flex min-h-[42px] items-center rounded-full border border-amber-300/40 bg-amber-300/20 px-5 text-sm font-semibold text-white no-underline transition hover:bg-amber-300/30"
+                >
+                  Join waitlist
+                </Link>
+                <Link
+                  href="/travel-guides"
+                  className="inline-flex min-h-[42px] items-center rounded-full border border-white/30 bg-white/10 px-5 text-sm font-semibold text-white no-underline transition hover:bg-white/15"
+                >
+                  See eligible experiences
+                </Link>
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-[460px]">
+              <div className="pointer-events-none absolute -inset-5 rounded-[2rem] bg-amber-300/10 blur-2xl" aria-hidden />
+              <Image
+                src="/illustrations/culturin-card-hero.svg"
+                alt="Culturin Card preview"
+                width={1200}
+                height={760}
+                className="relative h-auto w-full rounded-2xl border border-white/20 shadow-[0_18px_55px_rgba(0,0,0,0.5)]"
+                priority
+                unoptimized
+              />
+            </div>
           </div>
         </section>
 
