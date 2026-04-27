@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
+import { Link } from "next-view-transitions";
 
-import Header from "@/app/components/Header";
-import SiteFooter from "@/app/components/SiteFooter";
 import StudioLayoutClient from "@/app/studio/StudioLayoutClient";
 import { getCurrentAdminState } from "@/lib/studio/admin";
 import { getStudioCounts } from "@/lib/studio/getStudioCounts";
@@ -17,19 +17,27 @@ export const metadata: Metadata = {
 
 function AccessDenied() {
   return (
-    <main className="min-h-dvh bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white sm:px-6">
-      <div className="mx-auto mt-10 w-full max-w-2xl rounded-2xl border border-neutral-200 bg-white p-6 dark:border-white/10 dark:bg-neutral-950/90">
+    <main className="flex min-h-dvh flex-col items-center justify-center bg-neutral-50 px-4 py-12 text-neutral-900 dark:bg-black dark:text-white">
+      <div className="w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-neutral-950/90">
         <p className="text-sm font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">Culturin Studio</p>
         <h1 className="mt-2 text-2xl font-semibold">Access denied</h1>
         <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
           Your account is signed in, but it does not have admin access to Studio yet.
+        </p>
+        <p className="mt-6 text-sm">
+          <Link
+            href="/"
+            className="font-medium text-amber-800 underline-offset-2 hover:underline dark:text-amber-400/90"
+          >
+            ← Back to Culturin
+          </Link>
         </p>
       </div>
     </main>
   );
 }
 
-export default async function StudioLayout({ children }: { children: React.ReactNode }) {
+export default async function StudioLayout({ children }: { children: ReactNode }) {
   const state = await getCurrentAdminState();
 
   if (!state.userId) {
@@ -37,31 +45,19 @@ export default async function StudioLayout({ children }: { children: React.React
   }
 
   if (!state.isAdmin) {
-    return (
-      <>
-        <Header />
-        <AccessDenied />
-        <SiteFooter />
-      </>
-    );
+    return <AccessDenied />;
   }
 
   const counts = await getStudioCounts();
 
   return (
-    <>
-      <Header />
-      <div className="w-full min-h-0 min-w-0 flex-1 bg-neutral-50 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
-        <StudioLayoutClient
-          email={state.email}
-          blogCount={counts.blogs}
-          videoCount={counts.videos}
-          providerCount={counts.providers}
-        >
-          {children}
-        </StudioLayoutClient>
-      </div>
-      <SiteFooter />
-    </>
+    <StudioLayoutClient
+      email={state.email}
+      blogCount={counts.blogs}
+      videoCount={counts.videos}
+      providerCount={counts.providers}
+    >
+      {children}
+    </StudioLayoutClient>
   );
 }
