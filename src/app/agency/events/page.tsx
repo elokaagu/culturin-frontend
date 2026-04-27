@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 
 import { ContentPageShell } from "@/app/components/layout/ContentPageShell";
+import SafeContentImage from "@/app/components/SafeContentImage";
 import SiteFooter from "@/app/components/SiteFooter";
 import { IMAGE_BLUR_DATA_URL } from "@/lib/imagePlaceholder";
 
@@ -150,17 +150,15 @@ export default function AgencyEventsPage() {
               className="mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-neutral-200 bg-white dark:border-white/10 dark:bg-white/[0.03]"
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-900">
-                <Image
+                <SafeContentImage
                   src={item.imageUrl}
                   alt={item.imageAlt}
-                  fill
                   className="object-cover"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
                   unoptimized
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
                 <div className="absolute bottom-3 left-3 flex flex-wrap gap-2">
                   {item.primary ? (
                     <span className="rounded-full border border-amber-300/80 bg-amber-300/20 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-100">
@@ -174,10 +172,10 @@ export default function AgencyEventsPage() {
                     {item.year}
                   </span>
                 </div>
-              </div>
-              <div className="p-4">
-                <h2 className="m-0 text-lg font-semibold text-neutral-900 dark:text-white">{item.title}</h2>
-                <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/75">{item.summary}</p>
+                <div className="absolute inset-x-0 bottom-0 z-[1] px-4 pb-4 pt-16">
+                  <h2 className="m-0 text-lg font-semibold text-white">{item.title}</h2>
+                  <p className="m-0 mt-2 text-sm leading-relaxed text-white/85">{item.summary}</p>
+                </div>
               </div>
             </article>
           ))}
