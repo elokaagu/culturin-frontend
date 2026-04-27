@@ -19,3 +19,10 @@ export type TravelerProfile = {
   followingCount: number;
   isFollowing: boolean;
 };
+
+export type SuggestedTraveler = {
+  id: string;
+  name: string;
+  handle: string;
+  isFollowing: boolean;
+};

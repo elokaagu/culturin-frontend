@@ -3,6 +3,9 @@ export type SpotListRow = {
   user_id: string;
   title: string;
   place_label: string | null;
+  list_type: "itinerary" | "collection" | "highlights";
+  description: string | null;
+  is_published: boolean;
   created_at: string;
   updated_at: string;
 };

@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { SpotListItemRow, SpotListRow, SpotListWithItems } from "@/lib/spotLists/types";
-import type { TravelerCard, TravelerProfile } from "@/lib/social/types";
+import type { SuggestedTraveler, TravelerCard, TravelerProfile } from "@/lib/social/types";
 import { getSupabaseAdmin } from "../supabaseServiceRole";
 
 type AppUserRow = {
@@ -163,11 +163,11 @@ export async function getTravelerProfile(input: {
   const user = (userData as AppUserRow | null) ?? null;
   if (!user) return null;
 
-  const { data: listsData, error: listsErr } = await db()
-    .from("user_spot_lists")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("updated_at", { ascending: false });
+  let listsQuery = db().from("user_spot_lists").select("*").eq("user_id", user.id);
+  if (input.viewerUserId !== user.id) {
+    listsQuery = listsQuery.eq("is_published", true);
+  }
+  const { data: listsData, error: listsErr } = await listsQuery.order("updated_at", { ascending: false });
   if (listsErr) throw listsErr;
   const lists = (listsData ?? []) as SpotListRow[];
 
@@ -207,4 +207,36 @@ export async function getTravelerProfile(input: {
     followingCount: followingCount ?? 0,
     isFollowing,
   };
+}
+
+export async function listSuggestedTravelers(input: {
+  viewerUserId?: string | null;
+  excludeUserIds?: string[];
+  limit?: number;
+}): Promise<SuggestedTraveler[]> {
+  const limit = input.limit ?? 5;
+  const excluded = new Set((input.excludeUserIds ?? []).filter(Boolean));
+  if (input.viewerUserId) excluded.add(input.viewerUserId);
+
+  const { data: usersData, error: usersErr } = await db()
+    .from("users")
+    .select("id,email,name,username")
+    .order("created_at", { ascending: false })
+    .limit(40);
+  if (usersErr) throw usersErr;
+
+  const followedSet = new Set(
+    input.viewerUserId ? await listFollowedUserIds(input.viewerUserId).catch(() => []) : [],
+  );
+
+  return ((usersData ?? []) as AppUserRow[])
+    .filter((user) => !excluded.has(user.id))
+    .filter((user) => !followedSet.has(user.id))
+    .slice(0, limit)
+    .map((user) => ({
+      id: user.id,
+      name: displayNameFromUser(user),
+      handle: handleFromUser(user),
+      isFollowing: false,
+    }));
 }

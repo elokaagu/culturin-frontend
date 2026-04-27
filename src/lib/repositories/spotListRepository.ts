@@ -59,6 +59,9 @@ export async function createSpotList(input: {
   userId: string;
   title: string;
   placeLabel?: string | null;
+  listType?: "itinerary" | "collection" | "highlights";
+  description?: string | null;
+  isPublished?: boolean;
 }): Promise<SpotListRow> {
   const { data, error } = await db()
     .from("user_spot_lists")
@@ -66,6 +69,9 @@ export async function createSpotList(input: {
       user_id: input.userId,
       title: input.title.trim(),
       place_label: input.placeLabel?.trim() || null,
+      list_type: input.listType ?? "itinerary",
+      description: input.description?.trim() || null,
+      is_published: Boolean(input.isPublished),
     })
     .select("*")
     .single();
@@ -79,10 +85,16 @@ export async function updateSpotList(input: {
   userId: string;
   title?: string;
   placeLabel?: string | null;
+  listType?: "itinerary" | "collection" | "highlights";
+  description?: string | null;
+  isPublished?: boolean;
 }): Promise<void> {
   const patch: Record<string, unknown> = {};
   if (input.title !== undefined) patch.title = input.title.trim();
   if (input.placeLabel !== undefined) patch.place_label = input.placeLabel?.trim() || null;
+  if (input.listType !== undefined) patch.list_type = input.listType;
+  if (input.description !== undefined) patch.description = input.description?.trim() || null;
+  if (input.isPublished !== undefined) patch.is_published = input.isPublished;
 
   if (Object.keys(patch).length === 0) return;
 

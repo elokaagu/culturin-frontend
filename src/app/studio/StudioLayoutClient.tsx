@@ -5,15 +5,17 @@ import {
   Building2,
   ExternalLink,
   LayoutDashboard,
+  LogOut,
   Moon,
   Sun,
   Video,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Link } from "next-view-transitions";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 import { useTheme } from "@/app/styles/ThemeContext";
+import { useSupabaseAuth } from "@/app/components/SupabaseAuthProvider";
 
 type StudioLayoutClientProps = {
   children: ReactNode;
@@ -58,6 +60,8 @@ export default function StudioLayoutClient({
 }: StudioLayoutClientProps) {
   const pathname = usePathname() ?? "";
   const { mode, toggleTheme } = useTheme();
+  const { supabase } = useSupabaseAuth();
+  const [signingOut, setSigningOut] = useState(false);
 
   return (
     <div className="flex h-dvh max-h-dvh flex-col overflow-hidden bg-neutral-50 text-neutral-900 dark:bg-black dark:text-white">
@@ -167,6 +171,22 @@ export default function StudioLayoutClient({
               </ul>
 
             </nav>
+          </div>
+          <div className="border-t border-neutral-200 px-2.5 py-2.5 dark:border-white/10">
+            <button
+              type="button"
+              disabled={signingOut}
+              onClick={async () => {
+                if (!supabase || signingOut) return;
+                setSigningOut(true);
+                await supabase.auth.signOut();
+                setSigningOut(false);
+              }}
+              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-neutral-600 transition hover:bg-neutral-200/80 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white/70 dark:hover:bg-white/8"
+            >
+              <LogOut className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+              {signingOut ? "Signing out..." : "Sign out"}
+            </button>
           </div>
         </aside>
 

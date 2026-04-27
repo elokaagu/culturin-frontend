@@ -14,6 +14,9 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState("");
   const [newPlace, setNewPlace] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newType, setNewType] = useState<"itinerary" | "collection" | "highlights">("itinerary");
+  const [newPublished, setNewPublished] = useState(false);
   const [creating, setCreating] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -56,6 +59,9 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
         body: JSON.stringify({
           title,
           placeLabel: newPlace.trim() || null,
+          description: newDescription.trim() || null,
+          listType: newType,
+          isPublished: newPublished,
         }),
       });
       const data = (await res.json()) as { list?: { id: string }; message?: string };
@@ -64,6 +70,9 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
       }
       setNewTitle("");
       setNewPlace("");
+      setNewDescription("");
+      setNewType("itinerary");
+      setNewPublished(false);
       if (data.list?.id) setExpandedId(data.list.id);
       await refresh();
     } catch (e) {
@@ -99,8 +108,7 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
       <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-white/[0.1] dark:bg-white/[0.03] sm:p-6">
         <h2 className="text-base font-semibold text-neutral-900 dark:text-white">Trip lists</h2>
         <p className="mt-1 text-sm text-neutral-500 dark:text-white/45">
-          Keep favorite cafés, neighborhoods, and stops for each place you visit — like notes in your phone, but
-          on your Culturin profile.
+          Create itineraries, collections, and highlights, then publish what you want others to discover.
         </p>
 
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-end">
@@ -137,6 +145,44 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
             {creating ? "Adding…" : "New list"}
           </button>
         </div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          <div>
+            <label htmlFor="new-list-type" className="mb-1 block text-xs font-medium text-neutral-500 dark:text-white/50">
+              Type
+            </label>
+            <select
+              id="new-list-type"
+              value={newType}
+              onChange={(e) => setNewType(e.target.value as "itinerary" | "collection" | "highlights")}
+              className="w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 focus:border-amber-500/50 focus:outline-none focus:ring-2 focus:ring-amber-500/25 dark:border-white/15 dark:bg-white/[0.06] dark:text-white"
+            >
+              <option value="itinerary">Itinerary</option>
+              <option value="collection">Collection</option>
+              <option value="highlights">Highlights</option>
+            </select>
+          </div>
+          <div className="sm:col-span-2">
+            <label htmlFor="new-list-description" className="mb-1 block text-xs font-medium text-neutral-500 dark:text-white/50">
+              Description
+            </label>
+            <input
+              id="new-list-description"
+              value={newDescription}
+              onChange={(e) => setNewDescription(e.target.value)}
+              placeholder="Short description (optional)"
+              className="w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-amber-500/50 focus:outline-none focus:ring-2 focus:ring-amber-500/25 dark:border-white/15 dark:bg-white/[0.06] dark:text-white dark:placeholder:text-white/35"
+            />
+          </div>
+        </div>
+        <label className="mt-3 inline-flex items-center gap-2 text-sm text-neutral-700 dark:text-white/75">
+          <input
+            type="checkbox"
+            checked={newPublished}
+            onChange={(e) => setNewPublished(e.target.checked)}
+            className="h-4 w-4 rounded border-neutral-300 text-amber-700 focus:ring-amber-500 dark:border-white/20 dark:bg-white/10"
+          />
+          Publish this list to my public profile
+        </label>
 
         {error ? (
           <p className="mt-4 text-sm text-amber-800 dark:text-amber-200/90" role="alert">
@@ -184,7 +230,29 @@ function SpotListCard({
   const [spotNotes, setSpotNotes] = useState("");
   const [spotUrl, setSpotUrl] = useState("");
   const [adding, setAdding] = useState(false);
+  const [updatingList, setUpdatingList] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
+
+  const updateListMeta = async (patch: {
+    listType?: "itinerary" | "collection" | "highlights";
+    description?: string | null;
+    isPublished?: boolean;
+  }) => {
+    setUpdatingList(true);
+    setLocalError(null);
+    const res = await fetch(`/api/me/spot-lists/${list.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(patch),
+    });
+    setUpdatingList(false);
+    if (!res.ok) {
+      const j = (await res.json().catch(() => ({}))) as { message?: string };
+      setLocalError(j.message ?? "Could not update list.");
+      return;
+    }
+    onChanged();
+  };
 
   const addSpot = async () => {
     const title = spotTitle.trim();
@@ -239,6 +307,12 @@ function SpotListCard({
             <span className="block text-sm font-semibold text-neutral-900 dark:text-white">{list.title}</span>
             {list.place_label ? (
               <span className="mt-0.5 block text-xs text-neutral-500 dark:text-white/45">{list.place_label}</span>
+            ) : null}
+            <span className="mt-1 inline-flex rounded-full border border-neutral-300 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-600 dark:border-white/20 dark:text-white/60">
+              {list.list_type}
+            </span>
+            {list.description ? (
+              <span className="mt-1 block text-xs text-neutral-500 dark:text-white/55">{list.description}</span>
             ) : null}
             <span className="mt-1 block text-xs text-neutral-400 dark:text-white/35">
               {list.items.length} spot{list.items.length === 1 ? "" : "s"}
@@ -301,6 +375,35 @@ function SpotListCard({
             )}
 
             <div className="mt-4 space-y-2 border-t border-neutral-100 pt-4 dark:border-white/[0.06]">
+              <div className="mb-2 flex flex-wrap items-center gap-2">
+                {(["itinerary", "collection", "highlights"] as const).map((kind) => (
+                  <button
+                    key={kind}
+                    type="button"
+                    disabled={updatingList}
+                    onClick={() => void updateListMeta({ listType: kind })}
+                    className={
+                      list.list_type === kind
+                        ? "rounded-full border border-amber-300/60 bg-amber-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-900 dark:bg-amber-300/20 dark:text-amber-100"
+                        : "rounded-full border border-neutral-300 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-neutral-600 dark:border-white/20 dark:text-white/65"
+                    }
+                  >
+                    {kind}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  disabled={updatingList}
+                  onClick={() => void updateListMeta({ isPublished: !list.is_published })}
+                  className={
+                    list.is_published
+                      ? "rounded-full border border-emerald-300/60 bg-emerald-100 px-2.5 py-1 text-[11px] font-semibold text-emerald-900 dark:bg-emerald-300/20 dark:text-emerald-100"
+                      : "rounded-full border border-neutral-300 px-2.5 py-1 text-[11px] font-semibold text-neutral-600 dark:border-white/20 dark:text-white/65"
+                  }
+                >
+                  {updatingList ? "Saving…" : list.is_published ? "Published" : "Private"}
+                </button>
+              </div>
               <p className="text-xs font-medium uppercase tracking-wide text-neutral-400 dark:text-white/35">
                 Add a spot
               </p>

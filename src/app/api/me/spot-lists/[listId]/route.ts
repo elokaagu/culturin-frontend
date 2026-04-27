@@ -16,9 +16,24 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await request.json()) as { title?: string; placeLabel?: string | null };
-  if (body.title === undefined && body.placeLabel === undefined) {
+  const body = (await request.json()) as {
+    title?: string;
+    placeLabel?: string | null;
+    listType?: "itinerary" | "collection" | "highlights";
+    description?: string | null;
+    isPublished?: boolean;
+  };
+  if (
+    body.title === undefined &&
+    body.placeLabel === undefined &&
+    body.listType === undefined &&
+    body.description === undefined &&
+    body.isPublished === undefined
+  ) {
     return NextResponse.json({ message: "No fields to update" }, { status: 400 });
+  }
+  if (body.listType !== undefined && !["itinerary", "collection", "highlights"].includes(body.listType)) {
+    return NextResponse.json({ message: "listType must be itinerary, collection, or highlights" }, { status: 400 });
   }
 
   try {
@@ -31,6 +46,9 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       userId: appUser.id,
       title: body.title,
       placeLabel: body.placeLabel,
+      listType: body.listType,
+      description: body.description,
+      isPublished: body.isPublished,
     });
     return NextResponse.json({ ok: true });
   } catch (error: unknown) {

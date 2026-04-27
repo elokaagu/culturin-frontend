@@ -36,10 +36,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await request.json()) as { title?: string; placeLabel?: string | null };
+  const body = (await request.json()) as {
+    title?: string;
+    placeLabel?: string | null;
+    listType?: "itinerary" | "collection" | "highlights";
+    description?: string | null;
+    isPublished?: boolean;
+  };
   const title = typeof body.title === "string" ? body.title.trim() : "";
   if (!title) {
     return NextResponse.json({ message: "title is required" }, { status: 400 });
+  }
+  if (body.listType !== undefined && !["itinerary", "collection", "highlights"].includes(body.listType)) {
+    return NextResponse.json({ message: "listType must be itinerary, collection, or highlights" }, { status: 400 });
   }
 
   try {
@@ -51,6 +60,9 @@ export async function POST(request: Request) {
       userId: appUser.id,
       title,
       placeLabel: body.placeLabel,
+      listType: body.listType,
+      description: body.description,
+      isPublished: body.isPublished,
     });
     return NextResponse.json({ list });
   } catch (error: unknown) {
