@@ -9,6 +9,7 @@ const aboutCopy =
   "Culturin is a platform for travel, culture, and inspiration. We connect people to places through stories, guides, and experiences, and to communities that help you explore with curiosity and care—locally, and around the world.";
 
 const socialLinks = [
+  { label: "Events", href: "https://luma.com/culturin?compact=true" },
   { label: "Instagram", href: "https://www.instagram.com" },
   { label: "TikTok", href: "https://www.tiktok.com" },
   { label: "LinkedIn", href: "https://www.linkedin.com" },
