@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "next-view-transitions";
 
 import { Field } from "@/app/studio/_components/Field";
+import { StudioImageUploadButton } from "@/app/studio/_components/StudioImageUploadButton";
 import { postCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 
 type ArticleFormInitial = {
@@ -17,7 +18,12 @@ type ArticleFormInitial = {
 export function StudioArticleForm({ initial }: { initial?: ArticleFormInitial | null }) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [titleImageUrl, setTitleImageUrl] = useState(initial?.title_image_url ?? "");
   const isEditing = Boolean(initial?.slug);
+
+  useEffect(() => {
+    setTitleImageUrl(initial?.title_image_url ?? "");
+  }, [initial?.slug, initial?.title_image_url]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -60,7 +66,16 @@ export function StudioArticleForm({ initial }: { initial?: ArticleFormInitial | 
         <Field name="slug" label="Slug (optional)" defaultValue={initial?.slug ?? ""} />
         <Field name="title" label="Title" required defaultValue={initial?.title ?? ""} />
         <Field name="summary" label="Summary" defaultValue={initial?.summary ?? ""} />
-        <Field name="title_image_url" label="Title image URL" defaultValue={initial?.title_image_url ?? ""} />
+        <label className="flex flex-col gap-1.5 text-sm">
+          <span className="font-medium text-neutral-700 dark:text-white/80">Title image URL</span>
+          <input
+            name="title_image_url"
+            value={titleImageUrl}
+            onChange={(event) => setTitleImageUrl(event.target.value)}
+            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
+          />
+          <StudioImageUploadButton onUploaded={setTitleImageUrl} buttonLabel="Upload title image" />
+        </label>
         <Field name="published_at" label="Published at (ISO, optional)" defaultValue={initial?.published_at ?? ""} />
         <button
           type="submit"

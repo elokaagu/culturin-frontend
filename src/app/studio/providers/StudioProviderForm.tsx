@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "next-view-transitions";
 
 import { Field } from "@/app/studio/_components/Field";
+import { StudioImageUploadButton } from "@/app/studio/_components/StudioImageUploadButton";
 import { postCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 
 type ProviderFormInitial = {
@@ -25,7 +26,14 @@ type ProviderFormInitial = {
 export function StudioProviderForm({ initial }: { initial?: ProviderFormInitial | null }) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [avatarImageUrl, setAvatarImageUrl] = useState(initial?.avatar_image_url ?? "");
+  const [bannerImageUrl, setBannerImageUrl] = useState(initial?.banner_image_url ?? "");
   const isEditing = Boolean(initial?.slug);
+
+  useEffect(() => {
+    setAvatarImageUrl(initial?.avatar_image_url ?? "");
+    setBannerImageUrl(initial?.banner_image_url ?? "");
+  }, [initial?.slug, initial?.avatar_image_url, initial?.banner_image_url]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -70,13 +78,31 @@ export function StudioProviderForm({ initial }: { initial?: ProviderFormInitial 
         <Field name="event_name" label="Event / experience name" required defaultValue={initial?.event_name ?? ""} />
         <Field name="description" label="Description" defaultValue={initial?.description ?? ""} />
         <Field name="location" label="Location" defaultValue={initial?.location ?? ""} />
-        <Field name="avatar_image_url" label="Avatar image URL" defaultValue={initial?.avatar_image_url ?? ""} />
+        <label className="flex flex-col gap-1.5 text-sm">
+          <span className="font-medium text-neutral-700 dark:text-white/80">Avatar image URL</span>
+          <input
+            name="avatar_image_url"
+            value={avatarImageUrl}
+            onChange={(event) => setAvatarImageUrl(event.target.value)}
+            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
+          />
+          <StudioImageUploadButton onUploaded={setAvatarImageUrl} buttonLabel="Upload avatar image" />
+        </label>
         <Field name="languages" label="Languages (comma-separated)" defaultValue={initial?.languages ?? ""} />
         <Field name="specialties" label="Specialties (comma-separated)" defaultValue={initial?.specialties ?? ""} />
         <Field name="contact_email" label="Contact email" type="email" defaultValue={initial?.contact_email ?? ""} />
         <Field name="contact_phone" label="Contact phone" defaultValue={initial?.contact_phone ?? ""} />
         <Field name="contact_website" label="Contact website" defaultValue={initial?.contact_website ?? ""} />
-        <Field name="banner_image_url" label="Banner image URL" defaultValue={initial?.banner_image_url ?? ""} />
+        <label className="flex flex-col gap-1.5 text-sm">
+          <span className="font-medium text-neutral-700 dark:text-white/80">Banner image URL</span>
+          <input
+            name="banner_image_url"
+            value={bannerImageUrl}
+            onChange={(event) => setBannerImageUrl(event.target.value)}
+            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
+          />
+          <StudioImageUploadButton onUploaded={setBannerImageUrl} buttonLabel="Upload banner image" />
+        </label>
         <Field name="published_at" label="Published at (ISO, optional)" defaultValue={initial?.published_at ?? ""} />
         <button
           type="submit"

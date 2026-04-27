@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "next-view-transitions";
 
 import { Field } from "@/app/studio/_components/Field";
+import { StudioImageUploadButton } from "@/app/studio/_components/StudioImageUploadButton";
 import { postCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 
 type VideoFormInitial = {
@@ -19,7 +20,12 @@ type VideoFormInitial = {
 export function StudioVideoForm({ initial }: { initial?: VideoFormInitial | null }) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState(initial?.thumbnail_url ?? "");
   const isEditing = Boolean(initial?.slug);
+
+  useEffect(() => {
+    setThumbnailUrl(initial?.thumbnail_url ?? "");
+  }, [initial?.slug, initial?.thumbnail_url]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -63,7 +69,16 @@ export function StudioVideoForm({ initial }: { initial?: VideoFormInitial | null
         <Field name="title" label="Title" required defaultValue={initial?.title ?? ""} />
         <Field name="uploader" label="Uploader" defaultValue={initial?.uploader ?? ""} />
         <Field name="description" label="Description" defaultValue={initial?.description ?? ""} />
-        <Field name="thumbnail_url" label="Thumbnail URL" defaultValue={initial?.thumbnail_url ?? ""} />
+        <label className="flex flex-col gap-1.5 text-sm">
+          <span className="font-medium text-neutral-700 dark:text-white/80">Thumbnail URL</span>
+          <input
+            name="thumbnail_url"
+            value={thumbnailUrl}
+            onChange={(event) => setThumbnailUrl(event.target.value)}
+            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
+          />
+          <StudioImageUploadButton onUploaded={setThumbnailUrl} buttonLabel="Upload thumbnail" />
+        </label>
         <Field name="playback_id" label="Playback ID" defaultValue={initial?.playback_id ?? ""} />
         <Field name="published_at" label="Published at (ISO, optional)" defaultValue={initial?.published_at ?? ""} />
         <button
