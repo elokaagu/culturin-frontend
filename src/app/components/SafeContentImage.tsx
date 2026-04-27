@@ -26,9 +26,11 @@ export default function SafeContentImage({
   unoptimized,
 }: Props) {
   const [currentSrc, setCurrentSrc] = useState(src);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setCurrentSrc(src);
+    setLoaded(false);
   }, [src]);
 
   return (
@@ -36,11 +38,19 @@ export default function SafeContentImage({
       src={currentSrc}
       alt={alt}
       fill
-      className={className}
+      className={[
+        className,
+        "transition-all duration-500 ease-out",
+        loaded ? "blur-0 opacity-100" : "blur-sm opacity-70",
+      ]
+        .filter(Boolean)
+        .join(" ")}
       sizes={sizes}
+      loading="lazy"
       placeholder="blur"
       blurDataURL={blurDataURL}
       unoptimized={unoptimized || currentSrc === FALLBACK_SRC}
+      onLoad={() => setLoaded(true)}
       onError={() => {
         if (currentSrc !== FALLBACK_SRC) setCurrentSrc(FALLBACK_SRC);
       }}

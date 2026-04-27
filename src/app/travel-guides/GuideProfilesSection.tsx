@@ -190,7 +190,7 @@ export default function GuideProfilesSection({ guides }: { guides: providerCard[
 
                   <div className="flex flex-wrap gap-3 pt-1">
                     <Link
-                      href={`/providers/${guide.slug.current}`}
+                      href={`/travel-guides/hosts/${guide.slug.current}`}
                       className="text-sm font-medium text-amber-800 underline-offset-2 hover:underline dark:text-amber-400/90"
                     >
                       View profile
