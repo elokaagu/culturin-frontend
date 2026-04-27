@@ -212,16 +212,10 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 border-t border-neutral-200/80 pt-8 text-xs dark:border-white/10 sm:mt-16 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+        <div className="mt-14 border-t border-neutral-200/80 pt-8 text-xs dark:border-white/10 sm:mt-16">
           <p className="m-0 font-medium uppercase tracking-wider text-neutral-500 dark:text-white/50">
             {year} Culturin — all rights reserved
           </p>
-          <Link
-            href="/about"
-            className="text-neutral-500 no-underline transition hover:text-neutral-800 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:text-white/50 dark:hover:text-white/90"
-          >
-            Site credit
-          </Link>
         </div>
       </div>
     </footer>
