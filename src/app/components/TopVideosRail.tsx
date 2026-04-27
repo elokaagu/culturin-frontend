@@ -85,13 +85,13 @@ export default function TopVideosRail({
             key={video.currentSlug}
             data-video-card
             role="listitem"
-            className="w-[min(14rem,64vw)] shrink-0 snap-start sm:w-52 md:w-56"
+            className="w-[min(18rem,80vw)] shrink-0 snap-start sm:w-72 md:w-80"
           >
             <button
               type="button"
               onClick={() => setHeroVideo(video)}
               aria-label={`Play ${video.title}`}
-              className="group relative block aspect-[3/4] w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-200 text-left ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10 sm:rounded-2xl"
+              className="group relative block aspect-video w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-200 text-left ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10 sm:rounded-2xl"
             >
               <Image
                 src={thumbSrc}
@@ -101,7 +101,7 @@ export default function TopVideosRail({
                 placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
                 className="object-cover transition duration-300 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-                sizes="(max-width: 640px) 64vw, 14rem"
+                sizes="(max-width: 640px) 80vw, 20rem"
                 unoptimized={isBundledPlaceholderSrc(thumbSrc)}
               />
 

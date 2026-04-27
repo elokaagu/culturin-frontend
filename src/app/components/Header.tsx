@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { Moon, ScanSearch, Sun } from "lucide-react";
 import { Link } from "next-view-transitions";
@@ -12,6 +12,7 @@ import { useTheme } from "../styles/ThemeContext";
 import { GoogleSignInButton } from "./AuthButtons";
 import NearByPanel from "./NearByPanel";
 import Sidebar from "./Sidebar";
+import { destinations } from "@/lib/destinationsData";
 
 const suggestionTags = [
   "Amsterdam",
@@ -25,6 +26,9 @@ const suggestionTags = [
 
 const SEARCH_RECENT_KEY = "culturin-search-recent";
 const MAX_RECENT = 10;
+type PredictiveSuggestion =
+  | { label: string; kind: "destination"; href: string }
+  | { label: string; kind: "topic" | "search" };
 
 function readSearchRecent(): string[] {
   if (typeof window === "undefined") return [];
@@ -228,6 +232,38 @@ export default function Header() {
     writeSearchRecent([]);
     setRecent([]);
   }, []);
+
+  const predictiveSuggestions = useMemo(() => {
+    const q = searchValue.trim().toLowerCase();
+    if (!q) return [] as PredictiveSuggestion[];
+
+    const destinationMatches = destinations
+      .filter((d) => d.name.toLowerCase().includes(q) || d.slug.includes(q) || (d.country ?? "").toLowerCase().includes(q))
+      .slice(0, 5)
+      .map((d) => ({
+        label: d.country ? `${d.name}, ${d.country}` : d.name,
+        kind: "destination" as const,
+        href: `/destinations/${d.slug}`,
+      }));
+
+    const topicMatches = suggestionTags
+      .filter((tag) => tag.toLowerCase().includes(q))
+      .slice(0, 4)
+      .map((tag) => ({
+        label: tag,
+        kind: "topic" as const,
+      }));
+
+    const seen = new Set<string>();
+    const deduped = [...destinationMatches, ...topicMatches].filter((item) => {
+      const key = item.label.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+    return [{ label: `Search for "${searchValue.trim()}"`, kind: "search" as const }, ...deduped].slice(0, 8);
+  }, [searchValue]);
 
   const openSearch = useCallback(() => {
     setNearbyOpen(false);
@@ -465,6 +501,42 @@ export default function Header() {
                     ))}
                   </div>
                 </section>
+
+                {predictiveSuggestions.length > 0 ? (
+                  <section aria-labelledby="search-predictive-heading">
+                    <h2
+                      id="search-predictive-heading"
+                      className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/45"
+                    >
+                      Predictive
+                    </h2>
+                    <div className="mt-3 grid gap-2">
+                      {predictiveSuggestions.map((item) => (
+                        <button
+                          key={`${item.kind}-${item.label}`}
+                          type="button"
+                          className="inline-flex items-center justify-between gap-3 rounded-xl border border-neutral-200/90 bg-neutral-100 px-3 py-2 text-left text-sm font-medium text-neutral-800 transition hover:bg-neutral-200/80 dark:border-white/10 dark:bg-white/[0.06] dark:text-white/90 dark:hover:bg-white/10"
+                          onClick={() => {
+                            if (item.kind === "destination") {
+                              setSearchOpen(false);
+                              router.push(item.href);
+                              return;
+                            }
+                            runSearch(item.kind === "search" ? searchValue : item.label);
+                          }}
+                        >
+                          <span className="inline-flex items-center gap-2">
+                            <SearchIcon className="h-3.5 w-3.5 shrink-0 text-neutral-400 dark:text-white/40" />
+                            <span className="truncate">{item.label}</span>
+                          </span>
+                          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wide text-neutral-400 dark:text-white/35">
+                            {item.kind}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                ) : null}
               </div>
             </div>
           </div>

@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { Check, ChevronDown } from "lucide-react";
 import { Link } from "next-view-transitions";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { IMAGE_BLUR_DATA_URL, isBundledPlaceholderSrc } from "@/lib/imagePlaceholder";
 import type { providerCard } from "@/lib/interface";
@@ -13,6 +14,8 @@ function normalizeLocation(value: string) {
 
 export default function GuideProfilesSection({ guides }: { guides: providerCard[] }) {
   const [locationFilter, setLocationFilter] = useState<string>("all");
+  const [filterOpen, setFilterOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
 
   const locations = useMemo(() => {
     const set = new Set<string>();
@@ -28,6 +31,27 @@ export default function GuideProfilesSection({ guides }: { guides: providerCard[
     return guides.filter((g) => normalizeLocation(g.location ?? "") === locationFilter);
   }, [guides, locationFilter]);
 
+  useEffect(() => {
+    if (!filterOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const node = event.target as Node;
+      if (filterRef.current?.contains(node)) return;
+      setFilterOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setFilterOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("keydown", onKeyDown, true);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("keydown", onKeyDown, true);
+    };
+  }, [filterOpen]);
+
+  const currentFilterLabel =
+    locationFilter === "all" ? "All locations" : locations.find((location) => normalizeLocation(location) === locationFilter) || "All locations";
+
   return (
     <section className="mb-10 sm:mb-14">
       <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -38,21 +62,62 @@ export default function GuideProfilesSection({ guides }: { guides: providerCard[
           </p>
         </div>
 
-        <label className="inline-flex items-center gap-2 text-sm">
+        <div ref={filterRef} className="relative inline-flex items-center gap-2 text-sm">
           <span className="text-neutral-500 dark:text-white/60">Filter by location</span>
-          <select
-            value={locationFilter}
-            onChange={(e) => setLocationFilter(e.target.value)}
-            className="rounded-full border border-neutral-300 bg-white px-3 py-1.5 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-amber-500/40 dark:border-white/20 dark:bg-white/10 dark:text-white"
+          <button
+            type="button"
+            aria-expanded={filterOpen}
+            aria-haspopup="listbox"
+            className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3 py-1.5 text-sm font-medium text-neutral-900 transition hover:bg-neutral-50 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/40 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+            onClick={() => setFilterOpen((v) => !v)}
           >
-            <option value="all">All locations</option>
-            {locations.map((location) => (
-              <option key={location} value={normalizeLocation(location)}>
-                {location}
-              </option>
-            ))}
-          </select>
-        </label>
+            <span>{currentFilterLabel}</span>
+            <ChevronDown className="h-4 w-4 opacity-70" aria-hidden />
+          </button>
+          {filterOpen ? (
+            <ul
+              role="listbox"
+              className="absolute right-0 top-[calc(100%+0.35rem)] z-20 min-w-[12rem] overflow-hidden rounded-2xl border border-neutral-200 bg-white p-1 shadow-lg dark:border-white/10 dark:bg-neutral-950"
+            >
+              <li role="presentation">
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={locationFilter === "all"}
+                  className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-medium text-neutral-800 transition hover:bg-neutral-100 dark:text-white/90 dark:hover:bg-white/10"
+                  onClick={() => {
+                    setLocationFilter("all");
+                    setFilterOpen(false);
+                  }}
+                >
+                  <span>All locations</span>
+                  <Check className={locationFilter === "all" ? "h-4 w-4 text-amber-600 dark:text-amber-300" : "h-4 w-4 opacity-0"} />
+                </button>
+              </li>
+              {locations.map((location) => {
+                const normalized = normalizeLocation(location);
+                const selected = locationFilter === normalized;
+                return (
+                  <li role="presentation" key={location}>
+                    <button
+                      type="button"
+                      role="option"
+                      aria-selected={selected}
+                      className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-medium text-neutral-800 transition hover:bg-neutral-100 dark:text-white/90 dark:hover:bg-white/10"
+                      onClick={() => {
+                        setLocationFilter(normalized);
+                        setFilterOpen(false);
+                      }}
+                    >
+                      <span>{location}</span>
+                      <Check className={selected ? "h-4 w-4 text-amber-600 dark:text-amber-300" : "h-4 w-4 opacity-0"} />
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : null}
+        </div>
       </header>
 
       {filteredGuides.length > 0 ? (

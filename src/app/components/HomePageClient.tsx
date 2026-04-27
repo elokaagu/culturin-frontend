@@ -210,8 +210,8 @@ export default function HomePageClient({
         <div className="bg-neutral-50 pb-4 pt-2 sm:pt-3 dark:bg-black">
           <HomeSection
             id="top-videos"
-            title="Top videos"
-            description="Watch highlights and journeys from creators around the world."
+            title="Video highlights"
+            description="Watch creator-led clips, local moments, and travel edits from around the world."
             viewAllHref="/videos"
           >
             {initialVideos.length > 0 ? (

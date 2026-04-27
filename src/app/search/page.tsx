@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 import type { ReactNode } from "react";
 
@@ -23,6 +22,7 @@ import {
   resolveVideoThumbnailSrc,
 } from "../../lib/imagePlaceholder";
 import Header from "../components/Header";
+import SafeContentImage from "../components/SafeContentImage";
 import SiteFooter from "../components/SiteFooter";
 
 export const revalidate = 120;
@@ -304,13 +304,11 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                     <li key={article.currentSlug} className="min-w-0">
                       <Link href={`/articles/${article.currentSlug}`} className={resultCardClassName()}>
                         <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
-                          <Image
+                          <SafeContentImage
                             src={imageSrc}
                             alt={article.title}
-                            fill
                             className="object-cover transition duration-300 group-hover:scale-[1.02]"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            placeholder="blur"
                             blurDataURL={IMAGE_BLUR_DATA_URL}
                             unoptimized={cmsImageUnoptimized(imageSrc)}
                           />
@@ -336,13 +334,11 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                     <li key={video.currentSlug} className="min-w-0">
                       <Link href={`/stream?play=${encodeURIComponent(video.currentSlug)}`} className={resultCardClassName()}>
                         <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
-                          <Image
+                          <SafeContentImage
                             src={thumbSrc}
                             alt={video.title}
-                            fill
                             className="object-cover transition duration-300 group-hover:scale-[1.02]"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            placeholder="blur"
                             blurDataURL={IMAGE_BLUR_DATA_URL}
                             unoptimized={cmsImageUnoptimized(thumbSrc)}
                           />
@@ -369,13 +365,11 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                     <li key={provider.slug} className="min-w-0">
                       <Link href={`/providers/${provider.slug}`} className={resultCardClassName()}>
                         <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
-                          <Image
+                          <SafeContentImage
                             src={imageSrc}
                             alt={imgAlt}
-                            fill
                             className="object-cover transition duration-300 group-hover:scale-[1.02]"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            placeholder="blur"
                             blurDataURL={IMAGE_BLUR_DATA_URL}
                             unoptimized={cmsImageUnoptimized(imageSrc)}
                           />
@@ -401,13 +395,11 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                     <li key={destination.slug} className="min-w-0">
                       <Link href={`/destinations/${destination.slug}`} className={resultCardClassName()}>
                         <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
-                          <Image
+                          <SafeContentImage
                             src={imageSrc}
                             alt={destination.imageAlt}
-                            fill
                             className="object-cover transition duration-300 group-hover:scale-[1.02]"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            placeholder="blur"
                             blurDataURL={IMAGE_BLUR_DATA_URL}
                             unoptimized={cmsImageUnoptimized(imageSrc)}
                           />

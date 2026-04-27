@@ -8,6 +8,11 @@ import { getDestinationContent } from "../../../lib/destinationContent";
 import { appPageContainerClass } from "@/lib/appLayout";
 import { ContentPageShell } from "../../components/layout/ContentPageShell";
 import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
+import { getCmsDbOrNull } from "@/lib/cms/server";
+import { searchBlogs, searchProviders, searchVideos } from "@/lib/cms/queries";
+import { filterPublicBlogs, filterPublicVideos } from "@/lib/cms/blockedFromSite";
+import { getShowcaseBlogCards, getShowcaseProviderCards, getShowcaseVideoCards } from "@/lib/cms/showcaseContent";
+import { textMatchesAllTokens, tokenizeSearchQuery } from "@/lib/searchTokenize";
 
 type PageProps = { params: { slug: string } };
 
@@ -26,10 +31,83 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function DestinationDetailPage({ params }: PageProps) {
+export default async function DestinationDetailPage({ params }: PageProps) {
   const d = getDestinationBySlug(params.slug);
   if (!d) notFound();
   const content = getDestinationContent(d.slug);
+  const db = getCmsDbOrNull();
+  const query = d.name.toLowerCase();
+  const tokens = tokenizeSearchQuery(query);
+
+  const fallbackBlogs = getShowcaseBlogCards().filter((item) =>
+    textMatchesAllTokens([item.title, item.summary, item.currentSlug].join(" "), tokens),
+  );
+  const fallbackVideos = getShowcaseVideoCards().filter((item) =>
+    textMatchesAllTokens([item.title, item.description, item.uploader, item.currentSlug].join(" "), tokens),
+  );
+  const fallbackProviders = getShowcaseProviderCards().filter((item) =>
+    textMatchesAllTokens([item.eventName, item.name, item.slug].join(" "), tokens),
+  );
+
+  const matchedBlogs = filterPublicBlogs(db ? await searchBlogs(db, query) : fallbackBlogs);
+  const matchedVideos = filterPublicVideos(db ? await searchVideos(db, query) : fallbackVideos);
+  const matchedProviders = db ? await searchProviders(db, query) : fallbackProviders;
+
+  const travelersByDestination: Record<
+    string,
+    Array<{
+      name: string;
+      handle: string;
+      itinerary: string;
+      recommendation: string;
+      avatar: string;
+    }>
+  > = {
+    barcelona: [
+      {
+        name: "Sofia R.",
+        handle: "@sofiawanders",
+        itinerary: "3-day Gracia + El Born slow itinerary",
+        recommendation: "Skip peak-hour Sagrada lines and book sunset slots.",
+        avatar: "https://images.unsplash.com/photo-1544723795-432537d12f6f?auto=format&fit=crop&w=300&q=80",
+      },
+      {
+        name: "Mateo V.",
+        handle: "@mateoviaja",
+        itinerary: "Architecture walk + tapas-by-neighborhood route",
+        recommendation: "Pair one major landmark with two local district stops.",
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
+      },
+    ],
+    lagos: [
+      {
+        name: "Adeola A.",
+        handle: "@adeolamoves",
+        itinerary: "Mainland markets + Island live music plan",
+        recommendation: "Cluster your day by zones to avoid heavy transfers.",
+        avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
+      },
+      {
+        name: "Tomi B.",
+        handle: "@tomiinlagos",
+        itinerary: "Weekend food crawl + waterfront evening flow",
+        recommendation: "Reserve brunch early and keep evenings flexible.",
+        avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=300&q=80",
+      },
+    ],
+  };
+
+  const travelerCards =
+    travelersByDestination[d.slug] ??
+    [
+      {
+        name: "Culturin Explorer",
+        handle: "@culturintraveler",
+        itinerary: `2-day ${d.name} essentials itinerary`,
+        recommendation: "Start with neighborhood-led discovery before headline landmarks.",
+        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80",
+      },
+    ];
 
   const highlights = content?.highlights ?? ["Iconic city landmarks", "Neighborhood walks", "Local-led experiences"];
   const neighborhoods = content?.neighborhoods ?? ["Historic center", "Creative quarter", "Waterfront district"];
@@ -147,6 +225,107 @@ export default function DestinationDetailPage({ params }: PageProps) {
               ))}
             </ul>
           </section>
+
+          <section className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+                Travelers to follow
+              </h2>
+              <button
+                type="button"
+                className="rounded-full border border-neutral-300 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-800 dark:border-white/20 dark:bg-white/10 dark:text-white"
+              >
+                See all
+              </button>
+            </div>
+            <ul className="m-0 list-none space-y-3 p-0">
+              {travelerCards.map((traveler) => (
+                <li
+                  key={traveler.handle}
+                  className="rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-3 dark:border-white/10 dark:bg-black/40"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex min-w-0 gap-3">
+                      <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-neutral-200 dark:border-white/15">
+                        <Image src={traveler.avatar} alt={traveler.name} fill className="object-cover" unoptimized />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="m-0 truncate text-sm font-semibold text-neutral-900 dark:text-white">{traveler.name}</p>
+                        <p className="m-0 mt-0.5 text-xs text-neutral-500 dark:text-white/55">{traveler.handle}</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="rounded-full border border-neutral-300 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-800 dark:border-white/20 dark:bg-white/10 dark:text-white"
+                    >
+                      Follow
+                    </button>
+                  </div>
+                  <p className="m-0 mt-2 text-sm text-neutral-700 dark:text-white/80">
+                    <span className="font-semibold">Itinerary:</span> {traveler.itinerary}
+                  </p>
+                  <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/70">
+                    <span className="font-semibold">Recommendation:</span> {traveler.recommendation}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {matchedBlogs.length > 0 || matchedVideos.length > 0 || matchedProviders.length > 0 ? (
+            <section className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
+              <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+                More for {d.name}
+              </h2>
+              <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/70">
+                Location-specific stories, videos, and curated recommendations.
+              </p>
+              <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                <div>
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/45">
+                    Articles
+                  </h3>
+                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
+                    {matchedBlogs.slice(0, 5).map((item) => (
+                      <li key={item.currentSlug}>
+                        <Link href={`/articles/${item.currentSlug}`} className="no-underline hover:underline">
+                          {item.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/45">
+                    Videos
+                  </h3>
+                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
+                    {matchedVideos.slice(0, 5).map((item) => (
+                      <li key={item.currentSlug}>
+                        <Link href={`/stream?play=${encodeURIComponent(item.currentSlug)}`} className="no-underline hover:underline">
+                          {item.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/45">
+                    Experiences
+                  </h3>
+                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
+                    {matchedProviders.slice(0, 5).map((item) => (
+                      <li key={item.slug}>
+                        <Link href={`/providers/${item.slug}`} className="no-underline hover:underline">
+                          {item.eventName || item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </section>
+          ) : null}
         </div>
 
         <aside className="space-y-5 lg:sticky lg:top-[calc(var(--header-offset)+1.5rem)]">

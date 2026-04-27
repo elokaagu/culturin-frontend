@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import Header from "../../components/Header";
 import { CulturinBookingDateField } from "../../components/detail/CulturinBookingDateField";
@@ -136,6 +136,7 @@ type InquiryOpts = {
   checkIn: string;
   checkOut: string;
   kind: "book" | "ask";
+  questionText?: string;
   /** Full URL to this listing (filled client-side). */
   listingUrl?: string;
 };
@@ -156,6 +157,7 @@ function dateContextLines(checkIn: string, checkOut: string, forAsk: boolean) {
 
 function buildMailtoInquiry(email: string, opts: InquiryOpts) {
   const listingLine = opts.listingUrl?.trim() ? `Listing: ${opts.listingUrl.trim()}` : "";
+  const questionText = (opts.questionText || "").trim();
 
   if (opts.kind === "ask") {
     const dateLine = dateContextLines(opts.checkIn, opts.checkOut, true);
@@ -168,7 +170,7 @@ function buildMailtoInquiry(email: string, opts: InquiryOpts) {
       "",
       "My question:",
       "",
-      "[Please write your question here]",
+      questionText || "[Please write your question here]",
     ];
     const p = new URLSearchParams();
     p.set("subject", `Question: ${opts.title}`);
@@ -193,7 +195,7 @@ function buildMailtoInquiry(email: string, opts: InquiryOpts) {
 /** SMS / Messages app — short body; host can reply in thread. */
 function buildSmsAskHref(
   phone: string,
-  opts: Pick<InquiryOpts, "title" | "guests" | "checkIn" | "checkOut" | "listingUrl">,
+  opts: Pick<InquiryOpts, "title" | "guests" | "checkIn" | "checkOut" | "listingUrl" | "questionText">,
 ) {
   const listing = opts.listingUrl?.trim() ? ` ${opts.listingUrl.trim()}` : "";
   const dates =
@@ -202,9 +204,118 @@ function buildSmsAskHref(
       : opts.checkIn
         ? ` From: ${opts.checkIn}.`
         : "";
-  const body = `Question about «${opts.title}». Guests: ${opts.guests}.${dates}${listing} My question: `;
+  const questionText = (opts.questionText || "").trim();
+  const body = `Question about «${opts.title}». Guests: ${opts.guests}.${dates}${listing} My question: ${questionText}`;
   const enc = encodeURIComponent(body);
   return `sms:${phone}?body=${enc}`;
+}
+
+type ChatRoute = {
+  label: string;
+  href: string;
+  external?: boolean;
+};
+
+function ProviderInquiryChat({
+  open,
+  onClose,
+  title,
+  guests,
+  checkIn,
+  checkOut,
+  listingUrl,
+  email,
+  phoneTel,
+  websiteUrl,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  guests: number;
+  checkIn: string;
+  checkOut: string;
+  listingUrl?: string;
+  email: string;
+  phoneTel: string;
+  websiteUrl: string;
+}) {
+  const [message, setMessage] = useState("");
+  if (!open) return null;
+
+  const route: ChatRoute = email
+    ? {
+        label: `Host email (${email})`,
+        href: buildMailtoInquiry(email, {
+          title,
+          guests,
+          checkIn,
+          checkOut,
+          kind: "ask",
+          listingUrl,
+          questionText: message,
+        }),
+      }
+    : phoneTel
+      ? {
+          label: `Host SMS (${phoneTel})`,
+          href: buildSmsAskHref(phoneTel, {
+            title,
+            guests,
+            checkIn,
+            checkOut,
+            listingUrl,
+            questionText: message,
+          }),
+        }
+      : websiteUrl
+        ? { label: "Host website contact", href: websiteUrl, external: true }
+        : { label: "Contact section", href: "#contact" };
+
+  return (
+    <div className="fixed bottom-4 right-4 z-[120] w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-white/15 bg-neutral-950 shadow-[0_14px_42px_rgba(0,0,0,0.55)]">
+      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+        <div>
+          <p className="m-0 text-sm font-semibold text-white">Culturin Messenger</p>
+          <p className="m-0 mt-0.5 text-xs text-white/55">Ask about availability, details, or custom plans</p>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="rounded-md border border-white/15 px-2 py-1 text-xs font-semibold text-white/80 hover:bg-white/10"
+        >
+          Close
+        </button>
+      </div>
+      <div className="space-y-3 px-4 py-3">
+        <div className="max-w-[90%] rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/85">
+          I can route your question for <span className="font-semibold">{title}</span> to the right channel.
+        </div>
+        <div className="max-w-[95%] rounded-xl border border-amber-300/20 bg-amber-300/10 px-3 py-2 text-xs text-amber-100/90">
+          Routing target: {route.label}
+        </div>
+      </div>
+      <div className="border-t border-white/10 px-4 py-3">
+        <textarea
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+          placeholder="Type your question..."
+          rows={3}
+          className="w-full resize-none rounded-xl border border-white/15 bg-black px-3 py-2 text-sm text-white placeholder:text-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60"
+        />
+        <div className="mt-3 flex items-center justify-between gap-2">
+          <p className="m-0 text-[11px] text-white/45">Your context (guests/dates/listing) is included automatically.</p>
+          <a
+            href={route.href}
+            target={route.external ? "_blank" : undefined}
+            rel={route.external ? "noopener noreferrer" : undefined}
+            className="inline-flex h-9 items-center justify-center rounded-full bg-amber-400 px-4 text-xs font-semibold text-black no-underline transition hover:bg-amber-300"
+          >
+            Send
+          </a>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function ProviderDetailClient({ data }: { data: fullProvider }) {
@@ -217,6 +328,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [listingPageUrl, setListingPageUrl] = useState("");
+  const [inquiryChatOpen, setInquiryChatOpen] = useState(false);
 
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
@@ -258,23 +370,6 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
     : "";
   const phoneTel = (data.contactPhone || "").replace(/\s+/g, "");
   const minOutDate = checkIn && checkIn >= todayIso() ? checkIn : todayIso();
-
-  const askAction = useMemo(() => {
-    const ctx = { title, guests, checkIn, checkOut, listingUrl: listingUrlForMessage };
-    if (email) {
-      return {
-        href: buildMailtoInquiry(email, { ...ctx, kind: "ask" }),
-        external: false,
-      } as const;
-    }
-    if (phoneTel) {
-      return { href: buildSmsAskHref(phoneTel, ctx), external: false } as const;
-    }
-    if (bookUrl) {
-      return { href: bookUrl, external: true } as const;
-    }
-    return { href: "#contact", external: false } as const;
-  }, [email, phoneTel, bookUrl, title, guests, checkIn, checkOut, listingUrlForMessage]);
 
   return (
     <>
@@ -548,14 +643,13 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                       Get in touch below
                     </a>
                   ) : null}
-                  <a
-                    href={askAction.href}
-                    target={askAction.external ? "_blank" : undefined}
-                    rel={askAction.external ? "noopener noreferrer" : undefined}
+                  <button
+                    type="button"
+                    onClick={() => setInquiryChatOpen(true)}
                     className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-white/20 bg-black px-5 text-sm font-semibold text-white no-underline transition hover:bg-white/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-white/50"
                   >
                     Ask a question
-                  </a>
+                  </button>
                 </div>
                 <p className="m-0 mt-3 text-center text-xs text-white/55">You won&apos;t be charged here — requests go to the host.</p>
               </div>
@@ -588,6 +682,18 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
           const u = pageUrl || (typeof window !== "undefined" ? window.location.href : "");
           if (u) await navigator.clipboard.writeText(u);
         }}
+      />
+      <ProviderInquiryChat
+        open={inquiryChatOpen}
+        onClose={() => setInquiryChatOpen(false)}
+        title={title}
+        guests={guests}
+        checkIn={checkIn}
+        checkOut={checkOut}
+        listingUrl={listingUrlForMessage}
+        email={email}
+        phoneTel={phoneTel}
+        websiteUrl={bookUrl}
       />
     </>
   );
