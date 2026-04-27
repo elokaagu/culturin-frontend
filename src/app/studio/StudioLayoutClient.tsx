@@ -31,15 +31,20 @@ const navItemClass = (active: boolean) =>
   [
     "flex w-full min-w-0 items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition no-underline",
     active
-      ? "bg-neutral-200 text-neutral-900 dark:bg-white/12 dark:text-white"
+      ? "bg-neutral-200 text-neutral-900 dark:bg-neutral-200 dark:text-neutral-900"
       : "text-neutral-600 hover:bg-neutral-200/80 dark:text-white/70 dark:hover:bg-white/8",
   ].join(" ");
 
 const subLabelClass = "pl-0.5 text-xs font-normal text-neutral-500 dark:text-white/45";
 
-function countBadge(n: number) {
+function countBadge(n: number, active: boolean) {
   return (
-    <span className="ml-auto inline-flex min-w-[1.4rem] justify-end tabular-nums text-xs text-neutral-500 dark:text-white/50">
+    <span
+      className={[
+        "ml-auto inline-flex min-w-[1.4rem] justify-end tabular-nums text-xs",
+        active ? "text-neutral-600" : "text-neutral-500 dark:text-white/50",
+      ].join(" ")}
+    >
       {n}
     </span>
   );
@@ -123,12 +128,17 @@ export default function StudioLayoutClient({
                 <li>
                   <Link
                     href="/studio/articles"
-                    className={navItemClass(pathname === "/studio/articles" || pathname?.startsWith("/studio/articles/"))}
+                    className={navItemClass(
+                      pathname === "/studio/articles" || pathname?.startsWith("/studio/articles/"),
+                    )}
                     aria-current={pathname === "/studio/articles" ? "page" : undefined}
                   >
                     <BookOpen className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                     <span className="min-w-0 flex-1">Articles & guides</span>
-                    {countBadge(blogCount)}
+                    {countBadge(
+                      blogCount,
+                      pathname === "/studio/articles" || pathname?.startsWith("/studio/articles/"),
+                    )}
                   </Link>
                 </li>
                 <li>
@@ -139,7 +149,7 @@ export default function StudioLayoutClient({
                   >
                     <Video className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                     <span className="min-w-0 flex-1">Videos</span>
-                    {countBadge(videoCount)}
+                    {countBadge(videoCount, pathname === "/studio/videos" || pathname?.startsWith("/studio/videos/"))}
                   </Link>
                 </li>
                 <li>
@@ -152,7 +162,10 @@ export default function StudioLayoutClient({
                   >
                     <Building2 className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                     <span className="min-w-0 flex-1">Providers & experiences</span>
-                    {countBadge(providerCount)}
+                    {countBadge(
+                      providerCount,
+                      pathname === "/studio/providers" || pathname?.startsWith("/studio/providers/"),
+                    )}
                   </Link>
                 </li>
               </ul>
