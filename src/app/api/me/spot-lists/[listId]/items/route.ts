@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { ensureAppUser } from "@/lib/api/ensureAppUser";
+import { getErrorMessage } from "@/lib/api/errorMessage";
 import { addSpotListItem } from "@/lib/repositories/spotListRepository";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -39,7 +40,7 @@ export async function POST(request: Request, { params }: RouteParams) {
     });
     return NextResponse.json({ item });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to add spot";
+    const message = getErrorMessage(error, "Failed to add spot");
     const status = message === "List not found" ? 404 : 500;
     return NextResponse.json({ message }, { status });
   }

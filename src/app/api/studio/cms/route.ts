@@ -6,6 +6,15 @@ import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 type CmsType = "blog" | "video" | "provider";
 
+function parseCsvArray(input: unknown): string[] {
+  const value = String(input ?? "").trim();
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
 function asSlug(input: unknown) {
   const base = String(input ?? "")
     .trim()
@@ -87,6 +96,9 @@ export async function POST(request: Request) {
     event_name: String(entry.event_name ?? "").trim() || null,
     description: String(entry.description ?? "").trim() || null,
     location: String(entry.location ?? "").trim() || null,
+    avatar_image_url: String(entry.avatar_image_url ?? "").trim() || null,
+    languages: parseCsvArray(entry.languages),
+    specialties: parseCsvArray(entry.specialties),
     contact_email: String(entry.contact_email ?? "").trim() || null,
     contact_phone: String(entry.contact_phone ?? "").trim() || null,
     contact_website: String(entry.contact_website ?? "").trim() || null,

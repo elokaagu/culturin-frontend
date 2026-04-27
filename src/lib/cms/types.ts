@@ -36,6 +36,9 @@ export type CmsProviderRow = {
   event_name: string | null;
   description: string | null;
   location: string | null;
+  avatar_image_url: string | null;
+  languages: string[] | null;
+  specialties: string[] | null;
   contact_email: string | null;
   contact_phone: string | null;
   contact_website: string | null;

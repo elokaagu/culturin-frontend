@@ -47,6 +47,12 @@ export interface providerCard {
   slug: { current: string };
   /** Free-text from CMS, often "City, Country". */
   location?: string;
+  avatarImageUrl?: string;
+  languages?: string[];
+  specialties?: string[];
+  description?: string;
+  contactEmail?: string;
+  contactWebsite?: string;
   bannerImage?: {
     image?: { url?: string; alt?: string };
   };
@@ -67,8 +73,11 @@ export interface fullProvider {
   eventName: string;
   slug: string;
   bannerImage: BannerImage;
+  avatarImageUrl?: string;
   description: string;
   location: string;
+  languages?: string[];
+  specialties?: string[];
   contactEmail: string;
   contactPhone: string;
   contactWebsite: string;

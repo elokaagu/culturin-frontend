@@ -18,7 +18,7 @@ const blogSelect =
 const videoSelect =
   "id, slug, title, uploader, description, thumbnail_url, thumbnail, playback_id, published_at, created_at, updated_at";
 const providerSelect =
-  "id, slug, name, event_name, description, location, contact_email, contact_phone, contact_website, banner_image_url, banner_image_alt, banner_image, images, prices, published_at, created_at, updated_at";
+  "id, slug, name, event_name, description, location, avatar_image_url, languages, specialties, contact_email, contact_phone, contact_website, banner_image_url, banner_image_alt, banner_image, images, prices, published_at, created_at, updated_at";
 
 function ilikePattern(term: string) {
   const safe = term.replace(/%/g, "\\%").replace(/_/g, "\\_");

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { ensureAppUser } from "@/lib/api/ensureAppUser";
+import { getErrorMessage } from "@/lib/api/errorMessage";
 import { createSpotList, listSpotListsWithItems } from "@/lib/repositories/spotListRepository";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -21,7 +22,7 @@ export async function GET() {
     const lists = await listSpotListsWithItems(appUser.id);
     return NextResponse.json({ lists });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to load lists";
+    const message = getErrorMessage(error, "Failed to load lists");
     return NextResponse.json({ message }, { status: 500 });
   }
 }
@@ -53,7 +54,7 @@ export async function POST(request: Request) {
     });
     return NextResponse.json({ list });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to create list";
+    const message = getErrorMessage(error, "Failed to create list");
     return NextResponse.json({ message }, { status: 500 });
   }
 }

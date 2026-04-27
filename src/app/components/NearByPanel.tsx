@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { Check } from "lucide-react";
 
 import { NEARBY_RADIUS_KM, nearbySpots } from "../../lib/nearbySpotsData";
 import { cmsImageUnoptimized, IMAGE_BLUR_DATA_URL, resolveContentImageSrc } from "../../lib/imagePlaceholder";
@@ -56,9 +57,12 @@ const moreBtnClass =
  */
 export default function NearByPanel({ open, onClose }: NearByPanelProps) {
   const [radius, setRadius] = useState<number>(5);
+  const [radiusOpen, setRadiusOpen] = useState(false);
   const titleId = useId();
   const listId = useId();
+  const radiusListId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
+  const radiusRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -80,6 +84,21 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
       document.removeEventListener("pointerdown", onPointerDown, true);
     };
   }, [open, onClose]);
+
+  useEffect(() => {
+    if (!open || !radiusOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const node = event.target as Node;
+      if (radiusRef.current?.contains(node)) return;
+      setRadiusOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown, true);
+    return () => document.removeEventListener("pointerdown", onPointerDown, true);
+  }, [open, radiusOpen]);
+
+  useEffect(() => {
+    if (!open) setRadiusOpen(false);
+  }, [open]);
 
   if (!open) return null;
 
@@ -119,22 +138,45 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
             >
               <span className="hidden pr-0.5 sm:inline">Spots </span>
               <span className="whitespace-nowrap">within</span>{" "}
-              <span className="relative inline-flex shrink-0 items-center">
-                <select
+              <span ref={radiusRef} className="relative inline-flex shrink-0 items-center">
+                <button
                   id="nearby-radius"
-                  className="max-w-[3.5rem] cursor-pointer appearance-none border-0 border-b border-neutral-400/90 bg-transparent py-0.5 pl-0.5 pr-4 text-sm font-semibold text-neutral-900 outline-none focus:ring-0 dark:border-white/50 dark:text-white sm:max-w-[4rem] sm:pr-5"
-                  value={String(radius)}
-                  onChange={(e) => setRadius(Number(e.target.value))}
+                  type="button"
+                  role="combobox"
+                  aria-expanded={radiusOpen}
+                  aria-controls={radiusListId}
+                  aria-haspopup="listbox"
+                  onClick={() => setRadiusOpen((v) => !v)}
+                  className="inline-flex min-w-[2.5rem] items-center justify-center gap-1 rounded-full border border-neutral-300 bg-neutral-100 px-2 py-0.5 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500/60 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/15 dark:focus-visible:outline-white/80"
                 >
-                  {NEARBY_RADIUS_KM.map((km) => (
-                    <option key={km} value={String(km)} className="text-neutral-900">
-                      {km}
-                    </option>
-                  ))}
-                </select>
-                <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2">
-                  <ChevronDown className="h-3.5 w-3.5 text-neutral-600 dark:text-white" />
-                </span>
+                  <span>{radius}</span>
+                  <ChevronDown className="h-3.5 w-3.5 text-neutral-600 dark:text-white/85" />
+                </button>
+                {radiusOpen ? (
+                  <ul
+                    id={radiusListId}
+                    role="listbox"
+                    className="absolute left-1/2 top-[calc(100%+0.35rem)] z-[1330] min-w-[4.5rem] -translate-x-1/2 overflow-hidden rounded-2xl border border-neutral-200/90 bg-white/95 p-1 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.35)] backdrop-blur dark:border-white/10 dark:bg-neutral-950/95"
+                  >
+                    {NEARBY_RADIUS_KM.map((km) => (
+                      <li key={km} role="presentation">
+                        <button
+                          type="button"
+                          role="option"
+                          aria-selected={km === radius}
+                          onClick={() => {
+                            setRadius(km);
+                            setRadiusOpen(false);
+                          }}
+                          className="flex w-full items-center justify-between rounded-xl px-2 py-1.5 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-100 dark:text-white/90 dark:hover:bg-white/10"
+                        >
+                          <span>{km}</span>
+                          <Check className={km === radius ? "h-3.5 w-3.5 text-amber-500" : "h-3.5 w-3.5 opacity-0"} />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </span>
               <span className="pl-0.5 font-medium text-neutral-500 dark:text-white/80"> km</span>
             </label>

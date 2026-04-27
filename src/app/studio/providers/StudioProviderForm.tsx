@@ -38,6 +38,9 @@ export function StudioProviderForm() {
         <Field name="event_name" label="Event / experience name" required />
         <Field name="description" label="Description" />
         <Field name="location" label="Location" />
+        <Field name="avatar_image_url" label="Avatar image URL" />
+        <Field name="languages" label="Languages (comma-separated)" />
+        <Field name="specialties" label="Specialties (comma-separated)" />
         <Field name="contact_email" label="Contact email" type="email" />
         <Field name="contact_phone" label="Contact phone" />
         <Field name="contact_website" label="Contact website" />

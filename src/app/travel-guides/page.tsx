@@ -4,11 +4,14 @@ import { Link } from "next-view-transitions";
 
 import Header from "../components/Header";
 import SiteFooter from "../components/SiteFooter";
+import { getCmsDbOrNull } from "@/lib/cms/server";
+import { listProvidersAsCards } from "@/lib/cms/queries";
 import { IMAGE_BLUR_DATA_URL, isBundledPlaceholderSrc } from "@/lib/imagePlaceholder";
 import { travelGuideCategories } from "@/lib/travelGuidesCategories";
 import { PUBLIC_CONTACT_EMAIL } from "@/lib/siteContact";
 
 import TravelGuidesContactCta from "./TravelGuidesContactCta";
+import GuideProfilesSection from "./GuideProfilesSection";
 
 export const revalidate = 300;
 
@@ -20,7 +23,10 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function TravelGuidesMarketplacePage() {
+export default async function TravelGuidesMarketplacePage() {
+  const db = getCmsDbOrNull();
+  const guides = db ? await listProvidersAsCards(db) : [];
+
   return (
     <>
       <Header />
@@ -67,6 +73,8 @@ export default function TravelGuidesMarketplacePage() {
         </div>
 
         <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+          <GuideProfilesSection guides={guides} />
+
           <header className="mb-8 border-b border-neutral-200 pb-6 dark:border-white/10">
             <h2 className="m-0 text-2xl font-semibold tracking-tight sm:text-3xl">Guides by theme</h2>
             <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/55">

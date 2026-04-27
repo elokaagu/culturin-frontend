@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { ensureAppUser } from "@/lib/api/ensureAppUser";
+import { getErrorMessage } from "@/lib/api/errorMessage";
 import { deleteSpotList, updateSpotList } from "@/lib/repositories/spotListRepository";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -33,7 +34,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     });
     return NextResponse.json({ ok: true });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to update list";
+    const message = getErrorMessage(error, "Failed to update list");
     return NextResponse.json({ message }, { status: 500 });
   }
 }
@@ -55,7 +56,7 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
     await deleteSpotList(params.listId, appUser.id);
     return NextResponse.json({ ok: true });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to delete list";
+    const message = getErrorMessage(error, "Failed to delete list");
     return NextResponse.json({ message }, { status: 500 });
   }
 }

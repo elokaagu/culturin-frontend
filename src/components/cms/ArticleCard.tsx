@@ -64,9 +64,9 @@ export function ArticleCardFromBlog({
   return (
     <Card
       className={cn(
-        "flex-col gap-0 overflow-hidden border-0 bg-white p-0 shadow-lg ring-1 ring-border/60",
-        "text-neutral-900 dark:bg-card dark:text-white",
-        "transition duration-200 hover:scale-[0.99] dark:hover:opacity-95",
+        "group relative flex-col gap-0 overflow-hidden border-0 bg-neutral-900 p-0 shadow-lg ring-1 ring-border/60",
+        "text-white dark:bg-card",
+        "transition duration-200 hover:scale-[0.99]",
         className,
       )}
     >
@@ -74,7 +74,7 @@ export function ArticleCardFromBlog({
         <CardContent className="p-0">
           <div
             className={cn(
-              "relative w-full max-w-full overflow-hidden rounded-t-lg bg-neutral-900 shadow-md",
+              "relative w-full max-w-full overflow-hidden rounded-lg bg-neutral-900 shadow-md",
               "aspect-[4/5] min-h-[12.5rem] w-full min-[1025px]:min-h-[18.75rem]",
             )}
           >
@@ -90,36 +90,30 @@ export function ArticleCardFromBlog({
               blurDataURL={IMAGE_BLUR_DATA_URL}
               unoptimized={unopt}
             />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 sm:p-5">
+              <h2
+                className={cn(
+                  "line-clamp-2 text-base font-semibold leading-tight text-white",
+                  "min-[1025px]:text-base max-[428px]:text-sm",
+                )}
+              >
+                {card.title}
+              </h2>
+              {card.summary ? (
+                <p
+                  className={cn(
+                    "mt-1.5 line-clamp-2 text-sm text-white/90",
+                    "min-[1025px]:text-xs max-[428px]:text-xs",
+                  )}
+                >
+                  {card.summary}
+                </p>
+              ) : null}
+            </div>
           </div>
         </CardContent>
       </Link>
-      <div className="w-full max-w-full px-4 pt-4 pb-5 min-[1025px]:pt-5">
-        <h2
-          className={cn(
-            "line-clamp-2 text-base font-semibold leading-tight",
-            "text-neutral-900 dark:text-white",
-            "min-[1025px]:text-base max-[428px]:text-sm",
-          )}
-        >
-          <Link
-            href={`/articles/${card.currentSlug}`}
-            className="text-inherit no-underline hover:underline"
-          >
-            {card.title}
-          </Link>
-        </h2>
-        {card.summary ? (
-          <p
-            className={cn(
-              "mt-1.5 line-clamp-2 text-sm",
-              "text-neutral-600 dark:text-white/80",
-              "min-[1025px]:text-xs max-[428px]:text-xs",
-            )}
-          >
-            {card.summary}
-          </p>
-        ) : null}
-      </div>
     </Card>
   );
 }

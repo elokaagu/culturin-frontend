@@ -64,11 +64,19 @@ export function mapProviderRowToHero(row: CmsProviderRow): providerHeroCard {
 export function mapProviderRowToCard(row: CmsProviderRow): providerCard {
   const url = row.banner_image_url ?? "";
   const alt = row.banner_image_alt ?? row.event_name ?? "";
+  const languages = Array.isArray(row.languages) ? row.languages.filter(Boolean) : [];
+  const specialties = Array.isArray(row.specialties) ? row.specialties.filter(Boolean) : [];
   return {
     name: row.name ?? "",
     eventName: row.event_name ?? "",
     slug: { current: row.slug },
     location: row.location ?? "",
+    avatarImageUrl: row.avatar_image_url ?? "",
+    languages,
+    specialties,
+    description: row.description ?? "",
+    contactEmail: row.contact_email ?? "",
+    contactWebsite: row.contact_website ?? "",
     bannerImage: {
       image: { url, alt },
     },
@@ -80,13 +88,18 @@ export function mapProviderRowToFull(row: CmsProviderRow): fullProvider {
   const prices = Array.isArray(row.prices)
     ? (row.prices as unknown[]).filter((p): p is number => typeof p === "number")
     : [];
+  const languages = Array.isArray(row.languages) ? row.languages.filter(Boolean) : [];
+  const specialties = Array.isArray(row.specialties) ? row.specialties.filter(Boolean) : [];
 
   return {
     name: row.name ?? "",
     eventName: row.event_name ?? "",
     slug: row.slug,
+    avatarImageUrl: row.avatar_image_url ?? "",
     description: row.description ?? "",
     location: row.location ?? "",
+    languages,
+    specialties,
     contactEmail: row.contact_email ?? "",
     contactPhone: row.contact_phone ?? "",
     contactWebsite: row.contact_website ?? "",
