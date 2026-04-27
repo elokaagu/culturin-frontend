@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "next-view-transitions";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -13,6 +12,7 @@ import {
 } from "../../lib/destinationsData";
 import { getDestinationContent } from "../../lib/destinationContent";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+import SafeContentImage from "../components/SafeContentImage";
 
 const nameRowClass = (isActive: boolean) =>
   [
@@ -32,30 +32,17 @@ function DestinationPreviewImage({
   className?: string;
 }) {
   const content = getDestinationContent(destination.slug);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setReady(false);
-  }, [destination.slug, destination.imageUrl]);
 
   return (
     <div
       className={`relative aspect-[3/4] w-full max-w-sm overflow-hidden rounded-2xl bg-neutral-900 sm:max-w-md ${className}`}
     >
-      <Image
+      <SafeContentImage
         src={destination.imageUrl}
         alt={destination.imageAlt}
-        fill
-        className={cn(
-          "object-cover transition-[opacity,filter] duration-500 ease-out will-change-[opacity,filter] motion-reduce:transition-none",
-          ready ? "opacity-100 [filter:blur(0px)]" : "opacity-0 [filter:blur(6px)]",
-          "motion-reduce:opacity-100 motion-reduce:[filter:blur(0px)]",
-        )}
+        className={cn("object-cover")}
         sizes="(max-width: 1024px) 100vw, 32rem"
-        loading="lazy"
-        placeholder="blur"
         blurDataURL={IMAGE_BLUR_DATA_URL}
-        onLoadingComplete={() => setReady(true)}
       />
       {destination.country ? (
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent px-4 py-3">

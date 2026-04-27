@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { Check, ChevronDown } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { IMAGE_BLUR_DATA_URL, isBundledPlaceholderSrc } from "@/lib/imagePlaceholder";
 import type { providerCard } from "@/lib/interface";
+import SafeContentImage from "../components/SafeContentImage";
 
 function normalizeLocation(value: string) {
   return value.trim().toLowerCase();
@@ -135,13 +135,11 @@ export default function GuideProfilesSection({ guides }: { guides: providerCard[
               >
                 <div className="relative h-40 w-full">
                   {coverUrl ? (
-                    <Image
+                    <SafeContentImage
                       src={coverUrl}
                       alt={coverAlt}
-                      fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      placeholder="blur"
                       blurDataURL={IMAGE_BLUR_DATA_URL}
                       unoptimized={isBundledPlaceholderSrc(coverUrl)}
                     />
@@ -151,12 +149,12 @@ export default function GuideProfilesSection({ guides }: { guides: providerCard[
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
                   <div className="absolute -bottom-7 left-4 h-14 w-14 overflow-hidden rounded-full border-2 border-white bg-neutral-100 shadow dark:border-black dark:bg-neutral-900">
                     {avatarUrl ? (
-                      <Image
+                      <SafeContentImage
                         src={avatarUrl}
                         alt={`${guide.name || "Guide"} avatar`}
-                        fill
                         className="object-cover"
                         sizes="56px"
+                        blurDataURL={IMAGE_BLUR_DATA_URL}
                         unoptimized={isBundledPlaceholderSrc(avatarUrl)}
                       />
                     ) : (

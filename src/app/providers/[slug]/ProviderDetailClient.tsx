@@ -19,6 +19,8 @@ import {
   resolveContentImageSrc,
 } from "../../../lib/imagePlaceholder";
 
+const CONTENT_IMAGE_FALLBACK_SRC = "/placeholders/content-cover.svg";
+
 function imageUrlFromAsset(img: imageAsset | undefined) {
   const u = img?.url;
   if (typeof u !== "string") return "";
@@ -68,18 +70,30 @@ function BlurInGalleryImage({
   loading?: "eager" | "lazy" | undefined;
 }) {
   const [revealed, setRevealed] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(src);
+
+  useLayoutEffect(() => {
+    setCurrentSrc(src);
+    setRevealed(false);
+  }, [src]);
+
   return (
     <Image
-      src={src}
+      src={currentSrc}
       alt={alt}
       fill
       sizes={sizes}
       placeholder="blur"
       blurDataURL={IMAGE_BLUR_DATA_URL}
       draggable={false}
-      unoptimized={cmsImageUnoptimized(src)}
+      unoptimized={cmsImageUnoptimized(currentSrc) || currentSrc === CONTENT_IMAGE_FALLBACK_SRC}
       loading={loading}
       onLoadingComplete={() => setRevealed(true)}
+      onError={() => {
+        if (currentSrc !== CONTENT_IMAGE_FALLBACK_SRC) {
+          setCurrentSrc(CONTENT_IMAGE_FALLBACK_SRC);
+        }
+      }}
       className={cn(
         "object-cover transition-[opacity,filter] duration-500 ease-out will-change-[opacity,filter] motion-reduce:transition-none",
         revealed ? "opacity-100 [filter:blur(0px)]" : "opacity-0 [filter:blur(6px)]",

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -11,6 +10,7 @@ import {
   resolveContentImageSrc,
 } from "@/lib/imagePlaceholder";
 import type { simpleBlogCard } from "@/lib/interface";
+import SafeContentImage from "@/app/components/SafeContentImage";
 
 export function ArticleCardFromBlog({
   card,
@@ -36,15 +36,11 @@ export function ArticleCardFromBlog({
         <Link href={`/articles/${card.currentSlug}`} className="group block">
           <CardContent className="p-0">
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-neutral-900 ring-1 ring-neutral-200/90 dark:ring-white/10">
-              <Image
+              <SafeContentImage
                 src={imgSrc}
                 alt={card.title}
-                fill
-                loading="lazy"
-                draggable={false}
                 className="object-cover transition duration-500 group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
                 unoptimized={unopt}
               />
@@ -78,15 +74,11 @@ export function ArticleCardFromBlog({
               "aspect-[4/5] min-h-[12.5rem] w-full min-[1025px]:min-h-[18.75rem]",
             )}
           >
-            <Image
+            <SafeContentImage
               src={imgSrc}
               alt={card.title}
-              fill
-              loading="lazy"
-              draggable={false}
               className="object-cover"
               sizes="(max-width: 1024px) 50vw, 300px"
-              placeholder="blur"
               blurDataURL={IMAGE_BLUR_DATA_URL}
               unoptimized={unopt}
             />

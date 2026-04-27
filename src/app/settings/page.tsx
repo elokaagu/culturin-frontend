@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Link } from "next-view-transitions";
 import { useAppAuth } from "../components/SupabaseAuthProvider";
 
 import AccountSection from "../components/AccountSection";
@@ -52,7 +51,7 @@ export default function SettingsPage() {
             {NAV.map(({ id, label }) => {
               const active = activeSection === id;
               return (
-                <Link
+                <a
                   key={id}
                   href={id}
                   className={`text-base font-medium transition-colors ${
@@ -63,7 +62,7 @@ export default function SettingsPage() {
                   aria-current={active ? "page" : undefined}
                 >
                   {label}
-                </Link>
+                </a>
               );
             })}
           </nav>

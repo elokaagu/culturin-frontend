@@ -270,6 +270,20 @@ export default function Header() {
     setSearchOpen(true);
   }, []);
 
+  const triggerVisualSearch = useCallback(() => {
+    const fallbackQuery = "nearby experiences";
+    const nextQuery = searchValue.trim() || fallbackQuery;
+    setSearchValue(nextQuery);
+    runSearch(nextQuery);
+  }, [runSearch, searchValue]);
+
+  const triggerSurpriseSearch = useCallback(() => {
+    const pool = [...suggestionTags, ...destinations.map((d) => d.name)];
+    const pick = pool[Math.floor(Math.random() * pool.length)] || "Travel";
+    setSearchValue(pick);
+    runSearch(pick);
+  }, [runSearch]);
+
   const toggleNearby = useCallback(() => {
     setSearchOpen(false);
     setNearbyOpen((o) => !o);
@@ -302,25 +316,41 @@ export default function Header() {
 
           <div className="hidden min-w-0 max-w-2xl flex-1 items-center justify-center self-center px-1 lg:flex">
             <div className="w-full min-w-0 max-w-2xl">
-              <button
-                type="button"
-                onClick={openSearch}
-                className={searchPillRowClass}
-                aria-label="Open search"
-                aria-haspopup="dialog"
-                aria-expanded={searchOpen}
-              >
-                <span className="shrink-0 text-neutral-400 dark:text-white/35" aria-hidden>
-                  <SearchIcon />
+              <div className={searchPillRowClass}>
+                <button
+                  type="button"
+                  onClick={openSearch}
+                  className="inline-flex min-w-0 flex-1 items-center gap-2 text-left"
+                  aria-label="Open search"
+                  aria-haspopup="dialog"
+                  aria-expanded={searchOpen}
+                >
+                  <span className="shrink-0 text-neutral-400 dark:text-white/35" aria-hidden>
+                    <SearchIcon />
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-left font-normal text-neutral-500 dark:text-white/45">
+                    Search Culturin…
+                  </span>
+                </button>
+                <span className="flex shrink-0 items-center gap-0.5 pr-0.5">
+                  <button
+                    type="button"
+                    onClick={triggerVisualSearch}
+                    className="rounded-full p-1.5 text-neutral-500 transition hover:bg-neutral-200/80 dark:text-white/45 dark:hover:bg-white/10"
+                    aria-label="Visual search shortcut"
+                  >
+                    <ScanSearch className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={1.75} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={triggerSurpriseSearch}
+                    className="rounded-full p-1.5 text-neutral-500 transition hover:bg-neutral-200/80 dark:text-white/45 dark:hover:bg-white/10"
+                    aria-label="Surprise me"
+                  >
+                    <PaletteDotsIcon className="h-5 w-5 opacity-95" />
+                  </button>
                 </span>
-                <span className="min-w-0 flex-1 truncate text-left font-normal text-neutral-500 dark:text-white/45">
-                  Search Culturin…
-                </span>
-                <span className="flex shrink-0 items-center gap-1 pr-0.5 text-neutral-500 dark:text-white/40" aria-hidden>
-                  <ScanSearch className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={1.75} />
-                  <PaletteDotsIcon className="h-5 w-5 opacity-95" />
-                </span>
-              </button>
+              </div>
             </div>
           </div>
 
@@ -430,17 +460,19 @@ export default function Header() {
                   <button
                     type="button"
                     className="rounded-full p-1.5 text-neutral-500 transition hover:bg-neutral-200/80 dark:text-white/45 dark:hover:bg-white/10"
-                    aria-label="Visual search (coming soon)"
+                    aria-label="Visual search shortcut"
+                    onClick={triggerVisualSearch}
                   >
                     <ScanSearch className="h-[18px] w-[18px]" strokeWidth={1.75} />
                   </button>
-                  <span
+                  <button
+                    type="button"
+                    onClick={triggerSurpriseSearch}
                     className="rounded-full p-1.5 text-neutral-500 dark:text-white/45"
-                    aria-hidden
-                    title="Culturin"
+                    aria-label="Surprise me"
                   >
                     <PaletteDotsIcon className="h-5 w-5 opacity-95" />
-                  </span>
+                  </button>
                 </span>
               </div>
             </form>

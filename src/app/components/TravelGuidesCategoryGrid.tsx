@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 
 import { travelGuideCategories } from "../../lib/travelGuidesCategories";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+import SafeContentImage from "./SafeContentImage";
 
 const cardClass =
   "group relative block min-h-[17rem] w-full overflow-hidden rounded-[1.1rem] no-underline outline-none ring-offset-2 transition-[transform,box-shadow] focus-visible:ring-2 focus-visible:ring-amber-400 sm:min-h-[21rem] md:min-h-[22rem] dark:ring-offset-black";
@@ -17,14 +17,11 @@ export default function TravelGuidesCategoryGrid() {
         <Link key={c.href} href={c.href} className={cardClass} aria-label={`${c.title} — ${c.articleCount} articles`}>
           <div className="absolute inset-0 z-0">
             {c.imageUrl ? (
-              <Image
+              <SafeContentImage
                 src={c.imageUrl}
                 alt={c.imageAlt}
-                fill
                 className="object-cover transition duration-500 ease-out group-hover:scale-[1.04] motion-reduce:group-hover:scale-100"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                loading="lazy"
-                placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
               />
             ) : null}

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 
 import type { providerHeroCard } from "@/lib/interface";
@@ -9,6 +8,7 @@ import {
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../lib/imagePlaceholder";
+import SafeContentImage from "./SafeContentImage";
 
 type CuratedExperiencesRailProps = {
   providers: providerHeroCard[];
@@ -42,12 +42,9 @@ export default function CuratedExperiencesRail({ providers }: CuratedExperiences
                 className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-black"
               >
                 <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-neutral-200 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10 sm:rounded-2xl">
-                  <Image
+                  <SafeContentImage
                     src={imgSrc}
                     alt={imgAlt}
-                    fill
-                    loading="lazy"
-                    placeholder="blur"
                     blurDataURL={IMAGE_BLUR_DATA_URL}
                     className="object-cover transition duration-300 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                     sizes="(max-width: 640px) 12rem, 14rem"

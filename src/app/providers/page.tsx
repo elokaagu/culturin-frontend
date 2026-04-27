@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 
 import type { providerHeroCard } from "@/lib/interface";
@@ -11,6 +10,7 @@ import {
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../lib/imagePlaceholder";
+import SafeContentImage from "../components/SafeContentImage";
 
 export default async function ProvidersPage() {
   const db = getCmsDbOrNull();
@@ -60,12 +60,9 @@ export default async function ProvidersPage() {
                       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white no-underline transition hover:-translate-y-0.5 hover:border-neutral-300 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/25"
                     >
                       <div className="relative aspect-[4/3] w-full bg-neutral-900">
-                        <Image
+                        <SafeContentImage
                           src={imgSrc}
                           alt={imgAlt}
-                          fill
-                          loading="lazy"
-                          placeholder="blur"
                           blurDataURL={IMAGE_BLUR_DATA_URL}
                           className="object-cover transition duration-300 group-hover:scale-[1.03]"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

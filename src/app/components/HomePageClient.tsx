@@ -9,6 +9,8 @@ import SiteFooter from "./SiteFooter";
 import ExploreWorldCountriesRail from "./ExploreWorldCountriesRail";
 import CuratedExperiencesRail from "./CuratedExperiencesRail";
 import TopVideosRail from "./TopVideosRail";
+import TrendingStoriesRail from "./TrendingStoriesRail";
+import TravelGuidesCategoryGrid from "./TravelGuidesCategoryGrid";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import { exploreWorldCountries } from "@/lib/exploreWorldCountries";
 import { appPageContainerClass, homeSectionSeeAllClass } from "@/lib/appLayout";
@@ -99,7 +101,7 @@ function HomeSection({
 }
 
 export default function HomePageClient({
-  initialBlogs: _initialBlogs,
+  initialBlogs,
   initialVideos,
   initialProviders,
 }: HomePageClientProps) {
@@ -209,6 +211,23 @@ export default function HomePageClient({
 
         <div className="bg-neutral-50 pb-4 pt-2 sm:pt-3 dark:bg-black">
           <HomeSection
+            id="trending-stories"
+            title="Trending stories"
+            description="Editorial picks, city notes, and creator-led narratives worth saving."
+            viewAllHref="/articles"
+          >
+            {initialBlogs.length > 0 ? (
+              <TrendingStoriesRail stories={initialBlogs} />
+            ) : (
+              <EmptyRail
+                message="Stories are being prepared. Open the articles library to browse what's live."
+                href="/articles"
+                linkLabel="Browse articles"
+              />
+            )}
+          </HomeSection>
+
+          <HomeSection
             id="top-videos"
             title="Video highlights"
             description="Watch creator-led clips, local moments, and travel edits from around the world."
@@ -240,6 +259,15 @@ export default function HomePageClient({
                 linkLabel="View experiences"
               />
             )}
+          </HomeSection>
+
+          <HomeSection
+            id="travel-guide-categories"
+            title="Travel guides by theme"
+            description="Jump into guide collections built around food, wellness, culture, and nightlife."
+            viewAllHref="/travel-guides"
+          >
+            <TravelGuidesCategoryGrid />
           </HomeSection>
         </div>
 

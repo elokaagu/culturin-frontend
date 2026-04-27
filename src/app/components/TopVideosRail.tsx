@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import { appPageFullBleedClass, appPageRailScrollPadClass } from "@/lib/appLayout";
@@ -11,6 +10,7 @@ import {
   isBundledPlaceholderSrc,
   resolveVideoThumbnailSrc,
 } from "../../lib/imagePlaceholder";
+import SafeContentImage from "./SafeContentImage";
 
 type TopVideosRailProps = {
   videos: videoCard[];
@@ -93,12 +93,9 @@ export default function TopVideosRail({
               aria-label={`Play ${video.title}`}
               className="group relative block aspect-video w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-200 text-left ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10 sm:rounded-2xl"
             >
-              <Image
+              <SafeContentImage
                 src={thumbSrc}
                 alt={video.title}
-                fill
-                loading="lazy"
-                placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
                 className="object-cover transition duration-300 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 sizes="(max-width: 640px) 80vw, 20rem"
