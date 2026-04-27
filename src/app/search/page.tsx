@@ -6,6 +6,8 @@ import type { ReactNode } from "react";
 import { appPageContainerClass } from "@/lib/appLayout";
 import { textMatchesAllTokens, tokenizeSearchQuery } from "@/lib/searchTokenize";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
+import { destinationContentBySlug } from "@/lib/destinationContent";
+import { destinations } from "@/lib/destinationsData";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { searchBlogs, searchProviders, searchVideos } from "../../lib/cms/queries";
 import { filterPublicBlogs, filterPublicVideos } from "@/lib/cms/blockedFromSite";
@@ -57,6 +59,55 @@ function filterFallbackProviders(items: providerHeroCard[], term: string) {
     const blob = [item.name, item.eventName, item.slug].filter(Boolean).join(" ");
     return textMatchesAllTokens(blob, tokens);
   });
+}
+
+type DestinationHit = {
+  name: string;
+  slug: string;
+  country?: string;
+  imageUrl: string;
+  imageAlt: string;
+};
+
+function searchDestinations(term: string): DestinationHit[] {
+  if (!term) return [];
+  const tokens = tokenizeSearchQuery(term);
+  if (tokens.length === 0) return [];
+
+  const score = (d: DestinationHit): number => {
+    const base = [d.name, d.slug, d.country ?? ""].join(" ").toLowerCase();
+    const content = destinationContentBySlug[d.slug];
+    const rich = content
+      ? [
+          content.intro,
+          content.vibe,
+          content.bestTime,
+          content.highlights.join(" "),
+          content.neighborhoods.join(" "),
+          content.foodToTry.join(" "),
+          content.localTips.join(" "),
+        ]
+          .join(" ")
+          .toLowerCase()
+      : "";
+
+    let s = 0;
+    for (const tok of tokens) {
+      if (d.name.toLowerCase() === tok) s += 10;
+      else if (d.name.toLowerCase().startsWith(tok)) s += 8;
+      else if (base.includes(tok)) s += 5;
+      else if (rich.includes(tok)) s += 2;
+    }
+    return s;
+  };
+
+  return destinations
+    .map((d) => ({ name: d.name, slug: d.slug, country: d.country, imageUrl: d.imageUrl, imageAlt: d.imageAlt }))
+    .map((d) => ({ d, s: score(d) }))
+    .filter((x) => x.s > 0)
+    .sort((a, b) => b.s - a.s || a.d.name.localeCompare(b.d.name))
+    .map((x) => x.d)
+    .slice(0, 12);
 }
 
 /**
@@ -157,6 +208,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
   const articles = filterPublicBlogs(withShowcaseIfEmpty(fromDbBlogs, query, filterFallbackBlogs));
   const videos = filterPublicVideos(withShowcaseVideosIfEmpty(fromDbVideos, query));
   const providers = withShowcaseProvidersIfEmpty(fromDbProviders, query);
+  const destinationHits = searchDestinations(query);
 
   const allCmsSearchesEmpty =
     !!db &&
@@ -164,7 +216,8 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
     fromDbBlogs.length === 0 &&
     fromDbVideos.length === 0 &&
     fromDbProviders.length === 0;
-  const hasResults = articles.length > 0 || videos.length > 0 || providers.length > 0;
+  const hasResults =
+    articles.length > 0 || videos.length > 0 || providers.length > 0 || destinationHits.length > 0;
   const showSupplementNote =
     allCmsSearchesEmpty && hasResults
       ? "Your connected CMS returned no matches for this term, so we’re also searching the editorial demo catalogue. Add matching content in Supabase or use the same keywords in your titles and summaries."
@@ -330,6 +383,38 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                         <div className="p-4 sm:p-5">
                           <h3 className={resultTextTitle}>{provider.eventName || provider.name}</h3>
                           {provider.name ? <p className={resultMeta}>{provider.name}</p> : null}
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </SearchSection>
+          ) : null}
+
+          {destinationHits.length > 0 ? (
+            <SearchSection title="Destinations" count={destinationHits.length}>
+              <ul className="m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3" role="list">
+                {destinationHits.map((destination) => {
+                  const imageSrc = resolveContentImageSrc(destination.imageUrl);
+                  return (
+                    <li key={destination.slug} className="min-w-0">
+                      <Link href={`/destinations/${destination.slug}`} className={resultCardClassName()}>
+                        <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
+                          <Image
+                            src={imageSrc}
+                            alt={destination.imageAlt}
+                            fill
+                            className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            placeholder="blur"
+                            blurDataURL={IMAGE_BLUR_DATA_URL}
+                            unoptimized={cmsImageUnoptimized(imageSrc)}
+                          />
+                        </div>
+                        <div className="p-4 sm:p-5">
+                          <h3 className={resultTextTitle}>{destination.name}</h3>
+                          {destination.country ? <p className={resultMeta}>{destination.country}</p> : null}
                         </div>
                       </Link>
                     </li>

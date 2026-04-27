@@ -10,7 +10,7 @@ import SiteFooter from "../components/SiteFooter";
 const HERO_SRC =
   "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=2200&q=80";
 
-const pillars = [
+const pillars: ReadonlyArray<{ title: string; text: string; href?: string }> = [
   {
     title: "Advertising campaigns",
     text: "Brand and destination work rooted in real places — creative that respects local nuance and lands with audiences who care about culture, not just captions.",
@@ -18,12 +18,13 @@ const pillars = [
   {
     title: "Events",
     text: "Launches, cultural moments, and community gatherings designed to feel grounded where they happen, with production clarity that scales across markets.",
+    href: "/agency/events",
   },
   {
     title: "Experiences",
     text: "Immersive formats — walks, tastings, performances, and partner activations — that put local voices first and leave guests with a story worth retelling.",
   },
-] as const;
+];
 
 const scope = [
   {
@@ -111,13 +112,24 @@ export default function AgencyPage() {
 
         <section className="mt-10 grid gap-4 sm:grid-cols-3">
           {pillars.map((item) => (
-            <article
-              key={item.title}
-              className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]"
-            >
-              <h2 className="m-0 text-lg font-semibold text-neutral-900 dark:text-white">{item.title}</h2>
-              <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/75">{item.text}</p>
-            </article>
+            item.href ? (
+              <Link
+                key={item.title}
+                href={item.href}
+                className="rounded-2xl border border-neutral-200 bg-white p-5 no-underline transition hover:border-amber-400/45 hover:shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-amber-400/35"
+              >
+                <h2 className="m-0 text-lg font-semibold text-neutral-900 dark:text-white">{item.title}</h2>
+                <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/75">{item.text}</p>
+              </Link>
+            ) : (
+              <article
+                key={item.title}
+                className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]"
+              >
+                <h2 className="m-0 text-lg font-semibold text-neutral-900 dark:text-white">{item.title}</h2>
+                <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/75">{item.text}</p>
+              </article>
+            )
           ))}
         </section>
 

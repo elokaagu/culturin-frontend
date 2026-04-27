@@ -3,12 +3,8 @@
 import {
   BookOpen,
   Building2,
-  CloudUpload,
   ExternalLink,
-  Home,
-  ImageIcon,
   LayoutDashboard,
-  MapPin,
   Moon,
   Sun,
   Video,
@@ -170,46 +166,6 @@ export default function StudioLayoutClient({
                 </li>
               </ul>
 
-              <p className={subLabelClass}>Media &amp; site</p>
-              <ul className="m-0 space-y-0.5 p-0">
-                <li>
-                  <Link href="/create/upload" className={navItemClass(!!pathname?.startsWith("/create/upload"))}>
-                    <ImageIcon className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                    <span className="min-w-0 flex-1">Image uploads</span>
-                    <CloudUpload className="h-3.5 w-3.5 shrink-0 opacity-60" aria-hidden />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/" className={navItemClass(false)}>
-                    <Home className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/articles" className={navItemClass(false)}>
-                    <BookOpen className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                    View articles
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/videos" className={navItemClass(false)}>
-                    <Video className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                    View videos
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/providers" className={navItemClass(false)}>
-                    <Building2 className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                    View providers
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/destinations" className={navItemClass(false)}>
-                    <MapPin className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                    Destinations
-                  </Link>
-                </li>
-              </ul>
             </nav>
           </div>
         </aside>
