@@ -100,6 +100,8 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
     if (!open) setRadiusOpen(false);
   }, [open]);
 
+  const filteredSpots = nearbySpots.filter((spot) => spot.distanceKm <= radius);
+
   if (!open) return null;
 
   return (
@@ -201,7 +203,7 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
             style={{ WebkitOverflowScrolling: "touch" }}
             aria-describedby={listId}
           >
-            {nearbySpots.map((spot, index) => {
+            {filteredSpots.map((spot, index) => {
               const imageSrc = resolveContentImageSrc(spot.imageUrl);
               return (
               <Link
@@ -229,6 +231,7 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
                   <div className="absolute bottom-2.5 left-2 right-2 flex flex-wrap items-center gap-1">
                     <span className={pillClass}>{spot.city}</span>
                     <span className={pillClass}>{spot.category}</span>
+                    <span className={pillClass}>{`${spot.distanceKm.toFixed(1)} km`}</span>
                     {spot.showMore ? (
                       <span
                         className={moreBtnClass}
@@ -247,6 +250,11 @@ export default function NearByPanel({ open, onClose }: NearByPanelProps) {
               </Link>
               );
             })}
+            {filteredSpots.length === 0 ? (
+              <div className="flex min-h-[8rem] w-full min-w-[15rem] items-center justify-center rounded-xl border border-dashed border-neutral-300 px-4 text-center text-sm text-neutral-600 dark:border-white/15 dark:text-white/70">
+                No spots found within {radius} km yet. Try increasing the distance.
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

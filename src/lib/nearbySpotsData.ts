@@ -8,6 +8,7 @@ type NearbySpot = {
   title: string;
   city: string;
   category: string;
+  distanceKm: number;
   imageUrl: string;
   imageAlt: string;
   href: string;
@@ -22,6 +23,7 @@ export const nearbySpots: NearbySpot[] = [
     title: "KKINI",
     city: "London",
     category: "Restaurant",
+    distanceKm: 1.4,
     imageUrl: NEARBY_CARD_IMAGES.dining,
     imageAlt: "Dining at night, warm light",
     href: "/nearby/kkini",
@@ -32,6 +34,7 @@ export const nearbySpots: NearbySpot[] = [
     title: "Sushi & More",
     city: "London",
     category: "Restaurant",
+    distanceKm: 3.2,
     imageUrl: NEARBY_CARD_IMAGES.sushi,
     imageAlt: "Sushi and Japanese dining",
     href: "/nearby/sushi-more",
@@ -42,6 +45,7 @@ export const nearbySpots: NearbySpot[] = [
     title: "Casa Spa",
     city: "London",
     category: "Spa",
+    distanceKm: 6.8,
     imageUrl: NEARBY_CARD_IMAGES.spa,
     imageAlt: "Spa interior with archway",
     href: "/nearby/casa-spa",
@@ -52,6 +56,7 @@ export const nearbySpots: NearbySpot[] = [
     title: "Latin Groove",
     city: "London",
     category: "Restaurant",
+    distanceKm: 9.7,
     imageUrl:
       "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
     imageAlt: "Street with colourful facades",
@@ -63,6 +68,7 @@ export const nearbySpots: NearbySpot[] = [
     title: "Fink's",
     city: "London",
     category: "Coffee Shop",
+    distanceKm: 18.4,
     imageUrl:
       "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80",
     imageAlt: "Coffee and café interior",
@@ -74,6 +80,7 @@ export const nearbySpots: NearbySpot[] = [
     title: "Granary Square",
     city: "London",
     category: "Landmark",
+    distanceKm: 24.2,
     imageUrl:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80",
     imageAlt: "Fountains and public square",
