@@ -147,19 +147,28 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
         </div>
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <div>
-            <label htmlFor="new-list-type" className="mb-1 block text-xs font-medium text-neutral-500 dark:text-white/50">
-              Type
-            </label>
-            <select
-              id="new-list-type"
-              value={newType}
-              onChange={(e) => setNewType(e.target.value as "itinerary" | "collection" | "highlights")}
-              className="w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 focus:border-amber-500/50 focus:outline-none focus:ring-2 focus:ring-amber-500/25 dark:border-white/15 dark:bg-white/[0.06] dark:text-white"
+            <p className="mb-1 text-xs font-medium text-neutral-500 dark:text-white/50">Type</p>
+            <div
+              className="inline-flex rounded-full border border-neutral-200 bg-neutral-100/90 p-1 dark:border-white/[0.1] dark:bg-white/[0.04]"
+              role="group"
+              aria-label="List type"
             >
-              <option value="itinerary">Itinerary</option>
-              <option value="collection">Collection</option>
-              <option value="highlights">Highlights</option>
-            </select>
+              {(["itinerary", "collection", "highlights"] as const).map((kind) => (
+                <button
+                  key={kind}
+                  type="button"
+                  onClick={() => setNewType(kind)}
+                  className={
+                    newType === kind
+                      ? "rounded-full bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:bg-white/15 dark:text-white dark:shadow-none dark:ring-0"
+                      : "rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-500 transition hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/75"
+                  }
+                  aria-pressed={newType === kind}
+                >
+                  {kind}
+                </button>
+              ))}
+            </div>
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="new-list-description" className="mb-1 block text-xs font-medium text-neutral-500 dark:text-white/50">

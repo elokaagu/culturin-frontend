@@ -12,9 +12,41 @@ export const metadata: Metadata = {
   description: "Create or update provider and experience cards in the CMS.",
 };
 
-export default async function StudioProvidersPage() {
+type StudioProvidersPageProps = {
+  searchParams?: { edit?: string };
+};
+
+export default async function StudioProvidersPage({ searchParams }: StudioProvidersPageProps) {
   const db = getCmsDbOrNull();
   const providers = db ? await listProvidersAsCards(db) : [];
+  const editSlug = searchParams?.edit?.trim() || "";
+  const editing = db && editSlug
+    ? await db
+        .from("cms_providers")
+        .select(
+          "slug,name,event_name,description,location,avatar_image_url,languages,specialties,contact_email,contact_phone,contact_website,banner_image_url,published_at",
+        )
+        .eq("slug", editSlug)
+        .maybeSingle()
+    : null;
+  const editEntry =
+    editing?.data && !editing.error
+      ? {
+          slug: String(editing.data.slug ?? ""),
+          name: String(editing.data.name ?? ""),
+          event_name: String(editing.data.event_name ?? ""),
+          description: String(editing.data.description ?? ""),
+          location: String(editing.data.location ?? ""),
+          avatar_image_url: String(editing.data.avatar_image_url ?? ""),
+          languages: Array.isArray(editing.data.languages) ? editing.data.languages.join(", ") : "",
+          specialties: Array.isArray(editing.data.specialties) ? editing.data.specialties.join(", ") : "",
+          contact_email: String(editing.data.contact_email ?? ""),
+          contact_phone: String(editing.data.contact_phone ?? ""),
+          contact_website: String(editing.data.contact_website ?? ""),
+          banner_image_url: String(editing.data.banner_image_url ?? ""),
+          published_at: String(editing.data.published_at ?? ""),
+        }
+      : null;
 
   return (
     <div className="p-4 sm:p-6 md:p-8">
@@ -24,7 +56,7 @@ export default async function StudioProvidersPage() {
         Listings are available on <span className="text-neutral-800 dark:text-white/80">/providers</span>, experience rails, and
         destination-adjacent flows.
       </p>
-      <StudioProviderForm />
+      <StudioProviderForm initial={editEntry} />
 
       <section className="mt-10">
         <header className="mb-4 flex items-center justify-between gap-3">
@@ -63,12 +95,10 @@ export default async function StudioProvidersPage() {
                     ) : null}
                   </div>
                   <Link
-                    href={`/providers/${provider.slug.current}`}
+                    href={`/studio/providers?edit=${encodeURIComponent(provider.slug.current)}#provider-form`}
                     className="inline-flex h-8 shrink-0 items-center rounded-full border border-neutral-300 bg-white px-3 text-xs font-medium text-neutral-800 no-underline transition hover:bg-neutral-50 dark:border-white/20 dark:bg-white/[0.06] dark:text-white dark:hover:bg-white/10"
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
-                    Open
+                    Edit
                   </Link>
                 </div>
               </li>

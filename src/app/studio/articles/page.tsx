@@ -12,9 +12,31 @@ export const metadata: Metadata = {
   description: "Create or update CMS blog and guide entries.",
 };
 
-export default async function StudioArticlesPage() {
+type StudioArticlesPageProps = {
+  searchParams?: { edit?: string };
+};
+
+export default async function StudioArticlesPage({ searchParams }: StudioArticlesPageProps) {
   const db = getCmsDbOrNull();
   const articles = db ? await listBlogs(db) : [];
+  const editSlug = searchParams?.edit?.trim() || "";
+  const editing = db && editSlug
+    ? await db
+        .from("cms_blogs")
+        .select("slug,title,summary,title_image_url,published_at")
+        .eq("slug", editSlug)
+        .maybeSingle()
+    : null;
+  const editEntry =
+    editing?.data && !editing.error
+      ? {
+          slug: String(editing.data.slug ?? ""),
+          title: String(editing.data.title ?? ""),
+          summary: String(editing.data.summary ?? ""),
+          title_image_url: String(editing.data.title_image_url ?? ""),
+          published_at: String(editing.data.published_at ?? ""),
+        }
+      : null;
 
   return (
     <div className="p-4 sm:p-6 md:p-8">
@@ -24,7 +46,7 @@ export default async function StudioArticlesPage() {
         Saved entries appear in <span className="text-neutral-800 dark:text-white/80">/articles</span> and on the home page when
         featured in your CMS.
       </p>
-      <StudioArticleForm />
+      <StudioArticleForm initial={editEntry} />
 
       <section className="mt-10">
         <header className="mb-4 flex items-center justify-between gap-3">
@@ -58,12 +80,10 @@ export default async function StudioArticlesPage() {
                     ) : null}
                   </div>
                   <Link
-                    href={`/articles/${article.currentSlug}`}
+                    href={`/studio/articles?edit=${encodeURIComponent(article.currentSlug)}#article-form`}
                     className="inline-flex h-8 shrink-0 items-center rounded-full border border-neutral-300 bg-white px-3 text-xs font-medium text-neutral-800 no-underline transition hover:bg-neutral-50 dark:border-white/20 dark:bg-white/[0.06] dark:text-white dark:hover:bg-white/10"
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
-                    Open
+                    Edit
                   </Link>
                 </div>
               </li>

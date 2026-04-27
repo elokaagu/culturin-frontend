@@ -56,6 +56,7 @@ export async function POST(request: Request) {
   }
 
   if (type === "blog") {
+    const originalSlug = asSlug(entry.original_slug);
     const payload = {
       slug,
       title: String(entry.title ?? "").trim(),
@@ -63,7 +64,10 @@ export async function POST(request: Request) {
       title_image_url: String(entry.title_image_url ?? "").trim() || null,
       published_at: String(entry.published_at ?? "").trim() || new Date().toISOString(),
     };
-    const { error } = await admin.from("cms_blogs").upsert(payload, { onConflict: "slug" });
+    const { error } =
+      originalSlug && originalSlug !== slug
+        ? await admin.from("cms_blogs").update(payload).eq("slug", originalSlug)
+        : await admin.from("cms_blogs").upsert(payload, { onConflict: "slug" });
     if (error) {
       return NextResponse.json({ message: error.message }, { status: 500 });
     }
@@ -73,6 +77,7 @@ export async function POST(request: Request) {
   }
 
   if (type === "video") {
+    const originalSlug = asSlug(entry.original_slug);
     const payload = {
       slug,
       title: String(entry.title ?? "").trim(),
@@ -82,7 +87,10 @@ export async function POST(request: Request) {
       playback_id: String(entry.playback_id ?? "").trim() || null,
       published_at: String(entry.published_at ?? "").trim() || new Date().toISOString(),
     };
-    const { error } = await admin.from("cms_videos").upsert(payload, { onConflict: "slug" });
+    const { error } =
+      originalSlug && originalSlug !== slug
+        ? await admin.from("cms_videos").update(payload).eq("slug", originalSlug)
+        : await admin.from("cms_videos").upsert(payload, { onConflict: "slug" });
     if (error) {
       return NextResponse.json({ message: error.message }, { status: 500 });
     }
@@ -90,6 +98,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Video saved", slug });
   }
 
+  const originalSlug = asSlug(entry.original_slug);
   const payload = {
     slug,
     name: String(entry.name ?? "").trim() || null,
@@ -105,7 +114,10 @@ export async function POST(request: Request) {
     banner_image_url: String(entry.banner_image_url ?? "").trim() || null,
     published_at: String(entry.published_at ?? "").trim() || new Date().toISOString(),
   };
-  const { error } = await admin.from("cms_providers").upsert(payload, { onConflict: "slug" });
+  const { error } =
+    originalSlug && originalSlug !== slug
+      ? await admin.from("cms_providers").update(payload).eq("slug", originalSlug)
+      : await admin.from("cms_providers").upsert(payload, { onConflict: "slug" });
   if (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

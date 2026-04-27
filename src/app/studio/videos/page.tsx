@@ -12,9 +12,33 @@ export const metadata: Metadata = {
   description: "Create or update Mux video entries in the CMS.",
 };
 
-export default async function StudioVideosPage() {
+type StudioVideosPageProps = {
+  searchParams?: { edit?: string };
+};
+
+export default async function StudioVideosPage({ searchParams }: StudioVideosPageProps) {
   const db = getCmsDbOrNull();
   const videos = db ? await listVideos(db) : [];
+  const editSlug = searchParams?.edit?.trim() || "";
+  const editing = db && editSlug
+    ? await db
+        .from("cms_videos")
+        .select("slug,title,uploader,description,thumbnail_url,playback_id,published_at")
+        .eq("slug", editSlug)
+        .maybeSingle()
+    : null;
+  const editEntry =
+    editing?.data && !editing.error
+      ? {
+          slug: String(editing.data.slug ?? ""),
+          title: String(editing.data.title ?? ""),
+          uploader: String(editing.data.uploader ?? ""),
+          description: String(editing.data.description ?? ""),
+          thumbnail_url: String(editing.data.thumbnail_url ?? ""),
+          playback_id: String(editing.data.playback_id ?? ""),
+          published_at: String(editing.data.published_at ?? ""),
+        }
+      : null;
 
   return (
     <div className="p-4 sm:p-6 md:p-8">
@@ -24,7 +48,7 @@ export default async function StudioVideosPage() {
         Videos with a valid Mux <span className="text-neutral-800 dark:text-white/80">playback_id</span> can appear on{" "}
         <span className="text-neutral-800 dark:text-white/80">/videos</span>, stream pages, and featured rails.
       </p>
-      <StudioVideoForm />
+      <StudioVideoForm initial={editEntry} />
 
       <section className="mt-10">
         <header className="mb-4 flex items-center justify-between gap-3">
@@ -61,12 +85,10 @@ export default async function StudioVideosPage() {
                     ) : null}
                   </div>
                   <Link
-                    href={`/stream?play=${encodeURIComponent(video.currentSlug)}`}
+                    href={`/studio/videos?edit=${encodeURIComponent(video.currentSlug)}#video-form`}
                     className="inline-flex h-8 shrink-0 items-center rounded-full border border-neutral-300 bg-white px-3 text-xs font-medium text-neutral-800 no-underline transition hover:bg-neutral-50 dark:border-white/20 dark:bg-white/[0.06] dark:text-white dark:hover:bg-white/10"
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
-                    Open
+                    Edit
                   </Link>
                 </div>
               </li>
