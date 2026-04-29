@@ -5,7 +5,6 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   LogOut,
   MapPin,
-  MessageCircle,
   Moon,
   Play,
   Settings,
@@ -151,12 +150,7 @@ export function AccountProfileDropdown({
             <Settings className={`${rowIconClass} h-4 w-4`} strokeWidth={2} aria-hidden />
           </DropdownMenu.Item>
 
-          <DropdownMenu.Item className={rowClass} onSelect={() => go("/agency")}>
-            <span>Contact us</span>
-            <MessageCircle className={`${rowIconClass} h-4 w-4`} strokeWidth={2} aria-hidden />
-          </DropdownMenu.Item>
-
-          <DropdownMenu.Item className={rowClass} onSelect={() => go("/spotlight")}>
+          <DropdownMenu.Item className={rowClass} onSelect={() => go("/community")}>
             <span>Community</span>
             <Users className={`${rowIconClass} h-4 w-4`} strokeWidth={2} aria-hidden />
           </DropdownMenu.Item>

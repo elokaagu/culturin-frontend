@@ -18,9 +18,9 @@ export default function SpotlightPosts() {
         style={{ lineHeight: 2 }}
       >
         <Link
-          href="/spotlight"
+          href="/community"
           className="fixed left-12 top-[12.5rem] z-10 hidden min-[429px]:inline-flex"
-          aria-label="Back to spotlight"
+          aria-label="Back to community"
         >
           <span className="inline-flex items-center gap-1 pb-5 text-amber-400 no-underline transition hover:text-foreground">
             <svg

@@ -240,3 +240,72 @@ export async function listSuggestedTravelers(input: {
       isFollowing: false,
     }));
 }
+
+/**
+ * Suggested profiles for the Community page: prioritizes travelers with published lists,
+ * then fills from recently joined users. Excludes self and people the viewer already follows.
+ */
+export async function listCommunitySuggestedTravelers(input: {
+  viewerUserId?: string | null;
+  limit?: number;
+}): Promise<SuggestedTraveler[]> {
+  const limit = input.limit ?? 10;
+  const excluded = new Set<string>();
+  if (input.viewerUserId) excluded.add(input.viewerUserId);
+
+  const followedSet = new Set(
+    input.viewerUserId ? await listFollowedUserIds(input.viewerUserId).catch(() => []) : [],
+  );
+
+  const { data: listsData, error: listsErr } = await db()
+    .from("user_spot_lists")
+    .select("user_id")
+    .eq("is_published", true)
+    .order("updated_at", { ascending: false })
+    .limit(160);
+  if (listsErr) throw listsErr;
+
+  const orderedUnique: string[] = [];
+  const seenListOwner = new Set<string>();
+  for (const row of (listsData ?? []) as { user_id: string }[]) {
+    const id = row.user_id;
+    if (seenListOwner.has(id) || excluded.has(id) || followedSet.has(id)) continue;
+    seenListOwner.add(id);
+    orderedUnique.push(id);
+    if (orderedUnique.length >= limit * 3) break;
+  }
+
+  let candidateIds = orderedUnique.slice(0, limit);
+
+  if (candidateIds.length < limit) {
+    const { data: fallbackUsers, error: fuErr } = await db()
+      .from("users")
+      .select("id")
+      .order("created_at", { ascending: false })
+      .limit(60);
+    if (fuErr) throw fuErr;
+    for (const row of (fallbackUsers ?? []) as { id: string }[]) {
+      const id = row.id;
+      if (excluded.has(id) || followedSet.has(id) || candidateIds.includes(id)) continue;
+      candidateIds.push(id);
+      if (candidateIds.length >= limit) break;
+    }
+  }
+
+  candidateIds = candidateIds.slice(0, limit);
+  if (candidateIds.length === 0) return [];
+
+  const usersById = await fetchUsersByIds(candidateIds);
+  const out: SuggestedTraveler[] = [];
+  for (const id of candidateIds) {
+    const user = usersById.get(id);
+    if (!user) continue;
+    out.push({
+      id: user.id,
+      name: displayNameFromUser(user),
+      handle: handleFromUser(user),
+      isFollowing: false,
+    });
+  }
+  return out;
+}
