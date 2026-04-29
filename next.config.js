@@ -9,9 +9,9 @@ const publicSupabaseUrl =
 const publicAnonKey =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
 
-/** Pass-through for CMS `playback_id` iframe embeds (no trailing slash). Set in `.env` / hosting dashboard. */
+/** Pass-through for CMS `playback_id` iframe embeds (no trailing slash). Defaults to Mux player when unset so deploys play without extra env. */
 const publicVideoPlayerOrigin =
-  process.env.NEXT_PUBLIC_VIDEO_PLAYER_ORIGIN?.replace(/\/$/, "").trim() || "";
+  process.env.NEXT_PUBLIC_VIDEO_PLAYER_ORIGIN?.replace(/\/$/, "").trim() || "https://player.mux.com";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
