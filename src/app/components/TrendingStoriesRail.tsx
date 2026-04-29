@@ -9,6 +9,7 @@ import {
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../lib/imagePlaceholder";
+import MarqueeFadeRail from "./MarqueeFadeRail";
 import SafeContentImage from "./SafeContentImage";
 
 type TrendingStoriesRailProps = {
@@ -19,20 +20,17 @@ export default function TrendingStoriesRail({ stories }: TrendingStoriesRailProp
   if (stories.length === 0) return null;
 
   return (
-    <div className="relative">
-      <div
-        className="flex gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-1 pt-0.5 [-webkit-overflow-scrolling:touch] [scrollbar-color:rgba(255,255,255,0.22)_transparent] [scrollbar-width:thin] sm:gap-5 md:gap-6 snap-x snap-mandatory md:snap-none"
-        role="list"
-        aria-label="Trending story cards"
-      >
+    <MarqueeFadeRail
+      ariaLabel="Trending story cards"
+      marqueeClassName="[--duration:56s] pb-1 pt-0.5"
+    >
       {stories.map((story) => {
         const thumbSrc = resolveContentImageSrc(story.titleImageUrl);
 
         return (
           <article
             key={story.currentSlug}
-            role="listitem"
-            className="w-48 shrink-0 snap-center sm:w-52 md:w-56"
+            className="w-48 shrink-0 sm:w-52 md:w-56"
           >
             <Link
               href={`/articles/${story.currentSlug}`}
@@ -62,10 +60,6 @@ export default function TrendingStoriesRail({ stories }: TrendingStoriesRailProp
           </article>
         );
       })}
-      </div>
-      <p className="mt-2 text-center text-[0.7rem] text-white/35 md:hidden" aria-hidden>
-        Swipe for more
-      </p>
-    </div>
+    </MarqueeFadeRail>
   );
 }

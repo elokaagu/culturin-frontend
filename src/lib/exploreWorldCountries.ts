@@ -1,7 +1,7 @@
 /**
- * Home “Explore the World” — each card links to search scoped by country/place.
+ * Home “Explore the World” — cards link to `/countries/[id]` (see `app/countries/[slug]/page.tsx`).
+ * `searchLabel` is kept for deep links and search fallbacks; align with article copy when possible.
  * Unsplash `photo-…-…` slugs are validated with HEAD requests; many older ids return 404 from Imgix.
- * Keep `searchLabel` aligned with article copy for fallback search.
  */
 const q = "auto=format&fit=crop&w=1200&q=80";
 const u = (id: string) => `https://images.unsplash.com/photo-${id}?${q}`;
@@ -82,3 +82,7 @@ export const exploreWorldCountries: ExploreWorldCountry[] = [
     imageAlt: "Lush green terraces on steep hills",
   },
 ];
+
+export function getExploreWorldCountryBySlug(slug: string): ExploreWorldCountry | undefined {
+  return exploreWorldCountries.find((c) => c.id === slug);
+}

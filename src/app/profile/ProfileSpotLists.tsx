@@ -1,8 +1,21 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
+import { useCallback, useEffect, useRef, useState, type ChangeEventHandler } from "react";
 
+import { useSupabaseAuth } from "../components/SupabaseAuthProvider";
 import type { SpotListItemRow, SpotListWithItems } from "@/lib/spotLists/types";
+import {
+  cmsImageUnoptimized,
+  IMAGE_BLUR_DATA_URL,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "@/lib/imagePlaceholder";
+import { SUPABASE_PUBLIC_MEDIA_BUCKET } from "@/lib/storageConstants";
+
+function sanitizeFileName(name: string): string {
+  return name.replace(/[^\w.+-]+/g, "-").replace(/^-+|-+$/g, "") || "upload.bin";
+}
 
 type Props = {
   onCountChange?: (count: number) => void;
@@ -235,9 +248,13 @@ function SpotListCard({
   onDeleted: () => void;
   onChanged: () => void;
 }) {
+  const { supabase, user } = useSupabaseAuth();
+  const spotImageInputRef = useRef<HTMLInputElement>(null);
   const [spotTitle, setSpotTitle] = useState("");
   const [spotNotes, setSpotNotes] = useState("");
   const [spotUrl, setSpotUrl] = useState("");
+  const [spotImageUrl, setSpotImageUrl] = useState("");
+  const [spotImageUploading, setSpotImageUploading] = useState(false);
   const [adding, setAdding] = useState(false);
   const [updatingList, setUpdatingList] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
@@ -263,6 +280,33 @@ function SpotListCard({
     onChanged();
   };
 
+  const onSpotImageFile: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file || !supabase || !user) {
+      setLocalError(!supabase || !user ? "Sign in and configure Supabase to upload images." : null);
+      return;
+    }
+    if (!file.type.startsWith("image/")) {
+      setLocalError("Please choose an image (JPEG, PNG, WebP, or GIF).");
+      return;
+    }
+    setSpotImageUploading(true);
+    setLocalError(null);
+    const path = `${user.id}/itineraries/${list.id}/${Date.now()}-${sanitizeFileName(file.name)}`;
+    const { error, data } = await supabase.storage
+      .from(SUPABASE_PUBLIC_MEDIA_BUCKET)
+      .upload(path, file, { cacheControl: "3600", upsert: false, contentType: file.type });
+    if (error) {
+      setLocalError(error.message);
+      setSpotImageUploading(false);
+      return;
+    }
+    const { data: pub } = supabase.storage.from(SUPABASE_PUBLIC_MEDIA_BUCKET).getPublicUrl(data.path);
+    setSpotImageUrl(pub.publicUrl);
+    setSpotImageUploading(false);
+  };
+
   const addSpot = async () => {
     const title = spotTitle.trim();
     if (!title || adding) return;
@@ -276,6 +320,7 @@ function SpotListCard({
           title,
           notes: spotNotes.trim() || null,
           url: spotUrl.trim() || null,
+          imageUrl: spotImageUrl.trim() || null,
         }),
       });
       if (!res.ok) {
@@ -285,6 +330,7 @@ function SpotListCard({
       setSpotTitle("");
       setSpotNotes("");
       setSpotUrl("");
+      setSpotImageUrl("");
       onChanged();
     } catch (e) {
       setLocalError(e instanceof Error ? e.message : "Could not add spot.");
@@ -351,10 +397,28 @@ function SpotListCard({
               <p className="text-sm text-neutral-500 dark:text-white/40">No spots yet. Add one below.</p>
             ) : (
               <ul className="m-0 space-y-3 p-0">
-                {list.items.map((item) => (
+                {list.items.map((item) => {
+                  const coverSrc = item.image_url ? resolveContentImageSrc(item.image_url) : null;
+                  return (
                   <li key={item.id} className="list-none rounded-xl bg-neutral-50 px-3 py-2.5 dark:bg-white/[0.04]">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1">
+                        {coverSrc ? (
+                          <div className="relative mb-2 aspect-[16/10] w-full max-w-xs overflow-hidden rounded-lg bg-neutral-200 dark:bg-white/5">
+                            <Image
+                              src={coverSrc}
+                              alt=""
+                              fill
+                              className="object-cover"
+                              sizes="240px"
+                              placeholder="blur"
+                              blurDataURL={IMAGE_BLUR_DATA_URL}
+                              unoptimized={
+                                isBundledPlaceholderSrc(coverSrc) || cmsImageUnoptimized(coverSrc)
+                              }
+                            />
+                          </div>
+                        ) : null}
                         <span className="text-sm font-medium text-neutral-900 dark:text-white">{item.title}</span>
                         {item.notes ? (
                           <p className="mt-1 text-xs leading-relaxed text-neutral-600 dark:text-white/55">{item.notes}</p>
@@ -379,7 +443,8 @@ function SpotListCard({
                       </button>
                     </div>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             )}
 
@@ -416,12 +481,31 @@ function SpotListCard({
               <p className="text-xs font-medium uppercase tracking-wide text-neutral-400 dark:text-white/35">
                 Add a spot
               </p>
-              <input
-                value={spotTitle}
-                onChange={(e) => setSpotTitle(e.target.value)}
-                placeholder="Name"
-                className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-white/15 dark:bg-white/[0.06] dark:text-white"
-              />
+              <p className="text-xs text-neutral-500 dark:text-white/45">
+                Spots save when you click <span className="font-medium text-neutral-700 dark:text-white/70">Add spot</span> (or press Enter in the name field). Type, collection, and publish toggles above save as soon as you tap them.
+              </p>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch">
+                <input
+                  value={spotTitle}
+                  onChange={(e) => setSpotTitle(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      void addSpot();
+                    }
+                  }}
+                  placeholder="Name (required)"
+                  className="min-w-0 flex-1 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-white/15 dark:bg-white/[0.06] dark:text-white"
+                />
+                <button
+                  type="button"
+                  onClick={() => void addSpot()}
+                  disabled={!spotTitle.trim() || adding}
+                  className="shrink-0 rounded-full bg-neutral-900 px-5 py-2 text-xs font-semibold text-white disabled:opacity-50 dark:bg-amber-400/90 dark:text-neutral-950 dark:disabled:opacity-40"
+                >
+                  {adding ? "Adding…" : "Add spot"}
+                </button>
+              </div>
               <input
                 value={spotNotes}
                 onChange={(e) => setSpotNotes(e.target.value)}
@@ -434,17 +518,58 @@ function SpotListCard({
                 placeholder="URL (optional)"
                 className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-white/15 dark:bg-white/[0.06] dark:text-white"
               />
+              <input
+                value={spotImageUrl}
+                onChange={(e) => setSpotImageUrl(e.target.value)}
+                placeholder="Image URL (optional)"
+                className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-white/15 dark:bg-white/[0.06] dark:text-white"
+              />
+              <input
+                ref={spotImageInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                className="sr-only"
+                onChange={onSpotImageFile}
+              />
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  disabled={!supabase || !user || spotImageUploading}
+                  onClick={() => spotImageInputRef.current?.click()}
+                  className="rounded-full border border-neutral-300 px-3 py-1.5 text-xs font-medium text-neutral-800 transition hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white/85 dark:hover:bg-white/10"
+                >
+                  {spotImageUploading ? "Uploading…" : "Upload image"}
+                </button>
+                {spotImageUrl ? (
+                  <button
+                    type="button"
+                    onClick={() => setSpotImageUrl("")}
+                    className="text-xs text-neutral-500 underline-offset-2 hover:text-neutral-800 hover:underline dark:text-white/45 dark:hover:text-white/75"
+                  >
+                    Clear image
+                  </button>
+                ) : null}
+              </div>
+              {spotImageUrl ? (
+                <div className="relative h-20 w-32 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 dark:border-white/10 dark:bg-white/5">
+                  <Image
+                    src={resolveContentImageSrc(spotImageUrl)}
+                    alt="Spot preview"
+                    fill
+                    className="object-cover"
+                    sizes="128px"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
+                    unoptimized={
+                      isBundledPlaceholderSrc(resolveContentImageSrc(spotImageUrl)) ||
+                      cmsImageUnoptimized(resolveContentImageSrc(spotImageUrl))
+                    }
+                  />
+                </div>
+              ) : null}
               {localError ? (
                 <p className="text-sm text-amber-800 dark:text-amber-200/90">{localError}</p>
               ) : null}
-              <button
-                type="button"
-                onClick={() => void addSpot()}
-                disabled={!spotTitle.trim() || adding}
-                className="rounded-full bg-neutral-900 px-4 py-2 text-xs font-medium text-white disabled:opacity-50 dark:bg-white/15"
-              >
-                {adding ? "Adding…" : "Add spot"}
-              </button>
             </div>
           </div>
         ) : null}

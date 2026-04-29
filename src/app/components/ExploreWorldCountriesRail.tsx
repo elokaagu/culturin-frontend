@@ -81,7 +81,7 @@ export default function ExploreWorldCountriesRail({
         >
           {countries.map((c) => {
             const src = resolveContentImageSrc(c.imageUrl);
-            const href = `/search?country=${encodeURIComponent(c.searchLabel)}`;
+            const href = `/countries/${c.id}`;
             return (
               <article
                 key={c.id}

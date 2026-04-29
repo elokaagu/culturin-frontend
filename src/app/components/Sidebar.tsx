@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import { Link } from "next-view-transitions";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Zap } from "lucide-react";
 
 import { GoogleSignInButton } from "./AuthButtons";
+import { HEADER_CREATE_MENU_LINKS } from "./HeaderCreateMenu";
 
 type SidebarProps = {
   id?: string;
@@ -17,9 +18,13 @@ const linkClass =
 const dropdownItemClass =
   "list-none px-3 py-2.5 text-black [&_a]:block [&_a]:text-black [&_a]:no-underline [&_a:hover]:text-neutral-600";
 
+const createSubLinkClass =
+  "block px-5 py-3 text-sm text-neutral-800 no-underline transition-colors hover:bg-neutral-100 hover:text-neutral-950 max-[428px]:px-3 dark:text-white/90 dark:hover:bg-white/[0.06] dark:hover:text-white";
+
 export default function Sidebar({ id, onClose }: SidebarProps) {
   const [destinationsOpen, setDestinationsOpen] = useState(false);
   const [nearbyOpen, setNearbyOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
 
   return (
     <div
@@ -94,6 +99,46 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
             <Link href="/travel-guides" className={linkClass} onClick={onClose}>
               Travel Guides
             </Link>
+          </li>
+
+          <li className="relative p-1">
+            <button
+              type="button"
+              onClick={() => setCreateOpen((o) => !o)}
+              className="flex w-full items-center gap-2 px-5 py-4 text-left text-base text-neutral-900 max-[428px]:px-2.5 max-[428px]:py-2.5 dark:text-white"
+              aria-expanded={createOpen}
+              aria-controls="sidebar-create-menu"
+            >
+              Create
+              <ChevronDown size={20} className="shrink-0" aria-hidden />
+            </button>
+            {createOpen ? (
+              <div
+                id="sidebar-create-menu"
+                className="absolute left-0 top-full z-[110] w-[min(100vw-2rem,18rem)] pt-1"
+              >
+                <ul className="m-0 max-h-[min(70vh,22rem)] list-none overflow-y-auto rounded-[10px] bg-white py-1 shadow-lg dark:bg-[#141414] dark:ring-1 dark:ring-white/10">
+                  <li className="list-none">
+                    <Link href="/studio" className={createSubLinkClass} onClick={onClose}>
+                      <span className="inline-flex items-center gap-2">
+                        <Zap className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                        Studio workspace
+                      </span>
+                    </Link>
+                  </li>
+                  {HEADER_CREATE_MENU_LINKS.map((item) => (
+                    <li key={item.href} className="list-none">
+                      <Link href={item.href} className={createSubLinkClass} onClick={onClose}>
+                        <span className="font-medium">{item.title}</span>
+                        <span className="mt-0.5 block text-xs font-normal text-neutral-500 dark:text-white/50">
+                          {item.description}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </li>
 
           <li className="relative p-1">

@@ -16,6 +16,8 @@ export type SpotListItemRow = {
   title: string;
   notes: string | null;
   url: string | null;
+  /** Public HTTPS or storage URL for a spot photo. */
+  image_url?: string | null;
   sort_order: number;
   created_at: string;
 };

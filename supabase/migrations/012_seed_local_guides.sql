@@ -30,7 +30,7 @@ values
     'adeola@culturin-guides.demo',
     '+234-000-000-0001',
     'https://example.com',
-    'https://images.unsplash.com/photo-1504609773099-104ff2d73d6b?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=1600&q=80',
     'Lagos city scene at golden hour',
     '2025-04-01T09:00:00Z'::timestamptz
   ),
@@ -94,7 +94,7 @@ values
     'joao@culturin-guides.demo',
     '+351-000-000-0005',
     'https://example.com',
-    'https://images.unsplash.com/photo-1526154845684-aae17b6f2271?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?auto=format&fit=crop&w=1600&q=80',
     'Lisbon rooftops and tiled streets',
     '2025-04-05T09:00:00Z'::timestamptz
   ),
@@ -104,13 +104,13 @@ values
     'Marrakesh medina and crafts guide',
     'I lead immersive medina experiences focused on artisan traditions, architecture, and market etiquette that helps guests engage respectfully.',
     'Marrakesh, Morocco',
-    'https://images.unsplash.com/photo-1541534401786-2077eed87a72?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80',
     '{"Arabic","French","English"}'::text[],
     '{"Craft traditions","Souk routes","Cultural etiquette"}'::text[],
     'amina@culturin-guides.demo',
     '+212-000-000-0006',
     'https://example.com',
-    'https://images.unsplash.com/photo-1516026672322-bc52d61a55d9?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=1600&q=80',
     'Marrakesh medina textures',
     '2025-04-06T09:00:00Z'::timestamptz
   ),
@@ -126,7 +126,7 @@ values
     'camila@culturin-guides.demo',
     '+52-000-000-0007',
     'https://example.com',
-    'https://images.unsplash.com/photo-1503220317375-0ad578212403?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1600&q=80',
     'Mexico City urban landscape',
     '2025-04-07T09:00:00Z'::timestamptz
   ),
@@ -174,8 +174,8 @@ values
     'mateo@culturin-guides.demo',
     '+54-000-000-0010',
     'https://example.com',
-    'https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=1600&q=80',
-    'Buenos Aires evening street scene',
+    'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80',
+    'Tango and evening culture in Buenos Aires',
     '2025-04-10T09:00:00Z'::timestamptz
   )
 on conflict (slug) do nothing;

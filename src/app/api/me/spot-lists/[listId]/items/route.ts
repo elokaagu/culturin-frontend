@@ -20,6 +20,7 @@ export async function POST(request: Request, { params }: RouteParams) {
     title?: string;
     notes?: string | null;
     url?: string | null;
+    imageUrl?: string | null;
   };
   const title = typeof body.title === "string" ? body.title.trim() : "";
   if (!title) {
@@ -37,6 +38,7 @@ export async function POST(request: Request, { params }: RouteParams) {
       title,
       notes: body.notes,
       url: body.url,
+      imageUrl: body.imageUrl === undefined ? undefined : typeof body.imageUrl === "string" ? body.imageUrl : null,
     });
     return NextResponse.json({ item });
   } catch (error: unknown) {

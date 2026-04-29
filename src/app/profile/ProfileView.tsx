@@ -8,6 +8,7 @@ import {
   useState,
   type ChangeEventHandler,
 } from "react";
+import { usePathname } from "next/navigation";
 import { Link } from "next-view-transitions";
 
 import { ArticleCardFromBlog } from "@/components/cms/ArticleCard";
@@ -41,6 +42,7 @@ function initialsFromName(name: string, email: string) {
 }
 
 export default function ProfileView() {
+  const pathname = usePathname();
   const { data: session, status } = useAppAuth();
   const { supabase, user } = useSupabaseAuth();
   const [userData, setUserData] = useState({ name: "", email: "" });
@@ -79,6 +81,16 @@ export default function ProfileView() {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    const applyHash = () => {
+      if (typeof window === "undefined") return;
+      if (window.location.hash === "#spot-lists") setTab("collections");
+    };
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
+  }, [pathname]);
 
   const displayName = useMemo(() => {
     if (userData.name.trim()) return userData.name.trim();
@@ -389,7 +401,10 @@ export default function ProfileView() {
           </div>
         </header>
 
-        <div className="mt-8 flex flex-col gap-5 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
+        <div
+          id="spot-lists"
+          className="mt-8 flex scroll-mt-28 flex-col gap-5 sm:mt-10 sm:flex-row sm:items-center sm:justify-between"
+        >
           <div
             className="flex justify-center sm:justify-start"
             role="tablist"

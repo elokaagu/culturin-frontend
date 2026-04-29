@@ -1,6 +1,11 @@
 import type { fullBlog, fullProvider, fullVideo, providerCard, providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import type { CmsBlogRow, CmsProviderRow, CmsVideoRow } from "./types";
 
+function trimMediaUrl(value: string | null | undefined): string | undefined {
+  const t = typeof value === "string" ? value.trim() : "";
+  return t || undefined;
+}
+
 export function mapBlogRowToCard(row: CmsBlogRow): simpleBlogCard {
   return {
     title: row.title,
@@ -49,20 +54,20 @@ export function mapVideoRowToFull(row: CmsVideoRow): fullVideo {
 }
 
 export function mapProviderRowToHero(row: CmsProviderRow): providerHeroCard {
-  const url = row.banner_image_url ?? undefined;
+  const banner = trimMediaUrl(row.banner_image_url);
+  const avatar = trimMediaUrl(row.avatar_image_url);
+  const url = banner ?? avatar;
   const alt = row.banner_image_alt ?? row.event_name ?? row.name ?? "Provider";
   return {
     name: row.name ?? "",
     eventName: row.event_name ?? "",
     slug: row.slug,
-    bannerImage: url
-      ? { image: { url, alt } }
-      : undefined,
+    bannerImage: url ? { image: { url, alt } } : undefined,
   };
 }
 
 export function mapProviderRowToCard(row: CmsProviderRow): providerCard {
-  const url = row.banner_image_url ?? "";
+  const url = trimMediaUrl(row.banner_image_url) ?? trimMediaUrl(row.avatar_image_url) ?? "";
   const alt = row.banner_image_alt ?? row.event_name ?? "";
   const languages = Array.isArray(row.languages) ? row.languages.filter(Boolean) : [];
   const specialties = Array.isArray(row.specialties) ? row.specialties.filter(Boolean) : [];
@@ -107,7 +112,7 @@ export function mapProviderRowToFull(row: CmsProviderRow): fullProvider {
     images: images as fullProvider["images"],
     bannerImage: {
       image: {
-        url: row.banner_image_url ?? "",
+        url: trimMediaUrl(row.banner_image_url) ?? trimMediaUrl(row.avatar_image_url) ?? "",
         alt: row.banner_image_alt ?? row.event_name ?? "",
       },
     },

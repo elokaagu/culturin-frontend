@@ -10,6 +10,7 @@ import Hamburger from "hamburger-react";
 
 import { useTheme } from "../styles/ThemeContext";
 import { GoogleSignInButton } from "./AuthButtons";
+import { HeaderCreateMenu } from "./HeaderCreateMenu";
 import NearByPanel from "./NearByPanel";
 import Sidebar from "./Sidebar";
 import { destinations } from "@/lib/destinationsData";
@@ -376,6 +377,10 @@ export default function Header() {
             >
               Nearby
             </button>
+
+            <div className="hidden sm:block">
+              <HeaderCreateMenu />
+            </div>
 
             <button
               type="button"

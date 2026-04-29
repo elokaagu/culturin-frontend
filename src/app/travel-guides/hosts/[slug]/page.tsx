@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Link } from "next-view-transitions";
 
 import Header from "@/app/components/Header";
+import SafeContentImage from "@/app/components/SafeContentImage";
 import SiteFooter from "@/app/components/SiteFooter";
 import { getProviderBySlug } from "@/lib/cms/queries";
 import { getShowcaseFullProvider } from "@/lib/cms/showcaseContent";
@@ -76,30 +77,26 @@ export default async function LocalHostProfilePage({ params }: { params: { slug:
           </nav>
 
           <section className="overflow-hidden rounded-3xl border border-neutral-200 bg-white dark:border-white/10 dark:bg-white/[0.03]">
-            <div className="relative h-48 w-full sm:h-64">
-              <Image
+            <div className="relative aspect-[21/9] min-h-[12rem] w-full sm:min-h-[14rem]">
+              <SafeContentImage
                 src={bannerSrc}
                 alt={bannerAlt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 1200px"
-                placeholder="blur"
+                className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, min(1200px, 100vw)"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
                 unoptimized={isBundledPlaceholderSrc(bannerSrc) || cmsImageUnoptimized(bannerSrc)}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
             </div>
             <div className="relative px-4 pb-6 sm:px-6">
               <div className="-mt-10 flex flex-col gap-4 sm:-mt-12 sm:flex-row sm:items-end sm:justify-between">
                 <div className="flex items-end gap-4">
                   <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-white bg-neutral-200 shadow-sm dark:border-black sm:h-24 sm:w-24">
-                    <Image
+                    <SafeContentImage
                       src={avatarSrc}
                       alt={`${profileName} avatar`}
-                      fill
-                      className="object-cover"
+                      className="object-cover object-top"
                       sizes="96px"
-                      placeholder="blur"
                       blurDataURL={IMAGE_BLUR_DATA_URL}
                       unoptimized={isBundledPlaceholderSrc(avatarSrc) || cmsImageUnoptimized(avatarSrc)}
                     />

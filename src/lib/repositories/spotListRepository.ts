@@ -132,6 +132,7 @@ export async function addSpotListItem(input: {
   title: string;
   notes?: string | null;
   url?: string | null;
+  imageUrl?: string | null;
 }): Promise<SpotListItemRow> {
   const list = await getSpotListForUser(input.listId, input.userId);
   if (!list) throw new Error("List not found");
@@ -144,6 +145,7 @@ export async function addSpotListItem(input: {
       title: input.title.trim(),
       notes: input.notes?.trim() || null,
       url: input.url?.trim() || null,
+      image_url: input.imageUrl?.trim() || null,
       sort_order,
     })
     .select("*")
@@ -160,6 +162,7 @@ export async function updateSpotListItem(input: {
   title?: string;
   notes?: string | null;
   url?: string | null;
+  imageUrl?: string | null;
   sortOrder?: number;
 }): Promise<void> {
   const list = await getSpotListForUser(input.listId, input.userId);
@@ -169,6 +172,7 @@ export async function updateSpotListItem(input: {
   if (input.title !== undefined) patch.title = input.title.trim();
   if (input.notes !== undefined) patch.notes = input.notes?.trim() || null;
   if (input.url !== undefined) patch.url = input.url?.trim() || null;
+  if (input.imageUrl !== undefined) patch.image_url = input.imageUrl?.trim() || null;
   if (input.sortOrder !== undefined) patch.sort_order = input.sortOrder;
 
   if (Object.keys(patch).length === 0) return;
