@@ -24,7 +24,7 @@ type TopVideosRailProps = {
 
 /**
  * Home and library “Top videos” rail: server-fed; each card opens a hero dialog with the Mux player (or stream fallback if no `playbackId`).
- * Uses Magic UI `Marquee` with edge fades; falls back to horizontal scroll when reduced motion is preferred.
+ * Edge-faded horizontal rail; user scrolls manually (trackpad, drag, or scrollbar).
  */
 export default function TopVideosRail({
   videos,
@@ -42,8 +42,8 @@ export default function TopVideosRail({
         fullBleed={fullBleed}
         marqueeClassName={
           fullBleed
-            ? `[--duration:72s] pb-2 pt-0.5 sm:pb-2 sm:pt-0.5 md:pb-1.5 ${appPageRailScrollPadClass}`
-            : "[--duration:72s] pb-1 pt-0.5 sm:pt-0.5 md:pb-1.5"
+            ? `pb-2 pt-0.5 sm:pb-2 sm:pt-0.5 md:pb-1.5 ${appPageRailScrollPadClass}`
+            : "pb-1 pt-0.5 sm:pt-0.5 md:pb-1.5"
         }
       >
         {videos.map((video) => {

@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
-import { Marquee } from "@/components/ui/marquee";
 import { appPageFullBleedClass } from "@/lib/appLayout";
 import { cn } from "@/lib/utils";
 
@@ -14,37 +13,25 @@ type MarqueeFadeRailProps = {
   /** Exposed on the outer wrapper for assistive tech. */
   ariaLabel: string;
   className?: string;
-  /** Passed through to `Marquee` (e.g. duration, padding). */
+  /** Extra classes on the horizontal scroll row (padding, gutters, gap tweaks). */
   marqueeClassName?: string;
-  pauseOnHover?: boolean;
-  reverse?: boolean;
   /** Extend to viewport gutters (matches `TopVideosRail` full-bleed pattern). */
   fullBleed?: boolean;
+  /** Set on the scroll row when children use `role="listitem"` (e.g. country cards). */
+  scrollRowRole?: React.AriaRole;
 };
 
 /**
- * Infinite horizontal marquee with left/right fades into `background`.
- * Falls back to a normal horizontal scroller when `prefers-reduced-motion: reduce`.
+ * Horizontal rail with left/right edge fades. Scroll is manual only (no auto-scroll).
  */
 export default function MarqueeFadeRail({
   children,
   ariaLabel,
   className,
   marqueeClassName,
-  pauseOnHover = true,
-  reverse = false,
   fullBleed = false,
+  scrollRowRole,
 }: MarqueeFadeRailProps) {
-  const [reduceMotion, setReduceMotion] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const apply = () => setReduceMotion(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
-
   const fades = (
     <>
       <div
@@ -64,34 +51,18 @@ export default function MarqueeFadeRail({
     className
   );
 
-  if (reduceMotion) {
-    return (
-      <div className={shell} role="region" aria-label={ariaLabel}>
-        <div
-          className={cn(
-            scrollRailClass,
-            fullBleed && "scroll-pl-[var(--gutter-l)] pl-[var(--gutter-l)] pr-1 sm:pr-2"
-          )}
-        >
-          {children}
-        </div>
-        {fades}
-      </div>
-    );
-  }
-
   return (
     <div className={shell} role="region" aria-label={ariaLabel}>
-      <Marquee
-        pauseOnHover={pauseOnHover}
-        reverse={reverse}
+      <div
+        role={scrollRowRole}
         className={cn(
-          "p-0 [--gap:1rem] sm:[--gap:1.25rem] md:[--gap:1.5rem]",
+          scrollRailClass,
+          fullBleed && "scroll-pl-[var(--gutter-l)] pl-[var(--gutter-l)] pr-1 sm:pr-2",
           marqueeClassName
         )}
       >
         {children}
-      </Marquee>
+      </div>
       {fades}
     </div>
   );

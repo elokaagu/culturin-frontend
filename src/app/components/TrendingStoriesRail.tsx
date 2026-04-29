@@ -20,10 +20,7 @@ export default function TrendingStoriesRail({ stories }: TrendingStoriesRailProp
   if (stories.length === 0) return null;
 
   return (
-    <MarqueeFadeRail
-      ariaLabel="Trending story cards"
-      marqueeClassName="[--duration:56s] pb-1 pt-0.5"
-    >
+    <MarqueeFadeRail ariaLabel="Trending story cards">
       {stories.map((story) => {
         const thumbSrc = resolveContentImageSrc(story.titleImageUrl);
 

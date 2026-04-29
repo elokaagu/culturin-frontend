@@ -23,10 +23,7 @@ export default function CuratedExperiencesRail({ providers }: CuratedExperiences
   if (providers.length === 0) return null;
 
   return (
-    <MarqueeFadeRail
-      ariaLabel="Curated experience cards"
-      marqueeClassName="[--duration:52s] pb-1 pt-0.5"
-    >
+    <MarqueeFadeRail ariaLabel="Curated experience cards">
       {providers.map((p) => {
         const imgSrc = resolveContentImageSrc(p.bannerImage?.image?.url);
         const imgAlt = p.bannerImage?.image?.alt || p.eventName || p.name || "Experience";

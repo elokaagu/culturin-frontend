@@ -1,10 +1,10 @@
 "use client";
 
-import MuxPlayer from "@mux/mux-player-react";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { useEffect, useId, useRef } from "react";
 
+import { HeroVideoModalShell } from "@/registry/magicui/hero-video-dialog";
 import type { videoCard } from "@/lib/interface";
 import {
   IMAGE_BLUR_DATA_URL,
@@ -17,6 +17,13 @@ type VideoHeroDialogProps = {
   onClose: () => void;
   video: videoCard | null;
 };
+
+function muxEmbedSrc(playbackId: string, title: string): string {
+  const params = new URLSearchParams({
+    "metadata-video-title": title,
+  });
+  return `https://player.mux.com/${playbackId}?${params.toString()}`;
+}
 
 export function VideoHeroDialog({ open, onClose, video }: VideoHeroDialogProps) {
   const titleId = useId();
@@ -37,25 +44,20 @@ export function VideoHeroDialog({ open, onClose, video }: VideoHeroDialogProps) 
     };
   }, [open, onClose]);
 
-  if (!open || !video) return null;
+  if (!video) return null;
 
   const streamHref = `/stream?play=${encodeURIComponent(video.currentSlug)}`;
   const thumbSrc = resolveVideoThumbnailSrc(video.videoThumbnailUrl);
   const canPlay = Boolean(video.playbackId);
+  const iframeSrc = video.playbackId ? muxEmbedSrc(video.playbackId, video.title) : "";
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center p-3 sm:p-5" role="presentation">
-      <button
-        type="button"
-        className="absolute inset-0 bg-black/85 backdrop-blur-sm"
-        aria-label="Close"
-        onClick={onClose}
-      />
+    <HeroVideoModalShell open={open} onClose={onClose} animationStyle="from-center" showFloatingClose={false}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative z-10 w-full max-w-5xl overflow-hidden rounded-2xl border border-white/15 bg-neutral-950 text-white shadow-[0_24px_80px_rgba(0,0,0,0.85)]"
+        className="relative z-10 w-full overflow-hidden rounded-2xl border border-white/15 bg-neutral-950 text-white shadow-[0_24px_80px_rgba(0,0,0,0.85)]"
       >
         <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3 sm:px-5">
           <h2 id={titleId} className="m-0 min-w-0 text-base font-semibold tracking-tight sm:text-lg">
@@ -83,16 +85,16 @@ export function VideoHeroDialog({ open, onClose, video }: VideoHeroDialogProps) 
         <div className="grid gap-0 md:grid-cols-[1.2fr_0.8fr]">
           <div className="relative min-w-0 bg-black">
             {canPlay ? (
-              <MuxPlayer
-                key={video.currentSlug}
-                playbackId={video.playbackId}
-                className="w-full"
-                style={{ width: "100%", aspectRatio: "16 / 9" }}
-                metadata={{
-                  video_title: video.title ?? "",
-                  viewer_user_id: "hero-dialog",
-                }}
-              />
+              <div className="relative aspect-video w-full overflow-hidden">
+                <iframe
+                  key={video.currentSlug}
+                  src={iframeSrc}
+                  title={video.title}
+                  className="absolute inset-0 size-full"
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                />
+              </div>
             ) : (
               <div className="relative aspect-video w-full">
                 <Image
@@ -134,6 +136,6 @@ export function VideoHeroDialog({ open, onClose, video }: VideoHeroDialogProps) 
           </div>
         </div>
       </div>
-    </div>
+    </HeroVideoModalShell>
   );
 }
