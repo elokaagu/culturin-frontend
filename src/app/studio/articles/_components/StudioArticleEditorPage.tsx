@@ -5,6 +5,7 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 
 import { Field } from "@/app/studio/_components/Field";
+import { StudioPublishDateField } from "@/app/studio/_components/StudioPublishDateField";
 import { StudioImageUploadButton } from "@/app/studio/_components/StudioImageUploadButton";
 import { postCreatorSubmission } from "@/app/creator/_lib/postCreatorSubmission";
 import { postCmsEntry } from "@/app/studio/_lib/postCmsEntry";
@@ -128,7 +129,7 @@ export function StudioArticleEditorPage({ mode, initial, workspace = "studio" }:
           />
           <StudioImageUploadButton onUploaded={setTitleImageUrl} buttonLabel="Upload title image" />
         </label>
-        <Field name="published_at" label="Publish date (optional)" defaultValue={initial?.published_at ?? ""} />
+        <StudioPublishDateField name="published_at" label="Publish date (optional)" defaultValue={initial?.published_at ?? ""} />
         <div className="sm:col-span-2">
           <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-white/80">Article body</p>
           <ArticleRichEditor key={editorKey} ref={editorRef} initialBody={editorBody} />

@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "next-view-transitions";
 
 import { Field } from "@/app/studio/_components/Field";
+import { StudioPublishDateField } from "@/app/studio/_components/StudioPublishDateField";
 import { StudioImageUploadButton } from "@/app/studio/_components/StudioImageUploadButton";
 import { postCreatorSubmission } from "@/app/creator/_lib/postCreatorSubmission";
 import { postCmsEntry } from "@/app/studio/_lib/postCmsEntry";
@@ -140,7 +141,7 @@ export function StudioProviderForm({
           />
           <StudioImageUploadButton onUploaded={setBannerImageUrl} buttonLabel="Upload banner image" />
         </label>
-        <Field name="published_at" label="Publish date (optional)" defaultValue={initial?.published_at ?? ""} />
+        <StudioPublishDateField name="published_at" label="Publish date (optional)" defaultValue={initial?.published_at ?? ""} />
         <button
           type="submit"
           disabled={pending}
