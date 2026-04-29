@@ -11,7 +11,7 @@ import {
   Video,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { Link } from "next-view-transitions";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import { useState, type ReactNode } from "react";
 
 import { useSupabaseAuth } from "@/app/components/SupabaseAuthProvider";
@@ -34,6 +34,7 @@ const navItemClass = (active: boolean) =>
  * Creator shell — submissions workspace for signed-in users without CMS admin access.
  */
 export default function CreatorLayoutClient({ children, email }: CreatorLayoutClientProps) {
+  const router = useTransitionRouter();
   const pathname = usePathname() ?? "";
   const { mode, toggleTheme } = useTheme();
   const { supabase } = useSupabaseAuth();
@@ -142,8 +143,13 @@ export default function CreatorLayoutClient({ children, email }: CreatorLayoutCl
               onClick={async () => {
                 if (!supabase || signingOut) return;
                 setSigningOut(true);
-                await supabase.auth.signOut();
-                setSigningOut(false);
+                try {
+                  await supabase.auth.signOut();
+                  router.push("/");
+                  router.refresh();
+                } finally {
+                  setSigningOut(false);
+                }
               }}
               className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-neutral-600 transition hover:bg-neutral-200/80 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white/70 dark:hover:bg-white/8"
             >
