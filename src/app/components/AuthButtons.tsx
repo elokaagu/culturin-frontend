@@ -4,6 +4,8 @@ import { useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { useTransitionRouter } from "next-view-transitions";
 
+import { getPublicSiteUrl } from "@/lib/siteUrl";
+
 import { AccountProfileDropdown } from "./AccountProfileDropdown";
 import { useAppAuth, useSupabaseAuth } from "./SupabaseAuthProvider";
 
@@ -47,11 +49,11 @@ export function GoogleSignInButton({
       router.push("/login");
       return;
     }
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const siteUrl = getPublicSiteUrl();
     void supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${origin}/auth/callback`,
+        redirectTo: `${siteUrl}/auth/callback`,
       },
     });
   }, [directOAuth, pathname, router, supabase]);

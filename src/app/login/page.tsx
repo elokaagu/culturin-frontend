@@ -8,6 +8,7 @@ import { Suspense, useMemo, useState } from "react";
 import { GoogleSignInButton } from "../components/AuthButtons";
 import Header from "../components/Header";
 import { useSupabaseAuth } from "../components/SupabaseAuthProvider";
+import { getPublicSiteUrl } from "@/lib/siteUrl";
 
 function SupabaseConfigBanner() {
   const { supabase } = useSupabaseAuth();
@@ -79,7 +80,7 @@ function LoginPageContent() {
       return;
     }
 
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const siteUrl = getPublicSiteUrl();
     const { error: signUpErr } = await supabase.auth.signUp({
       email,
       password,
@@ -88,7 +89,9 @@ function LoginPageContent() {
           full_name: name,
           name,
         },
-        emailRedirectTo: origin ? `${origin}/auth/callback?next=${encodeURIComponent(next)}` : undefined,
+        emailRedirectTo: siteUrl
+          ? `${siteUrl}/auth/callback?next=${encodeURIComponent(next)}`
+          : undefined,
       },
     });
     setPending(false);
