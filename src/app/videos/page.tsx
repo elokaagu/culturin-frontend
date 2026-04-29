@@ -67,7 +67,7 @@ export default async function VideosPage() {
         <div className={`${container} mt-12 sm:mt-16`}>
           <div className="flex flex-col items-stretch justify-between gap-5 rounded-2xl border border-neutral-200 bg-white p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8 dark:border-white/10 dark:bg-white/[0.04]">
             <p className="min-w-0 text-sm leading-relaxed text-neutral-600 dark:text-white/60">
-              For playlists, Mux playback controls, and keyboard shortcuts, open the full stream experience.
+              For playlists, full playback controls, and keyboard shortcuts, open the full stream experience.
             </p>
             <Link
               href="/stream"

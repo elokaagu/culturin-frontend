@@ -284,7 +284,7 @@ function SpotListCard({
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file || !supabase || !user) {
-      setLocalError(!supabase || !user ? "Sign in and configure Supabase to upload images." : null);
+      setLocalError(!supabase || !user ? "Sign in to upload images." : null);
       return;
     }
     if (!file.type.startsWith("image/")) {

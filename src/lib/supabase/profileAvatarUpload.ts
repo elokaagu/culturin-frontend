@@ -44,13 +44,13 @@ export function profileAvatarStoragePath(userId: string, fileName: string): stri
 export function formatStorageUploadError(error: { message?: string }): string {
   const msg = (error.message || "").toLowerCase();
   if (msg.includes("row-level security") || msg.includes("rls") || error.message?.includes("403")) {
-    return `${error.message} — In Supabase, apply migration supabase/migrations/004_storage_media_bucket.sql so the "media" bucket allows uploads under your user id.`;
+    return "We couldn’t save this file. Ask your administrator to check storage permissions, or try again in a few minutes.";
   }
   if (msg.includes("bucket not found") || msg.includes("not found")) {
-    return `${error.message} — Create the public "media" bucket (see migration 004_storage_media_bucket.sql).`;
+    return "File storage isn’t ready yet. Try again later or contact support.";
   }
   if (msg.includes("mime type") || msg.includes("mime_type") || msg.includes("invalid")) {
-    return `${error.message} — Use JPEG, PNG, WebP, or GIF (HEIC if migration 007 is applied).`;
+    return "This file type isn’t supported. Use JPEG, PNG, WebP, GIF, or HEIC from your phone.";
   }
   return error.message || "Upload failed.";
 }

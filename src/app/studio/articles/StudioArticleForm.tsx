@@ -7,7 +7,7 @@ import { Field } from "@/app/studio/_components/Field";
 import { StudioImageUploadButton } from "@/app/studio/_components/StudioImageUploadButton";
 import { postCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 
-type ArticleFormInitial = {
+export type ArticleFormInitial = {
   slug: string;
   title: string;
   summary: string;
@@ -15,7 +15,14 @@ type ArticleFormInitial = {
   published_at: string;
 };
 
-export function StudioArticleForm({ initial }: { initial?: ArticleFormInitial | null }) {
+export function StudioArticleForm({
+  initial,
+  onSaved,
+}: {
+  initial?: ArticleFormInitial | null;
+  /** Called after a successful save (create or edit). */
+  onSaved?: () => void;
+}) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [titleImageUrl, setTitleImageUrl] = useState(initial?.title_image_url ?? "");
@@ -39,6 +46,7 @@ export function StudioArticleForm({ initial }: { initial?: ArticleFormInitial | 
     }
     setMessage(`${result.data.message ?? "Saved"} (${result.data.slug ?? "no-slug"})`);
     if (!isEditing) event.currentTarget.reset();
+    onSaved?.();
   }
 
   return (
@@ -76,7 +84,7 @@ export function StudioArticleForm({ initial }: { initial?: ArticleFormInitial | 
           />
           <StudioImageUploadButton onUploaded={setTitleImageUrl} buttonLabel="Upload title image" />
         </label>
-        <Field name="published_at" label="Published at (ISO, optional)" defaultValue={initial?.published_at ?? ""} />
+        <Field name="published_at" label="Publish date (optional)" defaultValue={initial?.published_at ?? ""} />
         <button
           type="submit"
           disabled={pending}

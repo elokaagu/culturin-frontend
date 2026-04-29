@@ -10,7 +10,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@mux/mux-player-react": "^2.3.3",
     "@next/bundle-analyzer": "^14.1.0",
     "@nextui-org/react": "^2.2.9",
     "@portabletext/react": "^3.0.11",

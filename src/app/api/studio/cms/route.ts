@@ -50,7 +50,7 @@ export async function POST(request: Request) {
   const admin = getSupabaseAdminOrNull();
   if (!admin) {
     return NextResponse.json(
-      { message: "CMS is not configured (missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY)." },
+      { message: "Saving isn’t available—your workspace isn’t fully connected. Try again later or contact support." },
       { status: 503 },
     );
   }

@@ -7,7 +7,7 @@ import { Field } from "@/app/studio/_components/Field";
 import { StudioImageUploadButton } from "@/app/studio/_components/StudioImageUploadButton";
 import { postCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 
-type VideoFormInitial = {
+export type VideoFormInitial = {
   slug: string;
   title: string;
   uploader: string;
@@ -17,7 +17,13 @@ type VideoFormInitial = {
   published_at: string;
 };
 
-export function StudioVideoForm({ initial }: { initial?: VideoFormInitial | null }) {
+export function StudioVideoForm({
+  initial,
+  onSaved,
+}: {
+  initial?: VideoFormInitial | null;
+  onSaved?: () => void;
+}) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState(initial?.thumbnail_url ?? "");
@@ -41,6 +47,7 @@ export function StudioVideoForm({ initial }: { initial?: VideoFormInitial | null
     }
     setMessage(`${result.data.message ?? "Saved"} (${result.data.slug ?? "no-slug"})`);
     if (!isEditing) event.currentTarget.reset();
+    onSaved?.();
   }
 
   return (
@@ -79,8 +86,8 @@ export function StudioVideoForm({ initial }: { initial?: VideoFormInitial | null
           />
           <StudioImageUploadButton onUploaded={setThumbnailUrl} buttonLabel="Upload thumbnail" />
         </label>
-        <Field name="playback_id" label="Playback ID" defaultValue={initial?.playback_id ?? ""} />
-        <Field name="published_at" label="Published at (ISO, optional)" defaultValue={initial?.published_at ?? ""} />
+        <Field name="playback_id" label="Video player ID" defaultValue={initial?.playback_id ?? ""} />
+        <Field name="published_at" label="Publish date (optional)" defaultValue={initial?.published_at ?? ""} />
         <button
           type="submit"
           disabled={pending}

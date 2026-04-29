@@ -220,7 +220,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
     articles.length > 0 || videos.length > 0 || providers.length > 0 || destinationHits.length > 0;
   const showSupplementNote =
     allCmsSearchesEmpty && hasResults
-      ? "Your connected CMS returned no matches for this term, so we’re also searching the editorial demo catalogue. Add matching content in Supabase or use the same keywords in your titles and summaries."
+      ? "Nothing in your live catalogue matched this term, so we’re also showing picks from the editorial demo catalogue. Add articles or guides with similar wording in Studio, or try different keywords."
       : null;
 
   return (

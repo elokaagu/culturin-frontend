@@ -23,7 +23,7 @@ export default async function StudioOverviewPage() {
     },
     {
       title: "Add a video",
-      description: "Add playback IDs and metadata for /videos and stream experiences.",
+      description: "Add hosted video details so they can appear on Videos and stream experiences.",
       href: "/studio/videos",
       icon: Video,
       cta: "Open Videos",
@@ -37,7 +37,7 @@ export default async function StudioOverviewPage() {
     },
     {
       title: "Upload images",
-      description: "Generate public image URLs for CMS fields and cards across the app.",
+      description: "Upload images and copy their links for stories, cards, and listings.",
       href: "/create/upload",
       icon: ImageIcon,
       cta: "Open Uploads",
@@ -49,8 +49,8 @@ export default async function StudioOverviewPage() {
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-300">Overview</p>
       <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">Culturin Studio</h1>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-600 dark:text-white/65">
-        Create and publish from this workspace. Counts sync with your Supabase CMS tables; use the sidebar to jump between
-        editors and the live site.
+        Create and publish from this workspace. Counts reflect your live catalogue; use the sidebar to jump between editors
+        and the site.
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -72,7 +72,7 @@ export default async function StudioOverviewPage() {
             Videos
           </p>
           <p className="m-0 mt-2 text-3xl font-semibold tabular-nums text-neutral-900 dark:text-white">{counts.videos}</p>
-          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/45">Mux-backed library</p>
+          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/45">Hosted video library</p>
         </Link>
         <Link
           href="/studio/providers"

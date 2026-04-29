@@ -10,7 +10,7 @@ import Header from "../components/Header";
 import { useSupabaseAuth } from "../components/SupabaseAuthProvider";
 import { getPublicSiteUrl } from "@/lib/siteUrl";
 
-function SupabaseConfigBanner() {
+function AuthUnavailableBanner() {
   const { supabase } = useSupabaseAuth();
   if (supabase) return null;
   return (
@@ -18,10 +18,7 @@ function SupabaseConfigBanner() {
       className="mb-4 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2.5 text-sm text-amber-100"
       role="status"
     >
-      Supabase isn&apos;t available in the browser. Add <code className="text-amber-50/95">NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
-      <code className="text-amber-50/95">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to <code className="text-amber-50/95">.env.local</code> (or
-      set <code className="text-amber-50/95">SUPABASE_URL</code> and the project mirrors them in <code className="text-amber-50/95">next.config.js</code>).
-      Restart <code className="text-amber-50/95">next dev</code> after changes.
+      Signing in isn&apos;t available in this build. Try again later, or contact support if you need help.
     </p>
   );
 }
@@ -47,7 +44,7 @@ function LoginPageContent() {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!supabase) {
-      setError("Supabase isn’t configured. Check .env.local for NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then restart the dev server.");
+      setError("Signing in isn’t available right now. Try again later or contact support.");
       return;
     }
 
@@ -135,7 +132,7 @@ function LoginPageContent() {
           <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">{subtext}</p>
 
           <div className="mt-4">
-            <SupabaseConfigBanner />
+            <AuthUnavailableBanner />
           </div>
 
           <div className="mt-5">

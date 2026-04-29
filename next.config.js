@@ -9,11 +9,16 @@ const publicSupabaseUrl =
 const publicAnonKey =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
 
+/** Pass-through for CMS `playback_id` iframe embeds (no trailing slash). Set in `.env` / hosting dashboard. */
+const publicVideoPlayerOrigin =
+  process.env.NEXT_PUBLIC_VIDEO_PLAYER_ORIGIN?.replace(/\/$/, "").trim() || "";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
     NEXT_PUBLIC_SUPABASE_URL: publicSupabaseUrl,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: publicAnonKey,
+    NEXT_PUBLIC_VIDEO_PLAYER_ORIGIN: publicVideoPlayerOrigin,
   },
   images: {
     remotePatterns: [

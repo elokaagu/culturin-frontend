@@ -23,7 +23,7 @@ type TopVideosRailProps = {
 };
 
 /**
- * Home and library “Top videos” rail: server-fed; each card opens a hero dialog with the Mux player (or stream fallback if no `playbackId`).
+ * Home and library “Top videos” rail: server-fed; each card opens a hero dialog with inline playback (or stream fallback if no `playbackId`).
  * Edge-faded horizontal rail; user scrolls manually (trackpad, drag, or scrollbar).
  */
 export default function TopVideosRail({

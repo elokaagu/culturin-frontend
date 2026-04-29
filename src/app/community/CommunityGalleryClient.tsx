@@ -13,6 +13,7 @@ import {
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "@/lib/imagePlaceholder";
+import { formatStorageUploadError } from "@/lib/supabase/profileAvatarUpload";
 import { SUPABASE_PUBLIC_MEDIA_BUCKET } from "@/lib/storageConstants";
 import { cn } from "@/lib/utils";
 
@@ -63,7 +64,7 @@ export default function CommunityGalleryClient({ initialTiles }: { initialTiles:
       .from(SUPABASE_PUBLIC_MEDIA_BUCKET)
       .upload(path, file, { cacheControl: "3600", upsert: false, contentType: file.type });
     if (error) {
-      setMessage(error.message);
+      setMessage(formatStorageUploadError(error));
       setUploading(false);
       return;
     }
@@ -154,7 +155,7 @@ export default function CommunityGalleryClient({ initialTiles }: { initialTiles:
 
       {initialTiles.length === 0 ? (
         <p className="rounded-xl border border-dashed border-neutral-300 px-6 py-16 text-center text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
-          No images yet. Check back after CMS content syncs, or{" "}
+          No images yet. Check back soon for new stories and videos, or{" "}
           <button type="button" onClick={scrollToUpload} className="font-medium text-amber-700 underline-offset-2 hover:underline dark:text-amber-300/90">
             share a travel photo
           </button>

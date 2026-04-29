@@ -75,7 +75,7 @@ export const HEADER_CREATE_MENU_LINKS: HeaderCreateMenuLink[] = [
   },
   {
     title: "Media upload",
-    description: "Images for CMS fields, banners, and thumbnails across Culturin.",
+    description: "Images for articles, banners, and thumbnails across Culturin.",
     href: "/create/upload",
     icon: ImageIcon,
   },

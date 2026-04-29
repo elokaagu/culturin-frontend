@@ -121,8 +121,12 @@ export default function ProfileView() {
       const file = e.target.files?.[0];
       e.target.value = "";
       if (!file) return;
-      if (!supabase || !user) {
-        setProfileMessage("Connect Supabase in your environment to change your photo.");
+      if (!user) {
+        setProfileMessage("Sign in to change your photo.");
+        return;
+      }
+      if (!supabase) {
+        setProfileMessage("Photo uploads aren’t available right now. Try again later.");
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
@@ -132,7 +136,7 @@ export default function ProfileView() {
       const contentType = resolveProfileImageContentType(file);
       if (!contentType) {
         setProfileMessage(
-          "Please choose an image (JPEG, PNG, WebP, or GIF). For iPhone HEIC, run migration 007_storage_media_heic.sql in Supabase, then try again.",
+          "Please choose a JPEG, PNG, WebP, or GIF. HEIC from iPhone is supported when your workspace allows it—try converting to JPEG if upload fails.",
         );
         return;
       }
@@ -177,7 +181,7 @@ export default function ProfileView() {
 
   const saveBio = useCallback(async () => {
     if (!supabase || !user) {
-      setProfileMessage("Connect Supabase to save your bio.");
+      setProfileMessage("Saving your bio isn’t available right now. Try again later.");
       return;
     }
     const trimmed = bioDraft.trim().slice(0, BIO_MAX_LEN);
@@ -376,7 +380,7 @@ export default function ProfileView() {
               </p>
             ) : !editingBio && !supabase ? (
               <p className="mt-2 max-w-xl text-xs text-neutral-500 dark:text-white/35 sm:mx-0">
-                Sign in with Supabase configured to edit your bio.
+                Profile editing isn’t available in this preview. Try again later.
               </p>
             ) : null}
             {profileMessage ? (

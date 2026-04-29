@@ -2,7 +2,7 @@
 -- Safe to re-run: skips rows that already exist (slug conflict).
 -- Replace or delete these slugs in Supabase when you publish real editorial.
 
--- Shared Mux public playback id (same demo asset used elsewhere in the app).
+-- Shared demo hosted-player ID (same asset used elsewhere in the app).
 -- Thumbnails: Unsplash (hotlink-friendly params).
 
 insert into public.cms_blogs (slug, title, summary, title_image_url, body, published_at)

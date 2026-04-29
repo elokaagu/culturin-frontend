@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import MuxPlayer from "@mux/mux-player-react";
 import { Link } from "next-view-transitions";
 import { Play } from "lucide-react";
 
 import type { fullVideo } from "@/lib/interface";
+import { hostedVideoIframeSrc } from "@/lib/videoEmbed";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,
@@ -29,22 +29,35 @@ export default function StreamClient({ videos, selectedSlug }: StreamClientProps
 
   const selectedVideo = videos.find((video) => video.currentSlug === selectedSlug) ?? videos[0];
   const rowVideos = videos.filter((video) => video.currentSlug !== selectedVideo.currentSlug);
+  const streamIframeSrc = selectedVideo.playbackId
+    ? hostedVideoIframeSrc(selectedVideo.playbackId, selectedVideo.title ?? "")
+    : "";
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pb-14 pt-5 sm:px-6">
       <section className="mb-10 overflow-hidden rounded-2xl border border-white/10 bg-neutral-950/75 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.75)]">
         <div className="grid gap-0 lg:grid-cols-[1.35fr_1fr]">
           <div className="min-w-0">
-            <MuxPlayer
-              playbackId={selectedVideo.playbackId || undefined}
-              className="w-full"
-              style={{ width: "100%", aspectRatio: "16 / 9" }}
-              metadata={{
-                video_id: selectedVideo._id ?? "",
-                video_title: selectedVideo.title ?? "",
-                viewer_user_id: "stream-home-user",
-              }}
-            />
+            {streamIframeSrc ? (
+              <div className="relative aspect-video w-full overflow-hidden bg-black">
+                <iframe
+                  key={selectedVideo.currentSlug}
+                  src={streamIframeSrc}
+                  title={selectedVideo.title ?? "Video"}
+                  className="absolute inset-0 size-full"
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                />
+              </div>
+            ) : selectedVideo.playbackId ? (
+              <div className="flex aspect-video w-full items-center justify-center bg-neutral-900 px-6 text-center text-sm text-white/60">
+                Inline playback isn&apos;t configured for this deployment yet.
+              </div>
+            ) : (
+              <div className="flex aspect-video w-full items-center justify-center bg-neutral-900 text-sm text-white/60">
+                No player ID for this video.
+              </div>
+            )}
           </div>
           <div className="flex flex-col justify-center p-5 sm:p-6 lg:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-400/80">Now streaming</p>

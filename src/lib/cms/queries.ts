@@ -109,6 +109,33 @@ export async function listBlogs(db: CmsDb): Promise<simpleBlogCard[]> {
   return (data as CmsBlogRow[]).map(mapBlogRowToCard);
 }
 
+/** Studio list row: title, slug, summary, and dates for search/sort. */
+export type StudioBlogListItem = {
+  title: string;
+  summary: string;
+  currentSlug: string;
+  publishedAt: string | null;
+  createdAt: string;
+};
+
+export async function listBlogsForStudio(db: CmsDb): Promise<StudioBlogListItem[]> {
+  const { data, error } = await db
+    .from("cms_blogs")
+    .select("slug,title,summary,published_at,created_at")
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+  if (error || !data) return [];
+  return (data as Pick<CmsBlogRow, "slug" | "title" | "summary" | "published_at" | "created_at">[]).map(
+    (row) => ({
+      currentSlug: row.slug,
+      title: row.title,
+      summary: row.summary ?? "",
+      publishedAt: row.published_at,
+      createdAt: row.created_at,
+    }),
+  );
+}
+
 export async function getBlogBySlug(db: CmsDb, slug: string): Promise<fullBlog | null> {
   const { data, error } = await db.from("cms_blogs").select(blogSelect).eq("slug", slug).maybeSingle();
   if (error || !data) return null;
@@ -159,6 +186,74 @@ export async function listProvidersAsCards(db: CmsDb): Promise<providerCard[]> {
     .order("created_at", { ascending: false });
   if (error || !data) return [];
   return (data as CmsProviderRow[]).map(mapProviderRowToCard);
+}
+
+/** Studio videos list: fields for search/sort. */
+export type StudioVideoListItem = {
+  currentSlug: string;
+  title: string;
+  uploader: string;
+  description: string;
+  playbackId: string;
+  publishedAt: string | null;
+  createdAt: string;
+};
+
+export async function listVideosForStudio(db: CmsDb): Promise<StudioVideoListItem[]> {
+  const { data, error } = await db
+    .from("cms_videos")
+    .select("slug,title,uploader,description,playback_id,published_at,created_at")
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+  if (error || !data) return [];
+  return (
+    data as Pick<
+      CmsVideoRow,
+      "slug" | "title" | "uploader" | "description" | "playback_id" | "published_at" | "created_at"
+    >[]
+  ).map((row) => ({
+    currentSlug: row.slug,
+    title: row.title,
+    uploader: row.uploader ?? "",
+    description: row.description ?? "",
+    playbackId: row.playback_id?.trim() ?? "",
+    publishedAt: row.published_at,
+    createdAt: row.created_at,
+  }));
+}
+
+/** Studio providers list: fields for search/sort. */
+export type StudioProviderListItem = {
+  slug: string;
+  eventName: string;
+  name: string;
+  location: string;
+  description: string;
+  publishedAt: string | null;
+  createdAt: string;
+};
+
+export async function listProvidersForStudio(db: CmsDb): Promise<StudioProviderListItem[]> {
+  const { data, error } = await db
+    .from("cms_providers")
+    .select("slug,name,event_name,description,location,published_at,created_at")
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+  if (error || !data) return [];
+  return (
+    data as Pick<
+      CmsProviderRow,
+      "slug" | "name" | "event_name" | "description" | "location" | "published_at" | "created_at"
+    >[]
+  ).map((row) => ({
+    slug: row.slug,
+    eventName: row.event_name ?? "",
+    name: row.name ?? "",
+    location: row.location ?? "",
+    description: row.description ?? "",
+    publishedAt: row.published_at,
+    createdAt: row.created_at,
+  }));
 }
 
 export async function getProviderBySlug(db: CmsDb, slug: string): Promise<fullProvider | null> {

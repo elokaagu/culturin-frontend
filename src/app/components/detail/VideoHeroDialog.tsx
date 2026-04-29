@@ -6,6 +6,7 @@ import { useEffect, useId, useRef } from "react";
 
 import { HeroVideoModalShell } from "@/registry/magicui/hero-video-dialog";
 import type { videoCard } from "@/lib/interface";
+import { hostedVideoIframeSrc } from "@/lib/videoEmbed";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,
@@ -17,13 +18,6 @@ type VideoHeroDialogProps = {
   onClose: () => void;
   video: videoCard | null;
 };
-
-function muxEmbedSrc(playbackId: string, title: string): string {
-  const params = new URLSearchParams({
-    "metadata-video-title": title,
-  });
-  return `https://player.mux.com/${playbackId}?${params.toString()}`;
-}
 
 export function VideoHeroDialog({ open, onClose, video }: VideoHeroDialogProps) {
   const titleId = useId();
@@ -48,8 +42,8 @@ export function VideoHeroDialog({ open, onClose, video }: VideoHeroDialogProps) 
 
   const streamHref = `/stream?play=${encodeURIComponent(video.currentSlug)}`;
   const thumbSrc = resolveVideoThumbnailSrc(video.videoThumbnailUrl);
-  const canPlay = Boolean(video.playbackId);
-  const iframeSrc = video.playbackId ? muxEmbedSrc(video.playbackId, video.title) : "";
+  const iframeSrc = video.playbackId ? hostedVideoIframeSrc(video.playbackId, video.title) : "";
+  const canPlay = Boolean(iframeSrc);
 
   return (
     <HeroVideoModalShell open={open} onClose={onClose} animationStyle="from-center" showFloatingClose={false}>

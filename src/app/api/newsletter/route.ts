@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   const admin = getSupabaseAdminOrNull();
   if (!admin) {
     return NextResponse.json(
-      { error: "Newsletter sign-up is not configured. Add Supabase service credentials to the server." },
+      { error: "Newsletter sign-up isn’t available right now. Please try again later." },
       { status: 503 },
     );
   }

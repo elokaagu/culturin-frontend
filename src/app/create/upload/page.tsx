@@ -7,6 +7,7 @@ import { Link } from "next-view-transitions";
 import Header from "../../components/Header";
 import { useSupabaseAuth } from "../../components/SupabaseAuthProvider";
 import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
+import { formatStorageUploadError } from "../../../lib/supabase/profileAvatarUpload";
 import { SUPABASE_PUBLIC_MEDIA_BUCKET } from "../../../lib/storageConstants";
 
 function sanitizeFileName(name: string): string {
@@ -16,14 +17,12 @@ function sanitizeFileName(name: string): string {
 export default function UploadPage() {
   const { supabase, user } = useSupabaseAuth();
   const [publicUrl, setPublicUrl] = useState<string | null>(null);
-  const [objectPath, setObjectPath] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const resetOutcome = useCallback(() => {
     setPublicUrl(null);
-    setObjectPath(null);
     setMessage(null);
   }, []);
 
@@ -42,12 +41,11 @@ export default function UploadPage() {
       .upload(path, file, { cacheControl: "3600", upsert: false, contentType: file.type });
     if (error) {
       setUploading(false);
-      setMessage(error.message);
+      setMessage(formatStorageUploadError(error));
       return;
     }
     const { data: pub } = supabase.storage.from(SUPABASE_PUBLIC_MEDIA_BUCKET).getPublicUrl(data.path);
     setPublicUrl(pub.publicUrl);
-    setObjectPath(data.path);
     setUploading(false);
   };
 
@@ -58,7 +56,9 @@ export default function UploadPage() {
         <div className="mx-auto w-full max-w-md">
           <header className="mb-8">
             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Upload</h1>
-            <p className="mt-2 text-sm text-neutral-500 sm:text-base">Store images in Supabase Storage (public read).</p>
+            <p className="mt-2 text-sm text-neutral-500 sm:text-base">
+              Add images to your library. You can share the link or use it across Culturin.
+            </p>
           </header>
 
           <input
@@ -74,14 +74,13 @@ export default function UploadPage() {
             className="rounded-2xl border border-white/10 bg-neutral-950/80 p-6 shadow-lg shadow-black/30"
           >
             <h2 id="upload-panel-title" className="sr-only">
-              Supabase storage upload
+              Image upload
             </h2>
 
             {user && supabase ? (
               <div className="flex flex-col gap-5">
                 <p className="text-xs text-neutral-500">
-                  Files go to bucket <code className="text-amber-400/90">media</code> under your user id. Apply migration{" "}
-                  <code className="text-amber-400/90">004_storage_media_bucket</code> if uploads fail.
+                  Images are saved to your account and can be opened or shared from here.
                 </p>
                 <button
                   type="button"
@@ -94,8 +93,7 @@ export default function UploadPage() {
               </div>
             ) : !supabase ? (
               <p className="text-sm text-amber-500">
-                Supabase is not configured. Set <code className="text-amber-400/90">NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
-                <code className="text-amber-400/90">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> in the environment.
+                Uploads aren&apos;t available in this preview. Try again later or contact support if this persists.
               </p>
             ) : (
               <p className="text-sm text-neutral-300">
@@ -124,9 +122,6 @@ export default function UploadPage() {
                     Clear
                   </button>
                 </div>
-                {objectPath ? (
-                  <p className="text-xs break-all text-neutral-500">Path: {objectPath}</p>
-                ) : null}
                 <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-neutral-900">
                   <Image
                     src={publicUrl}
@@ -145,7 +140,7 @@ export default function UploadPage() {
                   rel="noopener noreferrer"
                   className="text-sm font-medium text-amber-400 underline-offset-2 hover:text-amber-300"
                 >
-                  Open public URL
+                  View full image
                 </a>
               </div>
             ) : null}

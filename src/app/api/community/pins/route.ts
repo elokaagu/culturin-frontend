@@ -36,7 +36,7 @@ export async function POST(request: Request) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
   if (!supabaseUrl || !isAllowedPublicMediaUrl(imageUrl, supabaseUrl)) {
     return NextResponse.json(
-      { message: "Image must be uploaded to Culturin media storage first." },
+      { message: "Upload your photo with the share button first, then try again." },
       { status: 400 },
     );
   }

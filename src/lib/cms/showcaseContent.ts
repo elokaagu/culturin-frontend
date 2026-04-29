@@ -8,8 +8,8 @@ import type {
 } from "@/lib/interface";
 import { REMOTE_DEMO_IMAGES } from "../remoteImageUrls";
 
-/** Same public Mux asset used on `/stream` for consistent demo playback. */
-const MUX_PLAYBACK_DEMO = "Hf9691bovUrlcAHV2CIqHm1uwUGmZJAg00tUvz2geu8s";
+/** Demo hosted-player ID shared across seeded showcase videos (see `/stream`). */
+const SHOWCASE_DEMO_PLAYBACK_ID = "Hf9691bovUrlcAHV2CIqHm1uwUGmZJAg00tUvz2geu8s";
 
 const IMAGES = REMOTE_DEMO_IMAGES;
 
@@ -568,7 +568,7 @@ const SHOWCASE_VIDEOS: Record<string, ShowcaseVideo> = {
       currentSlug: "golden-hour-in-the-valley",
       uploader: "Culturin Studios",
       description: "Long shadows, slow music, and a route that only works at this time of day.",
-      playbackId: MUX_PLAYBACK_DEMO,
+      playbackId: SHOWCASE_DEMO_PLAYBACK_ID,
       videoThumbnailUrl: IMAGES.fitness,
     },
   },
@@ -586,7 +586,7 @@ const SHOWCASE_VIDEOS: Record<string, ShowcaseVideo> = {
       currentSlug: "market-mornings",
       uploader: "Culturin Studios",
       description: "A tight edit from opening hour — vendors, light, and the ritual of the first pour.",
-      playbackId: MUX_PLAYBACK_DEMO,
+      playbackId: SHOWCASE_DEMO_PLAYBACK_ID,
       videoThumbnailUrl: IMAGES.texture,
     },
   },
@@ -604,7 +604,7 @@ const SHOWCASE_VIDEOS: Record<string, ShowcaseVideo> = {
       currentSlug: "coast-by-rail",
       uploader: "Culturin Studios",
       description: "No narration — just pace, glass, and the line where land meets water.",
-      playbackId: MUX_PLAYBACK_DEMO,
+      playbackId: SHOWCASE_DEMO_PLAYBACK_ID,
       videoThumbnailUrl: IMAGES.portrait,
     },
   },

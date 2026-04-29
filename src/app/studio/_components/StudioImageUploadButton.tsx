@@ -74,7 +74,7 @@ export function StudioImageUploadButton({ onUploaded, buttonLabel = "Upload imag
       </button>
       {message ? <p className="m-0 text-[11px] text-neutral-500 dark:text-white/55">{message}</p> : null}
       {!supabase ? (
-        <p className="m-0 text-[11px] text-neutral-500 dark:text-white/55">Configure Supabase to upload files.</p>
+        <p className="m-0 text-[11px] text-neutral-500 dark:text-white/55">Uploads aren’t available in this preview.</p>
       ) : null}
     </div>
   );

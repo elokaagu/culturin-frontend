@@ -7,7 +7,7 @@ import { Field } from "@/app/studio/_components/Field";
 import { StudioImageUploadButton } from "@/app/studio/_components/StudioImageUploadButton";
 import { postCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 
-type ProviderFormInitial = {
+export type ProviderFormInitial = {
   slug: string;
   name: string;
   event_name: string;
@@ -23,7 +23,13 @@ type ProviderFormInitial = {
   published_at: string;
 };
 
-export function StudioProviderForm({ initial }: { initial?: ProviderFormInitial | null }) {
+export function StudioProviderForm({
+  initial,
+  onSaved,
+}: {
+  initial?: ProviderFormInitial | null;
+  onSaved?: () => void;
+}) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [avatarImageUrl, setAvatarImageUrl] = useState(initial?.avatar_image_url ?? "");
@@ -49,6 +55,7 @@ export function StudioProviderForm({ initial }: { initial?: ProviderFormInitial 
     }
     setMessage(`${result.data.message ?? "Saved"} (${result.data.slug ?? "no-slug"})`);
     if (!isEditing) event.currentTarget.reset();
+    onSaved?.();
   }
 
   return (
@@ -103,7 +110,7 @@ export function StudioProviderForm({ initial }: { initial?: ProviderFormInitial 
           />
           <StudioImageUploadButton onUploaded={setBannerImageUrl} buttonLabel="Upload banner image" />
         </label>
-        <Field name="published_at" label="Published at (ISO, optional)" defaultValue={initial?.published_at ?? ""} />
+        <Field name="published_at" label="Publish date (optional)" defaultValue={initial?.published_at ?? ""} />
         <button
           type="submit"
           disabled={pending}
