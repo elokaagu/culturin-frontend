@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: { default: "Culturin Studio", template: "%s | Culturin Studio" },
-  description: "Create and manage articles, videos, and provider experiences across Culturin.",
+  description: "Create and manage articles, videos, and experiences across Culturin.",
   robots: { index: false, follow: false },
 };
 
@@ -24,11 +24,14 @@ function AccessDenied() {
         <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
           Your account is signed in, but it does not have admin access to Studio yet.
         </p>
-        <p className="mt-6 text-sm">
+        <p className="mt-6 flex flex-col gap-3 text-sm">
           <Link
-            href="/"
+            href="/creator"
             className="font-medium text-amber-800 underline-offset-2 hover:underline dark:text-amber-400/90"
           >
+            Open Creator workspace (drafts &amp; submissions)
+          </Link>
+          <Link href="/" className="font-medium text-neutral-600 underline-offset-2 hover:underline dark:text-white/55">
             ← Back to Culturin
           </Link>
         </p>

@@ -14,15 +14,12 @@ import { usePathname } from "next/navigation";
 import { Link } from "next-view-transitions";
 import { useState, type ReactNode } from "react";
 
-import { useTheme } from "@/app/styles/ThemeContext";
 import { useSupabaseAuth } from "@/app/components/SupabaseAuthProvider";
+import { useTheme } from "@/app/styles/ThemeContext";
 
-type StudioLayoutClientProps = {
+type CreatorLayoutClientProps = {
   children: ReactNode;
   email: string | null;
-  blogCount: number;
-  videoCount: number;
-  providerCount: number;
 };
 
 const navItemClass = (active: boolean) =>
@@ -33,31 +30,10 @@ const navItemClass = (active: boolean) =>
       : "text-neutral-600 hover:bg-neutral-200/80 dark:text-white/70 dark:hover:bg-white/8",
   ].join(" ");
 
-const subLabelClass = "pl-0.5 text-xs font-normal text-neutral-500 dark:text-white/45";
-
-function countBadge(n: number, active: boolean) {
-  return (
-    <span
-      className={[
-        "ml-auto inline-flex min-w-[1.4rem] justify-end tabular-nums text-xs",
-        active ? "text-neutral-600" : "text-neutral-500 dark:text-white/50",
-      ].join(" ")}
-    >
-      {n}
-    </span>
-  );
-}
-
 /**
- * Standalone Studio shell: full viewport, no site marketing header/footer.
+ * Creator shell — submissions workspace for signed-in users without CMS admin access.
  */
-export default function StudioLayoutClient({
-  children,
-  email,
-  blogCount,
-  videoCount,
-  providerCount,
-}: StudioLayoutClientProps) {
+export default function CreatorLayoutClient({ children, email }: CreatorLayoutClientProps) {
   const pathname = usePathname() ?? "";
   const { mode, toggleTheme } = useTheme();
   const { supabase } = useSupabaseAuth();
@@ -68,10 +44,10 @@ export default function StudioLayoutClient({
       <header className="flex shrink-0 items-center justify-between gap-3 border-b border-neutral-200/90 bg-white/90 px-3 py-2.5 backdrop-blur-sm dark:border-white/10 dark:bg-neutral-950/90 sm:px-4">
         <div className="flex min-w-0 items-center gap-3">
           <Link
-            href="/studio"
+            href="/creator"
             className="truncate font-display text-base font-semibold tracking-tight text-amber-800 no-underline dark:text-amber-300/95"
           >
-            Culturin™ <span className="font-sans text-sm font-medium text-neutral-600 dark:text-white/60">Studio</span>
+            Culturin™ <span className="font-sans text-sm font-medium text-neutral-600 dark:text-white/60">Creator</span>
           </Link>
         </div>
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
@@ -97,7 +73,7 @@ export default function StudioLayoutClient({
       <div className="flex min-h-0 min-w-0 flex-1 flex-col md:flex-row">
         <aside
           className="flex max-h-[40vh] w-full shrink-0 flex-col border-b border-neutral-200 bg-white/95 dark:border-white/10 dark:bg-neutral-950/95 md:max-h-none md:w-64 md:border-b-0 md:border-r"
-          aria-label="Studio navigation"
+          aria-label="Creator navigation"
         >
           <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
             <div className="px-3 py-4 md:px-3 md:py-5">
@@ -112,14 +88,14 @@ export default function StudioLayoutClient({
               </p>
             </div>
 
-            <nav className="space-y-4 px-2.5 pb-4 md:pb-6" aria-label="Content management">
-              <p className={subLabelClass}>Content</p>
+            <nav className="space-y-4 px-2.5 pb-4 md:pb-6" aria-label="Creator content">
+              <p className="pl-0.5 text-xs font-normal text-neutral-500 dark:text-white/45">Your submissions</p>
               <ul className="m-0 space-y-0.5 p-0">
                 <li>
                   <Link
-                    href="/studio"
-                    className={navItemClass(pathname === "/studio")}
-                    aria-current={pathname === "/studio" ? "page" : undefined}
+                    href="/creator"
+                    className={navItemClass(pathname === "/creator")}
+                    aria-current={pathname === "/creator" ? "page" : undefined}
                   >
                     <LayoutDashboard className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                     Overview
@@ -127,49 +103,36 @@ export default function StudioLayoutClient({
                 </li>
                 <li>
                   <Link
-                    href="/studio/articles"
+                    href="/creator/articles"
                     className={navItemClass(
-                      pathname === "/studio/articles" || pathname?.startsWith("/studio/articles/"),
+                      pathname === "/creator/articles" || pathname?.startsWith("/creator/articles/"),
                     )}
-                    aria-current={pathname === "/studio/articles" ? "page" : undefined}
                   >
                     <BookOpen className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                    <span className="min-w-0 flex-1">Articles & guides</span>
-                    {countBadge(
-                      blogCount,
-                      pathname === "/studio/articles" || pathname?.startsWith("/studio/articles/"),
-                    )}
+                    <span className="min-w-0 flex-1">Articles</span>
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/studio/videos"
-                    className={navItemClass(pathname === "/studio/videos" || pathname?.startsWith("/studio/videos/"))}
-                    aria-current={pathname === "/studio/videos" ? "page" : undefined}
+                    href="/creator/videos"
+                    className={navItemClass(pathname === "/creator/videos" || pathname?.startsWith("/creator/videos/"))}
                   >
                     <Video className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                     <span className="min-w-0 flex-1">Videos</span>
-                    {countBadge(videoCount, pathname === "/studio/videos" || pathname?.startsWith("/studio/videos/"))}
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/studio/providers"
+                    href="/creator/providers"
                     className={navItemClass(
-                      pathname === "/studio/providers" || pathname?.startsWith("/studio/providers/"),
+                      pathname === "/creator/providers" || pathname?.startsWith("/creator/providers/"),
                     )}
-                    aria-current={pathname === "/studio/providers" ? "page" : undefined}
                   >
                     <Building2 className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                     <span className="min-w-0 flex-1">Experiences</span>
-                    {countBadge(
-                      providerCount,
-                      pathname === "/studio/providers" || pathname?.startsWith("/studio/providers/"),
-                    )}
                   </Link>
                 </li>
               </ul>
-
             </nav>
           </div>
           <div className="border-t border-neutral-200 px-2.5 py-2.5 dark:border-white/10">
@@ -190,10 +153,7 @@ export default function StudioLayoutClient({
           </div>
         </aside>
 
-        <div
-          className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain bg-neutral-50 dark:bg-neutral-950/50"
-          data-studio-main
-        >
+        <div className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain bg-neutral-50 dark:bg-neutral-950/50">
           {children}
         </div>
       </div>

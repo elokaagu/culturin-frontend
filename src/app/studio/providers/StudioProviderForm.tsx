@@ -5,6 +5,7 @@ import { Link } from "next-view-transitions";
 
 import { Field } from "@/app/studio/_components/Field";
 import { StudioImageUploadButton } from "@/app/studio/_components/StudioImageUploadButton";
+import { postCreatorSubmission } from "@/app/creator/_lib/postCreatorSubmission";
 import { postCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 
 export type ProviderFormInitial = {
@@ -26,15 +27,19 @@ export type ProviderFormInitial = {
 export function StudioProviderForm({
   initial,
   onSaved,
+  workspace = "studio",
 }: {
   initial?: ProviderFormInitial | null;
   onSaved?: () => void;
+  workspace?: "studio" | "creator";
 }) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [avatarImageUrl, setAvatarImageUrl] = useState(initial?.avatar_image_url ?? "");
   const [bannerImageUrl, setBannerImageUrl] = useState(initial?.banner_image_url ?? "");
   const isEditing = Boolean(initial?.slug);
+  const isCreator = workspace === "creator";
+  const listHref = isCreator ? "/creator/providers" : "/studio/providers";
 
   useEffect(() => {
     setAvatarImageUrl(initial?.avatar_image_url ?? "");
@@ -44,9 +49,30 @@ export function StudioProviderForm({
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const entry = Object.fromEntries(formData.entries());
+    const entry = Object.fromEntries(formData.entries()) as Record<string, unknown>;
     setPending(true);
     setMessage(null);
+
+    if (isCreator) {
+      const result = await postCreatorSubmission("provider", entry);
+      setPending(false);
+      if (!result.ok) {
+        setMessage(result.message);
+        return;
+      }
+      setMessage(
+        result.data.message ??
+          "Thanks — your experience was submitted for review. Nothing goes live until the team approves it.",
+      );
+      if (!isEditing) {
+        event.currentTarget.reset();
+        setAvatarImageUrl("");
+        setBannerImageUrl("");
+      }
+      onSaved?.();
+      return;
+    }
+
     const result = await postCmsEntry("provider", entry);
     setPending(false);
     if (!result.ok) {
@@ -62,11 +88,15 @@ export function StudioProviderForm({
     <section id="provider-form">
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <h2 className="m-0 text-base font-semibold text-neutral-900 dark:text-white">
-          {isEditing ? "Edit provider/experience" : "Create provider/experience"}
+          {isEditing
+            ? "Edit experience"
+            : isCreator
+              ? "Submit an experience"
+              : "Create experience"}
         </h2>
         {isEditing ? (
           <Link
-            href="/studio/providers"
+            href={listHref}
             className="inline-flex h-7 items-center rounded-full border border-neutral-300 px-3 text-xs font-medium text-neutral-700 no-underline transition hover:bg-neutral-100 dark:border-white/20 dark:text-white/75 dark:hover:bg-white/10"
           >
             Cancel edit
@@ -116,7 +146,13 @@ export function StudioProviderForm({
           disabled={pending}
           className="mt-1 rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
         >
-          {pending ? "Saving…" : isEditing ? "Save provider changes" : "Save provider entry"}
+          {pending
+            ? "Saving…"
+            : isEditing
+              ? "Save changes"
+              : isCreator
+                ? "Submit for review"
+                : "Save entry"}
         </button>
       </form>
     </section>

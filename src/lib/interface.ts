@@ -16,6 +16,8 @@ export interface fullBlog {
   titleImage?: unknown;
   body: unknown;
   _id: string;
+  /** ISO timestamp from CMS (optional on older mapped rows). */
+  publishedAt?: string | null;
 }
 
 export interface videoCard {
@@ -39,6 +41,8 @@ export interface fullVideo {
   _id: string;
   videoThumbnailUrl?: string | null;
   videoThumbnail?: unknown;
+  /** ISO timestamp from CMS (optional on older mapped rows). */
+  publishedAt?: string | null;
 }
 
 export interface providerCard {

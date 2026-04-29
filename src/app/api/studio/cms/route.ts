@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { getCurrentAdminState } from "@/lib/studio/admin";
+import { emptyPortableTextBlocks } from "@/lib/portableText/tiptapHtmlBridge";
 import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 type CmsType = "blog" | "video" | "provider";
@@ -13,6 +14,11 @@ function parseCsvArray(input: unknown): string[] {
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
+}
+
+function normalizeBlogBody(raw: unknown): unknown[] {
+  if (Array.isArray(raw) && raw.length > 0) return raw;
+  return emptyPortableTextBlocks();
 }
 
 function asSlug(input: unknown) {
@@ -63,6 +69,7 @@ export async function POST(request: Request) {
       summary: String(entry.summary ?? "").trim() || null,
       title_image_url: String(entry.title_image_url ?? "").trim() || null,
       published_at: String(entry.published_at ?? "").trim() || new Date().toISOString(),
+      body: normalizeBlogBody(entry.body),
     };
     const { error } =
       originalSlug && originalSlug !== slug

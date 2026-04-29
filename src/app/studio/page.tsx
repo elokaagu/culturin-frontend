@@ -29,11 +29,11 @@ export default async function StudioOverviewPage() {
       cta: "Open Videos",
     },
     {
-      title: "Add a provider",
+      title: "Add an experience",
       description: "Create curated experiences, partner listings, and destination-ready cards.",
       href: "/studio/providers",
       icon: Building2,
-      cta: "Open Providers",
+      cta: "Open Experiences",
     },
     {
       title: "Upload images",
@@ -79,7 +79,7 @@ export default async function StudioOverviewPage() {
           className="group block rounded-2xl border border-neutral-200 bg-white p-5 no-underline shadow-sm transition hover:border-amber-400/45 hover:shadow-md dark:border-white/10 dark:bg-neutral-950/80 dark:hover:border-amber-400/35"
         >
           <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/50">
-            Providers
+            Experiences
           </p>
           <p className="m-0 mt-2 text-3xl font-semibold tabular-nums text-neutral-900 dark:text-white">
             {counts.providers}

@@ -24,6 +24,7 @@ export function mapBlogRowToFull(row: CmsBlogRow): fullBlog {
     titleImageUrl: row.title_image_url,
     titleImage: row.title_image,
     body: row.body,
+    publishedAt: row.published_at,
   };
 }
 
@@ -50,6 +51,7 @@ export function mapVideoRowToFull(row: CmsVideoRow): fullVideo {
     playbackId: row.playback_id ?? "",
     videoThumbnailUrl: row.thumbnail_url,
     videoThumbnail: row.thumbnail,
+    publishedAt: row.published_at,
   };
 }
 

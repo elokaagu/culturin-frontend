@@ -9,8 +9,8 @@ import { StudioProvidersPageClient } from "./StudioProvidersPageClient";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Providers & experiences",
-  description: "Create or update provider and experience cards.",
+  title: "Experiences",
+  description: "Create or update experience listings and partner cards.",
 };
 
 type StudioProvidersPageProps = {
@@ -52,7 +52,7 @@ export default async function StudioProvidersPage({ searchParams }: StudioProvid
   return (
     <div className="p-4 sm:p-6 md:p-8">
       <p className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">Content</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Providers &amp; experiences</h1>
+      <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl dark:text-white">Experiences</h1>
       <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
         Listings can appear on Providers, experience rails, and destination pages.
       </p>

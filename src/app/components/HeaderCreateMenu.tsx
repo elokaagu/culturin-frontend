@@ -1,20 +1,12 @@
 "use client";
 
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import type { LucideIcon } from "lucide-react";
-import {
-  BookOpen,
-  Building2,
-  ChevronDown,
-  Handshake,
-  ImageIcon,
-  LayoutDashboard,
-  ListTree,
-  Video,
-  Zap,
-} from "lucide-react";
+import { ChevronDown, Zap } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { useTransitionRouter } from "next-view-transitions";
+
+import { useStudioRole } from "@/app/components/useStudioRole";
+import { getCreateMenuLinks } from "@/lib/createMenuLinks";
 
 const studioShellClass =
   "inline-flex h-9 shrink-0 items-center justify-center rounded-full border border-neutral-200/90 bg-neutral-100/90 p-0.5 shadow-sm dark:border-white/[0.08] dark:bg-[#141414]";
@@ -34,65 +26,28 @@ const itemClass =
 const itemTitleClass = "text-sm font-semibold text-neutral-900 dark:text-white";
 const itemDescClass = "mt-0.5 text-xs leading-snug text-neutral-500 dark:text-white/55";
 
-export type HeaderCreateMenuLink = {
-  title: string;
-  description: string;
-  href: string;
-  icon: LucideIcon;
-};
-
-/** Shared with mobile `Sidebar` so Create destinations stay in sync. */
-export const HEADER_CREATE_MENU_LINKS: HeaderCreateMenuLink[] = [
-  {
-    title: "Article",
-    description: "Guides and stories for destinations, trending rails, and search.",
-    href: "/studio/articles",
-    icon: BookOpen,
-  },
-  {
-    title: "Video",
-    description: "Clips and field notes for /videos, stream, and home highlights.",
-    href: "/studio/videos",
-    icon: Video,
-  },
-  {
-    title: "Experience",
-    description: "Provider cards, curated experiences, and travel-guide hosts.",
-    href: "/studio/providers",
-    icon: Building2,
-  },
-  {
-    title: "Spot list",
-    description: "Itineraries and saved places on your profile to plan and share.",
-    href: "/profile#spot-lists",
-    icon: ListTree,
-  },
-  {
-    title: "Advisor application",
-    description: "Partner with Culturin as a travel and culture advisor.",
-    href: "/join-us/advisors",
-    icon: Handshake,
-  },
-  {
-    title: "Media upload",
-    description: "Images for articles, banners, and thumbnails across Culturin.",
-    href: "/create/upload",
-    icon: ImageIcon,
-  },
-  {
-    title: "Studio overview",
-    description: "Counts, shortcuts, and everything you publish in one workspace.",
-    href: "/studio",
-    icon: LayoutDashboard,
-  },
-];
-
 export function HeaderCreateMenu() {
   const router = useTransitionRouter();
+  const role = useStudioRole();
+
+  const isAdmin = role.authenticated && role.isAdmin;
+  const links = getCreateMenuLinks(isAdmin);
+
+  const workspaceHref = !role.authenticated
+    ? "/login?next=/creator"
+    : role.isAdmin
+      ? "/studio"
+      : "/creator";
+
+  const workspaceLabel = role.loading
+    ? "Workspace"
+    : role.isAdmin
+      ? "Open Studio workspace"
+      : "Open Creator workspace";
 
   return (
     <div className={studioShellClass}>
-      <Link href="/studio" className={studioIconLinkClass} aria-label="Open Studio workspace" title="Studio">
+      <Link href={workspaceHref} className={studioIconLinkClass} aria-label={workspaceLabel} title={workspaceLabel}>
         <Zap className="h-4 w-4" strokeWidth={2.25} aria-hidden />
       </Link>
       <DropdownMenu.Root>
@@ -119,11 +74,11 @@ export function HeaderCreateMenu() {
               </p>
             </div>
             <div className="max-h-[min(70dvh,24rem)] overflow-y-auto py-1">
-              {HEADER_CREATE_MENU_LINKS.map((item) => {
+              {links.map((item) => {
                 const Icon = item.icon;
                 return (
                   <DropdownMenu.Item
-                    key={item.href}
+                    key={`${item.href}-${item.title}`}
                     className={itemClass}
                     onSelect={(e) => {
                       e.preventDefault();

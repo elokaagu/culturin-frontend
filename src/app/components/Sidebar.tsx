@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { Link } from "next-view-transitions";
+import React, { useMemo, useState } from "react";
+import Link from "next/link";
 import { ChevronDown, Zap } from "lucide-react";
 
 import { GoogleSignInButton } from "./AuthButtons";
-import { HEADER_CREATE_MENU_LINKS } from "./HeaderCreateMenu";
+import { useStudioRole } from "./useStudioRole";
+import { getCreateMenuLinks } from "@/lib/createMenuLinks";
 
 type SidebarProps = {
   id?: string;
@@ -25,6 +26,17 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
   const [destinationsOpen, setDestinationsOpen] = useState(false);
   const [nearbyOpen, setNearbyOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
+  const role = useStudioRole();
+
+  const menuLinks = useMemo(() => getCreateMenuLinks(role.authenticated && role.isAdmin), [role.authenticated, role.isAdmin]);
+
+  const workspaceHref = !role.authenticated
+    ? "/login?next=/creator"
+    : role.isAdmin
+      ? "/studio"
+      : "/creator";
+
+  const workspaceTitle = role.isAdmin ? "Studio workspace" : "Creator workspace";
 
   return (
     <div
@@ -119,15 +131,15 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
               >
                 <ul className="m-0 max-h-[min(70vh,22rem)] list-none overflow-y-auto rounded-[10px] bg-white py-1 shadow-lg dark:bg-[#141414] dark:ring-1 dark:ring-white/10">
                   <li className="list-none">
-                    <Link href="/studio" className={createSubLinkClass} onClick={onClose}>
+                    <Link href={workspaceHref} className={createSubLinkClass} onClick={onClose}>
                       <span className="inline-flex items-center gap-2">
                         <Zap className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                        Studio workspace
+                        {workspaceTitle}
                       </span>
                     </Link>
                   </li>
-                  {HEADER_CREATE_MENU_LINKS.map((item) => (
-                    <li key={item.href} className="list-none">
+                  {menuLinks.map((item) => (
+                    <li key={`${item.href}-${item.title}`} className="list-none">
                       <Link href={item.href} className={createSubLinkClass} onClick={onClose}>
                         <span className="font-medium">{item.title}</span>
                         <span className="mt-0.5 block text-xs font-normal text-neutral-500 dark:text-white/50">

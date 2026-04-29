@@ -136,6 +136,11 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
             {children}
           </code>
         ),
+        "strike-through": ({ children }) => (
+          <s className="text-neutral-600 line-through decoration-neutral-400 dark:text-white/55 dark:decoration-white/25">
+            {children}
+          </s>
+        ),
       },
     }),
     []
