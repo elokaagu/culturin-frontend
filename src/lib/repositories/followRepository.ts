@@ -2,6 +2,8 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { SpotListItemRow, SpotListRow, SpotListWithItems } from "@/lib/spotLists/types";
 import type { SuggestedTraveler, TravelerCard, TravelerProfile } from "@/lib/social/types";
+import { getPublicLanguageSummary } from "./languageLearningRepository";
+import { listPublicSpotifyPlaylistsForProfile } from "./spotifyRepository";
 import { getSupabaseAdmin } from "../supabaseServiceRole";
 
 type AppUserRow = {
@@ -198,11 +200,26 @@ export async function getTravelerProfile(input: {
     isFollowing = Boolean(existing);
   }
 
+  const languageSummary = await getPublicLanguageSummary(user.id).catch(() => null);
+  const spotifyPlaylists = await listPublicSpotifyPlaylistsForProfile({
+    userId: user.id,
+    viewerUserId: input.viewerUserId ?? null,
+  }).catch(() => []);
+
   return {
     id: user.id,
     name: displayNameFromUser(user),
     handle: handleFromUser(user),
     lists: listWithItems,
+    spotifyPlaylists: spotifyPlaylists.map((playlist) => ({
+      id: playlist.id,
+      name: playlist.name,
+      description: playlist.description,
+      tracks_total: playlist.tracks_total,
+      image_url: playlist.image_url,
+      spotify_url: playlist.spotify_url,
+    })),
+    languageSummary,
     followersCount: followersCount ?? 0,
     followingCount: followingCount ?? 0,
     isFollowing,

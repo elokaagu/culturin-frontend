@@ -122,6 +122,67 @@ export default async function ProfileByIdPage({ params }: PageProps) {
                   </ul>
                 )}
               </section>
+
+              <section className="mt-6">
+                <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">Playlists</h2>
+                <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/65">
+                  Public playlists imported from Spotify.
+                </p>
+                {profile.spotifyPlaylists.length === 0 ? (
+                  <p className="m-0 mt-4 rounded-xl border border-neutral-200 bg-white px-4 py-4 text-sm text-neutral-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-white/65">
+                    No public playlists yet.
+                  </p>
+                ) : (
+                  <ul className="m-0 mt-5 space-y-3 p-0">
+                    {profile.spotifyPlaylists.map((playlist) => (
+                      <li
+                        key={playlist.id}
+                        className="list-none rounded-xl border border-neutral-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.03]"
+                      >
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex min-w-0 items-center gap-3">
+                            {playlist.image_url ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={playlist.image_url} alt={playlist.name} className="h-14 w-14 rounded-md object-cover" />
+                            ) : (
+                              <div className="h-14 w-14 rounded-md bg-neutral-200 dark:bg-white/10" />
+                            )}
+                            <div className="min-w-0">
+                              <p className="m-0 truncate text-sm font-semibold text-neutral-900 dark:text-white">{playlist.name}</p>
+                              <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/55">{playlist.tracks_total} tracks</p>
+                            </div>
+                          </div>
+                          <a
+                            href={playlist.spotify_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="rounded-full border border-neutral-300 px-3 py-1.5 text-xs font-medium text-neutral-800 no-underline transition hover:bg-neutral-50 dark:border-white/20 dark:text-white"
+                          >
+                            Open
+                          </a>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+
+              {profile.languageSummary ? (
+                <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
+                  <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">Language learning</h2>
+                  <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/65">
+                    Studying {profile.languageSummary.targetLanguage} ({profile.languageSummary.proficiencyLevel}).
+                  </p>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    <p className="m-0 rounded-xl bg-neutral-50 px-3 py-2 text-sm text-neutral-700 dark:bg-black/40 dark:text-white/80">
+                      Words saved: <span className="font-semibold">{profile.languageSummary.totalWords}</span>
+                    </p>
+                    <p className="m-0 rounded-xl bg-neutral-50 px-3 py-2 text-sm text-neutral-700 dark:bg-black/40 dark:text-white/80">
+                      Current streak: <span className="font-semibold">{profile.languageSummary.currentStreak}</span>
+                    </p>
+                  </div>
+                </section>
+              ) : null}
             </div>
 
             <aside className="lg:sticky lg:top-[calc(var(--header-offset)+1.25rem)] lg:self-start">

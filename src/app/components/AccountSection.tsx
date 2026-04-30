@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useAppAuth } from "./SupabaseAuthProvider";
 
 import { AccountProfileForm } from "./account/AccountProfileForm";
+import { SpotifyConnectionCard } from "./account/SpotifyConnectionCard";
 import type { AccountProfileUser } from "./account/types";
 
 /**
@@ -39,7 +40,10 @@ export default function AccountSection() {
       </header>
 
       {status === "loading" ? null : profileUser ? (
-        <AccountProfileForm user={profileUser} />
+        <>
+          <SpotifyConnectionCard />
+          <AccountProfileForm user={profileUser} />
+        </>
       ) : (
         <p className="text-sm text-neutral-500 dark:text-white/60">
           Use the sign-in option in the header to access account settings.

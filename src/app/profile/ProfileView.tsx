@@ -25,11 +25,13 @@ import { SUPABASE_PUBLIC_MEDIA_BUCKET } from "@/lib/storageConstants";
 
 import { GoogleSignInButton } from "../components/AuthButtons";
 import { useAppAuth, useSupabaseAuth } from "../components/SupabaseAuthProvider";
+import LanguageToolsPanel from "./LanguageToolsPanel";
 import ProfileSpotLists from "./ProfileSpotLists";
+import SpotifyPlaylistsPanel from "./SpotifyPlaylistsPanel";
 
 const BIO_MAX_LEN = 500;
 
-type TabId = "elements" | "collections";
+type TabId = "elements" | "collections" | "language" | "playlists";
 
 type GridDensity = 2 | 3 | 4;
 
@@ -55,6 +57,7 @@ export default function ProfileView() {
   const [bioDraft, setBioDraft] = useState("");
   const [savingBio, setSavingBio] = useState(false);
   const [listsCount, setListsCount] = useState(0);
+  const [spotifyCount, setSpotifyCount] = useState(0);
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -86,6 +89,7 @@ export default function ProfileView() {
     const applyHash = () => {
       if (typeof window === "undefined") return;
       if (window.location.hash === "#spot-lists") setTab("collections");
+      if (window.location.hash === "#playlists") setTab("playlists");
     };
     applyHash();
     window.addEventListener("hashchange", applyHash);
@@ -441,6 +445,32 @@ export default function ProfileView() {
               >
                 Trip lists ({listsCount})
               </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={tab === "language"}
+                className={
+                  tab === "language"
+                    ? "rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:shadow-sm dark:ring-0"
+                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/70"
+                }
+                onClick={() => setTab("language")}
+              >
+                Language tools
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={tab === "playlists"}
+                className={
+                  tab === "playlists"
+                    ? "rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:shadow-sm dark:ring-0"
+                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/70"
+                }
+                onClick={() => setTab("playlists")}
+              >
+                Playlists ({spotifyCount})
+              </button>
             </div>
           </div>
 
@@ -478,8 +508,12 @@ export default function ProfileView() {
               <ArticleCardFromBlog key={card.currentSlug} card={card} layout="profile" />
             ))}
           </div>
-        ) : (
+        ) : tab === "collections" ? (
           <ProfileSpotLists onCountChange={setListsCount} />
+        ) : tab === "language" ? (
+          <LanguageToolsPanel />
+        ) : (
+          <SpotifyPlaylistsPanel onCountChange={setSpotifyCount} />
         )}
 
         {tab === "elements" && articles.length === 0 ? (
