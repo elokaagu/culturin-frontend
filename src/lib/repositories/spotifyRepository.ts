@@ -49,7 +49,12 @@ async function exchangeSpotifyToken(input: {
   code?: string;
   refreshToken?: string;
   redirectUri?: string;
-}) {
+}): Promise<{
+  access_token: string;
+  expires_in: number;
+  refresh_token?: string;
+  scope?: string;
+}> {
   const { clientId, clientSecret } = requireSpotifyEnv();
   const body = new URLSearchParams();
   if (input.code && input.redirectUri) {
@@ -82,7 +87,12 @@ async function exchangeSpotifyToken(input: {
   if (!response.ok || !payload.access_token || !payload.expires_in) {
     throw new Error(payload.error_description || "Failed to authenticate with Spotify.");
   }
-  return payload;
+  return {
+    access_token: payload.access_token,
+    expires_in: payload.expires_in,
+    refresh_token: payload.refresh_token,
+    scope: payload.scope,
+  };
 }
 
 async function fetchSpotifyMe(accessToken: string) {
