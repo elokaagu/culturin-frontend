@@ -490,6 +490,314 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       ],
     },
   },
+  "ghana-accra-creative-pulse": {
+    card: {
+      title: "Ghana's Accra creative pulse: galleries, music, and a city rewriting its story",
+      summary:
+        "Ghana — Accra's arts scene from wax-print studios to live highlife: the neighbourhoods where a new generation is making culture on their own terms.",
+      currentSlug: "ghana-accra-creative-pulse",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1580746738099-a01d18e06e1a?auto=format&fit=crop&w=1200&q=80",
+    },
+    full: {
+      _id: "showcase-ghana-accra-creative-pulse",
+      title: "Ghana's Accra creative pulse: galleries, music, and a city rewriting its story",
+      currentSlug: "ghana-accra-creative-pulse",
+      summary:
+        "Ghana — Accra's arts scene from wax-print studios to live highlife: the neighbourhoods where a new generation is making culture on their own terms.",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1580746738099-a01d18e06e1a?auto=format&fit=crop&w=1200&q=80",
+      body: [
+        {
+          _type: "block",
+          _key: "gh1",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "gh1c",
+              text: "Accra does not slow down for visitors. It keeps its own rhythm — a city of makerspaces, outdoor stages, and supper clubs that exist because someone decided the neighbourhood needed them.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "gh2",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "gh2c", text: "Where to look first", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "gh3",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "gh3c",
+              text: "Start in the gallery districts: conversations here are free and generous. Move toward live music in the evening — highlife and Afrobeats share the same streets, often within earshot of each other.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "gh4",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "gh4c", text: "A city in motion", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "gh5",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "gh5c",
+              text: "Ghana's creative energy is not curated for tourists — it is genuinely local and entirely alive. Show up with curiosity and a willingness to be surprised, and Accra will exceed whatever you planned.",
+              marks: [],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  "india-rajasthan-painted-towns": {
+    card: {
+      title: "India's painted towns: Rajasthan forts, desert light, and rooms with stories",
+      summary:
+        "India — slow travel through Rajasthan's blue city, ochre forts, and silk-road caravanserais where history is still warm to the touch.",
+      currentSlug: "india-rajasthan-painted-towns",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80",
+    },
+    full: {
+      _id: "showcase-india-rajasthan-painted-towns",
+      title: "India's painted towns: Rajasthan forts, desert light, and rooms with stories",
+      currentSlug: "india-rajasthan-painted-towns",
+      summary:
+        "India — slow travel through Rajasthan's blue city, ochre forts, and silk-road caravanserais where history is still warm to the touch.",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80",
+      body: [
+        {
+          _type: "block",
+          _key: "raj1",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "raj1c",
+              text: "Rajasthan is not one colour — it is an argument between ochre, blue, and rose that shifts with the hour. Fort walls hold centuries of trade routes; havelis hold painted ceilings that took lifetimes to finish.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "raj2",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "raj2c", text: "Morning on the rooftop", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "raj3",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "raj3c",
+              text: "Wake before the desert heat arrives. Chai on a rooftop, a fort silhouette in the early haze, then the bazaar opening stall by stall. The slowest hours here are the most generous.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "raj4",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "raj4c", text: "How to pace it", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "raj5",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "raj5c",
+              text: "Two nights minimum per town. Rajasthan does not reveal itself in an afternoon. The region rewards those who eat locally, wander without agenda, and accept that every guesthouse owner has a story worth hearing.",
+              marks: [],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  "colombia-cartagena-walled": {
+    card: {
+      title: "Colombia's walled city: Cartagena heat, colour, and the walk that never repeats",
+      summary:
+        "Colombia — inside Cartagena's old walls: Caribbean light on bougainvillea, colonial plazas, and the rooftop hour that makes the humidity worth it.",
+      currentSlug: "colombia-cartagena-walled",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1562619371-b67725b6fde2?auto=format&fit=crop&w=1200&q=80",
+    },
+    full: {
+      _id: "showcase-colombia-cartagena-walled",
+      title: "Colombia's walled city: Cartagena heat, colour, and the walk that never repeats",
+      currentSlug: "colombia-cartagena-walled",
+      summary:
+        "Colombia — inside Cartagena's old walls: Caribbean light on bougainvillea, colonial plazas, and the rooftop hour that makes the humidity worth it.",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1562619371-b67725b6fde2?auto=format&fit=crop&w=1200&q=80",
+      body: [
+        {
+          _type: "block",
+          _key: "col1",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "col1c",
+              text: "Cartagena is best understood as a colour conversation. Every street inside the walls offers a different argument between yellow walls, red bougainvillea, and the blue sky above balconies loaded with plants.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "col2",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "col2c", text: "Midday rules", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "col3",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "col3c",
+              text: "The heat owns noon. Retreat: a courtyard lunch, a slow coffee, a hammock if one is available. Return to the streets at four when the walls glow golden and the squares fill with locals rather than tour groups.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "col4",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "col4c", text: "Beyond the postcard", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "col5",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "col5c",
+              text: "The neighbourhoods outside the walls are where Cartagena actually lives — cumbia at corner stores, fruit carts in the morning, and conversations that go long past any reasonable dinner hour.",
+              marks: [],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  "new-zealand-south-island-fjords": {
+    card: {
+      title: "New Zealand's southern silence: fjords, single-lane roads, and skies without edges",
+      summary:
+        "New Zealand — South Island slow driving: Milford Sound, valley camping, and the particular quiet that only arrives when you are hundreds of kilometres from the nearest city.",
+      currentSlug: "new-zealand-south-island-fjords",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80",
+    },
+    full: {
+      _id: "showcase-new-zealand-south-island-fjords",
+      title: "New Zealand's southern silence: fjords, single-lane roads, and skies without edges",
+      currentSlug: "new-zealand-south-island-fjords",
+      summary:
+        "New Zealand — South Island slow driving: Milford Sound, valley camping, and the particular quiet that only arrives when you are hundreds of kilometres from the nearest city.",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80",
+      body: [
+        {
+          _type: "block",
+          _key: "nz1",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "nz1c",
+              text: "The South Island gives scale back to you. Mountains arrive before you are ready, then waterfalls, then a fjord that makes the drive feel entirely earned. Nothing about it is subtle.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "nz2",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "nz2c", text: "The road as the point", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "nz3",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "nz3c",
+              text: "Do not rush to Milford. The road through the valley — mountain streams, moss-covered rock, single-lane bridges — is the experience. Build two hours of buffer and stop whenever the light changes, because it will.",
+              marks: [],
+            },
+          ],
+        },
+        {
+          _type: "block",
+          _key: "nz4",
+          style: "h2",
+          markDefs: [],
+          children: [{ _type: "span", _key: "nz4c", text: "Night on the island", marks: [] }],
+        },
+        {
+          _type: "block",
+          _key: "nz5",
+          style: "normal",
+          markDefs: [],
+          children: [
+            {
+              _type: "span",
+              _key: "nz5c",
+              text: "After dark, the South Island gives you stars that feel close enough to name. Find a valley with no road noise, make something warm, and stay outside longer than is sensible. It is always worth it.",
+              marks: [],
+            },
+          ],
+        },
+      ],
+    },
+  },
   "vietnam-hanoi-street-dawn": {
     card: {
       title: "Vietnam’s Hanoi streets: dawn phở, old-quarter corners, and the rhythm of scooters",
