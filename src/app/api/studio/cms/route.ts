@@ -132,3 +132,47 @@ export async function POST(request: Request) {
   revalidatePath("/curated-experiences");
   return NextResponse.json({ message: "Provider saved", slug });
 }
+
+export async function DELETE(request: Request) {
+  const { isAdmin } = await getCurrentAdminState();
+  if (!isAdmin) {
+    return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+  }
+
+  const url = new URL(request.url);
+  const type = url.searchParams.get("type") as CmsType | null;
+  const slug = asSlug(url.searchParams.get("slug"));
+
+  if (!type || !["blog", "video", "provider"].includes(type)) {
+    return NextResponse.json({ message: "Invalid type." }, { status: 400 });
+  }
+  if (!slug) {
+    return NextResponse.json({ message: "Slug is required." }, { status: 400 });
+  }
+
+  const admin = getSupabaseAdminOrNull();
+  if (!admin) {
+    return NextResponse.json(
+      { message: "Deleting isn’t available—your workspace isn’t fully connected. Try again later or contact support." },
+      { status: 503 },
+    );
+  }
+
+  const table = type === "blog" ? "cms_blogs" : type === "video" ? "cms_videos" : "cms_providers";
+  const { error } = await admin.from(table).delete().eq("slug", slug);
+  if (error) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+
+  if (type === "blog") {
+    revalidatePath("/articles");
+    revalidatePath(`/articles/${slug}`);
+  } else if (type === "video") {
+    revalidatePath("/videos");
+  } else {
+    revalidatePath("/providers");
+    revalidatePath("/curated-experiences");
+  }
+
+  return NextResponse.json({ message: "Deleted", slug });
+}

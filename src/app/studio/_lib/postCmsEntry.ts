@@ -20,3 +20,20 @@ export async function postCmsEntry(
   }
   return { ok: true, data: { message: data.message, slug: data.slug } };
 }
+
+/**
+ * Permanently delete a CMS document by slug. Admin-only.
+ */
+export async function deleteCmsEntry(
+  type: CmsEntryType,
+  slug: string,
+): Promise<{ ok: true; data: { message?: string } } | { ok: false; message: string }> {
+  const params = new URLSearchParams({ type, slug });
+  const response = await fetch(`/api/studio/cms?${params.toString()}`, { method: "DELETE" });
+
+  const data = (await response.json().catch(() => ({}))) as { message?: string; error?: string };
+  if (!response.ok) {
+    return { ok: false, message: data.error ?? data.message ?? "Could not delete entry." };
+  }
+  return { ok: true, data: { message: data.message } };
+}
