@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hum to Find</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f14;
+      color: #e8e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: #888;
+      font-size: 0.95rem;
+      margin-top: -1.5rem;
+    }
+
+    /* Record button */
+    #recordBtn {
+      width: 7rem;
+      height: 7rem;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      outline: none;
+    }
+
+    #recordBtn:hover { transform: scale(1.05); }
+
+    #recordBtn.recording {
+      animation: pulse 1.2s ease-in-out infinite;
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+    }
+
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6); }
+      70%  { box-shadow: 0 0 0 20px rgba(220, 38, 38, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+
+    /* Visualiser */
+    #visualiser {
+      width: min(400px, 90vw);
+      height: 60px;
+      display: none;
+    }
+
+    /* Status */
+    #status {
+      font-size: 0.9rem;
+      color: #aaa;
+      min-height: 1.2em;
+      text-align: center;
+    }
+
+    /* Timer */
+    #timer {
+      font-size: 1.1rem;
+      font-variant-numeric: tabular-nums;
+      color: #dc2626;
+      display: none;
+    }
+
+    /* Result card */
+    #result {
+      display: none;
+      background: #1a1a24;
+      border: 1px solid #2a2a3a;
+      border-radius: 1rem;
+      padding: 1.5rem 2rem;
+      width: min(420px, 90vw);
+      gap: 0.3rem;
+      flex-direction: column;
+    }
+
+    #result.show { display: flex; }
+
+    .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #666;
+    }
+
+    #songTitle {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    #songArtist {
+      font-size: 1rem;
+      color: #a78bfa;
+      margin-bottom: 0.5rem;
+    }
+
+    #songAlbum {
+      font-size: 0.85rem;
+      color: #777;
+    }
+
+    #spotifyLink {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      background: #1db954;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      width: fit-content;
+      transition: opacity 0.15s;
+    }
+
+    #spotifyLink:hover { opacity: 0.85; }
+
+    /* Error */
+    #errorMsg {
+      display: none;
+      background: #2a0f0f;
+      border: 1px solid #7f1d1d;
+      border-radius: 0.75rem;
+      padding: 1rem 1.5rem;
+      color: #fca5a5;
+      font-size: 0.9rem;
+      width: min(420px, 90vw);
+      text-align: center;
+    }
+
+    #errorMsg.show { display: block; }
+
+    /* Spinner */
+    .spinner {
+      display: none;
+      width: 2rem;
+      height: 2rem;
+      border: 3px solid #333;
+      border-top-color: #7c3aed;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    .spinner.show { display: block; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <h1>Hum to Find</h1>
+  <p class="subtitle">Hum a tune — we'll find the song.</p>
+
+  <canvas id="visualiser"></canvas>
+
+  <button id="recordBtn" title="Hold to record">🎤</button>
+  <div id="timer">0:00</div>
+  <div id="status">Press the button, then hum for 5–15 seconds.</div>
+  <div class="spinner" id="spinner"></div>
+
+  <div id="errorMsg"></div>
+
+  <div id="result">
+    <span class="label">Matched song</span>
+    <div id="songTitle"></div>
+    <div id="songArtist"></div>
+    <div id="songAlbum"></div>
+    <a id="spotifyLink" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.52 17.28c-.24.36-.66.48-1.02.24-2.82-1.74-6.36-2.1-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-.96-.12-1.08-.6-.12-.48.12-.96.6-1.08 4.38-1.32 9.78-.66 13.5 1.62.36.24.54.78.18 1.14zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.3c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.56.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3z"/>
+      </svg>
+      Open in Spotify
+    </a>
+  </div>
+
+  <script>
+    const recordBtn = document.getElementById('recordBtn');
+    const statusEl  = document.getElementById('status');
+    const timerEl   = document.getElementById('timer');
+    const spinner   = document.getElementById('spinner');
+    const resultEl  = document.getElementById('result');
+    const errorEl   = document.getElementById('errorMsg');
+    const canvas    = document.getElementById('visualiser');
+    const ctx       = canvas.getContext('2d');
+
+    let mediaRecorder = null;
+    let audioCtx = null;
+    let analyser = null;
+    let animFrame = null;
+    let chunks = [];
+    let timerInterval = null;
+    let elapsed = 0;
+    const MAX_SECONDS = 20;
+
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.classList.add('show');
+    }
+    function clearError() { errorEl.classList.remove('show'); }
+
+    function hideResult() { resultEl.classList.remove('show'); }
+
+    function showResult(data) {
+      document.getElementById('songTitle').textContent  = data.title;
+      document.getElementById('songArtist').textContent = data.artist;
+      document.getElementById('songAlbum').textContent  = data.album || '';
+      const link = document.getElementById('spotifyLink');
+      link.href = data.spotify_url;
+      resultEl.classList.add('show');
+    }
+
+    function formatTime(s) {
+      return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      elapsed = 0;
+      timerEl.textContent = formatTime(0);
+      timerEl.style.display = 'block';
+      timerInterval = setInterval(() => {
+        elapsed++;
+        timerEl.textContent = formatTime(elapsed);
+        if (elapsed >= MAX_SECONDS) stopRecording();
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+      timerEl.style.display = 'none';
+    }
+
+    function drawVisualiser() {
+      if (!analyser) return;
+      animFrame = requestAnimationFrame(drawVisualiser);
+      const buf = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(buf);
+
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const barW = W / buf.length * 2.5;
+      let x = 0;
+      for (let i = 0; i < buf.length; i++) {
+        const barH = (buf[i] / 255) * H;
+        const hue = 220 + (buf[i] / 255) * 60;
+        ctx.fillStyle = `hsl(${hue}, 80%, 60%)`;
+        ctx.fillRect(x, H - barH, barW, barH);
+        x += barW + 1;
+      }
+    }
+
+    async function startRecording() {
+      clearError();
+      hideResult();
+
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      } catch (e) {
+        showError('Microphone access denied. Please allow microphone access and try again.');
+        return;
+      }
+
+      // Web Audio visualiser
+      audioCtx = new AudioContext();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      const source = audioCtx.createMediaStreamSource(stream);
+      source.connect(analyser);
+
+      canvas.width  = canvas.offsetWidth  || 400;
+      canvas.height = canvas.offsetHeight || 60;
+      canvas.style.display = 'block';
+      drawVisualiser();
+
+      // Prefer webm/opus; fall back to whatever the browser supports
+      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+        ? 'audio/webm;codecs=opus'
+        : MediaRecorder.isTypeSupported('audio/webm')
+          ? 'audio/webm'
+          : '';
+
+      mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
+      chunks = [];
+      mediaRecorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+      mediaRecorder.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        cancelAnimationFrame(animFrame);
+        canvas.style.display = 'none';
+        audioCtx.close();
+
+        await submitAudio(chunks, mediaRecorder.mimeType || 'audio/webm');
+      };
+
+      mediaRecorder.start();
+      recordBtn.classList.add('recording');
+      recordBtn.textContent = '⏹';
+      statusEl.textContent = 'Recording… hum your tune!';
+      startTimer();
+    }
+
+    function stopRecording() {
+      if (!mediaRecorder || mediaRecorder.state === 'inactive') return;
+      mediaRecorder.stop();
+      recordBtn.classList.remove('recording');
+      recordBtn.textContent = '🎤';
+      statusEl.textContent = 'Analysing…';
+      stopTimer();
+      spinner.classList.add('show');
+    }
+
+    async function submitAudio(chunks, mimeType) {
+      const blob = new Blob(chunks, { type: mimeType });
+      const form = new FormData();
+      form.append('audio', blob, 'recording.webm');
+
+      try {
+        const res  = await fetch('/identify', { method: 'POST', body: form });
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError(data.detail || 'Server error. Please try again.');
+        } else if (!data.matched) {
+          showError(`No match found: ${data.message || 'Try humming a bit more clearly.'}`);
+        } else {
+          showResult(data);
+        }
+      } catch (e) {
+        showError('Network error — is the server running?');
+      } finally {
+        spinner.classList.remove('show');
+        statusEl.textContent = 'Press the button, then hum for 5–15 seconds.';
+      }
+    }
+
+    recordBtn.addEventListener('click', () => {
+      if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+        startRecording();
+      } else {
+        stopRecording();
+      }
+    });
+  </script>
+</body>
+</html>
