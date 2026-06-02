@@ -2,7 +2,7 @@
  * Canonical site origin for Supabase auth redirects (signup confirmation, OAuth).
  *
  * Set **NEXT_PUBLIC_SITE_URL** in production (e.g. on Vercel) to your deployed URL
- * **without** a trailing slash, e.g. `https://culturin-frontend.vercel.app`
+ * **without** a trailing slash, e.g. `https://culturin.com`
  *
  * When unset, the browser falls back to `window.location.origin` (fine for local dev).
  */
