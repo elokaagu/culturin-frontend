@@ -9,6 +9,7 @@ create table if not exists public.cms_curators (
   description   text,
   website_url   text,
   instagram_url text,
+  shop_url      text,
   avatar_url    text,
   banner_url    text,
   specialties   text[]      not null default '{}'::text[],

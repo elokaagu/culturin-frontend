@@ -31,6 +31,7 @@ export interface curatorCard {
   avatarUrl?: string | null;
   websiteUrl?: string | null;
   instagramUrl?: string | null;
+  shopUrl?: string | null;
   specialties?: string[];
 }
 
@@ -44,6 +45,7 @@ export interface fullCurator {
   specialties?: string[];
   websiteUrl?: string | null;
   instagramUrl?: string | null;
+  shopUrl?: string | null;
 }
 
 export interface videoCard {

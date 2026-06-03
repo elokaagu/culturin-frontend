@@ -38,6 +38,7 @@ export function mapCuratorRowToCard(row: CmsCuratorRow): curatorCard {
     avatarUrl: row.avatar_url,
     websiteUrl: row.website_url,
     instagramUrl: row.instagram_url,
+    shopUrl: row.shop_url,
     specialties: Array.isArray(row.specialties) ? row.specialties.filter(Boolean) : [],
   };
 }
@@ -52,6 +53,7 @@ export function mapCuratorRowToFull(row: CmsCuratorRow): fullCurator {
     bannerUrl: row.banner_url,
     websiteUrl: row.website_url,
     instagramUrl: row.instagram_url,
+    shopUrl: row.shop_url,
     specialties: Array.isArray(row.specialties) ? row.specialties.filter(Boolean) : [],
   };
 }

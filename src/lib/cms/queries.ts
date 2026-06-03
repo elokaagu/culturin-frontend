@@ -19,7 +19,7 @@ const blogSelect =
   "id, slug, title, summary, title_image_url, title_image, body, published_at, created_at, updated_at, curator_slug";
 
 const curatorSelect =
-  "id, slug, name, tagline, description, website_url, instagram_url, avatar_url, banner_url, specialties, published_at, created_at, updated_at";
+  "id, slug, name, tagline, description, website_url, instagram_url, shop_url, avatar_url, banner_url, specialties, published_at, created_at, updated_at";
 const videoSelect =
   "id, slug, title, uploader, description, thumbnail_url, thumbnail, playback_id, published_at, created_at, updated_at";
 const providerSelect =
@@ -346,6 +346,33 @@ export async function listBlogsByCurator(db: CmsDb, curatorSlug: string): Promis
     .order("created_at", { ascending: false });
   if (error || !data) return [];
   return (data as CmsBlogRow[]).map(mapBlogRowToCard);
+}
+
+export type StudioCuratorListItem = {
+  slug: string;
+  name: string;
+  tagline: string;
+  websiteUrl: string;
+  publishedAt: string | null;
+  createdAt: string;
+};
+
+export async function listCuratorsForStudio(db: CmsDb): Promise<StudioCuratorListItem[]> {
+  const { data, error } = await db
+    .from("cms_curators")
+    .select("slug, name, tagline, website_url, published_at, created_at")
+    .order("created_at", { ascending: false });
+  if (error || !data) return [];
+  return (data as Pick<CmsCuratorRow, "slug" | "name" | "tagline" | "website_url" | "published_at" | "created_at">[]).map(
+    (row) => ({
+      slug: row.slug,
+      name: row.name ?? "",
+      tagline: row.tagline ?? "",
+      websiteUrl: row.website_url ?? "",
+      publishedAt: row.published_at,
+      createdAt: row.created_at,
+    }),
+  );
 }
 
 export async function searchProviders(db: CmsDb, term: string): Promise<providerHeroCard[]> {

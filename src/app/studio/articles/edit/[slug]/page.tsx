@@ -43,6 +43,7 @@ export default async function StudioEditArticlePage({ params }: EditArticlePageP
     title_image_url: blog.titleImageUrl ?? "",
     published_at: blog.publishedAt ?? "",
     body: blog.body,
+    curator_slug: blog.curatorSlug ?? "",
   };
 
   return (

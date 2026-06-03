@@ -24,6 +24,7 @@ export type CmsCuratorRow = {
   description: string | null;
   website_url: string | null;
   instagram_url: string | null;
+  shop_url: string | null;
   avatar_url: string | null;
   banner_url: string | null;
   specialties: string[] | null;

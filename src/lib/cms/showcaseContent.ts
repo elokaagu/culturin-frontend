@@ -1028,7 +1028,8 @@ const SHOWCASE_CURATORS: Record<string, ShowcaseCurator> = {
       avatarUrl:
         "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=400&q=80",
       websiteUrl: "https://pontooncommunity.com",
-      instagramUrl: "https://www.instagram.com/pontoon.community/",
+      instagramUrl: "https://www.instagram.com/pontoon_co/",
+      shopUrl: "https://pontooncommunity.com/shop",
       specialties: ["Travel", "Women's voices", "Culture", "Identity", "Photography"],
     },
     full: {
@@ -1042,7 +1043,8 @@ const SHOWCASE_CURATORS: Record<string, ShowcaseCurator> = {
       bannerUrl:
         "https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=1200&q=80",
       websiteUrl: "https://pontooncommunity.com",
-      instagramUrl: "https://www.instagram.com/pontoon.community/",
+      instagramUrl: "https://www.instagram.com/pontoon_co/",
+      shopUrl: "https://pontooncommunity.com/shop",
       specialties: ["Travel", "Women's voices", "Culture", "Identity", "Photography"],
     },
   },

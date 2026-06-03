@@ -1,4 +1,4 @@
-export type CmsEntryType = "blog" | "video" | "provider";
+export type CmsEntryType = "blog" | "video" | "provider" | "curator";
 
 /**
  * Create or update a CMS document via the admin API.

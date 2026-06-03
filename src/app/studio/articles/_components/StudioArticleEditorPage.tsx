@@ -20,6 +20,7 @@ export type StudioArticleEditorInitial = {
   title_image_url: string;
   published_at: string;
   body: unknown;
+  curator_slug: string;
 };
 
 type StudioArticleEditorPageProps = {
@@ -130,6 +131,13 @@ export function StudioArticleEditorPage({ mode, initial, workspace = "studio" }:
           <StudioImageUploadButton onUploaded={setTitleImageUrl} buttonLabel="Upload title image" />
         </label>
         <StudioPublishDateField name="published_at" label="Publish date (optional)" defaultValue={initial?.published_at ?? ""} />
+        {!isCreator ? (
+          <Field
+            name="curator_slug"
+            label="Curator slug (optional)"
+            defaultValue={initial?.curator_slug ?? ""}
+          />
+        ) : null}
         <div className="sm:col-span-2">
           <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-white/80">Article body</p>
           <ArticleRichEditor key={editorKey} ref={editorRef} initialBody={editorBody} />

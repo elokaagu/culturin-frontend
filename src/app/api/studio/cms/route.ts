@@ -5,7 +5,7 @@ import { getCurrentAdminState } from "@/lib/studio/admin";
 import { emptyPortableTextBlocks } from "@/lib/portableText/tiptapHtmlBridge";
 import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
-type CmsType = "blog" | "video" | "provider";
+type CmsType = "blog" | "video" | "provider" | "curator";
 
 function parseCsvArray(input: unknown): string[] {
   const value = String(input ?? "").trim();
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
   const type = body.type;
   const entry = body.entry ?? {};
 
-  if (!type || !["blog", "video", "provider"].includes(type)) {
+  if (!type || !["blog", "video", "provider", "curator"].includes(type)) {
     return NextResponse.json({ message: "Invalid type." }, { status: 400 });
   }
 
@@ -63,6 +63,7 @@ export async function POST(request: Request) {
 
   if (type === "blog") {
     const originalSlug = asSlug(entry.original_slug);
+    const curatorSlugRaw = String(entry.curator_slug ?? "").trim();
     const payload = {
       slug,
       title: String(entry.title ?? "").trim(),
@@ -70,6 +71,7 @@ export async function POST(request: Request) {
       title_image_url: String(entry.title_image_url ?? "").trim() || null,
       published_at: String(entry.published_at ?? "").trim() || new Date().toISOString(),
       body: normalizeBlogBody(entry.body),
+      curator_slug: curatorSlugRaw || null,
     };
     const { error } =
       originalSlug && originalSlug !== slug
@@ -103,6 +105,33 @@ export async function POST(request: Request) {
     }
     revalidatePath("/videos");
     return NextResponse.json({ message: "Video saved", slug });
+  }
+
+  if (type === "curator") {
+    const originalSlug = asSlug(entry.original_slug);
+    const payload = {
+      slug,
+      name: String(entry.name ?? "").trim() || "",
+      tagline: String(entry.tagline ?? "").trim() || null,
+      description: String(entry.description ?? "").trim() || null,
+      website_url: String(entry.website_url ?? "").trim() || null,
+      instagram_url: String(entry.instagram_url ?? "").trim() || null,
+      shop_url: String(entry.shop_url ?? "").trim() || null,
+      avatar_url: String(entry.avatar_url ?? "").trim() || null,
+      banner_url: String(entry.banner_url ?? "").trim() || null,
+      specialties: parseCsvArray(entry.specialties),
+      published_at: String(entry.published_at ?? "").trim() || new Date().toISOString(),
+    };
+    const { error } =
+      originalSlug && originalSlug !== slug
+        ? await admin.from("cms_curators").update(payload).eq("slug", originalSlug)
+        : await admin.from("cms_curators").upsert(payload, { onConflict: "slug" });
+    if (error) {
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    }
+    revalidatePath("/curators");
+    revalidatePath(`/curators/${slug}`);
+    return NextResponse.json({ message: "Curator saved", slug });
   }
 
   const originalSlug = asSlug(entry.original_slug);
@@ -143,7 +172,7 @@ export async function DELETE(request: Request) {
   const type = url.searchParams.get("type") as CmsType | null;
   const slug = asSlug(url.searchParams.get("slug"));
 
-  if (!type || !["blog", "video", "provider"].includes(type)) {
+  if (!type || !["blog", "video", "provider", "curator"].includes(type)) {
     return NextResponse.json({ message: "Invalid type." }, { status: 400 });
   }
   if (!slug) {
@@ -158,7 +187,11 @@ export async function DELETE(request: Request) {
     );
   }
 
-  const table = type === "blog" ? "cms_blogs" : type === "video" ? "cms_videos" : "cms_providers";
+  const table =
+    type === "blog" ? "cms_blogs"
+    : type === "video" ? "cms_videos"
+    : type === "curator" ? "cms_curators"
+    : "cms_providers";
   const { error } = await admin.from(table).delete().eq("slug", slug);
   if (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
@@ -169,6 +202,9 @@ export async function DELETE(request: Request) {
     revalidatePath(`/articles/${slug}`);
   } else if (type === "video") {
     revalidatePath("/videos");
+  } else if (type === "curator") {
+    revalidatePath("/curators");
+    revalidatePath(`/curators/${slug}`);
   } else {
     revalidatePath("/providers");
     revalidatePath("/curated-experiences");

@@ -8,6 +8,7 @@ import {
   LogOut,
   Moon,
   Sun,
+  Users,
   Video,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -23,6 +24,7 @@ type StudioLayoutClientProps = {
   blogCount: number;
   videoCount: number;
   providerCount: number;
+  curatorCount: number;
 };
 
 const navItemClass = (active: boolean) =>
@@ -57,6 +59,7 @@ export default function StudioLayoutClient({
   blogCount,
   videoCount,
   providerCount,
+  curatorCount,
 }: StudioLayoutClientProps) {
   const router = useTransitionRouter();
   const pathname = usePathname() ?? "";
@@ -166,6 +169,22 @@ export default function StudioLayoutClient({
                     {countBadge(
                       providerCount,
                       pathname === "/studio/providers" || pathname?.startsWith("/studio/providers/"),
+                    )}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/studio/curators"
+                    className={navItemClass(
+                      pathname === "/studio/curators" || pathname?.startsWith("/studio/curators/"),
+                    )}
+                    aria-current={pathname === "/studio/curators" ? "page" : undefined}
+                  >
+                    <Users className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                    <span className="min-w-0 flex-1">Curators</span>
+                    {countBadge(
+                      curatorCount,
+                      pathname === "/studio/curators" || pathname?.startsWith("/studio/curators/"),
                     )}
                   </Link>
                 </li>

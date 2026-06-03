@@ -23,7 +23,7 @@ export default function CuratorClient({
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-16 text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
         {/* Banner */}
         <div className="relative h-56 w-full overflow-hidden bg-neutral-900 sm:h-72 lg:h-80">
           {bannerSrc ? (
@@ -163,7 +163,7 @@ export default function CuratorClient({
               ) : null}
 
               {/* Links */}
-              {(curator.websiteUrl || curator.instagramUrl) ? (
+              {(curator.websiteUrl || curator.instagramUrl || curator.shopUrl) ? (
                 <div className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
                   <h2 className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/35">
                     Follow
@@ -189,6 +189,17 @@ export default function CuratorClient({
                       >
                         <span className="text-base">📷</span>
                         Instagram
+                      </a>
+                    ) : null}
+                    {curator.shopUrl ? (
+                      <a
+                        href={curator.shopUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm font-medium text-neutral-700 no-underline transition hover:border-amber-400/50 hover:bg-amber-50 hover:text-amber-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:text-amber-300"
+                      >
+                        <span className="text-base">🛍</span>
+                        Shop
                       </a>
                     ) : null}
                   </div>
