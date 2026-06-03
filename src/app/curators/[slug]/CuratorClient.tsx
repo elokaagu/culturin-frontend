@@ -23,8 +23,8 @@ export default function CuratorClient({
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
-        {/* Banner */}
+      <main className="min-h-dvh bg-neutral-50 pb-16 text-neutral-900 dark:bg-black dark:text-white">
+        {/* Banner — no top padding so it sits flush under the fixed header */}
         <div className="relative h-56 w-full overflow-hidden bg-neutral-900 sm:h-72 lg:h-80">
           {bannerSrc ? (
             <SafeContentImage
@@ -45,7 +45,7 @@ export default function CuratorClient({
           {/* Profile header */}
           <div className="-mt-10 mb-8 flex items-end gap-5 sm:-mt-12">
             {avatarSrc ? (
-              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full ring-4 ring-neutral-50 sm:h-24 sm:w-24 dark:ring-black">
+              <div className="relative z-10 h-20 w-20 shrink-0 overflow-hidden rounded-full ring-4 ring-neutral-50 sm:h-24 sm:w-24 dark:ring-black">
                 <SafeContentImage
                   src={avatarSrc}
                   alt={curator.name}
@@ -56,7 +56,7 @@ export default function CuratorClient({
                 />
               </div>
             ) : (
-              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-amber-100 text-2xl font-semibold text-amber-800 ring-4 ring-neutral-50 sm:h-24 sm:w-24 dark:bg-amber-900/40 dark:text-amber-300 dark:ring-black">
+              <div className="relative z-10 flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-amber-100 text-2xl font-semibold text-amber-800 ring-4 ring-neutral-50 sm:h-24 sm:w-24 dark:bg-amber-900/40 dark:text-amber-300 dark:ring-black">
                 {curator.name.charAt(0)}
               </div>
             )}
