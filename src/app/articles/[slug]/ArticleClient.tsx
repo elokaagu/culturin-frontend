@@ -18,7 +18,7 @@ import {
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../../lib/imagePlaceholder";
-import type { fullBlog } from "@/lib/interface";
+import type { curatorCard, fullBlog } from "@/lib/interface";
 
 type ToastState =
   | { open: false }
@@ -48,7 +48,7 @@ function estimateReadMinutesFromBody(body: unknown): number {
 const proseLinkClass =
   "font-medium text-amber-700 underline decoration-amber-600/40 underline-offset-[3px] transition hover:text-amber-900 hover:decoration-amber-800/50 dark:text-amber-400/90 dark:decoration-amber-400/35 dark:hover:text-amber-200 dark:hover:decoration-amber-200/50";
 
-export default function ArticleClient({ data }: { data: fullBlog }) {
+export default function ArticleClient({ data, curator }: { data: fullBlog; curator?: curatorCard | null }) {
   const pathname = usePathname();
   const { data: session, status } = useAppAuth();
   const [toast, setToast] = useState<ToastState>({ open: false });
@@ -244,14 +244,24 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
                     <span>{readMinutes} min read</span>
                   </span>
                   <span className="hidden h-1 w-1 rounded-full bg-neutral-300 sm:inline dark:bg-white/20" aria-hidden />
-                  <span
-                    className="text-neutral-500 dark:text-white/40"
-                    itemProp="publisher"
-                    itemScope
-                    itemType="https://schema.org/Organization"
-                  >
-                    <span itemProp="name">Culturin</span>
-                  </span>
+                  {curator ? (
+                    <a
+                      href={`/curators/${curator.slug}`}
+                      className="text-amber-700 transition hover:text-amber-900 dark:text-amber-400/80 dark:hover:text-amber-300"
+                      itemProp="publisher"
+                    >
+                      {curator.name}
+                    </a>
+                  ) : (
+                    <span
+                      className="text-neutral-500 dark:text-white/40"
+                      itemProp="publisher"
+                      itemScope
+                      itemType="https://schema.org/Organization"
+                    >
+                      <span itemProp="name">Culturin</span>
+                    </span>
+                  )}
                 </div>
               </header>
 
@@ -261,6 +271,62 @@ export default function ArticleClient({ data }: { data: fullBlog }) {
               >
                 <PortableText value={data.body as PortableTextBlock[]} components={portableTextComponents} />
               </div>
+
+              {curator ? (
+                <div className="mt-2 rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.04]">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/35">
+                    Featured in
+                  </p>
+                  <div className="flex items-start gap-4">
+                    {curator.avatarUrl ? (
+                      <img
+                        src={curator.avatarUrl}
+                        alt={curator.name}
+                        className="h-12 w-12 shrink-0 rounded-full object-cover ring-1 ring-neutral-200 dark:ring-white/10"
+                      />
+                    ) : null}
+                    <div className="min-w-0 flex-1">
+                      <a
+                        href={`/curators/${curator.slug}`}
+                        className="font-semibold text-neutral-900 no-underline transition hover:text-amber-700 dark:text-white dark:hover:text-amber-300"
+                      >
+                        {curator.name}
+                      </a>
+                      {curator.tagline ? (
+                        <p className="mt-0.5 text-sm text-neutral-500 dark:text-white/50">{curator.tagline}</p>
+                      ) : null}
+                      <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                        <a
+                          href={`/curators/${curator.slug}`}
+                          className="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3.5 py-1 text-xs font-medium text-neutral-700 no-underline transition hover:border-amber-400/50 hover:bg-amber-50 hover:text-amber-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:border-amber-400/30 dark:hover:text-amber-300"
+                        >
+                          See all from {curator.name}
+                        </a>
+                        {curator.websiteUrl ? (
+                          <a
+                            href={curator.websiteUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3.5 py-1 text-xs font-medium text-neutral-700 no-underline transition hover:border-amber-400/50 hover:bg-amber-50 hover:text-amber-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:border-amber-400/30 dark:hover:text-amber-300"
+                          >
+                            Visit website ↗
+                          </a>
+                        ) : null}
+                        {curator.instagramUrl ? (
+                          <a
+                            href={curator.instagramUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3.5 py-1 text-xs font-medium text-neutral-700 no-underline transition hover:border-amber-400/50 hover:bg-amber-50 hover:text-amber-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:border-amber-400/30 dark:hover:text-amber-300"
+                          >
+                            Instagram ↗
+                          </a>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
 
               {isSignedIn ? (
                 <div

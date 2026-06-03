@@ -13,6 +13,23 @@ export type CmsBlogRow = {
   published_at: string | null;
   created_at: string;
   updated_at: string;
+  curator_slug: string | null;
+};
+
+export type CmsCuratorRow = {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string | null;
+  description: string | null;
+  website_url: string | null;
+  instagram_url: string | null;
+  avatar_url: string | null;
+  banner_url: string | null;
+  specialties: string[] | null;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
 };
 
 export type CmsVideoRow = {

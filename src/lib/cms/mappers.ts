@@ -1,5 +1,5 @@
-import type { fullBlog, fullProvider, fullVideo, providerCard, providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
-import type { CmsBlogRow, CmsProviderRow, CmsVideoRow } from "./types";
+import type { curatorCard, fullBlog, fullCurator, fullProvider, fullVideo, providerCard, providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
+import type { CmsBlogRow, CmsCuratorRow, CmsProviderRow, CmsVideoRow } from "./types";
 
 function trimMediaUrl(value: string | null | undefined): string | undefined {
   const t = typeof value === "string" ? value.trim() : "";
@@ -12,6 +12,7 @@ export function mapBlogRowToCard(row: CmsBlogRow): simpleBlogCard {
     summary: row.summary ?? "",
     currentSlug: row.slug,
     titleImageUrl: row.title_image_url,
+    curatorSlug: row.curator_slug ?? null,
   };
 }
 
@@ -25,6 +26,33 @@ export function mapBlogRowToFull(row: CmsBlogRow): fullBlog {
     titleImage: row.title_image,
     body: row.body,
     publishedAt: row.published_at,
+    curatorSlug: row.curator_slug ?? null,
+  };
+}
+
+export function mapCuratorRowToCard(row: CmsCuratorRow): curatorCard {
+  return {
+    slug: row.slug,
+    name: row.name,
+    tagline: row.tagline,
+    avatarUrl: row.avatar_url,
+    websiteUrl: row.website_url,
+    instagramUrl: row.instagram_url,
+    specialties: Array.isArray(row.specialties) ? row.specialties.filter(Boolean) : [],
+  };
+}
+
+export function mapCuratorRowToFull(row: CmsCuratorRow): fullCurator {
+  return {
+    slug: row.slug,
+    name: row.name,
+    tagline: row.tagline,
+    description: row.description,
+    avatarUrl: row.avatar_url,
+    bannerUrl: row.banner_url,
+    websiteUrl: row.website_url,
+    instagramUrl: row.instagram_url,
+    specialties: Array.isArray(row.specialties) ? row.specialties.filter(Boolean) : [],
   };
 }
 

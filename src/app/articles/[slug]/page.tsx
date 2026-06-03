@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getCmsDbOrNull } from "../../../lib/cms/server";
-import { getBlogBySlug } from "../../../lib/cms/queries";
-import { getShowcaseFullBlog } from "../../../lib/cms/showcaseContent";
-import type { fullBlog } from "@/lib/interface";
+import { getBlogBySlug, getCuratorBySlug } from "../../../lib/cms/queries";
+import { getShowcaseFullBlog, getShowcaseFullCurator } from "../../../lib/cms/showcaseContent";
+import type { curatorCard, fullBlog } from "@/lib/interface";
 import { isBlogHiddenFromSite } from "@/lib/cms/blockedFromSite";
 import { normalizeSlugParam } from "../../../lib/slug";
 import ArticleClient from "./ArticleClient";
@@ -16,6 +16,18 @@ async function getArticleBySlug(slug: string): Promise<fullBlog | null> {
     if (fromDb) return fromDb;
   }
   return getShowcaseFullBlog(slug);
+}
+
+async function getCuratorForArticle(curatorSlug: string | null | undefined): Promise<curatorCard | null> {
+  if (!curatorSlug) return null;
+  const db = getCmsDbOrNull();
+  if (db) {
+    const fromDb = await getCuratorBySlug(db, curatorSlug);
+    if (fromDb) return { slug: fromDb.slug, name: fromDb.name, tagline: fromDb.tagline, avatarUrl: fromDb.avatarUrl, websiteUrl: fromDb.websiteUrl, instagramUrl: fromDb.instagramUrl, specialties: fromDb.specialties };
+  }
+  const showcase = getShowcaseFullCurator(curatorSlug);
+  if (!showcase) return null;
+  return { slug: showcase.slug, name: showcase.name, tagline: showcase.tagline, avatarUrl: showcase.avatarUrl, websiteUrl: showcase.websiteUrl, instagramUrl: showcase.instagramUrl, specialties: showcase.specialties };
 }
 
 export async function generateMetadata({
@@ -54,5 +66,7 @@ export default async function BlogArticle({
     notFound();
   }
 
-  return <ArticleClient data={data} />;
+  const curator = await getCuratorForArticle(data.curatorSlug);
+
+  return <ArticleClient data={data} curator={curator} />;
 }

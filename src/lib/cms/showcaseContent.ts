@@ -1,5 +1,7 @@
 import type {
+  curatorCard,
   fullBlog,
+  fullCurator,
   fullProvider,
   fullVideo,
   providerHeroCard,
@@ -854,6 +856,196 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       ],
     },
   },
+  "pontoon-muse-alexis-doyle": {
+    card: {
+      title: "Pontoon Muse: Alexis Doyle",
+      summary:
+        "Travel photographer Alexis Doyle approaches the world with curiosity and a refined appreciation for culture and place. We speak with her about creativity, a life in motion, and finding a sense of home in unexpected places.",
+      currentSlug: "pontoon-muse-alexis-doyle",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1539768942893-daf53e448371?auto=format&fit=crop&w=1200&q=80",
+      curatorSlug: "pontoon",
+    },
+    full: {
+      _id: "showcase-pontoon-muse-alexis-doyle",
+      title: "Pontoon Muse: Alexis Doyle",
+      currentSlug: "pontoon-muse-alexis-doyle",
+      summary:
+        "Travel photographer Alexis Doyle approaches the world with curiosity and a refined appreciation for culture and place. We speak with her about creativity, a life in motion, and finding a sense of home in unexpected places.",
+      titleImageUrl:
+        "https://images.unsplash.com/photo-1539768942893-daf53e448371?auto=format&fit=crop&w=1200&q=80",
+      publishedAt: "2026-03-31T00:00:00Z",
+      curatorSlug: "pontoon",
+      body: [
+        {
+          _type: "block", _key: "ad0", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad0c", marks: [], text: "Alexis Doyle is a travel photographer and creative based across Cairo, Rome, and New York. Her work sits at the intersection of place, identity, and visual storytelling — built from three years of near-constant motion and a deep curiosity about how people belong to places." }],
+        },
+        {
+          _type: "block", _key: "ad1q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad1qc", marks: [], text: "Where are you from? Where do you feel you belong now — geographically, culturally, and emotionally?" }],
+        },
+        {
+          _type: "block", _key: "ad1a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad1ac", marks: [], text: "I'm originally from Michigan in the US and spent most of my life there from ages 8–22. However, when I turned 23 I set off on a trip that has since become somewhat of a nomadic lifestyle. I've spent most of the last three years traveling, and while I do still return to Michigan for pockets of time here and there, I'm not sure I'd say it's where I belong. During my travels, I've been lucky enough to find new places that have become something like home to me, namely Cairo and Rome. These are two of the cities I find myself returning to most often — I don't think I ever could tire of them. I've found that I am most inspired by places with rich history, culture, beautiful architecture, proud people, and I find all of these things in those places. Currently, I am semi-basing myself in New York City for the first time, which has been a dream of mine since I was a child. I have a feeling that this might be the next addition to my list of places I find myself at home in." }],
+        },
+        {
+          _type: "block", _key: "ad2q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad2qc", marks: [], text: "Tell us what you're working on right now." }],
+        },
+        {
+          _type: "block", _key: "ad2a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad2ac", marks: [], text: "A few things! I am currently trying to work more on capturing travel stories, am doing some test shoots in hopes of shooting a bit more fashion work, and am toying with the idea of sharing more of my words through Substack. The idea of curating a photo book of my work has also been in my back pocket for a while and I've been taking more steps towards making that a reality recently. In general I am trying to dive more deeply into my craft — I also work as a social media manager and while it's a wonderful job, I do find that it can take from my creativity sometimes, so I am trying to make a more concerted effort to make time for furthering my creative skills." }],
+        },
+        {
+          _type: "block", _key: "ad3q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad3qc", marks: [], text: "Is there a word, phrase, or image that describes how your identity has evolved through your travels or transitions?" }],
+        },
+        {
+          _type: "block", _key: "ad3a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad3ac", marks: [], text: "Perspective. Traveling to so many different regions of the world and experiencing different cultures really taught me a lot about people and the way the world works. It's allowed me to have a more grounded understanding of reality and to better be able to compare and contrast things — my views and perception are much more multidimensional now." }],
+        },
+        {
+          _type: "block", _key: "ad4q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad4qc", marks: [], text: "How does your global lifestyle influence your daily life, work, and relationships?" }],
+        },
+        {
+          _type: "block", _key: "ad4a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad4ac", marks: [], text: "It has influenced me in so many ways. Being relatively nomadic has allowed me to partner with clients from all over the world and see the different ways that they work, which has been very interesting. It's allowed me to immerse myself in new cultures as part of my job, and has helped a lot with building my confidence, both professionally and personally. As far as daily life goes, it has definitely made me a much better problem-solver and more adaptable. When every day can look so different you never really know what to expect — you have to be prepared to deal with anything, because often times, you don't have the choice not to be. It's really sink or swim a lot of the times, and while it can get tiring sometimes, it has pushed me in ways I'm not sure I ever would have been otherwise. It's also taught me a lot about materialism and consumption and what's a need vs. a want. In my relationships, it has definitely been the source of strain at times. I'm usually pretty on-the-go when I travel, and navigating a busy schedule and time zone differences with my loved ones has been something I've struggled with. I'm grateful that all of my friends and family are super supportive of the life I've built for myself, but it can get hard when I'm missing nights out with girlfriends, birthdays, parties. However, all of the time spent away from everyone that I know has made me much better at connecting with new people and navigating different personalities, which I am very glad for." }],
+        },
+        {
+          _type: "block", _key: "ad5q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad5qc", marks: [], text: "Can you describe a recent moment where you felt completely \"at home\" in an unexpected place?" }],
+        },
+        {
+          _type: "block", _key: "ad5a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad5ac", marks: [], text: "I would say I felt this most strongly when I was in Cairo this past fall. For the first time in years I felt like I had truly settled into a place — I had lots of work lined up, lots of friends I could call to meet up with, and a somewhat stable routine. I've always loved Egypt, but I never expected it to feel so much like a home to me. I think I mostly have my friends there to thank for this. If I had to chose a specific time, there is one day in particular that this feeling really hit me. It felt like a perfect day to me — I worked out in the morning, had a shoot in the afternoon, attended a fashion show and got to bring a friend, was introduced to some new friends at the show, and went back to an apartment that I shared with another friend that was so homey and calming to come back to. That day really stuck with me because I felt so lucky to have found that all in a place I never expected to find it." }],
+        },
+        {
+          _type: "block", _key: "ad6q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad6qc", marks: [], text: "What is a recent discovery — about yourself, your work, or the world — that has inspired or transformed you?" }],
+        },
+        {
+          _type: "block", _key: "ad6a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad6ac", marks: [], text: "A recent perspective shift for me came from seeing someone online set a challenge for herself to collect 1,000 rejections in a year. It completely reframed the way I think about failure. Like many creative people, I can be very hard on myself and used to find the idea of failing at something intimidating. But that idea made me realize how often we dismiss ourselves before anyone else even has the chance to. Since then, I've been trying to approach opportunities more boldly and to see discomfort or uncertainty not as a reason to stop, but as a challenge to move through and overcome. I've found that confidence is built mostly through trying, whether things work in your favor or not — because they inevitably will at some point." }],
+        },
+        {
+          _type: "block", _key: "ad7q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad7qc", marks: [], text: "Share a resource, book, tool, or person who has recently influenced your growth." }],
+        },
+        {
+          _type: "block", _key: "ad7a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad7ac", marks: [], text: "I'd say Zoë Yasmin and her Substack — I find myself going to her page a lot as I've tried to further grow and sharpen my creative identity." }],
+        },
+        {
+          _type: "block", _key: "ad8q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad8qc", marks: [], text: "How do you actively nurture curiosity amid change or uncertainty?" }],
+        },
+        {
+          _type: "block", _key: "ad8a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad8ac", marks: [], text: "I think that for me it is during times of change and uncertainty that my curiosity most naturally arises. For as long as I can remember I have been curious about anything and everything, and I feel that curiosity heightened when I'm in a new place or experiencing a new culture. Being outside of the familiar makes me pay closer attention and ask more questions. I also think that the sort of superposition I can find myself in during times of change — when more seems possible than usual — also leads me to assess all of the potential outcomes of a situation, and to think myself towards best case scenarios, often on the base question \"what if?\"." }],
+        },
+        {
+          _type: "block", _key: "ad9q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad9qc", marks: [], text: "How do you build and maintain meaningful connections across cultures and distances?" }],
+        },
+        {
+          _type: "block", _key: "ad9a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad9ac", marks: [], text: "Social media has actually been instrumental in this. I've been fortunate to grow a network through Instagram that connects me with people from all over the world, which makes it much easier to meet people when I'm traveling somewhere new. It also allows me to stay connected to their lives even when we're far apart. In terms of how those relationships really develop, it often happens when someone invites me into a ritualistic aspect of their life. It might be an activity they love, showing me a favorite viewpoint in their town, or welcoming me into a dinner that's culturally significant to them. I've found that these moments when someone shares something intimate or personal about their world are often where the strongest connections are built — because those experiences are the moments when you realize how as humans we are all much more similar than we are different." }],
+        },
+        {
+          _type: "block", _key: "ad10q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad10qc", marks: [], text: "Tell us about a relationship or mentorship that has profoundly impacted your journey." }],
+        },
+        {
+          _type: "block", _key: "ad10a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad10ac", marks: [], text: "I'd have to say the most impactful has actually been a sort of mentorship through one of my social media clients. She is a photographer herself and has worked with huge clients across an array of industries. She's been so helpful in helping me to understand the world of photography and the way that it works, both in a practical and creative sense. As someone that comes from an entirely different background — I studied Biomedical Sciences in university — I have had to do a lot of self-education to understand the workings of this industry, and she has helped me with this in ways I never would have been able to help myself." }],
+        },
+        {
+          _type: "block", _key: "ad11q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad11qc", marks: [], text: "What practices or rituals help you find sanctuary and balance during transitions?" }],
+        },
+        {
+          _type: "block", _key: "ad11a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad11ac", marks: [], text: "Exercise and movement is definitely a big one for me — I try to go for runs wherever I am and that really helps me to feel grounded in a place. Kind of similar, but also going for a slower walk where I am always helps. I'll bring my camera and just shoot whatever captures my eye and really focus on being present and observant of my surroundings." }],
+        },
+        {
+          _type: "block", _key: "ad12q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad12qc", marks: [], text: "What advice would you offer other women cultivating their own sense of belonging?" }],
+        },
+        {
+          _type: "block", _key: "ad12a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad12ac", marks: [], text: "I think it's important to remember that when you're creating your own sense of belonging, there often isn't a clear path to follow, and because of that, comparing yourself to others can sometimes be counterproductive, especially when it leads to negative self-talk. Everyone's circumstances are different, so it's rarely a fair comparison. I do think comparison can be helpful when it inspires you or motivates you to push yourself, but otherwise I try to focus more on developing myself in a way that makes me someone I'm proud to be. That pride comes from being genuinely kind to others and from accomplishing goals. From there, the community and sense of belonging tend to follow naturally." }],
+        },
+        {
+          _type: "block", _key: "ad13q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad13qc", marks: [], text: "What impact do you hope to create locally and globally through your work, relationships, or presence?" }],
+        },
+        {
+          _type: "block", _key: "ad13a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad13ac", marks: [], text: "I feel like this is something I'm still in the process of figuring out, but in general I hope to be an example for people when it comes to listening to their instincts and pursuing the things that truly excite them, even when the path isn't clearly defined. My background is in Biomedical Sciences, and for a long time I planned to go to medical school and become an Emergency Medicine doctor. While I loved what I studied, as the med school application cycle approached I realized there were many other passions I had never given myself the chance to explore. Pursuing those meant stepping away from a very structured and respected path and moving toward something much more open-ended and fluid. I didn't know exactly what it would look like or how it would unfold, but I trusted myself enough to believe that if I worked hard, I could figure it out. If someone had told me during my senior year that within a few years I would be traveling full time, photographing in places around the world, and building a career for myself, I would have had a hard time believing it. I think the impact I hope to create is simply to show that it's possible to follow that little voice in your head that tells you there might be something more and what can happen when you trust that gut instinct and take action on it." }],
+        },
+        {
+          _type: "block", _key: "ad14q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad14qc", marks: [], text: "Imagine a future moment where your purpose feels fully realized." }],
+        },
+        {
+          _type: "block", _key: "ad14a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad14ac", marks: [], text: "This is another thing that I still feel like I'm figuring out, but when I imagine a moment where my purpose feels fully realized, I think it would involve using my skills — creative or analytical — to help other people pursue their dreams. I'd love to support other entrepreneurs, women especially, through consulting, creative direction, or simply as a soundboard for bringing their ideas to life. Seeing people go after what they truly want is something that brings me a lot of joy, and I think if more people did it the world would be a much better place for it." }],
+        },
+        {
+          _type: "block", _key: "ad15q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad15qc", marks: [], text: "Can you share a personal experience when you witnessed or were part of a moment where women uplifted, empowered, or stood together?" }],
+        },
+        {
+          _type: "block", _key: "ad15a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad15ac", marks: [], text: "I've had the opportunity to photograph three women's group trips so far, some centered around creativity and others simply focused on travel. Even though each experience involved completely different groups of women and completely different circumstances, those trips were some of the purest and most uplifting experiences I've had. There was this constant sense of encouragement among everyone — it was literally like being in an echo chamber of compliments. I felt seen in ways I hadn't before, and experiencing that kind of support and warmth from people I had only just met was incredibly powerful. That experience really reinforced for me how important it is to have people in your life who genuinely want to uplift you and remind you of your worth, and I think this can be found most purely through female friendships." }],
+        },
+        {
+          _type: "block", _key: "ad16q", style: "h3", markDefs: [],
+          children: [{ _type: "span", _key: "ad16qc", marks: [], text: "If Pontoon is a vessel carrying women through evolving journeys, what would your \"message in a bottle\" be for our community?" }],
+        },
+        {
+          _type: "block", _key: "ad16a", style: "normal", markDefs: [],
+          children: [{ _type: "span", _key: "ad16ac", marks: [], text: "My message in a bottle would be to really tune in to your gut feelings and intuition. I like to think of that voice as your future self gently guiding you toward the life you're meant to grow into — even when things seem unclear, that'll be what keeps you steady. There's a reason we dream of the things we do, and I believe we owe it to ourselves, and to the world around us, to follow those dreams." }],
+        },
+      ],
+    },
+  },
+};
+
+type ShowcaseCurator = {
+  card: curatorCard;
+  full: fullCurator;
+};
+
+const SHOWCASE_CURATORS: Record<string, ShowcaseCurator> = {
+  pontoon: {
+    card: {
+      slug: "pontoon",
+      name: "Pontoon",
+      tagline: "Stories for women in motion",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=400&q=80",
+      websiteUrl: "https://pontooncommunity.com",
+      instagramUrl: "https://www.instagram.com/pontoon.community/",
+      specialties: ["Travel", "Women's voices", "Culture", "Identity", "Photography"],
+    },
+    full: {
+      slug: "pontoon",
+      name: "Pontoon",
+      tagline: "Stories for women in motion",
+      description:
+        "Pontoon is an editorial community built around women who move through the world on their own terms — photographers, writers, explorers, and makers who find meaning in motion. Through long-form interviews, travel stories, and cultural dispatches, Pontoon documents the lives of women whose sense of home is always evolving. Culturin is proud to feature Pontoon's work as part of our curated editorial programme.",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=400&q=80",
+      bannerUrl:
+        "https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=1200&q=80",
+      websiteUrl: "https://pontooncommunity.com",
+      instagramUrl: "https://www.instagram.com/pontoon.community/",
+      specialties: ["Travel", "Women's voices", "Culture", "Identity", "Photography"],
+    },
+  },
 };
 
 type ShowcaseVideo = {
@@ -1066,4 +1258,18 @@ export function getShowcaseFullVideos(): fullVideo[] {
 
 export function getShowcaseFullProvider(slug: string): fullProvider | null {
   return SHOWCASE_PROVIDERS[slug]?.full ?? null;
+}
+
+export function getShowcaseCuratorCards(): curatorCard[] {
+  return Object.values(SHOWCASE_CURATORS).map((c) => c.card);
+}
+
+export function getShowcaseFullCurator(slug: string): fullCurator | null {
+  return SHOWCASE_CURATORS[slug]?.full ?? null;
+}
+
+export function getShowcaseBlogsBycurator(curatorSlug: string): simpleBlogCard[] {
+  return Object.values(SHOWCASE_ARTICLES)
+    .filter((a) => a.card.curatorSlug === curatorSlug)
+    .map((a) => a.card);
 }

@@ -1,7 +1,9 @@
-import type { fullBlog, fullProvider, fullVideo, providerCard, providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
+import type { curatorCard, fullBlog, fullCurator, fullProvider, fullVideo, providerCard, providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import {
   mapBlogRowToCard,
   mapBlogRowToFull,
+  mapCuratorRowToCard,
+  mapCuratorRowToFull,
   mapProviderRowToCard,
   mapProviderRowToFull,
   mapProviderRowToHero,
@@ -11,10 +13,13 @@ import {
 import { tokenizeSearchQuery } from "@/lib/searchTokenize";
 
 import type { CmsDb } from "./types";
-import type { CmsBlogRow, CmsProviderRow, CmsVideoRow } from "./types";
+import type { CmsBlogRow, CmsCuratorRow, CmsProviderRow, CmsVideoRow } from "./types";
 
 const blogSelect =
-  "id, slug, title, summary, title_image_url, title_image, body, published_at, created_at, updated_at";
+  "id, slug, title, summary, title_image_url, title_image, body, published_at, created_at, updated_at, curator_slug";
+
+const curatorSelect =
+  "id, slug, name, tagline, description, website_url, instagram_url, avatar_url, banner_url, specialties, published_at, created_at, updated_at";
 const videoSelect =
   "id, slug, title, uploader, description, thumbnail_url, thumbnail, playback_id, published_at, created_at, updated_at";
 const providerSelect =
@@ -310,6 +315,37 @@ export async function searchVideos(db: CmsDb, term: string): Promise<videoCard[]
   if (!first) return [];
   const ids = Array.from(first.keys()).filter((id) => rest.every((m) => m.has(id)));
   return ids.map((id) => mapVideoRowToCard(first.get(id)!));
+}
+
+export async function listCurators(db: CmsDb): Promise<curatorCard[]> {
+  const { data, error } = await db
+    .from("cms_curators")
+    .select(curatorSelect)
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+  if (error || !data) return [];
+  return (data as CmsCuratorRow[]).map(mapCuratorRowToCard);
+}
+
+export async function getCuratorBySlug(db: CmsDb, slug: string): Promise<fullCurator | null> {
+  const { data, error } = await db
+    .from("cms_curators")
+    .select(curatorSelect)
+    .eq("slug", slug)
+    .maybeSingle();
+  if (error || !data) return null;
+  return mapCuratorRowToFull(data as CmsCuratorRow);
+}
+
+export async function listBlogsByCurator(db: CmsDb, curatorSlug: string): Promise<simpleBlogCard[]> {
+  const { data, error } = await db
+    .from("cms_blogs")
+    .select(blogSelect)
+    .eq("curator_slug", curatorSlug)
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+  if (error || !data) return [];
+  return (data as CmsBlogRow[]).map(mapBlogRowToCard);
 }
 
 export async function searchProviders(db: CmsDb, term: string): Promise<providerHeroCard[]> {

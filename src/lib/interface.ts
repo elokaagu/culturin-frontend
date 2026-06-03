@@ -6,6 +6,8 @@ export interface simpleBlogCard {
   titleImageUrl?: string | null;
   /** @deprecated Legacy Sanity image object; prefer titleImageUrl. */
   titleImage?: unknown;
+  /** Slug of the curator who syndicated this article, if any. */
+  curatorSlug?: string | null;
 }
 
 export interface fullBlog {
@@ -18,6 +20,30 @@ export interface fullBlog {
   _id: string;
   /** ISO timestamp from CMS (optional on older mapped rows). */
   publishedAt?: string | null;
+  /** Slug of the curator who syndicated this article, if any. */
+  curatorSlug?: string | null;
+}
+
+export interface curatorCard {
+  slug: string;
+  name: string;
+  tagline?: string | null;
+  avatarUrl?: string | null;
+  websiteUrl?: string | null;
+  instagramUrl?: string | null;
+  specialties?: string[];
+}
+
+export interface fullCurator {
+  slug: string;
+  name: string;
+  tagline?: string | null;
+  description?: string | null;
+  avatarUrl?: string | null;
+  bannerUrl?: string | null;
+  specialties?: string[];
+  websiteUrl?: string | null;
+  instagramUrl?: string | null;
 }
 
 export interface videoCard {
