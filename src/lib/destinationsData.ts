@@ -176,6 +176,20 @@ export const destinations: Destination[] = [
     imageAlt: "Road, river, and wide mountain country",
     country: "Mexico",
   },
+  {
+    name: "Nice",
+    slug: "nice",
+    imageUrl: u("1502602898657-33da04aaba2b"),
+    imageAlt: "Mediterranean coast with pebble beach and blue sea",
+    country: "France",
+  },
+  {
+    name: "Cannes",
+    slug: "cannes",
+    imageUrl: u("1469854523086-cc02fe5d8800"),
+    imageAlt: "Coastal city with luxury yachts and palm-lined waterfront",
+    country: "France",
+  },
 ];
 
 export function groupDestinationsByLetter(

@@ -207,6 +207,24 @@ export const destinationContentBySlug: Record<string, DestinationContent> = {
     foodToTry: ["Tacos al pastor", "Chilaquiles", "Mole dishes"],
     localTips: ["Altitude affects first-day energy", "Reserve top restaurants early", "Use neighborhood-based planning to reduce travel time"],
   },
+  nice: {
+    intro: "A cosmopolitan Mediterranean port where Belle Époque architecture meets street art, and local food traditions anchor contemporary café culture.",
+    vibe: "Sophisticated, artistic, and easygoing.",
+    bestTime: "April to June or September to October for mild weather and fewer crowds.",
+    highlights: ["Promenade des Anglais pebble beaches", "Cours Saleya morning market", "Vieux Nice narrow lanes and galleries", "Castle hillside views"],
+    neighborhoods: ["Vieux Nice", "Promenade des Anglais", "Port Lympia", "Castle Hill"],
+    foodToTry: ["Salade niçoise", "Socca (chickpea pancakes)", "Pissaladière (anchovy tart)", "Tapenade and local olives"],
+    localTips: ["Pebble beaches mean water shoes", "Early mornings at Cours Saleya are less crowded and more authentic", "Sun can be strong even in shoulder seasons", "Narrow Old Town streets get congested in late afternoon"],
+  },
+  cannes: {
+    intro: "A glamorous French Riviera resort where film festival prestige meets genuine beach culture, local fish restaurants, and accessible luxury.",
+    vibe: "Upscale, social, and seaside-relaxed.",
+    bestTime: "May and September for pleasant weather and less festival chaos.",
+    highlights: ["Film Festival palace and red-carpet beaches", "Îles de Lérins island day trips", "Boulevard de la Croisette yachts and people-watching", "Marché Forville farmers and spice market"],
+    neighborhoods: ["Marché Forville", "Le Cannet (hillside quieter vibe)", "Boulevard de la Croisette", "Vieux Port"],
+    foodToTry: ["Bouillabaisse (fish stew)", "Grilled sea bass", "Pan bagnat (salade niçoise sandwich)", "Local Provence rosé wine"],
+    localTips: ["Book seaside restaurants in advance during festival season", "Îles de Lérins islands are 15 minutes by boat and quieter than city beaches", "Early morning market walk beats crowds and captures local energy", "Dress smart-casual on the Boulevard—it's part of the vibe"],
+  },
 };
 
 export function getDestinationContent(slug: string): DestinationContent | null {
