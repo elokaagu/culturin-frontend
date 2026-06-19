@@ -10,12 +10,12 @@ import { type SettingsSectionId, useSettingsSection } from "./useSettingsSection
 
 const NotificationSection = dynamic(
   () => import("../components/NotificationSection"),
-  { loading: () => <p className="text-sm text-neutral-500 dark:text-white/50">Loading…</p> }
+  { loading: () => <p className="text-sm text-neutral-500 dark:text-white/62">Loading…</p> }
 );
 
 const PaymentSection = dynamic(
   () => import("../components/PaymentSection"),
-  { loading: () => <p className="text-sm text-neutral-500 dark:text-white/50">Loading…</p> }
+  { loading: () => <p className="text-sm text-neutral-500 dark:text-white/62">Loading…</p> }
 );
 
 const NAV: { id: SettingsSectionId; label: string }[] = [
@@ -38,7 +38,7 @@ export default function SettingsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 px-5 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 px-5 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
           <h1 className="text-2xl font-semibold sm:text-3xl">
             {sectionTitle(session?.user?.name)}

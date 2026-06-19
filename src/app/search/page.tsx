@@ -151,7 +151,7 @@ function SearchSection({
         <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
           {title}
         </h2>
-        <span className="shrink-0 text-xs font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/45">
+        <span className="shrink-0 text-xs font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58">
           {count} result{count === 1 ? "" : "s"}
         </span>
       </header>
@@ -227,7 +227,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
     <>
       <Header />
       <main
-        className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased selection:bg-amber-500/25 dark:bg-black dark:text-white"
+        className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased selection:bg-amber-500/25 dark:bg-[#121212] dark:text-white"
         id="main-content"
       >
         <div className={appPageContainerClass}>
@@ -238,7 +238,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
             >
               Home
             </Link>
-            <span className="px-1.5 text-neutral-400 dark:text-white/35" aria-hidden>
+            <span className="px-1.5 text-neutral-400 dark:text-white/45" aria-hidden>
               /
             </span>
             <span className="text-neutral-600 dark:text-white/65">Search</span>
@@ -254,7 +254,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
           </p>
 
           {showSupplementNote ? (
-            <p className="mt-4 max-w-2xl text-xs text-neutral-500 dark:text-white/50">{showSupplementNote}</p>
+            <p className="mt-4 max-w-2xl text-xs text-neutral-500 dark:text-white/62">{showSupplementNote}</p>
           ) : null}
 
           {!hasResults && query ? (
@@ -289,7 +289,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
           ) : null}
 
           {!query ? (
-            <p className="mt-6 max-w-2xl text-sm text-neutral-500 dark:text-white/55">
+            <p className="mt-6 max-w-2xl text-sm text-neutral-500 dark:text-white/65">
               Add a <span className="font-mono text-xs text-amber-800/90 dark:text-amber-300/90">?query=</span> or use the
               search bar in the header.
             </p>

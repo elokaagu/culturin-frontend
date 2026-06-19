@@ -93,7 +93,7 @@ export function StudioCuratorForm({
             name="avatar_url"
             value={avatarUrl}
             onChange={(event) => setAvatarUrl(event.target.value)}
-            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
+            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
           />
           <StudioImageUploadButton onUploaded={setAvatarUrl} buttonLabel="Upload avatar image" />
         </label>
@@ -103,7 +103,7 @@ export function StudioCuratorForm({
             name="banner_url"
             value={bannerUrl}
             onChange={(event) => setBannerUrl(event.target.value)}
-            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
+            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
           />
           <StudioImageUploadButton onUploaded={setBannerUrl} buttonLabel="Upload banner image" />
         </label>

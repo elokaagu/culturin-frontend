@@ -20,14 +20,14 @@ export default async function CuratorsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
         <section className="mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="mb-10 border-b border-neutral-200 pb-6 pt-6 dark:border-white/10">
             <nav className="mb-4 text-sm" aria-label="Breadcrumb">
               <Link href="/" className="text-amber-700 no-underline transition hover:text-amber-900 dark:text-amber-400/80 dark:hover:text-amber-300">
                 Home
               </Link>
-              <span className="px-1 text-neutral-400 dark:text-white/35" aria-hidden>/</span>
+              <span className="px-1 text-neutral-400 dark:text-white/45" aria-hidden>/</span>
               <span className="text-neutral-600 dark:text-white/65">Curators</span>
             </nav>
             <h1 className="m-0 text-3xl font-semibold tracking-tight sm:text-5xl">Curators</h1>
@@ -65,7 +65,7 @@ export default async function CuratorsPage() {
                           {curator.name}
                         </h2>
                         {curator.tagline ? (
-                          <p className="m-0 mt-0.5 text-sm text-neutral-500 dark:text-white/50">{curator.tagline}</p>
+                          <p className="m-0 mt-0.5 text-sm text-neutral-500 dark:text-white/62">{curator.tagline}</p>
                         ) : null}
                       </div>
                     </div>
@@ -74,7 +74,7 @@ export default async function CuratorsPage() {
                         {curator.specialties.slice(0, 4).map((s) => (
                           <span
                             key={s}
-                            className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-600 dark:bg-white/[0.06] dark:text-white/55"
+                            className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-600 dark:bg-white/[0.06] dark:text-white/65"
                           >
                             {s}
                           </span>

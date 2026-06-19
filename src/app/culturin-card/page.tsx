@@ -36,7 +36,7 @@ export default function CulturinCardPage() {
   return (
     <>
       <ContentPageShell
-        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
+        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white"
         innerClassName="mx-auto w-full max-w-6xl px-4 sm:px-6"
       >
         <nav aria-label="Breadcrumb" className="mb-6 pt-6">
@@ -47,7 +47,7 @@ export default function CulturinCardPage() {
             >
               Home
             </Link>
-            <span className="text-neutral-400 dark:text-white/35" aria-hidden>
+            <span className="text-neutral-400 dark:text-white/45" aria-hidden>
               /
             </span>
             <span className="text-neutral-600 dark:text-white/65">Culturin Card</span>

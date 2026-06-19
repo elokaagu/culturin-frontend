@@ -97,7 +97,7 @@ export default async function ArticlesPage() {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-[#121212] dark:text-white">
         {/* Masthead */}
         <div className="border-b border-neutral-200 bg-white dark:border-white/10 dark:bg-neutral-950/40">
           <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-[calc(var(--header-offset)+1.5rem)] sm:px-6 sm:pb-12 sm:pt-[calc(var(--header-offset)+2rem)]">
@@ -108,13 +108,13 @@ export default async function ArticlesPage() {
               >
                 Home
               </Link>
-              <span className="px-1.5 text-neutral-400 dark:text-white/35" aria-hidden>
+              <span className="px-1.5 text-neutral-400 dark:text-white/45" aria-hidden>
                 /
               </span>
               <span className="text-neutral-600 dark:text-white/65">Articles</span>
             </nav>
 
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/45">
+            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/58">
               Editorial
             </p>
             <h1 className="m-0 mt-3 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
@@ -148,7 +148,7 @@ export default async function ArticlesPage() {
               role="status"
             >
               <p className="m-0 text-lg text-neutral-700 dark:text-white/80">No articles yet.</p>
-              <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/55">
+              <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/65">
                 Check back soon or browse trending for other content.
               </p>
               <Link
@@ -164,7 +164,7 @@ export default async function ArticlesPage() {
                 <h2 id="articles-all-heading" className="m-0 text-2xl font-semibold tracking-tight sm:text-3xl">
                   All stories
                 </h2>
-                <p className="m-0 text-sm text-neutral-500 dark:text-white/55">
+                <p className="m-0 text-sm text-neutral-500 dark:text-white/65">
                   {articles.length} {articles.length === 1 ? "article" : "articles"}
                 </p>
               </div>

@@ -21,16 +21,16 @@ export default async function CuratedExperiencesPage() {
   return (
     <>
       <Header />
-      <main className="flex min-h-dvh flex-col bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 sm:px-6 lg:px-10 dark:bg-black dark:text-white">
+      <main className="flex min-h-dvh flex-col bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 sm:px-6 lg:px-10 dark:bg-[#121212] dark:text-white">
         <header className="mx-auto mb-8 w-full max-w-6xl">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Curated experiences</h1>
-          <p className="mt-2 text-sm text-neutral-500 sm:text-base dark:text-white/55">
+          <p className="mt-2 text-sm text-neutral-500 sm:text-base dark:text-white/65">
             Handpicked by the Culturin team — browse by country and city.
           </p>
         </header>
 
         {providers.length === 0 ? (
-          <p className="mx-auto w-full max-w-6xl text-sm text-neutral-500 dark:text-white/55" role="status">
+          <p className="mx-auto w-full max-w-6xl text-sm text-neutral-500 dark:text-white/65" role="status">
             No experiences to show yet. Check back soon.
           </p>
         ) : (
@@ -58,7 +58,7 @@ export default async function CuratedExperiencesPage() {
                   <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
                     {country}
                   </h2>
-                  <p className="m-0 mt-1 text-sm text-neutral-500 dark:text-white/50">
+                  <p className="m-0 mt-1 text-sm text-neutral-500 dark:text-white/62">
                     {entries.length} {entries.length === 1 ? "experience" : "experiences"}
                   </p>
                   <ul className="m-0 mt-6 grid list-none grid-cols-1 gap-6 p-0 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
@@ -99,7 +99,7 @@ export default async function CuratedExperiencesPage() {
                               <h3 className="text-base font-semibold leading-snug text-neutral-900 line-clamp-2 dark:text-white">
                                 {provider.eventName}
                               </h3>
-                              <p className="text-sm text-neutral-500 line-clamp-2 dark:text-white/45">{provider.name}</p>
+                              <p className="text-sm text-neutral-500 line-clamp-2 dark:text-white/58">{provider.name}</p>
                             </div>
                           </Link>
                         </li>

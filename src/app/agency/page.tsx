@@ -56,7 +56,7 @@ export default function AgencyPage() {
   return (
     <>
       <ContentPageShell
-        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white"
+        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
         innerClassName="mx-auto w-full max-w-6xl px-4 sm:px-6"
       >
         <nav aria-label="Breadcrumb" className="mb-6 pt-6">
@@ -64,7 +64,7 @@ export default function AgencyPage() {
             <Link href="/" className="text-amber-700 no-underline transition hover:underline dark:text-amber-300/95 dark:hover:text-amber-200">
               Home
             </Link>
-            <span className="text-neutral-400 dark:text-white/35" aria-hidden>
+            <span className="text-neutral-400 dark:text-white/45" aria-hidden>
               /
             </span>
             <span className="text-neutral-600 dark:text-white/65">Agency</span>
@@ -102,7 +102,7 @@ export default function AgencyPage() {
         </section>
 
         <section className="mt-10 rounded-3xl border border-neutral-200 bg-white p-5 sm:p-8 dark:border-white/10 dark:bg-white/[0.02]">
-          <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/45">What we do</p>
+          <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">What we do</p>
           <p className="m-0 mt-3 max-w-4xl text-lg leading-relaxed text-neutral-800 dark:text-white/85">
             Culturin Agency is the creative and experiential arm of Culturin. We design work that travels — without flattening
             the places it comes from. That means strategy and craft that honour local context, then find the thread that connects
@@ -139,7 +139,7 @@ export default function AgencyPage() {
             {scope.map((item) => (
               <article
                 key={item.title}
-                className="rounded-xl border border-neutral-200 bg-white px-4 py-4 dark:border-white/10 dark:bg-black"
+                className="rounded-xl border border-neutral-200 bg-white px-4 py-4 dark:border-white/10 dark:bg-[#121212]"
               >
                 <h3 className="m-0 text-base font-semibold text-neutral-900 dark:text-white">{item.title}</h3>
                 <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-700 dark:text-white/78">{item.text}</p>

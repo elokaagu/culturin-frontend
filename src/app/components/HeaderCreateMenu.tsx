@@ -24,7 +24,7 @@ const itemClass =
   "flex cursor-pointer select-none items-start gap-3 rounded-xl px-3 py-2.5 text-left outline-none transition-colors data-[highlighted]:bg-neutral-100 data-[state=open]:bg-neutral-100 dark:data-[highlighted]:bg-white/[0.06] dark:data-[state=open]:bg-white/[0.06]";
 
 const itemTitleClass = "text-sm font-semibold text-neutral-900 dark:text-white";
-const itemDescClass = "mt-0.5 text-xs leading-snug text-neutral-500 dark:text-white/55";
+const itemDescClass = "mt-0.5 text-xs leading-snug text-neutral-500 dark:text-white/65";
 
 export function HeaderCreateMenu() {
   const router = useTransitionRouter();
@@ -66,10 +66,10 @@ export function HeaderCreateMenu() {
             onCloseAutoFocus={(e) => e.preventDefault()}
           >
             <div className="border-b border-neutral-200/80 px-3 pb-2 pt-1.5 dark:border-white/[0.06]">
-              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/45">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/58">
                 Create on Culturin
               </p>
-              <p className="mt-0.5 text-xs text-neutral-500 dark:text-white/50">
+              <p className="mt-0.5 text-xs text-neutral-500 dark:text-white/62">
                 Publish content and lists your audience can save and return to.
               </p>
             </div>

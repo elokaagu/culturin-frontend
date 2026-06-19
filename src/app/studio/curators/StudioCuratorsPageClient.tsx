@@ -150,15 +150,15 @@ export function StudioCuratorsPageClient({ curators, hasDb, editEntry }: StudioC
 
       <StudioCulturinListSection title="All curators" countLabel={countLabel} toolbar={toolbar}>
         {!hasDb ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             Your content library isn&apos;t connected in this preview, so curators can&apos;t be listed yet.
           </p>
         ) : visibleCurators.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No curators found. Use <span className="font-medium text-amber-800 dark:text-amber-300/90">Create curator</span> to add one.
           </p>
         ) : filteredSorted.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No curators match your search. Try a different term or clear the search box.
           </p>
         ) : (
@@ -179,7 +179,7 @@ export function StudioCuratorsPageClient({ curators, hasDb, editEntry }: StudioC
                       <p className="m-0 truncate text-sm font-semibold text-neutral-900 transition group-hover:text-amber-800 dark:text-white dark:group-hover:text-amber-300">
                         {label}
                       </p>
-                      <p className="m-0 mt-1 truncate text-xs text-neutral-500 dark:text-white/50">/{curator.slug}</p>
+                      <p className="m-0 mt-1 truncate text-xs text-neutral-500 dark:text-white/62">/{curator.slug}</p>
                       {curator.tagline ? (
                         <p className="m-0 mt-1.5 text-xs text-neutral-600 dark:text-white/60">{curator.tagline}</p>
                       ) : null}

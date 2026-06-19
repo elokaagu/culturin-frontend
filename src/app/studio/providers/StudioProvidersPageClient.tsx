@@ -161,15 +161,15 @@ export function StudioProvidersPageClient({ providers, hasDb, editEntry }: Studi
 
       <StudioCulturinListSection title="All providers" countLabel={countLabel} toolbar={toolbar}>
         {!hasDb ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             Your content library isn&apos;t connected in this preview, so providers can&apos;t be listed yet.
           </p>
         ) : visibleProviders.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No providers found. Use <span className="font-medium text-amber-800 dark:text-amber-300/90">Create provider</span> to add one.
           </p>
         ) : filteredSorted.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No providers match your search. Try a different term or clear the search box.
           </p>
         ) : (
@@ -190,12 +190,12 @@ export function StudioProvidersPageClient({ providers, hasDb, editEntry }: Studi
                       <p className="m-0 truncate text-sm font-semibold text-neutral-900 transition group-hover:text-amber-800 dark:text-white dark:group-hover:text-amber-300">
                         {label}
                       </p>
-                      <p className="m-0 mt-1 truncate text-xs text-neutral-500 dark:text-white/50">/{provider.slug}</p>
+                      <p className="m-0 mt-1 truncate text-xs text-neutral-500 dark:text-white/62">/{provider.slug}</p>
                       {provider.name ? (
                         <p className="m-0 mt-1.5 text-xs text-neutral-600 dark:text-white/60">Business: {provider.name}</p>
                       ) : null}
                       {provider.location ? (
-                        <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/50">Location: {provider.location}</p>
+                        <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/62">Location: {provider.location}</p>
                       ) : null}
                     </a>
                     <div className="flex shrink-0 items-center gap-2">

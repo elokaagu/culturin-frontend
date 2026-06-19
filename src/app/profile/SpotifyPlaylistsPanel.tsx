@@ -148,7 +148,7 @@ export default function SpotifyPlaylistsPanel({ onCountChange }: { onCountChange
                   )}
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-neutral-900 dark:text-white">{playlist.name}</p>
-                    <p className="text-xs text-neutral-500 dark:text-white/55">{playlist.tracks_total} tracks</p>
+                    <p className="text-xs text-neutral-500 dark:text-white/65">{playlist.tracks_total} tracks</p>
                     <a
                       href={playlist.spotify_url}
                       target="_blank"

@@ -36,14 +36,14 @@ const contentClass =
 const rowClass =
   "flex w-full cursor-pointer select-none items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium outline-none transition-colors data-[highlighted]:bg-neutral-100 data-[highlighted]:text-neutral-950 dark:data-[highlighted]:bg-white/[0.06] dark:data-[highlighted]:text-white";
 
-const rowIconClass = "shrink-0 text-neutral-400 dark:text-white/45";
+const rowIconClass = "shrink-0 text-neutral-400 dark:text-white/58";
 
 const sepClass = "my-1 h-px bg-neutral-200/90 dark:bg-white/[0.08]";
 
 const segmentWrapClass = "flex w-full rounded-full bg-neutral-100/95 p-0.5 dark:bg-black/50";
 
 const segmentBtnClass =
-  "inline-flex h-8 flex-1 items-center justify-center rounded-full text-neutral-500 transition dark:text-white/50";
+  "inline-flex h-8 flex-1 items-center justify-center rounded-full text-neutral-500 transition dark:text-white/62";
 
 const segmentBtnActiveClass =
   "bg-white text-neutral-900 shadow-sm ring-1 ring-neutral-200/80 dark:bg-white/15 dark:text-white dark:ring-0";
@@ -126,7 +126,7 @@ export function AccountProfileDropdown({
           {appearance === "default" ? (
             <span className="min-w-0 flex-1">
               <span className="block truncate text-sm font-semibold text-neutral-900 dark:text-white">{label}</span>
-              <span className="block truncate text-xs font-normal text-neutral-500 dark:text-white/50">Account</span>
+              <span className="block truncate text-xs font-normal text-neutral-500 dark:text-white/62">Account</span>
             </span>
           ) : null}
         </button>
@@ -175,7 +175,7 @@ export function AccountProfileDropdown({
           <DropdownMenu.Separator className={sepClass} />
 
           <div className="px-3 py-2">
-            <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-neutral-500 dark:text-white/45">
+            <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58">
               Theme
             </p>
             <div className={segmentWrapClass}>
@@ -201,7 +201,7 @@ export function AccountProfileDropdown({
           </div>
 
           <div className="px-3 pb-1 pt-0.5">
-            <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-neutral-500 dark:text-white/45">
+            <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58">
               Discover
             </p>
             <div className={`${segmentWrapClass} gap-0.5`}>

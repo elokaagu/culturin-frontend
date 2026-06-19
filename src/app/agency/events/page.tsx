@@ -111,7 +111,7 @@ export default function AgencyEventsPage() {
   return (
     <>
       <ContentPageShell
-        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white"
+        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
         innerClassName="mx-auto w-full max-w-6xl px-4 sm:px-6"
       >
         <nav aria-label="Breadcrumb" className="mb-6 pt-6">
@@ -119,13 +119,13 @@ export default function AgencyEventsPage() {
             <Link href="/" className="text-amber-700 no-underline transition hover:underline dark:text-amber-300/95">
               Home
             </Link>
-            <span className="text-neutral-400 dark:text-white/35" aria-hidden>
+            <span className="text-neutral-400 dark:text-white/45" aria-hidden>
               /
             </span>
             <Link href="/agency" className="text-amber-700 no-underline transition hover:underline dark:text-amber-300/95">
               Agency
             </Link>
-            <span className="text-neutral-400 dark:text-white/35" aria-hidden>
+            <span className="text-neutral-400 dark:text-white/45" aria-hidden>
               /
             </span>
             <span className="text-neutral-600 dark:text-white/65">Events</span>
@@ -133,7 +133,7 @@ export default function AgencyEventsPage() {
         </nav>
 
         <section className="mb-8">
-          <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/45">Culturin Agency</p>
+          <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/58">Culturin Agency</p>
           <h1 className="m-0 mt-3 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
             Events & experiences gallery
           </h1>

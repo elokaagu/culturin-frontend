@@ -5,7 +5,7 @@ export default function ArticleDetailLoading() {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-[#121212] dark:text-white">
         <div className={appPageContainerClass}>
           <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-8 pt-[calc(var(--header-offset)+1.5rem)] pb-10 sm:gap-10 sm:pt-[calc(var(--header-offset)+2rem)] sm:pb-12">
             <div

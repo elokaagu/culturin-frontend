@@ -179,15 +179,15 @@ export default function LanguageToolsPanel() {
 
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-neutral-200 bg-white p-4 text-sm dark:border-white/10 dark:bg-white/[0.03]">
-          <p className="text-neutral-500 dark:text-white/50">Words saved</p>
+          <p className="text-neutral-500 dark:text-white/62">Words saved</p>
           <p className="mt-1 text-2xl font-semibold">{dashboard?.stats.total_words ?? 0}</p>
         </div>
         <div className="rounded-xl border border-neutral-200 bg-white p-4 text-sm dark:border-white/10 dark:bg-white/[0.03]">
-          <p className="text-neutral-500 dark:text-white/50">Flashcards due</p>
+          <p className="text-neutral-500 dark:text-white/62">Flashcards due</p>
           <p className="mt-1 text-2xl font-semibold">{dueCards}</p>
         </div>
         <div className="rounded-xl border border-neutral-200 bg-white p-4 text-sm dark:border-white/10 dark:bg-white/[0.03]">
-          <p className="text-neutral-500 dark:text-white/50">Current streak</p>
+          <p className="text-neutral-500 dark:text-white/62">Current streak</p>
           <p className="mt-1 text-2xl font-semibold">{dashboard?.stats.current_streak ?? 0}</p>
         </div>
       </div>

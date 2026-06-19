@@ -103,7 +103,7 @@ function LoginPageContent() {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white sm:px-6">
+      <main className="min-h-dvh bg-neutral-50 px-4 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white sm:px-6">
         <div className="mx-auto mt-8 w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-6 shadow-[0_24px_64px_-30px_rgba(0,0,0,0.22)] dark:border-white/10 dark:bg-neutral-950/90 dark:shadow-[0_24px_64px_-30px_rgba(0,0,0,0.8)] sm:mt-12 sm:p-7">
           <div className="mb-6 flex rounded-full bg-neutral-100 p-1 dark:bg-white/[0.06]">
             <button
@@ -144,7 +144,7 @@ function LoginPageContent() {
 
           <div className="relative my-5 flex items-center gap-3 py-1">
             <span className="h-px flex-1 bg-neutral-300 dark:bg-white/15" />
-            <span className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-white/45">or continue with email</span>
+            <span className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-white/58">or continue with email</span>
             <span className="h-px flex-1 bg-neutral-300 dark:bg-white/15" />
           </div>
 
@@ -173,7 +173,7 @@ function LoginPageContent() {
                   autoComplete="name"
                   disabled={pending}
                   required={mode === "signup"}
-                  className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
+                  className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
                 />
               </div>
             ) : null}
@@ -188,7 +188,7 @@ function LoginPageContent() {
                 autoComplete="email"
                 required
                 disabled={pending}
-                className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
+                className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -203,7 +203,7 @@ function LoginPageContent() {
                 required
                 disabled={pending}
                 minLength={8}
-                className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-black dark:text-white"
+                className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
               />
             </div>
             <button
@@ -215,7 +215,7 @@ function LoginPageContent() {
             </button>
           </form>
 
-          <p className="mt-5 text-sm text-neutral-600 dark:text-white/55">
+          <p className="mt-5 text-sm text-neutral-600 dark:text-white/65">
             {mode === "signin" ? "Need an account?" : "Already have an account?"}{" "}
             <button
               type="button"
@@ -226,7 +226,7 @@ function LoginPageContent() {
             </button>
           </p>
 
-          <p className="mt-2 text-sm text-neutral-600 dark:text-white/55">
+          <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
             Continue browsing?{" "}
             <Link href="/" className="font-semibold text-amber-400/90 underline-offset-2 hover:underline">
               Back home

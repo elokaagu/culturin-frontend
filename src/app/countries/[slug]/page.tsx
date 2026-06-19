@@ -85,10 +85,10 @@ export default async function ExploreCountryPage({ params }: PageProps) {
 
   return (
     <ContentPageShell
-      mainClassName="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white"
+      mainClassName="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
       innerClassName={appPageContainerClass}
     >
-      <nav className="mb-8 pt-6 text-sm text-neutral-600 dark:text-white/50" aria-label="Breadcrumb">
+      <nav className="mb-8 pt-6 text-sm text-neutral-600 dark:text-white/62" aria-label="Breadcrumb">
         <div className="flex flex-wrap items-center gap-1.5">
           <Link
             href="/"
@@ -96,7 +96,7 @@ export default async function ExploreCountryPage({ params }: PageProps) {
           >
             Home
           </Link>
-          <span className="text-neutral-400 dark:text-white/40" aria-hidden>
+          <span className="text-neutral-400 dark:text-white/50" aria-hidden>
             /
           </span>
           <Link
@@ -105,7 +105,7 @@ export default async function ExploreCountryPage({ params }: PageProps) {
           >
             Destinations
           </Link>
-          <span className="text-neutral-400 dark:text-white/40" aria-hidden>
+          <span className="text-neutral-400 dark:text-white/50" aria-hidden>
             /
           </span>
           <span className="text-neutral-800 dark:text-white/75">{country.name}</span>
@@ -115,7 +115,7 @@ export default async function ExploreCountryPage({ params }: PageProps) {
       <section className="grid grid-cols-1 gap-10 lg:grid-cols-[1.25fr,0.75fr] lg:items-start">
         <div className="space-y-7">
           <header className="space-y-3">
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/45">
+            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/58">
               Country
             </p>
             <h1 className="m-0 text-4xl leading-tight text-neutral-900 dark:text-white sm:text-5xl">{country.name}</h1>
@@ -147,7 +147,7 @@ export default async function ExploreCountryPage({ params }: PageProps) {
               </p>
               <div className="mt-4 grid gap-4 sm:grid-cols-3">
                 <div>
-                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/45">
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/58">
                     Articles
                   </h3>
                   <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
@@ -161,7 +161,7 @@ export default async function ExploreCountryPage({ params }: PageProps) {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/45">
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/58">
                     Videos
                   </h3>
                   <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
@@ -178,7 +178,7 @@ export default async function ExploreCountryPage({ params }: PageProps) {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/45">
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/58">
                     Experiences
                   </h3>
                   <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
@@ -215,7 +215,7 @@ export default async function ExploreCountryPage({ params }: PageProps) {
             />
           </div>
           <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none">
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/45">
+            <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">
               Explore further
             </p>
             <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/75">

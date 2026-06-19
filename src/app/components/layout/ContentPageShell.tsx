@@ -11,7 +11,7 @@ type ContentPageShellProps = {
 };
 
 const defaultMainClassName =
-  "flex justify-center bg-neutral-50 px-5 pb-12 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white";
+  "flex justify-center bg-neutral-50 px-5 pb-12 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white";
 
 const defaultInnerClassName = "flex w-full max-w-3xl flex-col gap-6";
 

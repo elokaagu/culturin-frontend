@@ -23,7 +23,7 @@ export default function CuratorClient({
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 text-neutral-900 dark:bg-[#121212] dark:text-white">
 
         {/* ── Hero ─────────────────────────────────────────────────── */}
         <div className="relative w-full overflow-hidden bg-neutral-900" style={{ height: "clamp(320px, 45vw, 520px)" }}>
@@ -96,7 +96,7 @@ export default function CuratorClient({
               {/* About */}
               {curator.description ? (
                 <section>
-                  <h2 className="mb-4 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/35">
+                  <h2 className="mb-4 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
                     About
                   </h2>
                   <p className="m-0 max-w-2xl text-base leading-relaxed text-neutral-700 dark:text-white/75">
@@ -107,11 +107,11 @@ export default function CuratorClient({
 
               {/* Articles */}
               <section>
-                <h2 className="mb-6 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/35">
+                <h2 className="mb-6 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
                   From {curator.name}
                 </h2>
                 {articles.length === 0 ? (
-                  <p className="text-sm text-neutral-500 dark:text-white/40">No articles yet.</p>
+                  <p className="text-sm text-neutral-500 dark:text-white/50">No articles yet.</p>
                 ) : (
                   <ul className="m-0 grid list-none grid-cols-1 gap-6 p-0 sm:grid-cols-2">
                     {articles.map((article) => {
@@ -139,7 +139,7 @@ export default function CuratorClient({
                                 {article.title}
                               </h3>
                               {article.summary ? (
-                                <p className="m-0 line-clamp-3 text-sm leading-relaxed text-neutral-500 dark:text-white/50">
+                                <p className="m-0 line-clamp-3 text-sm leading-relaxed text-neutral-500 dark:text-white/62">
                                   {article.summary}
                                 </p>
                               ) : null}
@@ -162,7 +162,7 @@ export default function CuratorClient({
               {/* Specialties */}
               {curator.specialties && curator.specialties.length > 0 ? (
                 <div className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
-                  <h2 className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/35">
+                  <h2 className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
                     Specialises in
                   </h2>
                   <div className="flex flex-wrap gap-2">
@@ -181,7 +181,7 @@ export default function CuratorClient({
               {/* Follow links */}
               {(curator.websiteUrl || curator.instagramUrl || curator.shopUrl) ? (
                 <div className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
-                  <h2 className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/35">
+                  <h2 className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
                     Follow
                   </h2>
                   <div className="flex flex-col gap-2">

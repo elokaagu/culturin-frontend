@@ -57,7 +57,7 @@ export default function GuideProfilesSection({ guides }: { guides: providerCard[
       <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2 className="m-0 text-2xl font-semibold tracking-tight sm:text-3xl">Meet our local guides</h2>
-          <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/55">
+          <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/65">
             Real people with bios, specialties, and locations they guide.
           </p>
         </div>
@@ -210,7 +210,7 @@ export default function GuideProfilesSection({ guides }: { guides: providerCard[
           })}
         </ul>
       ) : (
-        <p className="m-0 rounded-xl border border-dashed border-neutral-300 px-4 py-6 text-sm text-neutral-500 dark:border-white/15 dark:text-white/55">
+        <p className="m-0 rounded-xl border border-dashed border-neutral-300 px-4 py-6 text-sm text-neutral-500 dark:border-white/15 dark:text-white/65">
           No guides match this location yet.
         </p>
       )}

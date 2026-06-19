@@ -49,7 +49,7 @@ export default function AdvisorsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
         <div className="mx-auto w-full max-w-[52rem] px-4 pt-8 sm:px-6 sm:pt-10">
           <header className="max-w-[40rem]">
             <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 sm:text-[2.7rem] dark:text-white">
@@ -129,7 +129,7 @@ export default function AdvisorsPage() {
                 disabled={formState === "loading" || formState === "success"}
                 aria-invalid={formState === "error"}
                 aria-describedby={formMessage ? "apply-form-feedback" : undefined}
-                className="h-11 flex-1 rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-black dark:text-white dark:placeholder:text-white/40"
+                className="h-11 flex-1 rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
               />
               <button
                 type="submit"

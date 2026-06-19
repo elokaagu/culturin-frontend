@@ -17,7 +17,7 @@ export default function DestinationsPage() {
   return (
     <ContentPageShell
       innerClassName={appPageContainerClass}
-      mainClassName="min-h-dvh bg-neutral-50 px-0 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white"
+      mainClassName="min-h-dvh bg-neutral-50 px-0 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
     >
       <div className="mb-8 border-b border-neutral-200 pb-6 pt-6 dark:border-white/10">
         <nav className="mb-5" aria-label="Breadcrumb">
@@ -27,7 +27,7 @@ export default function DestinationsPage() {
           >
             Home
           </Link>
-          <span className="px-1 text-neutral-400 dark:text-white/35" aria-hidden>
+          <span className="px-1 text-neutral-400 dark:text-white/45" aria-hidden>
             /
           </span>
           <span className="text-sm text-neutral-600 dark:text-white/60">Destinations</span>

@@ -41,7 +41,7 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
   return (
     <div
       id={id}
-      className="fixed inset-0 z-[100] flex h-full w-full min-w-0 animate-fade-in flex-col overflow-x-hidden bg-neutral-50 pt-[var(--header-total-height)] text-neutral-900 transition-opacity duration-200 ease-out dark:bg-black dark:text-white"
+      className="fixed inset-0 z-[100] flex h-full w-full min-w-0 animate-fade-in flex-col overflow-x-hidden bg-neutral-50 pt-[var(--header-total-height)] text-neutral-900 transition-opacity duration-200 ease-out dark:bg-[#121212] dark:text-white"
       role="dialog"
       aria-modal="true"
       aria-label="Mobile navigation"
@@ -142,7 +142,7 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
                     <li key={`${item.href}-${item.title}`} className="list-none">
                       <Link href={item.href} className={createSubLinkClass} onClick={onClose}>
                         <span className="font-medium">{item.title}</span>
-                        <span className="mt-0.5 block text-xs font-normal text-neutral-500 dark:text-white/50">
+                        <span className="mt-0.5 block text-xs font-normal text-neutral-500 dark:text-white/62">
                           {item.description}
                         </span>
                       </Link>

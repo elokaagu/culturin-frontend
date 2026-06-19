@@ -100,7 +100,7 @@ export default function Input<T extends FieldValues>({
         className={inputClassName}
       />
       {helperText && !invalid ? (
-        <p id={hintId} className="text-xs text-neutral-500 dark:text-white/50">
+        <p id={hintId} className="text-xs text-neutral-500 dark:text-white/62">
           {helperText}
         </p>
       ) : null}

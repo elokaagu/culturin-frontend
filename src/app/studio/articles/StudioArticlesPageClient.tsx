@@ -102,16 +102,16 @@ export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPage
 
       <StudioCulturinListSection title="All articles" countLabel={countLabel} toolbar={toolbar}>
         {!hasDb ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             Your content library isn&apos;t connected in this preview, so articles can&apos;t be listed yet.
           </p>
         ) : visibleArticles.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No articles found. Use <span className="font-medium text-amber-800 dark:text-amber-300/90">Create article</span>{" "}
             to add one.
           </p>
         ) : filteredSorted.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No articles match your search. Try a different term or clear the search box.
           </p>
         ) : (
@@ -133,7 +133,7 @@ export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPage
                       <p className="m-0 truncate text-sm font-semibold text-neutral-900 transition group-hover:text-amber-800 dark:text-white dark:group-hover:text-amber-300">
                         {article.title}
                       </p>
-                      <p className="m-0 mt-1 truncate text-xs text-neutral-500 dark:text-white/50">/{slug}</p>
+                      <p className="m-0 mt-1 truncate text-xs text-neutral-500 dark:text-white/62">/{slug}</p>
                       {article.summary ? (
                         <p className="m-0 mt-1.5 line-clamp-2 text-xs text-neutral-600 dark:text-white/60">{article.summary}</p>
                       ) : null}

@@ -33,40 +33,40 @@ export default async function CreatorOverviewPage() {
           href="/creator/articles/new"
           className="group block rounded-2xl border border-neutral-200 bg-white p-5 no-underline shadow-sm transition hover:border-amber-400/45 hover:shadow-md dark:border-white/10 dark:bg-neutral-950/80 dark:hover:border-amber-400/35"
         >
-          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/50">
+          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/62">
             Articles
           </p>
           <p className="m-0 mt-2 text-sm font-medium text-neutral-900 dark:text-white">New article draft</p>
-          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/45">Rich text, hero image, summary</p>
+          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/58">Rich text, hero image, summary</p>
         </Link>
         <Link
           href="/creator/videos/new"
           className="group block rounded-2xl border border-neutral-200 bg-white p-5 no-underline shadow-sm transition hover:border-amber-400/45 hover:shadow-md dark:border-white/10 dark:bg-neutral-950/80 dark:hover:border-amber-400/35"
         >
-          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/50">
+          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/62">
             Videos
           </p>
           <p className="m-0 mt-2 text-sm font-medium text-neutral-900 dark:text-white">New video draft</p>
-          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/45">Player ID, thumbnail, description</p>
+          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/58">Player ID, thumbnail, description</p>
         </Link>
         <Link
           href="/creator/providers"
           className="group block rounded-2xl border border-neutral-200 bg-white p-5 no-underline shadow-sm transition hover:border-amber-400/45 hover:shadow-md dark:border-white/10 dark:bg-neutral-950/80 dark:hover:border-amber-400/35"
         >
-          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/50">
+          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/62">
             Experiences
           </p>
           <p className="m-0 mt-2 text-sm font-medium text-neutral-900 dark:text-white">New experience draft</p>
-          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/45">Partner / host listings</p>
+          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/58">Partner / host listings</p>
         </Link>
       </div>
 
       <div className="mt-10">
-        <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/55">
+        <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/65">
           Recent submissions
         </h2>
         {recent.length === 0 ? (
-          <p className="mt-4 rounded-xl border border-dashed border-neutral-300 px-4 py-6 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="mt-4 rounded-xl border border-dashed border-neutral-300 px-4 py-6 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No submissions yet. Start with an article, video, or experience from the cards above or the sidebar.
           </p>
         ) : (
@@ -79,7 +79,7 @@ export default async function CreatorOverviewPage() {
                 <span className="font-medium text-neutral-900 dark:text-white">
                   {payloadTitle(row.payload, row.content_type)}
                 </span>
-                <span className="text-xs text-neutral-500 dark:text-white/45">
+                <span className="text-xs text-neutral-500 dark:text-white/58">
                   {row.content_type} · {row.status} ·{" "}
                   {new Date(row.created_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
                 </span>

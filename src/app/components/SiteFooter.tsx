@@ -44,7 +44,7 @@ function ArrowSubmitIcon({ className }: { className?: string }) {
 }
 
 const headingClass =
-  "text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/50";
+  "text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/62";
 
 const linkClass =
   "text-sm text-neutral-900 no-underline transition-colors hover:text-neutral-600 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:text-white/90 dark:hover:text-white";
@@ -213,7 +213,7 @@ export default function SiteFooter() {
         </div>
 
         <div className="mt-14 border-t border-neutral-200/80 pt-8 text-xs dark:border-white/10 sm:mt-16">
-          <p className="m-0 font-medium uppercase tracking-wider text-neutral-500 dark:text-white/50">
+          <p className="m-0 font-medium uppercase tracking-wider text-neutral-500 dark:text-white/62">
             {year} Culturin — all rights reserved
           </p>
         </div>

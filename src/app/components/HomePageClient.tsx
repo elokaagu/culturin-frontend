@@ -25,7 +25,7 @@ const HERO_IMAGE =
   "https://www.forbes.com/advisor/wp-content/uploads/2021/03/traveling-based-on-fare-deals.jpg";
 
 const mainClass =
-  "min-h-dvh w-full min-w-0 overflow-x-clip bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white";
+  "min-h-dvh w-full min-w-0 overflow-x-clip bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white";
 
 const containerClass = appPageContainerClass;
 
@@ -83,7 +83,7 @@ function HomeSection({
             >
               {title}
             </h2>
-            <p className="mt-1 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:mt-1.5 sm:text-[0.95rem] dark:text-white/55">
+            <p className="mt-1 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:mt-1.5 sm:text-[0.95rem] dark:text-white/65">
               {description}
             </p>
           </div>
@@ -194,7 +194,7 @@ export default function HomePageClient({
 
         <section
           id="discover"
-          className="scroll-mt-[var(--header-offset)] -mt-10 border-b border-neutral-200 bg-neutral-50 pb-8 pt-4 sm:-mt-14 sm:pb-10 sm:pt-6 dark:border-white/10 dark:bg-black"
+          className="scroll-mt-[var(--header-offset)] -mt-10 border-b border-neutral-200 bg-neutral-50 pb-8 pt-4 sm:-mt-14 sm:pb-10 sm:pt-6 dark:border-white/10 dark:bg-[#121212]"
           aria-labelledby="explore-world-heading"
         >
           <div className={containerClass}>
@@ -208,7 +208,7 @@ export default function HomePageClient({
           </div>
         </section>
 
-        <div className="bg-neutral-50 pb-4 pt-2 sm:pt-3 dark:bg-black">
+        <div className="bg-neutral-50 pb-4 pt-2 sm:pt-3 dark:bg-[#121212]">
           <HomeSection
             id="trending-stories"
             title="Trending stories"

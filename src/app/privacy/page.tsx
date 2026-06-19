@@ -31,7 +31,7 @@ export default function PrivacyPage() {
   return (
     <>
       <ContentPageShell
-        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white"
+        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white"
         innerClassName="mx-auto w-full max-w-5xl px-4 sm:px-6"
       >
         <nav aria-label="Breadcrumb" className="mb-6 pt-6">
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
             >
               Home
             </Link>
-            <span aria-hidden className="text-neutral-400 dark:text-white/35">
+            <span aria-hidden className="text-neutral-400 dark:text-white/45">
               /
             </span>
             <span className="text-neutral-600 dark:text-white/65">Privacy</span>
@@ -51,7 +51,7 @@ export default function PrivacyPage() {
 
         <article className="space-y-8">
           <header className="rounded-3xl border border-neutral-200 bg-white p-5 sm:p-8 dark:border-white/10 dark:bg-white/[0.03]">
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/45">
+            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/58">
               Policy
             </p>
             <h1 className="m-0 mt-3 text-3xl tracking-tight text-neutral-900 dark:text-white sm:text-5xl">
@@ -62,7 +62,7 @@ export default function PrivacyPage() {
               personal information when you browse our website, create an
               account, save content, or contact providers.
             </p>
-            <p className="m-0 mt-3 text-sm text-neutral-500 dark:text-white/55">
+            <p className="m-0 mt-3 text-sm text-neutral-500 dark:text-white/65">
               Last updated: April 25, 2026
             </p>
           </header>

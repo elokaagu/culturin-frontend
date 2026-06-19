@@ -29,7 +29,7 @@ export default async function VideosPage() {
     <>
       <Header />
       <main
-        className="min-h-dvh w-full bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white"
+        className="min-h-dvh w-full bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
         id="main-content"
       >
         <div className={`${container} pt-6 sm:pt-10`}>
@@ -38,10 +38,10 @@ export default async function VideosPage() {
               Top videos
             </h1>
             <p className="mt-2 text-lg text-neutral-600 sm:text-xl dark:text-white/60">Only on Culturin</p>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:text-[0.95rem] dark:text-white/55">
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:text-[0.95rem] dark:text-white/65">
               A single horizontal row of everything in the library—swipe or scroll, then play in full view.{" "}
               {videos.length > 0 ? (
-                <span className="whitespace-nowrap text-neutral-500 dark:text-white/40">
+                <span className="whitespace-nowrap text-neutral-500 dark:text-white/50">
                   {videos.length} {videos.length === 1 ? "title" : "titles"} right now.
                 </span>
               ) : null}

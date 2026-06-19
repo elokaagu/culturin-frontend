@@ -30,7 +30,7 @@ export default async function TravelGuidesMarketplacePage() {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-[#121212] dark:text-white">
         <div className="border-b border-neutral-200 bg-white dark:border-white/10 dark:bg-neutral-950/40">
           <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-[calc(var(--header-offset)+1.5rem)] sm:px-6 sm:pb-12 sm:pt-[calc(var(--header-offset)+2rem)]">
             <nav className="mb-6 text-sm" aria-label="Breadcrumb">
@@ -40,13 +40,13 @@ export default async function TravelGuidesMarketplacePage() {
               >
                 Home
               </Link>
-              <span className="px-1.5 text-neutral-400 dark:text-white/35" aria-hidden>
+              <span className="px-1.5 text-neutral-400 dark:text-white/45" aria-hidden>
                 /
               </span>
               <span className="text-neutral-600 dark:text-white/65">Travel guides</span>
             </nav>
 
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/45">
+            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/58">
               Marketplace
             </p>
             <h1 className="m-0 mt-3 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
@@ -63,7 +63,7 @@ export default async function TravelGuidesMarketplacePage() {
               </div>
             </div>
 
-            <p className="m-0 mt-8 text-sm text-neutral-500 dark:text-white/50">
+            <p className="m-0 mt-8 text-sm text-neutral-500 dark:text-white/62">
               Looking for every editorial story?{" "}
               <Link href="/articles" className="font-medium text-amber-800 underline-offset-2 hover:underline dark:text-amber-400/90">
                 Browse all articles
@@ -77,7 +77,7 @@ export default async function TravelGuidesMarketplacePage() {
 
           <header className="mb-8 border-b border-neutral-200 pb-6 dark:border-white/10">
             <h2 className="m-0 text-2xl font-semibold tracking-tight sm:text-3xl">Guides by theme</h2>
-            <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/55">
+            <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/65">
               Pick a collection—each one opens a dedicated hub of ideas and related reads.
             </p>
           </header>

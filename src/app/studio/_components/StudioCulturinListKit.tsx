@@ -20,7 +20,7 @@ export const studioCreateFormShellClass =
 
 /** Muted label above search/sort (uppercase micro-label). */
 const labelClass =
-  "text-[0.7rem] font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/45";
+  "text-[0.7rem] font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58";
 
 const inputClass =
   "w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-inner shadow-neutral-900/5 outline-none transition placeholder:text-neutral-400 focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-400/25 dark:border-white/12 dark:bg-black/60 dark:text-white dark:shadow-black/40 dark:placeholder:text-white/35 dark:focus-visible:border-amber-400/55 dark:focus-visible:ring-amber-400/20";
@@ -45,7 +45,7 @@ export function StudioCulturinListSection({ title, countLabel, toolbar, children
     <section
       className={cn(
         "mt-10 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6",
-        "dark:border-white/10 dark:bg-black dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]",
+        "dark:border-white/10 dark:bg-[#121212] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]",
       )}
     >
       <div className="flex flex-wrap items-end justify-between gap-3 gap-y-2">

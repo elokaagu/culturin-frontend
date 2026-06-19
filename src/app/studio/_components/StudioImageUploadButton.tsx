@@ -72,9 +72,9 @@ export function StudioImageUploadButton({ onUploaded, buttonLabel = "Upload imag
       >
         {uploading ? "Uploading..." : buttonLabel}
       </button>
-      {message ? <p className="m-0 text-[11px] text-neutral-500 dark:text-white/55">{message}</p> : null}
+      {message ? <p className="m-0 text-[11px] text-neutral-500 dark:text-white/65">{message}</p> : null}
       {!supabase ? (
-        <p className="m-0 text-[11px] text-neutral-500 dark:text-white/55">Uploads aren’t available in this preview.</p>
+        <p className="m-0 text-[11px] text-neutral-500 dark:text-white/65">Uploads aren’t available in this preview.</p>
       ) : null}
     </div>
   );

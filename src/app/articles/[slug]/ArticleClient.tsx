@@ -137,7 +137,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
           </code>
         ),
         "strike-through": ({ children }) => (
-          <s className="text-neutral-600 line-through decoration-neutral-400 dark:text-white/55 dark:decoration-white/25">
+          <s className="text-neutral-600 line-through decoration-neutral-400 dark:text-white/65 dark:decoration-white/25">
             {children}
           </s>
         ),
@@ -204,7 +204,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased selection:bg-amber-500/20 dark:bg-black dark:text-white dark:selection:bg-amber-500/30">
+      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased selection:bg-amber-500/20 dark:bg-[#121212] dark:text-white dark:selection:bg-amber-500/30">
         <article itemScope itemType="https://schema.org/Article">
           <div className={appPageContainerClass}>
             <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-8 pt-[calc(var(--header-offset)+1.5rem)] pb-10 sm:gap-10 sm:pt-[calc(var(--header-offset)+2rem)] sm:pb-12">
@@ -238,7 +238,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
                   </p>
                 ) : null}
 
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-neutral-500 dark:text-white/45">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-neutral-500 dark:text-white/58">
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="h-4 w-4 text-amber-700 dark:text-amber-400/75" aria-hidden />
                     <span>{readMinutes} min read</span>
@@ -254,7 +254,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
                     </a>
                   ) : (
                     <span
-                      className="text-neutral-500 dark:text-white/40"
+                      className="text-neutral-500 dark:text-white/50"
                       itemProp="publisher"
                       itemScope
                       itemType="https://schema.org/Organization"
@@ -274,7 +274,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
 
               {curator ? (
                 <div className="mt-2 rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.04]">
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/35">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
                     Featured in
                   </p>
                   <div className="flex items-start gap-4">
@@ -293,7 +293,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
                         {curator.name}
                       </a>
                       {curator.tagline ? (
-                        <p className="mt-0.5 text-sm text-neutral-500 dark:text-white/50">{curator.tagline}</p>
+                        <p className="mt-0.5 text-sm text-neutral-500 dark:text-white/62">{curator.tagline}</p>
                       ) : null}
                       <div className="mt-2.5 flex flex-wrap items-center gap-2">
                         <a
@@ -333,7 +333,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
                   className="mt-8 flex flex-col gap-4 border-t border-neutral-200 pt-7 sm:mt-10 dark:border-white/10"
                   aria-label="Article actions"
                 >
-                  <p className="m-0 text-sm font-medium text-neutral-500 dark:text-white/40">
+                  <p className="m-0 text-sm font-medium text-neutral-500 dark:text-white/50">
                     Save or share this guide
                   </p>
                   <div className="flex flex-wrap items-center gap-3">

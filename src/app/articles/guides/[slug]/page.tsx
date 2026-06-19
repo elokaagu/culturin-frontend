@@ -45,7 +45,7 @@ export default function GuideDetailPage({
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white">
         <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
           <Link
             href="/travel-guides"

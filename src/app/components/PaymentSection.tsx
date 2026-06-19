@@ -106,14 +106,14 @@ export default function PaymentSection() {
           details when you book a paid experience.
         </p>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:gap-3">
-          <p className="m-0 flex-1 text-sm text-neutral-500 dark:text-white/50">
+          <p className="m-0 flex-1 text-sm text-neutral-500 dark:text-white/62">
             You’ll be able to add a debit or credit card here in a future update.
           </p>
           <button
             type="button"
             disabled
             title="Payment provider not connected"
-            className="shrink-0 rounded-lg border border-neutral-200 bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-500 dark:border-white/20 dark:bg-white/5 dark:text-white/50"
+            className="shrink-0 rounded-lg border border-neutral-200 bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-500 dark:border-white/20 dark:bg-white/5 dark:text-white/62"
           >
             Add a card
           </button>
@@ -266,7 +266,7 @@ export default function PaymentSection() {
           list here. Nothing to show yet.
         </p>
         <ul className="m-0 list-none space-y-2 p-0">
-          <li className="rounded-lg border border-dashed border-neutral-200 p-4 text-center text-sm text-neutral-500 dark:border-white/15 dark:text-white/50">
+          <li className="rounded-lg border border-dashed border-neutral-200 p-4 text-center text-sm text-neutral-500 dark:border-white/15 dark:text-white/62">
             No payments yet.
           </li>
         </ul>
@@ -297,7 +297,7 @@ export default function PaymentSection() {
             </p>
           ) : null}
           {lastSaved === "reset" ? (
-            <p className="text-sm text-neutral-500 dark:text-white/50" role="status">
+            <p className="text-sm text-neutral-500 dark:text-white/62" role="status">
               Reverted to the last draft saved on this device.
             </p>
           ) : null}

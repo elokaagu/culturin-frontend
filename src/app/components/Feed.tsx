@@ -25,7 +25,7 @@ type FeedCardProps = {
 };
 
 const linkShellClass =
-  "group block w-full max-w-3xl rounded-2xl border border-neutral-200 bg-white text-left shadow-sm no-underline transition-colors hover:border-neutral-300 hover:bg-neutral-50 dark:border-white/10 dark:bg-black dark:hover:border-white/20 dark:hover:bg-neutral-950/80";
+  "group block w-full max-w-3xl rounded-2xl border border-neutral-200 bg-white text-left shadow-sm no-underline transition-colors hover:border-neutral-300 hover:bg-neutral-50 dark:border-white/10 dark:bg-[#121212] dark:hover:border-white/20 dark:hover:bg-neutral-950/80";
 
 const articleInnerClass =
   "flex flex-col gap-4 p-4 sm:flex-row sm:items-stretch sm:gap-6 sm:p-5";
@@ -71,7 +71,7 @@ export function FeedCard({
           <p className="text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-white/70">{description}</p>
           <time
             dateTime={publishedAt}
-            className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-white/45"
+            className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-white/58"
           >
             {dateLabel}
           </time>

@@ -113,13 +113,13 @@ export default function CommunityGalleryClient({ initialTiles }: { initialTiles:
         </p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
           <label className="flex min-w-0 flex-1 flex-col gap-1.5">
-            <span className="text-xs font-medium text-neutral-500 dark:text-white/45">Caption (optional)</span>
+            <span className="text-xs font-medium text-neutral-500 dark:text-white/58">Caption (optional)</span>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Sunset in Lisbon"
               disabled={busy}
-              className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-white/15 dark:bg-black dark:text-white"
+              className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-white/15 dark:bg-[#121212] dark:text-white"
             />
           </label>
           <input
@@ -154,7 +154,7 @@ export default function CommunityGalleryClient({ initialTiles }: { initialTiles:
       </section>
 
       {initialTiles.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-neutral-300 px-6 py-16 text-center text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+        <p className="rounded-xl border border-dashed border-neutral-300 px-6 py-16 text-center text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
           No images yet. Check back soon for new stories and videos, or{" "}
           <button type="button" onClick={scrollToUpload} className="font-medium text-amber-700 underline-offset-2 hover:underline dark:text-amber-300/90">
             share a travel photo

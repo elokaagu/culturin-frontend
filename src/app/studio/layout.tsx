@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 function AccessDenied() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center bg-neutral-50 px-4 py-12 text-neutral-900 dark:bg-black dark:text-white">
+    <main className="flex min-h-dvh flex-col items-center justify-center bg-neutral-50 px-4 py-12 text-neutral-900 dark:bg-[#121212] dark:text-white">
       <div className="w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-neutral-950/90">
         <p className="text-sm font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">Culturin Studio</p>
         <h1 className="mt-2 text-2xl font-semibold">Access denied</h1>
@@ -31,7 +31,7 @@ function AccessDenied() {
           >
             Open Creator workspace (drafts &amp; submissions)
           </Link>
-          <Link href="/" className="font-medium text-neutral-600 underline-offset-2 hover:underline dark:text-white/55">
+          <Link href="/" className="font-medium text-neutral-600 underline-offset-2 hover:underline dark:text-white/65">
             ← Back to Culturin
           </Link>
         </p>

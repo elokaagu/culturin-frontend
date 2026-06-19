@@ -120,7 +120,7 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
     <div className="mt-8 sm:mt-10">
       <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-white/[0.1] dark:bg-white/[0.03] sm:p-6">
         <h2 className="text-base font-semibold text-neutral-900 dark:text-white">Trip lists</h2>
-        <p className="mt-1 text-sm text-neutral-500 dark:text-white/45">
+        <p className="mt-1 text-sm text-neutral-500 dark:text-white/58">
           Create itineraries, collections, and highlights, then publish what you want others to discover.
         </p>
 
@@ -160,7 +160,7 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
         </div>
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <div>
-            <p className="mb-1 text-xs font-medium text-neutral-500 dark:text-white/50">Type</p>
+            <p className="mb-1 text-xs font-medium text-neutral-500 dark:text-white/62">Type</p>
             <div
               className="inline-flex rounded-full border border-neutral-200 bg-neutral-100/90 p-1 dark:border-white/[0.1] dark:bg-white/[0.04]"
               role="group"
@@ -174,7 +174,7 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
                   className={
                     newType === kind
                       ? "rounded-full bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:bg-white/15 dark:text-white dark:shadow-none dark:ring-0"
-                      : "rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-500 transition hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/75"
+                      : "rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-500 transition hover:text-neutral-800 dark:text-white/58 dark:hover:text-white/75"
                   }
                   aria-pressed={newType === kind}
                 >
@@ -184,7 +184,7 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
             </div>
           </div>
           <div className="sm:col-span-2">
-            <label htmlFor="new-list-description" className="mb-1 block text-xs font-medium text-neutral-500 dark:text-white/50">
+            <label htmlFor="new-list-description" className="mb-1 block text-xs font-medium text-neutral-500 dark:text-white/62">
               Description
             </label>
             <input
@@ -214,7 +214,7 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
       </div>
 
       {lists.length === 0 ? (
-        <p className="mt-8 text-center text-sm text-neutral-500 dark:text-white/40">
+        <p className="mt-8 text-center text-sm text-neutral-500 dark:text-white/50">
           No lists yet. Name a trip or city above and add spots as you go.
         </p>
       ) : (
@@ -361,15 +361,15 @@ function SpotListCard({
           >
             <span className="block text-sm font-semibold text-neutral-900 dark:text-white">{list.title}</span>
             {list.place_label ? (
-              <span className="mt-0.5 block text-xs text-neutral-500 dark:text-white/45">{list.place_label}</span>
+              <span className="mt-0.5 block text-xs text-neutral-500 dark:text-white/58">{list.place_label}</span>
             ) : null}
             <span className="mt-1 inline-flex rounded-full border border-neutral-300 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-600 dark:border-white/20 dark:text-white/60">
               {list.list_type}
             </span>
             {list.description ? (
-              <span className="mt-1 block text-xs text-neutral-500 dark:text-white/55">{list.description}</span>
+              <span className="mt-1 block text-xs text-neutral-500 dark:text-white/65">{list.description}</span>
             ) : null}
-            <span className="mt-1 block text-xs text-neutral-400 dark:text-white/35">
+            <span className="mt-1 block text-xs text-neutral-400 dark:text-white/45">
               {list.items.length} spot{list.items.length === 1 ? "" : "s"}
             </span>
           </button>
@@ -394,7 +394,7 @@ function SpotListCard({
         {expanded ? (
           <div className="border-t border-neutral-100 px-4 py-4 dark:border-white/[0.06] sm:px-5">
             {list.items.length === 0 ? (
-              <p className="text-sm text-neutral-500 dark:text-white/40">No spots yet. Add one below.</p>
+              <p className="text-sm text-neutral-500 dark:text-white/50">No spots yet. Add one below.</p>
             ) : (
               <ul className="m-0 space-y-3 p-0">
                 {list.items.map((item) => {
@@ -421,7 +421,7 @@ function SpotListCard({
                         ) : null}
                         <span className="text-sm font-medium text-neutral-900 dark:text-white">{item.title}</span>
                         {item.notes ? (
-                          <p className="mt-1 text-xs leading-relaxed text-neutral-600 dark:text-white/55">{item.notes}</p>
+                          <p className="mt-1 text-xs leading-relaxed text-neutral-600 dark:text-white/65">{item.notes}</p>
                         ) : null}
                         {item.url ? (
                           <a
@@ -437,7 +437,7 @@ function SpotListCard({
                       <button
                         type="button"
                         onClick={() => void removeItem(item)}
-                        className="shrink-0 text-xs text-neutral-400 underline-offset-2 hover:text-red-600 hover:underline dark:text-white/35 dark:hover:text-red-300"
+                        className="shrink-0 text-xs text-neutral-400 underline-offset-2 hover:text-red-600 hover:underline dark:text-white/45 dark:hover:text-red-300"
                       >
                         Remove
                       </button>
@@ -478,10 +478,10 @@ function SpotListCard({
                   {updatingList ? "Saving…" : list.is_published ? "Published" : "Private"}
                 </button>
               </div>
-              <p className="text-xs font-medium uppercase tracking-wide text-neutral-400 dark:text-white/35">
+              <p className="text-xs font-medium uppercase tracking-wide text-neutral-400 dark:text-white/45">
                 Add a spot
               </p>
-              <p className="text-xs text-neutral-500 dark:text-white/45">
+              <p className="text-xs text-neutral-500 dark:text-white/58">
                 Spots save when you click <span className="font-medium text-neutral-700 dark:text-white/70">Add spot</span> (or press Enter in the name field). Type, collection, and publish toggles above save as soon as you tap them.
               </p>
               <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch">
@@ -544,7 +544,7 @@ function SpotListCard({
                   <button
                     type="button"
                     onClick={() => setSpotImageUrl("")}
-                    className="text-xs text-neutral-500 underline-offset-2 hover:text-neutral-800 hover:underline dark:text-white/45 dark:hover:text-white/75"
+                    className="text-xs text-neutral-500 underline-offset-2 hover:text-neutral-800 hover:underline dark:text-white/58 dark:hover:text-white/75"
                   >
                     Clear image
                   </button>

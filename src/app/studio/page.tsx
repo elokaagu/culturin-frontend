@@ -58,38 +58,38 @@ export default async function StudioOverviewPage() {
           href="/studio/articles"
           className="group block rounded-2xl border border-neutral-200 bg-white p-5 no-underline shadow-sm transition hover:border-amber-400/45 hover:shadow-md dark:border-white/10 dark:bg-neutral-950/80 dark:hover:border-amber-400/35"
         >
-          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/50">
+          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/62">
             Articles
           </p>
           <p className="m-0 mt-2 text-3xl font-semibold tabular-nums text-neutral-900 dark:text-white">{counts.blogs}</p>
-          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/45">Guides & editorial</p>
+          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/58">Guides & editorial</p>
         </Link>
         <Link
           href="/studio/videos"
           className="group block rounded-2xl border border-neutral-200 bg-white p-5 no-underline shadow-sm transition hover:border-amber-400/45 hover:shadow-md dark:border-white/10 dark:bg-neutral-950/80 dark:hover:border-amber-400/35"
         >
-          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/50">
+          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/62">
             Videos
           </p>
           <p className="m-0 mt-2 text-3xl font-semibold tabular-nums text-neutral-900 dark:text-white">{counts.videos}</p>
-          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/45">Hosted video library</p>
+          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/58">Hosted video library</p>
         </Link>
         <Link
           href="/studio/providers"
           className="group block rounded-2xl border border-neutral-200 bg-white p-5 no-underline shadow-sm transition hover:border-amber-400/45 hover:shadow-md dark:border-white/10 dark:bg-neutral-950/80 dark:hover:border-amber-400/35"
         >
-          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/50">
+          <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/62">
             Experiences
           </p>
           <p className="m-0 mt-2 text-3xl font-semibold tabular-nums text-neutral-900 dark:text-white">
             {counts.providers}
           </p>
-          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/45">Experiences & bookings</p>
+          <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/58">Experiences & bookings</p>
         </Link>
       </div>
 
       <div className="mt-10">
-        <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/55">
+        <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/65">
           Quick actions
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -105,7 +105,7 @@ export default async function StudioOverviewPage() {
                   <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-700 dark:border-white/15 dark:bg-white/5 dark:text-white/85">
                     <Icon className="h-4.5 w-4.5" aria-hidden />
                   </span>
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-400 transition group-hover:text-amber-700 dark:text-white/40 dark:group-hover:text-amber-300/90">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-400 transition group-hover:text-amber-700 dark:text-white/50 dark:group-hover:text-amber-300/90">
                     Go
                     <ChevronRight className="h-3.5 w-3.5" aria-hidden />
                   </span>

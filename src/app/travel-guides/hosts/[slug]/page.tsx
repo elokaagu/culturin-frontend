@@ -55,13 +55,13 @@ export default async function LocalHostProfilePage({ params }: { params: { slug:
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
         <div className="mx-auto w-full max-w-6xl px-4 pt-6 sm:px-6">
           <nav className="mb-6 text-sm" aria-label="Breadcrumb">
             <Link href="/" className="font-medium text-amber-800 no-underline hover:underline dark:text-amber-300/95">
               Home
             </Link>
-            <span className="px-1.5 text-neutral-400 dark:text-white/35" aria-hidden>
+            <span className="px-1.5 text-neutral-400 dark:text-white/45" aria-hidden>
               /
             </span>
             <Link
@@ -70,7 +70,7 @@ export default async function LocalHostProfilePage({ params }: { params: { slug:
             >
               Travel guides
             </Link>
-            <span className="px-1.5 text-neutral-400 dark:text-white/35" aria-hidden>
+            <span className="px-1.5 text-neutral-400 dark:text-white/45" aria-hidden>
               /
             </span>
             <span className="text-neutral-600 dark:text-white/65">{profileName}</span>
@@ -142,7 +142,7 @@ export default async function LocalHostProfilePage({ params }: { params: { slug:
                 <div className="mt-5 space-y-4">
                   {languages.length > 0 ? (
                     <div>
-                      <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/55">
+                      <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/65">
                         Languages
                       </h3>
                       <div className="mt-2 flex flex-wrap gap-2">
@@ -160,7 +160,7 @@ export default async function LocalHostProfilePage({ params }: { params: { slug:
 
                   {specialties.length > 0 ? (
                     <div>
-                      <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/55">
+                      <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/65">
                         Specialties
                       </h3>
                       <div className="mt-2 flex flex-wrap gap-2">

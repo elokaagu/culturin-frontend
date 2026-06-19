@@ -48,7 +48,7 @@ export default function ExploreWorldCountriesRail({
             See all
           </Link>
         </header>
-        <p className="text-sm text-neutral-600 dark:text-white/50">No countries to show right now.</p>
+        <p className="text-sm text-neutral-600 dark:text-white/62">No countries to show right now.</p>
       </div>
     );
   }

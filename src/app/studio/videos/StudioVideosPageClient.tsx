@@ -108,16 +108,16 @@ export function StudioVideosPageClient({ videos, hasDb }: StudioVideosPageClient
 
       <StudioCulturinListSection title="All videos" countLabel={countLabel} toolbar={toolbar}>
         {!hasDb ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             Your content library isn&apos;t connected in this preview, so videos can&apos;t be listed yet.
           </p>
         ) : visibleVideos.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No videos found. Use <span className="font-medium text-amber-800 dark:text-amber-300/90">Create video</span> to add
             one.
           </p>
         ) : filteredSorted.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No videos match your search. Try a different term or clear the search box.
           </p>
         ) : (
@@ -138,12 +138,12 @@ export function StudioVideosPageClient({ videos, hasDb }: StudioVideosPageClient
                       <p className="m-0 truncate text-sm font-semibold text-neutral-900 transition group-hover:text-amber-800 dark:text-white dark:group-hover:text-amber-300">
                         {video.title}
                       </p>
-                      <p className="m-0 mt-1 truncate text-xs text-neutral-500 dark:text-white/50">/{slug}</p>
+                      <p className="m-0 mt-1 truncate text-xs text-neutral-500 dark:text-white/62">/{slug}</p>
                       {video.uploader ? (
                         <p className="m-0 mt-1.5 text-xs text-neutral-600 dark:text-white/60">Uploader: {video.uploader}</p>
                       ) : null}
                       {video.playbackId ? (
-                        <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/50">Player ID: {video.playbackId}</p>
+                        <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/62">Player ID: {video.playbackId}</p>
                       ) : null}
                     </a>
                     <div className="flex shrink-0 items-center gap-2">

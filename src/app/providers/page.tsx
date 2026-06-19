@@ -21,14 +21,14 @@ export default async function ProvidersPage() {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
         <section className="mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="mb-8 border-b border-neutral-200 pb-6 pt-6 dark:border-white/10">
             <nav className="mb-4 text-sm" aria-label="Breadcrumb">
               <Link href="/" className="text-amber-300/95 no-underline transition hover:text-amber-200">
                 Home
               </Link>
-              <span className="px-1 text-neutral-400 dark:text-white/35" aria-hidden>
+              <span className="px-1 text-neutral-400 dark:text-white/45" aria-hidden>
                 /
               </span>
               <span className="text-neutral-600 dark:text-white/65">Providers</span>

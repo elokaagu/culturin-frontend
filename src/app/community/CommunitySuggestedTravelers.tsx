@@ -29,7 +29,7 @@ export default function CommunitySuggestedTravelers({ travelers, currentUserId }
         >
           People you can follow
         </h2>
-        <p className="m-0 text-xs text-neutral-500 dark:text-white/50">
+        <p className="m-0 text-xs text-neutral-500 dark:text-white/62">
           Travelers with public lists and profiles on Culturin.
         </p>
       </div>
@@ -48,7 +48,7 @@ export default function CommunitySuggestedTravelers({ travelers, currentUserId }
                   </div>
                   <div className="min-w-0">
                     <p className="m-0 truncate text-sm font-semibold text-neutral-900 dark:text-white">{t.name}</p>
-                    <p className="m-0 truncate text-xs text-neutral-500 dark:text-white/55">{t.handle}</p>
+                    <p className="m-0 truncate text-xs text-neutral-500 dark:text-white/65">{t.handle}</p>
                   </div>
                 </Link>
                 {!isSelf ? (
@@ -68,7 +68,7 @@ export default function CommunitySuggestedTravelers({ travelers, currentUserId }
         })}
       </div>
       {!currentUserId ? (
-        <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/50">
+        <p className="m-0 mt-2 text-xs text-neutral-500 dark:text-white/62">
           <Link href="/login?next=/community" className="font-medium text-amber-700 underline-offset-2 hover:underline dark:text-amber-300/90">
             Sign in
           </Link>{" "}

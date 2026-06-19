@@ -98,7 +98,7 @@ export const ArticleRichEditor = forwardRef<ArticleRichEditorHandle, ArticleRich
 
     if (!editor) {
       return (
-        <div className={cn(editorWrapClass, "animate-pulse text-sm text-neutral-500 dark:text-white/45", className)}>
+        <div className={cn(editorWrapClass, "animate-pulse text-sm text-neutral-500 dark:text-white/58", className)}>
           Loading editor…
         </div>
       );

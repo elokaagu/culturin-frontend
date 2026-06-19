@@ -39,7 +39,7 @@ export default function CountryExplorerLayout({
   return (
     <>
       <Header />
-      <div className="flex min-h-dvh flex-col gap-6 bg-neutral-50 px-5 pb-12 pt-[var(--header-offset)] text-neutral-900 lg:flex-row lg:items-stretch lg:gap-8 lg:px-10 dark:bg-black dark:text-white">
+      <div className="flex min-h-dvh flex-col gap-6 bg-neutral-50 px-5 pb-12 pt-[var(--header-offset)] text-neutral-900 lg:flex-row lg:items-stretch lg:gap-8 lg:px-10 dark:bg-[#121212] dark:text-white">
         <aside className="flex w-full max-w-md shrink-0 flex-col rounded-2xl border-2 border-neutral-200 bg-white transition-colors hover:bg-neutral-50 dark:border-neutral-800 dark:bg-transparent dark:hover:bg-neutral-950 lg:max-w-xs">
           <div className="flex flex-col gap-1 px-5 pb-2 pt-6">
             <h1 className="text-3xl font-semibold leading-tight">{title}</h1>
@@ -74,7 +74,7 @@ export default function CountryExplorerLayout({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search city or country…"
-                className="w-full rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-900 outline-none ring-amber-400/0 transition focus:ring-2 focus:ring-amber-400/80 dark:border-white/15 dark:bg-black dark:text-white dark:placeholder:text-white/40"
+                className="w-full rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-900 outline-none ring-amber-400/0 transition focus:ring-2 focus:ring-amber-400/80 dark:border-white/15 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
               />
             </label>
           </div>
@@ -98,7 +98,7 @@ export default function CountryExplorerLayout({
               ))}
             </ul>
             {filtered.length === 0 ? (
-              <p className="m-0 py-8 text-center text-sm text-neutral-500 dark:text-white/55">
+              <p className="m-0 py-8 text-center text-sm text-neutral-500 dark:text-white/65">
                 No cities match that filter. Try another term.
               </p>
             ) : null}

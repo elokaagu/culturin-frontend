@@ -38,7 +38,7 @@ export default function DestinationTravelersSection({ travelers, currentUserId }
                   </div>
                   <div className="min-w-0">
                     <p className="m-0 truncate text-sm font-semibold text-neutral-900 dark:text-white">{traveler.name}</p>
-                    <p className="m-0 mt-0.5 text-xs text-neutral-500 dark:text-white/55">{traveler.handle}</p>
+                    <p className="m-0 mt-0.5 text-xs text-neutral-500 dark:text-white/65">{traveler.handle}</p>
                   </div>
                 </Link>
                 {!isSelf ? (
@@ -59,13 +59,13 @@ export default function DestinationTravelersSection({ travelers, currentUserId }
               <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/70">
                 <span className="font-semibold">Recommendation:</span> {traveler.recommendation}
               </p>
-              <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/55">{traveler.listsCount} saved list(s)</p>
+              <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/65">{traveler.listsCount} saved list(s)</p>
             </li>
           );
         })}
       </ul>
       {!currentUserId ? (
-        <p className="m-0 mt-3 text-xs text-neutral-500 dark:text-white/55">Sign in to follow travelers.</p>
+        <p className="m-0 mt-3 text-xs text-neutral-500 dark:text-white/65">Sign in to follow travelers.</p>
       ) : null}
     </section>
   );

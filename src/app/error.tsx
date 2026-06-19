@@ -9,7 +9,7 @@ export default function AppError({ error, reset }: { error: Error & { digest?: s
   }, [error]);
 
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center gap-6 bg-neutral-50 px-6 py-20 text-center text-neutral-900 dark:bg-black dark:text-white">
+    <div className="flex min-h-[70vh] flex-col items-center justify-center gap-6 bg-neutral-50 px-6 py-20 text-center text-neutral-900 dark:bg-[#121212] dark:text-white">
       <h1 className="font-display text-2xl font-semibold">Something went wrong</h1>
       <p className="max-w-md text-sm text-neutral-600 dark:text-white/60">
         A part of the page could not be displayed. This is often a temporary client issue — try again, or return home.

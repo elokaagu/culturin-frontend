@@ -41,7 +41,7 @@ export default function CreatorLayoutClient({ children, email }: CreatorLayoutCl
   const [signingOut, setSigningOut] = useState(false);
 
   return (
-    <div className="flex h-dvh max-h-dvh flex-col overflow-hidden bg-neutral-50 text-neutral-900 dark:bg-black dark:text-white">
+    <div className="flex h-dvh max-h-dvh flex-col overflow-hidden bg-neutral-50 text-neutral-900 dark:bg-[#121212] dark:text-white">
       <header className="flex shrink-0 items-center justify-between gap-3 border-b border-neutral-200/90 bg-white/90 px-3 py-2.5 backdrop-blur-sm dark:border-white/10 dark:bg-neutral-950/90 sm:px-4">
         <div className="flex min-w-0 items-center gap-3">
           <Link
@@ -78,11 +78,11 @@ export default function CreatorLayoutClient({ children, email }: CreatorLayoutCl
         >
           <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
             <div className="px-3 py-4 md:px-3 md:py-5">
-              <p className="px-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/50">
+              <p className="px-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/62">
                 Account
               </p>
               <p
-                className="mt-0.5 truncate px-2.5 text-xs text-neutral-500 dark:text-white/45"
+                className="mt-0.5 truncate px-2.5 text-xs text-neutral-500 dark:text-white/58"
                 title={email ?? undefined}
               >
                 {email ?? "—"}
@@ -90,7 +90,7 @@ export default function CreatorLayoutClient({ children, email }: CreatorLayoutCl
             </div>
 
             <nav className="space-y-4 px-2.5 pb-4 md:pb-6" aria-label="Creator content">
-              <p className="pl-0.5 text-xs font-normal text-neutral-500 dark:text-white/45">Your submissions</p>
+              <p className="pl-0.5 text-xs font-normal text-neutral-500 dark:text-white/58">Your submissions</p>
               <ul className="m-0 space-y-0.5 p-0">
                 <li>
                   <Link

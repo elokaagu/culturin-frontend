@@ -39,7 +39,7 @@ function TrendingSection({
     <section className="mt-10">
       <header className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-white sm:text-2xl">{title}</h2>
-        <span className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/45">{countLabel}</span>
+        <span className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58">{countLabel}</span>
       </header>
       {children}
     </section>
@@ -59,7 +59,7 @@ export default async function TrendingPage() {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
         <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
           <header className="border-b border-neutral-200 pb-8 dark:border-white/10">
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Trending</h1>

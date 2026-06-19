@@ -37,7 +37,7 @@ export default async function ProfileByIdPage({ params }: PageProps) {
   return (
     <>
       <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
         <div className="mx-auto w-full max-w-6xl px-5 pt-8 sm:px-6">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
             <div>
@@ -49,8 +49,8 @@ export default async function ProfileByIdPage({ params }: PageProps) {
                     </div>
                     <div>
                       <h1 className="m-0 text-2xl font-semibold tracking-tight">{profile.name}</h1>
-                      <p className="m-0 mt-1 text-sm text-neutral-500 dark:text-white/55">{profile.handle}</p>
-                      <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/55">
+                      <p className="m-0 mt-1 text-sm text-neutral-500 dark:text-white/65">{profile.handle}</p>
+                      <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/65">
                         {profile.followersCount} follower(s) · {profile.followingCount} following
                       </p>
                     </div>
@@ -93,14 +93,14 @@ export default async function ProfileByIdPage({ params }: PageProps) {
                         className="list-none rounded-xl border border-neutral-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.03]"
                       >
                         <p className="m-0 text-sm font-semibold text-neutral-900 dark:text-white">{list.title}</p>
-                        <p className="m-0 mt-1 text-[11px] font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/55">
+                        <p className="m-0 mt-1 text-[11px] font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/65">
                           {list.list_type}
                         </p>
                         {list.place_label ? (
-                          <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/55">{list.place_label}</p>
+                          <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/65">{list.place_label}</p>
                         ) : null}
                         {list.description ? (
-                          <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/55">{list.description}</p>
+                          <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/65">{list.description}</p>
                         ) : null}
                         {list.items.length > 0 ? (
                           <ul className="m-0 mt-3 space-y-2 p-0">
@@ -115,7 +115,7 @@ export default async function ProfileByIdPage({ params }: PageProps) {
                             ))}
                           </ul>
                         ) : (
-                          <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/55">No spots added yet.</p>
+                          <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/65">No spots added yet.</p>
                         )}
                       </li>
                     ))}
@@ -149,7 +149,7 @@ export default async function ProfileByIdPage({ params }: PageProps) {
                             )}
                             <div className="min-w-0">
                               <p className="m-0 truncate text-sm font-semibold text-neutral-900 dark:text-white">{playlist.name}</p>
-                              <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/55">{playlist.tracks_total} tracks</p>
+                              <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/65">{playlist.tracks_total} tracks</p>
                             </div>
                           </div>
                           <a
@@ -197,7 +197,7 @@ export default async function ProfileByIdPage({ params }: PageProps) {
                   </Link>
                 </div>
                 {suggested.length === 0 ? (
-                  <p className="m-0 text-sm text-neutral-500 dark:text-white/55">No suggestions yet.</p>
+                  <p className="m-0 text-sm text-neutral-500 dark:text-white/65">No suggestions yet.</p>
                 ) : (
                   <ul className="m-0 space-y-4 p-0">
                     {suggested.map((traveler) => (

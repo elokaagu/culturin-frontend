@@ -29,7 +29,7 @@ export default async function CommunityPage() {
 
   return (
     <ContentPageShell
-      mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-black dark:text-white"
+      mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
       innerClassName={`${appPageContainerClass} max-w-[1720px] gap-8`}
     >
       <nav className="mb-2" aria-label="Breadcrumb">
@@ -39,7 +39,7 @@ export default async function CommunityPage() {
         >
           Home
         </Link>
-        <span className="px-1 text-neutral-400 dark:text-white/35" aria-hidden>
+        <span className="px-1 text-neutral-400 dark:text-white/45" aria-hidden>
           /
         </span>
         <span className="text-sm text-neutral-600 dark:text-white/60">Community</span>

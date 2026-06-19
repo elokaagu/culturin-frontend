@@ -38,7 +38,7 @@ function toIsoLocal(date: Date, timeHHmm: string): string {
 const triggerClass = cn(
   "flex w-full items-center justify-between gap-2 rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-left text-sm text-neutral-900 outline-none ring-offset-2 transition",
   "hover:border-neutral-400 focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-400/25",
-  "dark:border-white/15 dark:bg-black dark:text-white dark:hover:border-white/25 dark:focus-visible:border-amber-400/45 dark:focus-visible:ring-amber-400/20",
+  "dark:border-white/15 dark:bg-[#121212] dark:text-white dark:hover:border-white/25 dark:focus-visible:border-amber-400/45 dark:focus-visible:ring-amber-400/20",
 );
 
 const popoverSurfaceClass = cn(
@@ -86,7 +86,7 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
           <button type="button" className={triggerClass} aria-expanded={open}>
             <span className="flex min-w-0 flex-1 items-center gap-2">
               <CalendarDays className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400/90" aria-hidden />
-              <span className={cn("truncate", !summary && "text-neutral-500 dark:text-white/45")}>
+              <span className={cn("truncate", !summary && "text-neutral-500 dark:text-white/58")}>
                 {summary ?? "Choose date & time (optional)"}
               </span>
             </span>
@@ -135,7 +135,7 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
                   onChange={(e) => setTime(e.target.value)}
                   disabled={!selected}
                   className={cn(
-                    "min-w-0 flex-1 rounded-lg border border-neutral-300 bg-white px-2 py-1.5 text-sm text-neutral-900 dark:border-white/15 dark:bg-black dark:text-white",
+                    "min-w-0 flex-1 rounded-lg border border-neutral-300 bg-white px-2 py-1.5 text-sm text-neutral-900 dark:border-white/15 dark:bg-[#121212] dark:text-white",
                     !selected && "cursor-not-allowed opacity-50",
                   )}
                 />
@@ -143,7 +143,7 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
-                  className="rounded-lg px-3 py-1.5 text-xs font-medium text-neutral-600 transition hover:bg-neutral-100 dark:text-white/55 dark:hover:bg-white/10"
+                  className="rounded-lg px-3 py-1.5 text-xs font-medium text-neutral-600 transition hover:bg-neutral-100 dark:text-white/65 dark:hover:bg-white/10"
                   onClick={() => {
                     setSelected(undefined);
                     setTime("09:00");

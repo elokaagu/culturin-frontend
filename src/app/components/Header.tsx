@@ -326,10 +326,10 @@ export default function Header() {
                   aria-haspopup="dialog"
                   aria-expanded={searchOpen}
                 >
-                  <span className="shrink-0 text-neutral-400 dark:text-white/35" aria-hidden>
+                  <span className="shrink-0 text-neutral-400 dark:text-white/45" aria-hidden>
                     <SearchIcon />
                   </span>
-                  <span className="min-w-0 flex-1 truncate text-left font-normal text-neutral-500 dark:text-white/45">
+                  <span className="min-w-0 flex-1 truncate text-left font-normal text-neutral-500 dark:text-white/58">
                     Search Culturin…
                   </span>
                 </button>
@@ -337,7 +337,7 @@ export default function Header() {
                   <button
                     type="button"
                     onClick={triggerVisualSearch}
-                    className="rounded-full p-1.5 text-neutral-500 transition hover:bg-neutral-200/80 dark:text-white/45 dark:hover:bg-white/10"
+                    className="rounded-full p-1.5 text-neutral-500 transition hover:bg-neutral-200/80 dark:text-white/58 dark:hover:bg-white/10"
                     aria-label="Visual search shortcut"
                   >
                     <ScanSearch className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={1.75} />
@@ -345,7 +345,7 @@ export default function Header() {
                   <button
                     type="button"
                     onClick={triggerSurpriseSearch}
-                    className="rounded-full p-1.5 text-neutral-500 transition hover:bg-neutral-200/80 dark:text-white/45 dark:hover:bg-white/10"
+                    className="rounded-full p-1.5 text-neutral-500 transition hover:bg-neutral-200/80 dark:text-white/58 dark:hover:bg-white/10"
                     aria-label="Surprise me"
                   >
                     <PaletteDotsIcon className="h-5 w-5 opacity-95" />
@@ -448,7 +448,7 @@ export default function Header() {
                 Search Culturin
               </label>
               <div className={`${searchPillRowClass} ${searchPillRowFocusClass}`}>
-                <span className="shrink-0 text-neutral-400 dark:text-white/35" aria-hidden>
+                <span className="shrink-0 text-neutral-400 dark:text-white/45" aria-hidden>
                   <SearchIcon />
                 </span>
                 <input
@@ -464,7 +464,7 @@ export default function Header() {
                 <span className="flex shrink-0 items-center gap-0.5 pr-0.5">
                   <button
                     type="button"
-                    className="rounded-full p-1.5 text-neutral-500 transition hover:bg-neutral-200/80 dark:text-white/45 dark:hover:bg-white/10"
+                    className="rounded-full p-1.5 text-neutral-500 transition hover:bg-neutral-200/80 dark:text-white/58 dark:hover:bg-white/10"
                     aria-label="Visual search shortcut"
                     onClick={triggerVisualSearch}
                   >
@@ -473,7 +473,7 @@ export default function Header() {
                   <button
                     type="button"
                     onClick={triggerSurpriseSearch}
-                    className="rounded-full p-1.5 text-neutral-500 dark:text-white/45"
+                    className="rounded-full p-1.5 text-neutral-500 dark:text-white/58"
                     aria-label="Surprise me"
                   >
                     <PaletteDotsIcon className="h-5 w-5 opacity-95" />
@@ -489,13 +489,13 @@ export default function Header() {
                     <div className="flex items-center justify-between gap-3">
                       <h2
                         id="search-recent-heading"
-                        className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/45"
+                        className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/58"
                       >
                         Recent
                       </h2>
                       <button
                         type="button"
-                        className="text-xs font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/80"
+                        className="text-xs font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/58 dark:hover:text-white/80"
                         onClick={clearRecent}
                       >
                         Clear
@@ -509,7 +509,7 @@ export default function Header() {
                           className="inline-flex max-w-[11rem] shrink-0 items-center gap-2 rounded-full border border-neutral-200/90 bg-neutral-100 px-3 py-2 text-left text-sm font-medium text-neutral-800 transition hover:bg-neutral-200/80 dark:border-white/10 dark:bg-white/[0.06] dark:text-white/90 dark:hover:bg-white/10"
                           onClick={() => runSearch(q)}
                         >
-                          <SearchIcon className="h-3.5 w-3.5 shrink-0 text-neutral-400 dark:text-white/40" />
+                          <SearchIcon className="h-3.5 w-3.5 shrink-0 text-neutral-400 dark:text-white/50" />
                           <span className="truncate">{q}</span>
                         </button>
                       ))}
@@ -520,7 +520,7 @@ export default function Header() {
                 <section aria-labelledby="search-suggestions-heading">
                   <h2
                     id="search-suggestions-heading"
-                    className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/45"
+                    className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/58"
                   >
                     Suggestions
                   </h2>
@@ -532,7 +532,7 @@ export default function Header() {
                         className="inline-flex shrink-0 items-center gap-2 rounded-full border border-neutral-200/90 bg-neutral-100 px-3 py-2 text-sm font-medium text-neutral-800 transition hover:bg-neutral-200/80 dark:border-white/10 dark:bg-white/[0.06] dark:text-white/90 dark:hover:bg-white/10"
                         onClick={() => runSearch(tag)}
                       >
-                        <SearchIcon className="h-3.5 w-3.5 shrink-0 text-neutral-400 dark:text-white/40" />
+                        <SearchIcon className="h-3.5 w-3.5 shrink-0 text-neutral-400 dark:text-white/50" />
                         {tag}
                       </button>
                     ))}
@@ -543,7 +543,7 @@ export default function Header() {
                   <section aria-labelledby="search-predictive-heading">
                     <h2
                       id="search-predictive-heading"
-                      className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/45"
+                      className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/58"
                     >
                       Predictive
                     </h2>
@@ -563,10 +563,10 @@ export default function Header() {
                           }}
                         >
                           <span className="inline-flex items-center gap-2">
-                            <SearchIcon className="h-3.5 w-3.5 shrink-0 text-neutral-400 dark:text-white/40" />
+                            <SearchIcon className="h-3.5 w-3.5 shrink-0 text-neutral-400 dark:text-white/50" />
                             <span className="truncate">{item.label}</span>
                           </span>
-                          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wide text-neutral-400 dark:text-white/35">
+                          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wide text-neutral-400 dark:text-white/45">
                             {item.kind}
                           </span>
                         </button>

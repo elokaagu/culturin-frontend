@@ -28,7 +28,7 @@ export default async function CreatorProvidersPage() {
       </p>
 
       <section className="mt-8 max-w-4xl">
-        <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/55">
+        <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/65">
           New submission
         </h2>
         <div className="mt-4">
@@ -37,11 +37,11 @@ export default async function CreatorProvidersPage() {
       </section>
 
       <section className="mt-12">
-        <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/55">
+        <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/65">
           Your submissions
         </h2>
         {rows.length === 0 ? (
-          <p className="mt-4 rounded-xl border border-dashed border-neutral-300 px-4 py-6 text-sm text-neutral-600 dark:border-white/15 dark:text-white/55">
+          <p className="mt-4 rounded-xl border border-dashed border-neutral-300 px-4 py-6 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No experience submissions yet.
           </p>
         ) : (
@@ -50,7 +50,7 @@ export default async function CreatorProvidersPage() {
               <li key={row.id} className={studioListRowClass}>
                 <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                   <p className="m-0 text-sm font-semibold text-neutral-900 dark:text-white">{payloadTitle(row.payload)}</p>
-                  <p className="m-0 text-xs text-neutral-500 dark:text-white/45">
+                  <p className="m-0 text-xs text-neutral-500 dark:text-white/58">
                     {row.status} · {new Date(row.created_at).toLocaleString(undefined, { dateStyle: "medium" })}
                   </p>
                 </div>

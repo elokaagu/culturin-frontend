@@ -234,7 +234,7 @@ export default function NotificationSection() {
             </p>
           ) : null}
           {lastSaved === "reset" ? (
-            <p className="text-sm text-neutral-500 dark:text-white/50" role="status">
+            <p className="text-sm text-neutral-500 dark:text-white/62" role="status">
               Reverted to the last version saved in this device.
             </p>
           ) : null}

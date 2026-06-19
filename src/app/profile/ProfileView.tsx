@@ -203,7 +203,7 @@ export default function ProfileView() {
 
   if (status === "loading") {
     return (
-      <main className="min-h-dvh min-w-0 overflow-x-clip bg-neutral-50 pb-[max(5rem,env(safe-area-inset-bottom,0px))] pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh min-w-0 overflow-x-clip bg-neutral-50 pb-[max(5rem,env(safe-area-inset-bottom,0px))] pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
         <div className="mx-auto max-w-6xl px-5 pt-10">
           <div className="mx-auto flex max-w-md animate-pulse flex-col items-center gap-4 sm:mx-0 sm:max-w-none sm:flex-row sm:items-start">
             <div className="h-32 w-32 shrink-0 rounded-full bg-neutral-200 dark:bg-white/10" />
@@ -220,10 +220,10 @@ export default function ProfileView() {
 
   if (status === "unauthenticated") {
     return (
-      <main className="min-h-dvh min-w-0 overflow-x-clip bg-neutral-50 pb-[max(5rem,env(safe-area-inset-bottom,0px))] pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+      <main className="min-h-dvh min-w-0 overflow-x-clip bg-neutral-50 pb-[max(5rem,env(safe-area-inset-bottom,0px))] pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
         <div className="mx-auto flex max-w-md flex-col items-center gap-6 px-5 pt-16 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">Your Culturin profile</h1>
-          <p className="text-sm text-neutral-600 dark:text-white/55">
+          <p className="text-sm text-neutral-600 dark:text-white/65">
             Sign in to save guides, curate your library, and show your world on your profile.
           </p>
           <GoogleSignInButton appearance="default" />
@@ -241,7 +241,7 @@ export default function ProfileView() {
   const initials = initialsFromName(displayName, email);
 
   return (
-    <main className="min-h-dvh min-w-0 overflow-x-clip bg-neutral-50 pb-[max(6rem,env(safe-area-inset-bottom,0px))] pt-[var(--header-offset)] text-neutral-900 dark:bg-black dark:text-white">
+    <main className="min-h-dvh min-w-0 overflow-x-clip bg-neutral-50 pb-[max(6rem,env(safe-area-inset-bottom,0px))] pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <header className="flex flex-col items-center gap-6 border-b border-neutral-200 pb-10 pt-8 dark:border-white/[0.08] sm:flex-row sm:items-start sm:gap-10">
           <div className="flex flex-col items-center gap-2 sm:items-start">
@@ -266,7 +266,7 @@ export default function ProfileView() {
                   }
                 >
                   <div className="relative h-32 w-32 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 via-indigo-500 to-sky-400 p-[2px] shadow-lg shadow-violet-500/25 dark:shadow-violet-900/40 sm:h-36 sm:w-36">
-                    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-neutral-100 dark:bg-black">
+                    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-neutral-100 dark:bg-[#121212]">
                       {avatarUrl ? (
                         // OAuth avatars often use hosts outside `next/image` remotePatterns.
                         // eslint-disable-next-line @next/next/no-img-element
@@ -301,7 +301,7 @@ export default function ProfileView() {
               </>
             ) : (
               <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 via-indigo-500 to-sky-400 p-[2px] shadow-lg shadow-violet-500/25 dark:shadow-violet-900/40 sm:h-36 sm:w-36">
-                <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-neutral-100 dark:bg-black">
+                <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-neutral-100 dark:bg-[#121212]">
                   {avatarUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -323,7 +323,7 @@ export default function ProfileView() {
                 type="button"
                 onClick={() => avatarInputRef.current?.click()}
                 disabled={avatarUploading}
-                className="text-xs font-medium text-neutral-500 underline-offset-2 hover:text-neutral-800 hover:underline disabled:cursor-not-allowed disabled:opacity-50 dark:text-white/50 dark:hover:text-white/80"
+                className="text-xs font-medium text-neutral-500 underline-offset-2 hover:text-neutral-800 hover:underline disabled:cursor-not-allowed disabled:opacity-50 dark:text-white/62 dark:hover:text-white/80"
               >
                 {avatarUploading ? "Uploading…" : "Change photo"}
               </button>
@@ -332,7 +332,7 @@ export default function ProfileView() {
 
           <div className="min-w-0 flex-1 text-center sm:pt-1 sm:text-left">
             <h1 className="text-3xl font-semibold tracking-tight text-neutral-950 dark:text-white sm:text-4xl">{displayName}</h1>
-            <p className="mt-1.5 text-sm text-neutral-500 dark:text-white/45">{handle}</p>
+            <p className="mt-1.5 text-sm text-neutral-500 dark:text-white/58">{handle}</p>
             {editingBio ? (
               <div className="mt-4 w-full max-w-xl sm:mx-0">
                 <textarea
@@ -344,7 +344,7 @@ export default function ProfileView() {
                   disabled={savingBio}
                 />
                 <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-xs text-neutral-400 dark:text-white/35">
+                  <span className="text-xs text-neutral-400 dark:text-white/45">
                     {bioDraft.length}/{BIO_MAX_LEN}
                   </span>
                   <div className="flex gap-2">
@@ -370,7 +370,7 @@ export default function ProfileView() {
             ) : bio ? (
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-neutral-600 dark:text-white/70 sm:mx-0">{bio}</p>
             ) : (
-              <p className="mt-4 max-w-xl text-sm text-neutral-400 dark:text-white/40 sm:mx-0">Add a bio…</p>
+              <p className="mt-4 max-w-xl text-sm text-neutral-400 dark:text-white/50 sm:mx-0">Add a bio…</p>
             )}
             {!editingBio && supabase && user ? (
               <p className="mt-2 max-w-xl sm:mx-0">
@@ -383,7 +383,7 @@ export default function ProfileView() {
                 </button>
               </p>
             ) : !editingBio && !supabase ? (
-              <p className="mt-2 max-w-xl text-xs text-neutral-500 dark:text-white/35 sm:mx-0">
+              <p className="mt-2 max-w-xl text-xs text-neutral-500 dark:text-white/45 sm:mx-0">
                 Profile editing isn’t available in this preview. Try again later.
               </p>
             ) : null}
@@ -401,7 +401,7 @@ export default function ProfileView() {
               </Link>
               <Link
                 href="/search"
-                className="inline-flex rounded-full px-5 py-2 text-sm font-medium text-neutral-600 transition hover:text-neutral-900 dark:text-white/55 dark:hover:text-white/85"
+                className="inline-flex rounded-full px-5 py-2 text-sm font-medium text-neutral-600 transition hover:text-neutral-900 dark:text-white/65 dark:hover:text-white/85"
               >
                 Search guides
               </Link>
@@ -426,7 +426,7 @@ export default function ProfileView() {
                 className={
                   tab === "elements"
                     ? "rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:shadow-sm dark:ring-0"
-                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/70"
+                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/58 dark:hover:text-white/70"
                 }
                 onClick={() => setTab("elements")}
               >
@@ -439,7 +439,7 @@ export default function ProfileView() {
                 className={
                   tab === "collections"
                     ? "rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:shadow-sm dark:ring-0"
-                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/70"
+                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/58 dark:hover:text-white/70"
                 }
                 onClick={() => setTab("collections")}
               >
@@ -452,7 +452,7 @@ export default function ProfileView() {
                 className={
                   tab === "language"
                     ? "rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:shadow-sm dark:ring-0"
-                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/70"
+                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/58 dark:hover:text-white/70"
                 }
                 onClick={() => setTab("language")}
               >
@@ -465,7 +465,7 @@ export default function ProfileView() {
                 className={
                   tab === "playlists"
                     ? "rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:shadow-sm dark:ring-0"
-                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/45 dark:hover:text-white/70"
+                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/58 dark:hover:text-white/70"
                 }
                 onClick={() => setTab("playlists")}
               >
@@ -489,7 +489,7 @@ export default function ProfileView() {
                     className={
                       density === d
                         ? "rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:bg-white/15 dark:text-white dark:shadow-none dark:ring-0"
-                        : "rounded-full px-3 py-1.5 text-xs font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/40 dark:hover:text-white/70"
+                        : "rounded-full px-3 py-1.5 text-xs font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/50 dark:hover:text-white/70"
                     }
                     aria-pressed={density === d}
                     aria-label={`${d} columns`}
@@ -517,7 +517,7 @@ export default function ProfileView() {
         )}
 
         {tab === "elements" && articles.length === 0 ? (
-          <p className="mt-8 text-center text-sm text-neutral-600 dark:text-white/45">
+          <p className="mt-8 text-center text-sm text-neutral-600 dark:text-white/58">
             No stories loaded yet. Open{" "}
             <Link href="/travel-guides" className="font-medium text-amber-800 underline-offset-2 hover:underline dark:text-amber-400/90">
               Travel Guides

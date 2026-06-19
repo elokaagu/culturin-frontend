@@ -54,7 +54,7 @@ export default async function StudioEditArticlePage({ params }: EditArticlePageP
       </h1>
       <p className="mt-2 max-w-2xl text-sm text-neutral-600 dark:text-white/65">
         <span className="font-medium text-neutral-800 dark:text-white/85">{blog.title}</span>
-        <span className="text-neutral-500 dark:text-white/45"> · /{blog.currentSlug}</span>
+        <span className="text-neutral-500 dark:text-white/58"> · /{blog.currentSlug}</span>
       </p>
 
       <div className="mt-8">
