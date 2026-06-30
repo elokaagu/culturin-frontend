@@ -25,6 +25,14 @@ export type CulturinEvent = {
   navLabel: string;
   tagline: string;
   subtagline: string;
+  /** Short one-line description shown on the events index card */
+  shortDescription: string;
+  /** Display date string, e.g. "August 25 – September 7, 2025" */
+  date: string;
+  /** City / venue display string */
+  location: string;
+  /** Category tag shown on the index card */
+  category: string;
   heroImage: string;
   heroImageAlt: string;
   sections: EventSection[];
@@ -42,6 +50,10 @@ export const events: CulturinEvent[] = [
     navLabel: "US OPEN 2025",
     tagline: "Court\nSide.",
     subtagline: "Culturin × US Open · New York 2025",
+    shortDescription: "Courtside hospitality, private dinners, and curated cultural programming during the world's biggest tennis fortnight.",
+    date: "August 25 – September 7, 2025",
+    location: "Flushing Meadows, New York",
+    category: "Sport & Culture",
     heroImage: u("1622279457486-62dcc4a431d6"),
     heroImageAlt: "Aerial view of a tennis stadium at night with bright court lights",
     stats: [
@@ -119,6 +131,10 @@ export const events: CulturinEvent[] = [
     navLabel: "UNGA 2025",
     tagline: "At The\nTable.",
     subtagline: "Culturin × United Nations General Assembly · New York 2025",
+    shortDescription: "Dinners, salons, and receptions bringing diplomats, diaspora founders, and cultural leaders together during UN General Assembly week.",
+    date: "September 16 – 26, 2025",
+    location: "Manhattan, New York",
+    category: "Diplomacy & Culture",
     heroImage: u("1534430480872-fbeeec67dca2"),
     heroImageAlt: "New York City skyline viewed from across the water at dusk",
     stats: [
@@ -201,6 +217,10 @@ export const events: CulturinEvent[] = [
     navLabel: "AMAFROBEAT 2025",
     tagline: "Join The\nExperience.",
     subtagline: "Culturin × Lagos · 2025",
+    shortDescription: "Three stages of live music, Lagos chefs, and art installations — one immersive night where culture is the only currency.",
+    date: "November 8, 2025",
+    location: "Victoria Island, Lagos",
+    category: "Music & Culture",
     heroImage: u("1459749411175-04bf5292ceea"),
     heroImageAlt: "Crowd at a live Afrobeat concert with stage lights",
     stats: [
