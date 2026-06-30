@@ -37,6 +37,165 @@ export type CulturinEvent = {
 
 export const events: CulturinEvent[] = [
   {
+    slug: "us-open-2025",
+    name: "Culturin at the US Open",
+    navLabel: "US OPEN 2025",
+    tagline: "Court\nSide.",
+    subtagline: "Culturin × US Open · New York 2025",
+    heroImage: u("1622279457486-62dcc4a431d6"),
+    heroImageAlt: "Aerial view of a tennis stadium at night with bright court lights",
+    stats: [
+      { value: "18K", label: "Seat stadium" },
+      { value: "2", label: "Weeks of play" },
+      { value: "5", label: "Culturin evenings" },
+      { value: "1", label: "Private suite" },
+    ],
+    sections: [
+      {
+        id: "vibe",
+        label: "PERSPECTIVE",
+        headline: "The US Open brings the world to Flushing. Culturin brings the culture to the courtside.",
+        body: "For two weeks every August, New York becomes the centre of the sporting world. We take that energy and build something around it — intimate, curated, and firmly off the official schedule.",
+        photos: [
+          {
+            src: u("1509042239860-f550ce710b93"),
+            alt: "Warm light on drinks and a small table at a gathering",
+            position: "top-16 left-[5%] w-64 rotate-[-1.5deg]",
+          },
+          {
+            src: u("1517248135467-4c7edcad34c4"),
+            alt: "Communal dinner table with guests in conversation",
+            position: "top-40 right-[6%] w-60 rotate-[2deg]",
+          },
+        ],
+      },
+      {
+        id: "who",
+        label: "PROXIMITY",
+        headline: "Athletes, tastemakers, and the people who move culture forward.",
+        body: "Sports intersects with fashion, music, and business at the US Open like nowhere else. Culturin brings together the people who sit at all those intersections — for dinners, conversations, and access you won't find on StubHub.",
+        photos: [
+          {
+            src: u("1475721027785-f74eccf877e2"),
+            alt: "Panel discussion on stage with a live audience",
+            position: "top-20 left-[8%] w-72 rotate-[1deg]",
+          },
+          {
+            src: u("1460661419201-fd4cecdf8a8b"),
+            alt: "Gallery opening with guests and contemporary art",
+            position: "bottom-16 right-[5%] w-56 rotate-[-2deg]",
+          },
+        ],
+      },
+      {
+        id: "signal",
+        label: "POSSIBILITY",
+        headline: "Sport is the occasion. Culture is the point.",
+        body: "Courtside seats, a private Culturin hospitality suite, chef-curated dinners after the day's last match, and a late-night close that keeps going long after the stadium empties.",
+        photos: [
+          {
+            src: u("1514525253161-7a46d19cd819"),
+            alt: "Golden-hour rooftop gathering with city views",
+            position: "top-10 right-[9%] w-52 rotate-[1.5deg]",
+          },
+          {
+            src: u("1480714378408-67cf0d13bc1f"),
+            alt: "People moving through an energetic urban setting",
+            position: "bottom-12 left-[6%] w-64 rotate-[-1deg]",
+          },
+        ],
+      },
+    ],
+    signalHeadline: "What to expect",
+    signalBody:
+      "Day sessions followed by a Culturin dinner for 40 in a private space near Flushing. Evening conversations with athletes, brand builders, and cultural figures. A closing night party after the men's final. All of it — invite only.",
+    rsvpHeadline: "Request an invite.",
+    rsvpSubtext:
+      "The US Open Culturin suite is a private experience. Drop your email to be considered for the guest list and we'll follow up directly.",
+  },
+  {
+    slug: "unga-2025",
+    name: "Culturin at UNGA",
+    navLabel: "UNGA 2025",
+    tagline: "At The\nTable.",
+    subtagline: "Culturin × United Nations General Assembly · New York 2025",
+    heroImage: u("1534430480872-fbeeec67dca2"),
+    heroImageAlt: "New York City skyline viewed from across the water at dusk",
+    stats: [
+      { value: "193", label: "Nations convene" },
+      { value: "1", label: "Week, September" },
+      { value: "4", label: "Culturin events" },
+      { value: "60+", label: "Countries in the room" },
+    ],
+    sections: [
+      {
+        id: "vibe",
+        label: "PERSPECTIVE",
+        headline: "UNGA brings 193 nations to New York. Culturin brings the cultural conversation to the margins.",
+        body: "The real decisions at UNGA happen in the dinners, lounges, and side events running parallel to the official sessions. Culturin builds those rooms — with cultural leaders and diplomats who understand that soft power is real power.",
+        photos: [
+          {
+            src: u("1517248135467-4c7edcad34c4"),
+            alt: "Formal dinner table with guests deep in conversation",
+            position: "top-20 left-[5%] w-64 rotate-[-1deg]",
+          },
+          {
+            src: u("1509042239860-f550ce710b93"),
+            alt: "Intimate evening gathering with drinks and warm lighting",
+            position: "top-52 right-[7%] w-56 rotate-[2deg]",
+          },
+        ],
+      },
+      {
+        id: "who",
+        label: "PROXIMITY",
+        headline: "Diplomats, founders, and cultural ambassadors in the same room.",
+        body: "UNGA week draws a rare mix: heads of state, NGO directors, diaspora entrepreneurs, and cultural figures all compressed into ten days in Manhattan. Culturin is the connective tissue — the event where those worlds actually meet.",
+        photos: [
+          {
+            src: u("1475721027785-f74eccf877e2"),
+            alt: "High-level panel discussion with international participants",
+            position: "top-16 left-[7%] w-72 rotate-[1.5deg]",
+          },
+          {
+            src: u("1460661419201-fd4cecdf8a8b"),
+            alt: "Reception gathering in an elegant contemporary space",
+            position: "bottom-20 right-[4%] w-60 rotate-[-1.5deg]",
+          },
+        ],
+      },
+      {
+        id: "signal",
+        label: "POSSIBILITY",
+        headline: "The conversations that shape the next decade start here.",
+        body: "Four Culturin events across UNGA week: an opening dinner, a midweek cultural salon, a panel on diaspora and soft power, and a closing evening reception. Every seat is chosen with intention.",
+        photos: [
+          {
+            src: u("1514525253161-7a46d19cd819"),
+            alt: "Rooftop gathering at golden hour overlooking a city",
+            position: "top-14 right-[8%] w-52 rotate-[2deg]",
+          },
+          {
+            src: u("1511578314322-379afb476865"),
+            alt: "Cultural gathering with art and people in conversation",
+            position: "bottom-14 left-[4%] w-60 rotate-[-2deg]",
+          },
+          {
+            src: u("1480714378408-67cf0d13bc1f"),
+            alt: "People moving through a cosmopolitan urban environment",
+            position: "top-56 left-[38%] w-44 rotate-[1deg]",
+          },
+        ],
+      },
+    ],
+    signalHeadline: "What to expect",
+    signalBody:
+      "An opening dinner for 50 with guests drawn from government, diaspora business, and cultural institutions. A midweek salon on the intersection of culture and foreign policy. A panel on African soft power and global brand-building. A closing evening reception that continues into the night.",
+    rsvpHeadline: "Request your seat.",
+    rsvpSubtext:
+      "UNGA week is by invitation. Submit your email and a brief note on your work — our team reviews every request personally.",
+  },
+  {
     slug: "amafrobeat-lagos-2025",
     name: "Amafrobeat Experience",
     navLabel: "AMAFROBEAT 2025",
