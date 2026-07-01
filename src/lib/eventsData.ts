@@ -55,7 +55,7 @@ export const events: CulturinEvent[] = [
     heroImageAlt: "Guests dancing under disco balls at a Culturin night in Cannes",
     stats: [
       { value: "2", label: "Nights of Culturin" },
-      { value: "300+", label: "Guests in the room" },
+      { value: "500+", label: "Guests in the room" },
       { value: "12", label: "Countries represented" },
       { value: "1", label: "City that never sleeps" },
     ],

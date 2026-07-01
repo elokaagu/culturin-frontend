@@ -106,14 +106,14 @@ export default function GalleryPage() {
 
       {/* ── Masonry grid ─────────────────────────────────────────── */}
       <div className="px-8 py-16 sm:px-14">
-        <div className="columns-1 gap-3 sm:columns-2 lg:columns-3">
+        <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
           {GALLERY.map((item, i) => (
             <Reveal
               as="figure"
               key={item.src}
               delay={(i % 3) * 90}
               y={28}
-              className="mb-3 block break-inside-avoid overflow-hidden"
+              className="mb-5 block break-inside-avoid overflow-hidden"
             >
               <div className="group relative overflow-hidden" style={{ borderRadius: 2 }}>
                 <BlurImage

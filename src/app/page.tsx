@@ -5,6 +5,9 @@ import { events } from "@/lib/eventsData";
 import { blurForSrc } from "@/lib/culturinImages";
 import BlurImage from "./components/motion/BlurImage";
 import Reveal from "./components/motion/Reveal";
+import ParallaxReveal from "./components/motion/ParallaxReveal";
+import EditorialStatement from "./components/EditorialStatement";
+import HomeFooter from "./components/HomeFooter";
 
 export const metadata: Metadata = {
   title: "Culturin | Events that matter, with the world's leading brands",
@@ -21,6 +24,7 @@ const ACCENT = "#5c7a6b";
 const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-70.jpg";
 const CANNES_SRC = "/events/cannes-lions-2026/UNIKday1-2.jpg";
 const PARTNER_SRC = "/events/cannes-lions-2026/UNIKday1-22.jpg";
+const PARALLAX_SRC = "/events/cannes-lions-2026/UNIKday2-26.jpg";
 
 const GALLERY_PREVIEW = [
   { src: "/events/cannes-lions-2026/UNIKday1-58.jpg", alt: "DJ under a disco ball at a Culturin night", span: "row-span-2" },
@@ -47,6 +51,11 @@ const PILLARS = [
 ];
 
 const featuredEvents = events.slice(0, 3);
+
+/** Short city label pulled from a full location string, for Trippin-style tag chips. */
+function cityTag(location: string): string {
+  return location.split(",")[0]?.trim() ?? location;
+}
 
 export default function HomePage() {
   return (
@@ -113,7 +122,7 @@ export default function HomePage() {
         />
         <Reveal className="relative z-10 max-w-4xl" y={32}>
           <p className="mb-6 text-[11px] font-semibold uppercase tracking-[0.32em] text-white/70">
-            Culturin
+            More than events. This is a movement.
           </p>
           <h1
             className="m-0 text-5xl font-medium leading-[1.02] text-white sm:text-7xl lg:text-[7.5rem]"
@@ -125,10 +134,10 @@ export default function HomePage() {
             We build cultural events at the world&apos;s most important moments — and partner with the brands who want to be part of them.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/55">
-            <span>Cannes Lions</span>
-            <span>US Open</span>
-            <span>UNGA</span>
-            <span>Lagos</span>
+            <span>Cannes</span>
+            <span>New York</span>
+            <span>London</span>
+            <span>Beyond</span>
           </div>
         </Reveal>
       </section>
@@ -181,6 +190,58 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Editorial statements (OPUS-style alternating narrative) ── */}
+      <section className="px-8 sm:px-14" style={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
+        <div className="mx-auto flex max-w-6xl flex-col gap-28">
+          <EditorialStatement
+            eyebrow="Moments"
+            headline={"The Bold.\nThe Curious.\nThe Culture-First."}
+            body="A collective bound by spirit, not sector. Like the salons that shaped a renaissance, the dinners that moved diplomacy forward, and the nights that turned a festival into a movement."
+            image="/events/cannes-lions-2026/UNIKday1-14.jpg"
+            imageAlt="Two guests in an intimate moment at a Culturin evening"
+            imageSide="right"
+            buttons={[
+              { label: "Our events", href: "/events", variant: "solid" },
+              { label: "See the room", href: "/gallery", variant: "text" },
+            ]}
+          />
+          <EditorialStatement
+            eyebrow="Partners"
+            headline={"Brands, Builders\nAnd The Culture\nThey Create."}
+            body="Different mediums. Same instinct — to show up, to matter, to be remembered. The brands we work with don't sponsor culture. They become part of it."
+            image="/events/cannes-lions-2026/UNIKday1-46.jpg"
+            imageAlt="Guests mingling in a warm-lit lounge at a Culturin evening"
+            imageSide="left"
+            buttons={[
+              { label: "Become a partner", href: "#partners", variant: "solid" },
+              { label: "How we work", href: "#partners", variant: "text" },
+            ]}
+          />
+          <EditorialStatement
+            eyebrow="Movement"
+            headline={"This Is\nCulturin."}
+            body="We exist to convene the people shaping culture next — founders, artists, diplomats, brand builders. This is where a night becomes a relationship, and a relationship becomes a movement."
+            image="/events/cannes-lions-2026/UNIKday2-10.jpg"
+            imageAlt="Elegantly dressed couple at a Culturin reception"
+            imageSide="right"
+            buttons={[
+              { label: "Join the room", href: "/events", variant: "solid" },
+              { label: "Meet the team", href: "/about", variant: "text" },
+            ]}
+          />
+        </div>
+      </section>
+
+      {/* ── Parallax movement break (Goals House-style pinned scroll) ── */}
+      <ParallaxReveal
+        src={PARALLAX_SRC}
+        alt="Guests on the dancefloor at a late-night Culturin reception"
+        blurDataURL={blurForSrc(PARALLAX_SRC)}
+        eyebrow="The Movement"
+        headline="Culture doesn't wait for permission."
+        body="Every room we build is a bet that people showing up for each other, in person, still matters more than any feed."
+      />
+
       {/* ── Upcoming events ────────────────────────────────────── */}
       <section
         id="events"
@@ -228,12 +289,18 @@ export default function HomePage() {
                       sizes="(max-width: 640px) 100vw, 33vw"
                       unoptimized
                     />
+                    {/* Trippin-style tag chips overlaid on the image */}
+                    <div className="absolute left-3 top-3 z-[1] flex flex-wrap gap-1.5">
+                      <span className="rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-medium text-neutral-900">
+                        {cityTag(event.location)}
+                      </span>
+                      <span className="rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-medium text-neutral-900">
+                        {event.category}
+                      </span>
+                    </div>
                   </div>
                   <div className="flex flex-1 flex-col justify-between p-6">
                     <div>
-                      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: INK_MUTED }}>
-                        {event.category}
-                      </p>
                       <h3
                         className="m-0 text-xl font-medium leading-[1.15]"
                         style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
@@ -345,12 +412,13 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal>
-            <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: "240px 240px" }}>
+            <div className="grid grid-cols-3 gap-5" style={{ gridTemplateRows: "240px 240px" }}>
               {GALLERY_PREVIEW.map((item, i) => (
                 <Link
                   key={i}
                   href="/gallery"
                   className={`group relative block overflow-hidden no-underline ${item.span}`}
+                  style={{ borderRadius: 2 }}
                 >
                   <BlurImage
                     src={item.src}
@@ -462,43 +530,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Footer ─────────────────────────────────────────────── */}
-      <footer className="border-t px-8 sm:px-14" style={{ borderColor: RULE }}>
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-10 py-12 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p className="m-0 text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: INK }}>
-                Culturin
-              </p>
-              <p className="mt-2 max-w-xs text-xs leading-relaxed" style={{ color: INK_MUTED }}>
-                Events that matter, with the world&apos;s leading brands.
-              </p>
-            </div>
-            <nav className="flex flex-col gap-3 sm:flex-row sm:gap-8">
-              {[
-                { label: "Events", href: "/events" },
-                { label: "Gallery", href: "/gallery" },
-                { label: "Partners", href: "#partners" },
-                { label: "Sign in", href: "/sign-in" },
-              ].map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="text-xs no-underline transition-opacity hover:opacity-60"
-                  style={{ color: INK_MUTED }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-          <div className="flex items-center justify-between border-t py-5" style={{ borderColor: RULE }}>
-            <span className="text-[11px]" style={{ color: INK_MUTED }}>
-              © {new Date().getFullYear()} Culturin
-            </span>
-          </div>
-        </div>
-      </footer>
+      <HomeFooter />
     </div>
   );
 }
