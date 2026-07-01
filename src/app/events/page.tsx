@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { events } from "@/lib/eventsData";
@@ -12,7 +13,6 @@ import {
 } from "@/lib/theme/culturinTokens";
 import BlurImage from "../components/motion/BlurImage";
 import Reveal from "../components/motion/Reveal";
-import CulturinMark from "../components/CulturinMark";
 
 const BG = EDITORIAL_BG;
 const INK = EDITORIAL_INK;
@@ -36,11 +36,17 @@ export default function EventsPage() {
       >
         <Link
           href="/"
-          className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] no-underline transition-opacity hover:opacity-60"
-          style={{ color: INK }}
+          className="flex items-center no-underline opacity-95 transition-opacity hover:opacity-100"
+          aria-label="Culturin home"
         >
-          <CulturinMark size={16} />
-          Culturin
+          <Image
+            src="/culturin_logo.svg"
+            alt="Culturin"
+            width={84}
+            height={18}
+            className="h-4 w-auto max-w-[5.75rem]"
+            unoptimized
+          />
         </Link>
         <Link
           href="/"

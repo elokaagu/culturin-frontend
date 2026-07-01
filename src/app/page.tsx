@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { events } from "@/lib/eventsData";
@@ -18,7 +19,6 @@ import Reveal from "./components/motion/Reveal";
 import ParallaxReveal from "./components/motion/ParallaxReveal";
 import EditorialStatement from "./components/EditorialStatement";
 import HomeFooter from "./components/HomeFooter";
-import CulturinMark from "./components/CulturinMark";
 
 export const metadata: Metadata = {
   title: "Culturin | Events that matter, with the world's leading brands",
@@ -79,11 +79,18 @@ export default function HomePage() {
       >
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2 px-6 text-xs font-semibold uppercase tracking-[0.28em] no-underline transition-opacity hover:opacity-70"
-          style={{ color: INK }}
+          className="flex shrink-0 items-center px-6 no-underline opacity-95 transition-opacity hover:opacity-100"
+          aria-label="Culturin home"
         >
-          <CulturinMark size={18} />
-          Culturin
+          <Image
+            src="/culturin_logo.svg"
+            alt="Culturin"
+            width={84}
+            height={18}
+            className="h-4 w-auto max-w-[5.75rem]"
+            unoptimized
+            priority
+          />
         </Link>
         <div className="flex flex-1 items-stretch" style={{ borderLeft: `1px solid ${RULE}` }}>
           {[
