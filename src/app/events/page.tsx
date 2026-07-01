@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 import { events } from "@/lib/eventsData";
-import { IMAGE_BLUR_DATA_URL } from "@/lib/imagePlaceholder";
+import { blurForSrc } from "@/lib/culturinImages";
+import BlurImage from "../components/motion/BlurImage";
+import Reveal from "../components/motion/Reveal";
 
 const BG = "#e8e3da";
 const INK = "#1c1a17";
@@ -42,50 +43,53 @@ export default function EventsPage() {
       </header>
 
       {/* ── Page header ─────────────────────────────────────────── */}
-      <div
+      <Reveal
+        as="div"
         className="border-b px-8 sm:px-14"
-        style={{ paddingTop: "5rem", paddingBottom: "5rem", borderColor: RULE }}
+        // padding lives in an inner wrapper so the reveal transform is clean
       >
-        <p
-          className="mb-5 text-[10px] font-semibold uppercase tracking-[0.3em]"
-          style={{ color: INK_MUTED }}
-        >
-          Upcoming Events
-        </p>
-        <h1
-          className="m-0 max-w-2xl text-5xl font-medium leading-[1.08] sm:text-7xl"
-          style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
-        >
-          Where we&apos;ll be next.
-        </h1>
-        <p className="mt-6 max-w-lg text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          Sport, diplomacy, and music — Culturin builds rooms at the edges of the world&apos;s biggest gatherings. Every event is intimate, curated, and invitation-led.
-        </p>
-      </div>
+        <div style={{ paddingTop: "5rem", paddingBottom: "5rem" }}>
+          <p
+            className="mb-5 text-[10px] font-semibold uppercase tracking-[0.3em]"
+            style={{ color: INK_MUTED }}
+          >
+            Upcoming Events
+          </p>
+          <h1
+            className="m-0 max-w-2xl text-5xl font-medium leading-[1.08] sm:text-7xl"
+            style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
+          >
+            Where we&apos;ll be next.
+          </h1>
+          <p className="mt-6 max-w-xl text-base leading-relaxed" style={{ color: INK_MUTED }}>
+            Creativity, sport, and diplomacy — Culturin builds rooms at the edges of the world&apos;s biggest gatherings, in partnership with the brands who want to be part of them. Every event is intimate, curated, and invitation-led.
+          </p>
+        </div>
+      </Reveal>
 
       {/* ── Events list ─────────────────────────────────────────── */}
       <ol className="list-none m-0 p-0">
         {events.map((event, index) => {
           const flip = index % 2 === 1;
           return (
-            <li key={event.slug} className="border-b" style={{ borderColor: RULE }}>
+            <Reveal as="li" key={event.slug} className="block border-b" y={32}>
               <Link
                 href={`/events/${event.slug}`}
                 className="group flex flex-col no-underline lg:flex-row"
-                style={{ color: INK, minHeight: 480 }}
+                style={{ color: INK, minHeight: 480, borderColor: RULE }}
               >
                 {/* Image — alternates left / right */}
                 <div
                   className={`relative w-full shrink-0 overflow-hidden lg:w-[48%] ${flip ? "lg:order-2" : ""}`}
                   style={{ minHeight: 320 }}
                 >
-                  <Image
+                  <BlurImage
                     src={event.heroImage}
                     alt={event.heroImageAlt}
                     fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                     placeholder="blur"
-                    blurDataURL={IMAGE_BLUR_DATA_URL}
+                    blurDataURL={blurForSrc(event.heroImage)}
                     sizes="(max-width: 1024px) 100vw, 48vw"
                     unoptimized
                   />
@@ -147,7 +151,7 @@ export default function EventsPage() {
                   </div>
                 </div>
               </Link>
-            </li>
+            </Reveal>
           );
         })}
       </ol>

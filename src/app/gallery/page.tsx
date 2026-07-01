@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
-import { IMAGE_BLUR_DATA_URL } from "@/lib/imagePlaceholder";
+import { blurForSrc } from "@/lib/culturinImages";
+import BlurImage from "../components/motion/BlurImage";
+import Reveal from "../components/motion/Reveal";
 
 export const metadata: Metadata = {
   title: "Gallery | Culturin",
@@ -106,22 +107,24 @@ export default function GalleryPage() {
       {/* ── Masonry grid ─────────────────────────────────────────── */}
       <div className="px-8 py-16 sm:px-14">
         <div className="columns-1 gap-3 sm:columns-2 lg:columns-3">
-          {GALLERY.map((item) => (
-            <figure
+          {GALLERY.map((item, i) => (
+            <Reveal
+              as="figure"
               key={item.src}
-              className="mb-3 break-inside-avoid overflow-hidden"
-              style={{ margin: 0, borderRadius: 2 }}
+              delay={(i % 3) * 90}
+              y={28}
+              className="mb-3 block break-inside-avoid overflow-hidden"
             >
-              <div className="group relative overflow-hidden">
-                <Image
+              <div className="group relative overflow-hidden" style={{ borderRadius: 2 }}>
+                <BlurImage
                   src={item.src}
                   alt={item.alt}
                   width={item.orientation === "portrait" ? 800 : 1200}
                   height={item.orientation === "portrait" ? 1200 : 800}
-                  className="block w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  className="block w-full transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                   style={{ height: "auto" }}
                   placeholder="blur"
-                  blurDataURL={IMAGE_BLUR_DATA_URL}
+                  blurDataURL={blurForSrc(item.src)}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   unoptimized
                 />
@@ -136,7 +139,7 @@ export default function GalleryPage() {
                   <p className="m-0 text-xs text-white/60">{item.location}</p>
                 </figcaption>
               </div>
-            </figure>
+            </Reveal>
           ))}
         </div>
       </div>

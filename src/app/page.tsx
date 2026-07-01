@@ -1,70 +1,48 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 import { events } from "@/lib/eventsData";
-import { IMAGE_BLUR_DATA_URL } from "@/lib/imagePlaceholder";
+import { blurForSrc } from "@/lib/culturinImages";
+import BlurImage from "./components/motion/BlurImage";
+import Reveal from "./components/motion/Reveal";
 
 export const metadata: Metadata = {
-  title: "Culturin | Culture at the world's biggest rooms",
+  title: "Culturin | Events that matter, with the world's leading brands",
   description:
-    "Culturin builds curated cultural experiences at the world's most important gatherings — Cannes, the US Open, UNGA, and beyond.",
+    "Culturin partners with the world's leading brands to build cultural events that matter — at Cannes Lions, the US Open, UNGA, and beyond.",
 };
 
 const BG = "#e8e3da";
 const INK = "#1c1a17";
 const INK_MUTED = "#6b6456";
 const RULE = "#cec7be";
+const ACCENT = "#5c7a6b";
 
 const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-70.jpg";
-
 const CANNES_SRC = "/events/cannes-lions-2026/UNIKday1-2.jpg";
+const PARTNER_SRC = "/events/cannes-lions-2026/UNIKday1-22.jpg";
 
 const GALLERY_PREVIEW = [
-  {
-    src: "/events/cannes-lions-2026/UNIKday1-58.jpg",
-    alt: "DJ under a disco ball at a Culturin night in Cannes",
-    span: "row-span-2",
-  },
-  {
-    src: "/events/cannes-lions-2026/UNIKday1-62.jpg",
-    alt: "Red-lit crowd on the dancefloor",
-    span: "",
-  },
-  {
-    src: "/events/cannes-lions-2026/UNIKday1-22.jpg",
-    alt: "Guests gathered on a couch with champagne",
-    span: "",
-  },
-  {
-    src: "/events/cannes-lions-2026/UNIKday1-26.jpg",
-    alt: "Disco balls above the crowd",
-    span: "row-span-2",
-  },
-  {
-    src: "/events/cannes-lions-2026/UNIKday1-54.jpg",
-    alt: "Candid dancing at a Culturin evening",
-    span: "",
-  },
-  {
-    src: "/events/cannes-lions-2026/UNIKday2-34.jpg",
-    alt: "Two guests laughing together late at night",
-    span: "",
-  },
+  { src: "/events/cannes-lions-2026/UNIKday1-58.jpg", alt: "DJ under a disco ball at a Culturin night", span: "row-span-2" },
+  { src: "/events/cannes-lions-2026/UNIKday1-62.jpg", alt: "Red-lit crowd on the dancefloor", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday1-22.jpg", alt: "Guests gathered on a couch with champagne", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday1-26.jpg", alt: "Disco balls above the crowd", span: "row-span-2" },
+  { src: "/events/cannes-lions-2026/UNIKday1-54.jpg", alt: "Candid dancing at a Culturin evening", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday2-34.jpg", alt: "Two guests laughing together late at night", span: "" },
 ];
 
 const PILLARS = [
   {
-    label: "Events",
-    body: "Intimate, curated gatherings at the world's most important moments — film festivals, sporting finals, diplomatic summits.",
+    label: "Events that matter",
+    body: "Intimate, culturally-grounded gatherings at the world's most important moments — where a brand's presence is felt, not just seen.",
   },
   {
-    label: "Community",
-    body: "A network of founders, artists, diplomats, and cultural leaders who move between cities and make things happen.",
+    label: "The right room",
+    body: "Founders, artists, athletes, diplomats, and cultural leaders. We curate the guest list so every introduction counts.",
   },
   {
-    label: "Platform",
-    body: "A cultural intelligence layer for travellers and institutions — destinations, stories, and local access, coming soon.",
+    label: "Built with partners",
+    body: "We co-create with the world's leading brands — from concept and guest curation to production and the morning-after story.",
   },
 ];
 
@@ -76,12 +54,12 @@ export default function HomePage() {
 
       {/* ── Sticky nav ─────────────────────────────────────────── */}
       <nav
-        className="fixed inset-x-0 top-0 z-50 flex items-stretch border-b"
-        style={{ height: 48, borderColor: RULE, background: BG }}
+        className="fixed inset-x-0 top-0 z-50 flex items-stretch border-b backdrop-blur-md"
+        style={{ height: 48, borderColor: RULE, background: "rgba(232,227,218,0.82)" }}
       >
         <Link
           href="/"
-          className="flex shrink-0 items-center px-6 text-xs font-semibold uppercase tracking-[0.22em] no-underline"
+          className="flex shrink-0 items-center px-6 text-xs font-semibold uppercase tracking-[0.28em] no-underline transition-opacity hover:opacity-70"
           style={{ color: INK }}
         >
           Culturin
@@ -89,24 +67,24 @@ export default function HomePage() {
         <div className="flex flex-1 items-stretch" style={{ borderLeft: `1px solid ${RULE}` }}>
           {[
             { label: "Events", href: "/events" },
-            { label: "Cannes", href: "#cannes" },
+            { label: "Partners", href: "#partners" },
             { label: "Gallery", href: "/gallery" },
           ].map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="flex flex-1 items-center justify-center text-[11px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
+              className="hidden flex-1 items-center justify-center text-[11px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60 sm:flex"
               style={{ color: INK, borderRight: `1px solid ${RULE}` }}
             >
               {item.label}
             </Link>
           ))}
           <Link
-            href="/events"
+            href="#partners"
             className="flex shrink-0 items-center px-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-white no-underline transition-opacity hover:opacity-85"
-            style={{ background: "#5c7a6b" }}
+            style={{ background: ACCENT }}
           >
-            Apply
+            Partner with us
           </Link>
         </div>
       </nav>
@@ -116,34 +94,43 @@ export default function HomePage() {
         className="relative flex min-h-dvh flex-col justify-end overflow-hidden pb-20 pl-8 sm:pl-14"
         style={{ paddingTop: 48 }}
       >
-        <Image
+        <BlurImage
           src={HERO_SRC}
           alt="Guests dancing under disco balls at a Culturin night in Cannes"
           fill
           priority
           className="object-cover"
           placeholder="blur"
-          blurDataURL={IMAGE_BLUR_DATA_URL}
+          blurDataURL={blurForSrc(HERO_SRC)}
           sizes="100vw"
         />
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.30) 55%, rgba(0,0,0,0.05) 100%)",
+              "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.32) 55%, rgba(0,0,0,0.08) 100%)",
           }}
         />
-        <div className="relative z-10 max-w-4xl">
+        <Reveal className="relative z-10 max-w-4xl" y={32}>
+          <p className="mb-6 text-[11px] font-semibold uppercase tracking-[0.32em] text-white/70">
+            Culturin
+          </p>
           <h1
-            className="m-0 text-6xl font-medium leading-[1.0] text-white sm:text-8xl lg:text-[8.5rem]"
+            className="m-0 text-5xl font-medium leading-[1.02] text-white sm:text-7xl lg:text-[7.5rem]"
             style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
           >
-            We bring culture to the world&apos;s biggest rooms.
+            Events that matter, with the brands that make them.
           </h1>
-          <p className="mt-8 text-sm font-medium uppercase tracking-[0.25em] text-white/60">
-            Cannes&nbsp;&nbsp;·&nbsp;&nbsp;New York&nbsp;&nbsp;·&nbsp;&nbsp;Lagos&nbsp;&nbsp;·&nbsp;&nbsp;Beyond
+          <p className="mt-8 max-w-xl text-base leading-relaxed text-white/75">
+            We build cultural events at the world&apos;s most important moments — and partner with the brands who want to be part of them.
           </p>
-        </div>
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/55">
+            <span>Cannes Lions</span>
+            <span>US Open</span>
+            <span>UNGA</span>
+            <span>Lagos</span>
+          </div>
+        </Reveal>
       </section>
 
       {/* ── Mission ────────────────────────────────────────────── */}
@@ -153,45 +140,42 @@ export default function HomePage() {
         style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
       >
         <div className="mx-auto max-w-6xl">
-          <p
-            className="mb-10 text-[10px] font-semibold uppercase tracking-[0.3em]"
-            style={{ color: INK_MUTED }}
-          >
-            What we are
-          </p>
+          <Reveal>
+            <p className="mb-10 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+              What we do
+            </p>
+          </Reveal>
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
-            <h2
-              className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
-              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-            >
-              Culture is the access that matters most.
-            </h2>
-            <div className="flex flex-col gap-6">
+            <Reveal as="div">
+              <h2
+                className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
+                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+              >
+                Culture is the most valuable room a brand can be in.
+              </h2>
+            </Reveal>
+            <Reveal as="div" delay={120} className="flex flex-col gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Culturin is a cultural experiences company. We build the rooms — dinners, salons, receptions — at the edges of the world&apos;s most important gatherings, where founders, artists, diplomats, and cultural leaders actually meet.
+                Culturin is a cultural events company. We build the rooms — dinners, salons, live nights — at the edges of the world&apos;s most important gatherings, where founders, artists, athletes, diplomats, and cultural leaders actually meet.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                We are not a conference. We are not a travel company. We are the cultural layer that makes the world&apos;s biggest moments meaningful.
+                And we build them with partners. For brands who understand that showing up in culture — authentically, at the right moment — is worth more than any billboard.
               </p>
-            </div>
+            </Reveal>
           </div>
 
-          <div
-            className="mt-20 grid grid-cols-1 gap-px sm:grid-cols-3"
-            style={{ background: RULE }}
-          >
-            {PILLARS.map((p) => (
-              <div key={p.label} className="px-8 py-10" style={{ background: BG }}>
-                <p
-                  className="mb-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
-                  style={{ color: INK_MUTED }}
-                >
-                  {p.label}
-                </p>
-                <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                  {p.body}
-                </p>
-              </div>
+          <div className="mt-20 grid grid-cols-1 gap-px sm:grid-cols-3" style={{ background: RULE }}>
+            {PILLARS.map((p, i) => (
+              <Reveal key={p.label} as="div" delay={i * 120}>
+                <div className="h-full px-8 py-10" style={{ background: BG }}>
+                  <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: INK_MUTED }}>
+                    {p.label}
+                  </p>
+                  <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
+                    {p.body}
+                  </p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -204,12 +188,9 @@ export default function HomePage() {
         style={{ paddingTop: "8rem", paddingBottom: "4rem" }}
       >
         <div className="mx-auto max-w-6xl">
-          <div className="mb-12 flex items-end justify-between gap-6">
+          <Reveal className="mb-12 flex items-end justify-between gap-6">
             <div>
-              <p
-                className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]"
-                style={{ color: INK_MUTED }}
-              >
+              <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
                 Where we&apos;ll be
               </p>
               <h2
@@ -226,60 +207,52 @@ export default function HomePage() {
             >
               All events →
             </Link>
-          </div>
+          </Reveal>
 
-          <div
-            className="grid grid-cols-1 gap-px sm:grid-cols-3"
-            style={{ background: RULE }}
-          >
-            {featuredEvents.map((event) => (
-              <Link
-                key={event.slug}
-                href={`/events/${event.slug}`}
-                className="group relative flex flex-col no-underline"
-                style={{ background: BG, color: INK }}
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src={event.heroImage}
-                    alt={event.heroImageAlt}
-                    fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                    placeholder="blur"
-                    blurDataURL={IMAGE_BLUR_DATA_URL}
-                    sizes="(max-width: 640px) 100vw, 33vw"
-                    unoptimized
-                  />
-                </div>
-                <div className="flex flex-1 flex-col justify-between p-6">
-                  <div>
-                    <p
-                      className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em]"
-                      style={{ color: INK_MUTED }}
-                    >
-                      {event.category}
-                    </p>
-                    <h3
-                      className="m-0 text-xl font-medium leading-[1.15]"
-                      style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-                    >
-                      {event.name}
-                    </h3>
+          <div className="grid grid-cols-1 gap-px sm:grid-cols-3" style={{ background: RULE }}>
+            {featuredEvents.map((event, i) => (
+              <Reveal key={event.slug} as="div" delay={i * 120}>
+                <Link
+                  href={`/events/${event.slug}`}
+                  className="group relative flex h-full flex-col no-underline"
+                  style={{ background: BG, color: INK }}
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <BlurImage
+                      src={event.heroImage}
+                      alt={event.heroImageAlt}
+                      fill
+                      className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.05]"
+                      placeholder="blur"
+                      blurDataURL={blurForSrc(event.heroImage)}
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                      unoptimized
+                    />
                   </div>
-                  <div className="mt-6 flex items-end justify-between gap-2">
+                  <div className="flex flex-1 flex-col justify-between p-6">
                     <div>
-                      <p className="m-0 text-xs" style={{ color: INK_MUTED }}>{event.date}</p>
-                      <p className="m-0 text-xs" style={{ color: INK_MUTED }}>{event.location}</p>
+                      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: INK_MUTED }}>
+                        {event.category}
+                      </p>
+                      <h3
+                        className="m-0 text-xl font-medium leading-[1.15]"
+                        style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+                      >
+                        {event.name}
+                      </h3>
                     </div>
-                    <span
-                      className="text-xs font-semibold transition-opacity group-hover:opacity-60"
-                      style={{ color: INK }}
-                    >
-                      →
-                    </span>
+                    <div className="mt-6 flex items-end justify-between gap-2">
+                      <div>
+                        <p className="m-0 text-xs" style={{ color: INK_MUTED }}>{event.date}</p>
+                        <p className="m-0 text-xs" style={{ color: INK_MUTED }}>{event.location}</p>
+                      </div>
+                      <span className="text-xs font-semibold transition-transform duration-200 group-hover:translate-x-1" style={{ color: INK }}>
+                        →
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -292,23 +265,24 @@ export default function HomePage() {
         style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
       >
         <div className="mx-auto max-w-6xl">
-          <p
-            className="mb-10 text-[10px] font-semibold uppercase tracking-[0.3em]"
-            style={{ color: INK_MUTED }}
-          >
-            Culturin Cannes
-          </p>
+          <Reveal>
+            <p className="mb-10 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+              Culturin Cannes Lions
+            </p>
+          </Reveal>
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
-            <div className="relative aspect-[3/4] overflow-hidden lg:aspect-auto lg:min-h-[520px]">
-              <Image
+            <Reveal as="div" className="relative aspect-[3/4] overflow-hidden lg:aspect-auto lg:min-h-[520px]">
+              <BlurImage
                 src={CANNES_SRC}
                 alt="Guest in a tailored blazer at a Culturin night in Cannes"
                 fill
                 className="object-cover"
+                placeholder="blur"
+                blurDataURL={blurForSrc(CANNES_SRC)}
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-            </div>
-            <div className="flex flex-col justify-center">
+            </Reveal>
+            <Reveal as="div" delay={120} className="flex flex-col justify-center">
               <h2
                 className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl lg:text-6xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
@@ -319,7 +293,7 @@ export default function HomePage() {
                 Every June, the world&apos;s creative industry — CMOs, agency founders, artists, and brand builders — descends on a small city on the French Riviera for Cannes Lions. By day it&apos;s awards and panels. The real conversations happen after dark.
               </p>
               <p className="mt-5 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Culturin builds those nights. Curated guest lists, live music, warm rooms, and a late-night close that keeps going long after the awards do. Cannes, without the noise.
+                Culturin builds those nights. Curated guest lists, live music, warm rooms, and brand partnerships woven in with intention. Cannes, without the noise.
               </p>
               <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <Link
@@ -337,7 +311,7 @@ export default function HomePage() {
                   Request access →
                 </Link>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -349,12 +323,9 @@ export default function HomePage() {
         style={{ paddingTop: "8rem", paddingBottom: "8rem" }}
       >
         <div className="mx-auto max-w-6xl">
-          <div className="mb-12 flex items-end justify-between gap-6">
+          <Reveal className="mb-12 flex items-end justify-between gap-6">
             <div>
-              <p
-                className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]"
-                style={{ color: INK_MUTED }}
-              >
+              <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
                 From the field
               </p>
               <h2
@@ -371,30 +342,85 @@ export default function HomePage() {
             >
               Full gallery →
             </Link>
-          </div>
+          </Reveal>
 
-          <div
-            className="grid grid-cols-3 gap-2"
-            style={{ gridTemplateRows: "240px 240px" }}
-          >
-            {GALLERY_PREVIEW.map((item, i) => (
-              <Link
-                key={i}
-                href="/gallery"
-                className={`group relative block overflow-hidden no-underline ${item.span}`}
+          <Reveal>
+            <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: "240px 240px" }}>
+              {GALLERY_PREVIEW.map((item, i) => (
+                <Link
+                  key={i}
+                  href="/gallery"
+                  className={`group relative block overflow-hidden no-underline ${item.span}`}
+                >
+                  <BlurImage
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                    placeholder="blur"
+                    blurDataURL={blurForSrc(item.src)}
+                    sizes="(max-width: 640px) 50vw, 33vw"
+                    unoptimized
+                  />
+                </Link>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── Partners ───────────────────────────────────────────── */}
+      <section
+        id="partners"
+        className="relative overflow-hidden border-t px-8 sm:px-14"
+        style={{ paddingTop: "9rem", paddingBottom: "9rem", borderColor: RULE, background: INK }}
+      >
+        <BlurImage
+          src={PARTNER_SRC}
+          alt="Guests gathered at a Culturin partner evening"
+          fill
+          className="object-cover opacity-25"
+          placeholder="blur"
+          blurDataURL={blurForSrc(PARTNER_SRC)}
+          sizes="100vw"
+        />
+        <div className="relative z-10 mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
+            <Reveal as="div">
+              <p className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "rgba(232,227,218,0.6)" }}>
+                For partners
+              </p>
+              <h2
+                className="m-0 text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl"
+                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-                  placeholder="blur"
-                  blurDataURL={IMAGE_BLUR_DATA_URL}
-                  sizes="(max-width: 640px) 50vw, 33vw"
-                  unoptimized
-                />
-              </Link>
-            ))}
+                Let&apos;s build something that matters.
+              </h2>
+            </Reveal>
+            <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
+              <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
+                We partner with the world&apos;s leading brands to create cultural events with genuine gravity — from concept and guest curation to production and the story that outlives the night.
+              </p>
+              <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
+                If you want to show up in culture in a way people actually remember, we should talk.
+              </p>
+              <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+                <a
+                  href="mailto:partners@culturin.com?subject=Partnering%20with%20Culturin"
+                  className="inline-flex w-fit items-center px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+                  style={{ background: BG, color: INK }}
+                >
+                  Become a partner
+                </a>
+                <Link
+                  href="/events"
+                  className="text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-70"
+                  style={{ color: "rgba(232,227,218,0.85)" }}
+                >
+                  See our events →
+                </Link>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -406,35 +432,32 @@ export default function HomePage() {
       >
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
-            <div>
-              <p
-                className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]"
-                style={{ color: INK_MUTED }}
-              >
+            <Reveal as="div">
+              <p className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
                 What we&apos;re building
               </p>
               <h2
                 className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                The platform is coming.
+                A platform for culture, in time.
               </h2>
-            </div>
-            <div className="flex flex-col justify-center gap-6">
+            </Reveal>
+            <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Behind the events, we are building Culturin as a platform — a cultural intelligence layer for travellers, institutions, and brands who want to move through the world with more depth and less noise.
+                Behind the events, we are building Culturin as a platform — a cultural intelligence layer for brands, institutions, and travellers who want to move through the world with more depth and less noise.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Curated destinations. Local context. Stories from the people who actually live there. Coming soon.
+                For now, everything starts with the room. Come be in one.
               </p>
               <Link
                 href="/events"
                 className="mt-2 inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
                 style={{ color: INK }}
               >
-                In the meantime, join an event →
+                Explore upcoming events →
               </Link>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -444,18 +467,18 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col gap-10 py-12 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: INK }}>
+              <p className="m-0 text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: INK }}>
                 Culturin
               </p>
               <p className="mt-2 max-w-xs text-xs leading-relaxed" style={{ color: INK_MUTED }}>
-                Culture at the world&apos;s biggest rooms.
+                Events that matter, with the world&apos;s leading brands.
               </p>
             </div>
             <nav className="flex flex-col gap-3 sm:flex-row sm:gap-8">
               {[
                 { label: "Events", href: "/events" },
                 { label: "Gallery", href: "/gallery" },
-                { label: "Cannes", href: "#cannes" },
+                { label: "Partners", href: "#partners" },
                 { label: "Sign in", href: "/sign-in" },
               ].map((item) => (
                 <Link
@@ -469,10 +492,7 @@ export default function HomePage() {
               ))}
             </nav>
           </div>
-          <div
-            className="flex items-center justify-between border-t py-5"
-            style={{ borderColor: RULE }}
-          >
+          <div className="flex items-center justify-between border-t py-5" style={{ borderColor: RULE }}>
             <span className="text-[11px]" style={{ color: INK_MUTED }}>
               © {new Date().getFullYear()} Culturin
             </span>

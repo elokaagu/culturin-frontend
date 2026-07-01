@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { getEventBySlug, events } from "@/lib/eventsData";
-import { IMAGE_BLUR_DATA_URL } from "@/lib/imagePlaceholder";
+import { blurForSrc } from "@/lib/culturinImages";
+import BlurImage from "@/app/components/motion/BlurImage";
+import Reveal from "@/app/components/motion/Reveal";
 import RSVPForm from "./RSVPForm";
 
 const BG = "#e8e3da";
@@ -86,14 +87,14 @@ export default async function EventLandingPage({ params }: Props) {
         className="relative flex min-h-dvh flex-col justify-end overflow-hidden pb-16 pl-8 sm:pl-14"
         style={{ paddingTop: 44 }}
       >
-        <Image
+        <BlurImage
           src={event.heroImage}
           alt={event.heroImageAlt}
           fill
           priority
           className="object-cover"
           placeholder="blur"
-          blurDataURL={IMAGE_BLUR_DATA_URL}
+          blurDataURL={blurForSrc(event.heroImage)}
           sizes="100vw"
         />
         {/* Gradient overlay */}
@@ -132,13 +133,15 @@ export default async function EventLandingPage({ params }: Props) {
         >
           {/* Scattered photos — absolute within the tall section */}
           {section.photos.map((photo, i) => (
-            <div
+            <Reveal
               key={i}
+              as="div"
+              y={40}
+              delay={i * 120}
               className={`absolute hidden lg:block ${photo.position}`}
-              style={{ zIndex: 1 }}
             >
               <div className="overflow-hidden shadow-xl" style={{ borderRadius: 2 }}>
-                <Image
+                <BlurImage
                   src={photo.src}
                   alt={photo.alt}
                   width={400}
@@ -146,16 +149,16 @@ export default async function EventLandingPage({ params }: Props) {
                   className="block object-cover"
                   style={{ width: "100%", height: "auto" }}
                   placeholder="blur"
-                  blurDataURL={IMAGE_BLUR_DATA_URL}
+                  blurDataURL={blurForSrc(photo.src)}
                   sizes="400px"
                   unoptimized
                 />
               </div>
-            </div>
+            </Reveal>
           ))}
 
           {/* Text content — sits in the center of the wide canvas */}
-          <div className="relative z-10 mx-auto max-w-xl text-center lg:text-left">
+          <Reveal className="relative z-10 mx-auto max-w-xl text-center lg:text-left">
             <p
               className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]"
               style={{ color: INK_MUTED }}
@@ -171,7 +174,7 @@ export default async function EventLandingPage({ params }: Props) {
             <p className="mt-7 max-w-sm text-base leading-relaxed" style={{ color: INK_MUTED }}>
               {section.body}
             </p>
-          </div>
+          </Reveal>
         </section>
       ))}
 
@@ -188,8 +191,8 @@ export default async function EventLandingPage({ params }: Props) {
           BY THE NUMBERS
         </p>
         <div className="mx-auto grid max-w-3xl grid-cols-2 gap-12 sm:grid-cols-4">
-          {event.stats.map((stat) => (
-            <div key={stat.label} className="text-center">
+          {event.stats.map((stat, i) => (
+            <Reveal key={stat.label} delay={i * 100} className="text-center">
               <p
                 className="m-0 text-5xl font-light sm:text-6xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
@@ -199,7 +202,7 @@ export default async function EventLandingPage({ params }: Props) {
               <p className="mt-3 text-xs uppercase tracking-[0.18em]" style={{ color: INK_MUTED }}>
                 {stat.label}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -210,7 +213,7 @@ export default async function EventLandingPage({ params }: Props) {
         className="px-8 sm:px-14"
         style={{ paddingTop: "10rem", paddingBottom: "10rem" }}
       >
-        <div className="mx-auto max-w-2xl">
+        <Reveal className="mx-auto max-w-2xl">
           <p
             className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]"
             style={{ color: INK_MUTED }}
@@ -226,7 +229,7 @@ export default async function EventLandingPage({ params }: Props) {
           <p className="mt-8 text-base leading-loose" style={{ color: INK_MUTED }}>
             {event.signalBody}
           </p>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── RSVP ─────────────────────────────────────────────────── */}
@@ -235,7 +238,7 @@ export default async function EventLandingPage({ params }: Props) {
         className="border-t px-8 sm:px-14"
         style={{ borderColor: "#cec7be", paddingTop: "10rem", paddingBottom: "10rem" }}
       >
-        <div className="mx-auto max-w-2xl">
+        <Reveal className="mx-auto max-w-2xl">
           <p
             className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]"
             style={{ color: INK_MUTED }}
@@ -252,7 +255,7 @@ export default async function EventLandingPage({ params }: Props) {
             {event.rsvpSubtext}
           </p>
           <RSVPForm />
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Minimal footer ───────────────────────────────────────── */}

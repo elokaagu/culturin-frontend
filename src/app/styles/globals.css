@@ -91,6 +91,12 @@
     }
   }
 
+  /* Anchored sections clear the fixed editorial nav on smooth-scroll jumps. */
+  section[id],
+  div[id] {
+    scroll-margin-top: 64px;
+  }
+
   body {
     @apply min-h-dvh overflow-x-clip bg-transparent text-inherit antialiased;
     font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
