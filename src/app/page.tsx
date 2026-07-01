@@ -16,41 +16,39 @@ const INK = "#1c1a17";
 const INK_MUTED = "#6b6456";
 const RULE = "#cec7be";
 
-const HERO_SRC =
-  "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=2400&q=85";
+const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-70.jpg";
 
-const CANNES_SRC =
-  "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80";
+const CANNES_SRC = "/events/cannes-lions-2026/UNIKday1-2.jpg";
 
 const GALLERY_PREVIEW = [
   {
-    src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
-    alt: "Communal dinner table at a Culturin evening",
+    src: "/events/cannes-lions-2026/UNIKday1-58.jpg",
+    alt: "DJ under a disco ball at a Culturin night in Cannes",
     span: "row-span-2",
   },
   {
-    src: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=80",
-    alt: "Golden-hour rooftop gathering, New York",
+    src: "/events/cannes-lions-2026/UNIKday1-62.jpg",
+    alt: "Red-lit crowd on the dancefloor",
     span: "",
   },
   {
-    src: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80",
-    alt: "Panel discussion at a Culturin salon",
+    src: "/events/cannes-lions-2026/UNIKday1-22.jpg",
+    alt: "Guests gathered on a couch with champagne",
     span: "",
   },
   {
-    src: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?auto=format&fit=crop&w=900&q=80",
-    alt: "Neighborhood cultural walk",
+    src: "/events/cannes-lions-2026/UNIKday1-26.jpg",
+    alt: "Disco balls above the crowd",
     span: "row-span-2",
   },
   {
-    src: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80",
-    alt: "Culturin makers market",
+    src: "/events/cannes-lions-2026/UNIKday1-54.jpg",
+    alt: "Candid dancing at a Culturin evening",
     span: "",
   },
   {
-    src: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=900&q=80",
-    alt: "Art installation and cultural gathering",
+    src: "/events/cannes-lions-2026/UNIKday2-34.jpg",
+    alt: "Two guests laughing together late at night",
     span: "",
   },
 ];
@@ -120,7 +118,7 @@ export default function HomePage() {
       >
         <Image
           src={HERO_SRC}
-          alt="Crowd at a live cultural event"
+          alt="Guests dancing under disco balls at a Culturin night in Cannes"
           fill
           priority
           className="object-cover"
@@ -304,11 +302,9 @@ export default function HomePage() {
             <div className="relative aspect-[3/4] overflow-hidden lg:aspect-auto lg:min-h-[520px]">
               <Image
                 src={CANNES_SRC}
-                alt="The French Riviera coastline at golden hour"
+                alt="Guest in a tailored blazer at a Culturin night in Cannes"
                 fill
                 className="object-cover"
-                placeholder="blur"
-                blurDataURL={IMAGE_BLUR_DATA_URL}
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
@@ -320,21 +316,21 @@ export default function HomePage() {
                 La Croisette.<br />Our way.
               </h2>
               <p className="mt-7 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Every May, the world&apos;s best storytellers — directors, producers, collectors, and distributors — descend on a small city on the French Riviera. The films compete on screen. The real conversations happen over dinner.
+                Every June, the world&apos;s creative industry — CMOs, agency founders, artists, and brand builders — descends on a small city on the French Riviera for Cannes Lions. By day it&apos;s awards and panels. The real conversations happen after dark.
               </p>
               <p className="mt-5 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Culturin builds those dinners. Private villa programming, curated screenings with director conversations, and a closing terrace reception overlooking the bay. Cannes, without the noise.
+                Culturin builds those nights. Curated guest lists, live music, warm rooms, and a late-night close that keeps going long after the awards do. Cannes, without the noise.
               </p>
               <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <Link
-                  href="/events/cannes-film-festival-2026"
+                  href="/events/cannes-lions-2026"
                   className="inline-flex items-center px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white no-underline transition-opacity hover:opacity-85"
                   style={{ background: INK }}
                 >
                   View Cannes programming
                 </Link>
                 <Link
-                  href="/events/cannes-film-festival-2026#rsvp"
+                  href="/events/cannes-lions-2026#rsvp"
                   className="text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
                   style={{ color: INK }}
                 >

@@ -14,89 +14,36 @@ const INK = "#1c1a17";
 const INK_MUTED = "#6b6456";
 const RULE = "#cec7be";
 
-const u = (id: string, w = 1200) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
+const img = (file: string) => `/events/cannes-lions-2026/${file}`;
+
+type Orientation = "portrait" | "landscape";
 
 type GalleryItem = {
   src: string;
   alt: string;
   event: string;
   location: string;
+  orientation: Orientation;
 };
 
+// Real photography from Culturin's Cannes Lions 2026 nights.
 const GALLERY: GalleryItem[] = [
-  {
-    src: u("1459749411175-04bf5292ceea"),
-    alt: "Crowd at a live Afrobeat concert with stage lights",
-    event: "Amafrobeat Experience",
-    location: "Lagos",
-  },
-  {
-    src: u("1517248135467-4c7edcad34c4"),
-    alt: "Guests around a long communal dinner table",
-    event: "Culturin Dinner",
-    location: "New York",
-  },
-  {
-    src: u("1475721027785-f74eccf877e2"),
-    alt: "Panel discussion on stage at a Culturin salon",
-    event: "Culturin Salon",
-    location: "New York",
-  },
-  {
-    src: u("1514525253161-7a46d19cd819"),
-    alt: "DJ set on a rooftop at golden hour",
-    event: "Rooftop Close",
-    location: "New York",
-  },
-  {
-    src: u("1555396273-367ea4eb4db5"),
-    alt: "Outdoor evening dining in a lantern-lit courtyard",
-    event: "Terrace Dinner",
-    location: "Cannes",
-  },
-  {
-    src: u("1469854523086-cc02fe5d8800"),
-    alt: "Sunlit coastal road along the French Riviera",
-    event: "Cannes Film Festival",
-    location: "Cannes",
-  },
-  {
-    src: u("1460661419201-fd4cecdf8a8b"),
-    alt: "Guests at a contemporary art installation",
-    event: "Art & Culture Night",
-    location: "Lagos",
-  },
-  {
-    src: u("1480714378408-67cf0d13bc1f"),
-    alt: "Cultural neighbourhood walk through a vibrant city street",
-    event: "City Walk",
-    location: "Lagos",
-  },
-  {
-    src: u("1511578314322-379afb476865"),
-    alt: "Makers market with creative vendors and visitors",
-    event: "Culturin Market",
-    location: "Accra",
-  },
-  {
-    src: u("1511379938547-c1f69419868d"),
-    alt: "Musicians performing in an intimate candlelit venue",
-    event: "Listening Session",
-    location: "Lagos",
-  },
-  {
-    src: u("1509042239860-f550ce710b93"),
-    alt: "Warm drinks and conversation at a private gathering",
-    event: "Opening Reception",
-    location: "New York",
-  },
-  {
-    src: u("1558642452-9d2a7deb7f62"),
-    alt: "Mosaic sculpture and architecture in afternoon light",
-    event: "Cultural Walk",
-    location: "Barcelona",
-  },
+  { src: img("UNIKday1-2.jpg"), alt: "Guest in a tailored blazer against a deep red backdrop", event: "Opening Night", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-22.jpg"), alt: "Guests gathered on a couch with champagne", event: "The Room", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday1-58.jpg"), alt: "DJ performing under a disco ball in red light", event: "After Dark", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-38.jpg"), alt: "Four guests posing together at a Culturin evening", event: "The Room", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday1-26.jpg"), alt: "Disco balls above the crowd", event: "After Dark", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-62.jpg"), alt: "Red-lit crowd on the dancefloor", event: "After Dark", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday1-14.jpg"), alt: "Couple portrait against a red-lit backdrop", event: "Opening Night", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-54.jpg"), alt: "Candid dancing at a Culturin evening", event: "After Dark", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday1-34.jpg"), alt: "Two guests portrait at the party", event: "Opening Night", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-46.jpg"), alt: "Guests mingling in a warm-lit lounge", event: "The Room", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday2-4.jpg"), alt: "Guest in a yellow jersey lit by red smoke", event: "Night Two", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday2-22.jpg"), alt: "Couple posing at the branded wall", event: "Night Two", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday2-30.jpg"), alt: "Full dancefloor under disco balls late at night", event: "Night Two", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday2-12.jpg"), alt: "Group of guests at a Culturin gathering", event: "Night Two", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday2-34.jpg"), alt: "Two guests laughing together late at night", event: "Night Two", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-70.jpg"), alt: "Guests dancing under disco balls with phones raised", event: "After Dark", location: "Cannes", orientation: "landscape" },
 ];
 
 export default function GalleryPage() {
@@ -151,8 +98,8 @@ export default function GalleryPage() {
           Life inside the rooms.
         </h1>
         <p className="mt-6 max-w-lg text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          Images from Culturin events across Cannes, New York, Lagos, Accra, and Barcelona.
-          Every photo is a room we built.
+          Two nights from Culturin at Cannes Lions 2026 — the guests, the music,
+          and the late hours. Every photo is a room we built.
         </p>
       </div>
 
@@ -169,9 +116,10 @@ export default function GalleryPage() {
                 <Image
                   src={item.src}
                   alt={item.alt}
-                  width={900}
-                  height={600}
-                  className="block w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  width={item.orientation === "portrait" ? 800 : 1200}
+                  height={item.orientation === "portrait" ? 1200 : 800}
+                  className="block w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  style={{ height: "auto" }}
                   placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
