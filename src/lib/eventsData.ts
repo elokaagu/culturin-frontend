@@ -45,6 +45,87 @@ export type CulturinEvent = {
 
 export const events: CulturinEvent[] = [
   {
+    slug: "cannes-film-festival-2026",
+    name: "Culturin at Cannes",
+    navLabel: "CANNES 2026",
+    tagline: "La Croisette.\nOurs.",
+    subtagline: "Culturin × Cannes Film Festival · May 2026",
+    shortDescription: "Private dinners, film screenings, and cultural conversations on the French Riviera during the world's most glamorous film festival.",
+    date: "May 13 – 24, 2026",
+    location: "Cannes, France",
+    category: "Film & Culture",
+    heroImage: `https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2000&q=85`,
+    heroImageAlt: "Sunlit coastal road along the French Riviera",
+    stats: [
+      { value: "75+", label: "Years of cinema" },
+      { value: "3K+", label: "Guests on La Croisette" },
+      { value: "5", label: "Culturin evenings" },
+      { value: "1", label: "Private villa" },
+    ],
+    sections: [
+      {
+        id: "vibe",
+        label: "PERSPECTIVE",
+        headline: "Cannes brings cinema to the world. Culturin brings the culture behind the camera.",
+        body: "Every May, the world's best storytellers converge on a small city on the French Riviera. Culturin builds the room where those storytellers — and the founders, curators, and cultural leaders who champion them — actually meet.",
+        photos: [
+          {
+            src: `https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80`,
+            alt: "Elegant dinner table on a terrace at dusk",
+            position: "top-16 left-[5%] w-64 rotate-[-1.5deg]",
+          },
+          {
+            src: `https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80`,
+            alt: "Outdoor evening dining on the Riviera",
+            position: "top-44 right-[7%] w-56 rotate-[2deg]",
+          },
+        ],
+      },
+      {
+        id: "who",
+        label: "PROXIMITY",
+        headline: "Filmmakers, collectors, and the people who fund what the world watches next.",
+        body: "Cannes draws a rare confluence: directors, streaming executives, festival programmers, and the collectors and patrons who make independent film possible. Culturin is the dining room where those worlds stop being transactional.",
+        photos: [
+          {
+            src: `https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80`,
+            alt: "Panel discussion with international cultural figures",
+            position: "top-20 left-[7%] w-72 rotate-[1deg]",
+          },
+          {
+            src: `https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80`,
+            alt: "Intimate evening gathering with warm lighting",
+            position: "bottom-16 right-[5%] w-60 rotate-[-1.5deg]",
+          },
+        ],
+      },
+      {
+        id: "signal",
+        label: "POSSIBILITY",
+        headline: "The films change. The conversations that matter happen off-screen.",
+        body: "A private villa for Culturin programming across the festival fortnight. Evening screenings with director Q&As. Three curated dinners. A closing night terrace event overlooking the bay. Access you cannot buy.",
+        photos: [
+          {
+            src: `https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80`,
+            alt: "Golden-hour terrace gathering overlooking the sea",
+            position: "top-10 right-[9%] w-52 rotate-[2deg]",
+          },
+          {
+            src: `https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=1200&q=80`,
+            alt: "Art and culture gathering in an elegant space",
+            position: "bottom-12 left-[5%] w-64 rotate-[-1deg]",
+          },
+        ],
+      },
+    ],
+    signalHeadline: "What to expect",
+    signalBody:
+      "An opening dinner at a private villa in the hills above Cannes. Curated film screenings with post-show conversations. Afternoon salons on African cinema, diaspora storytelling, and the future of global distribution. A closing terrace reception with the bay as the backdrop.",
+    rsvpHeadline: "Request access.",
+    rsvpSubtext:
+      "Cannes programming is strictly invitation-only. Drop your email and tell us about your work in film, culture, or creative investment — we review every application personally.",
+  },
+  {
     slug: "us-open-2025",
     name: "Culturin at the US Open",
     navLabel: "US OPEN 2025",
