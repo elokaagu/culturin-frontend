@@ -1,11 +1,17 @@
 import Link from "next/link";
 
 import { blurForSrc } from "@/lib/culturinImages";
+import {
+  EDITORIAL_INK,
+  EDITORIAL_MUTED,
+  EDITORIAL_ACCENT,
+  SURFACE_DARK,
+} from "@/lib/theme/culturinTokens";
 import BlurImage from "./motion/BlurImage";
 import Reveal from "./motion/Reveal";
 
-const INK = "#1c1a17";
-const INK_MUTED = "#6b6456";
+const INK = EDITORIAL_INK;
+const INK_MUTED = EDITORIAL_MUTED;
 
 type StatementButton = {
   label: string;
@@ -76,8 +82,8 @@ export default function EditorialStatement({
                 <Link
                   key={btn.label}
                   href={btn.href}
-                  className="inline-flex items-center rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white no-underline transition-opacity hover:opacity-85"
-                  style={{ background: INK }}
+                  className="inline-flex items-center rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+                  style={{ background: EDITORIAL_ACCENT, color: SURFACE_DARK }}
                 >
                   {btn.label}
                 </Link>

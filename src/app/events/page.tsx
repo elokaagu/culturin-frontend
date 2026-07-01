@@ -3,13 +3,21 @@ import Link from "next/link";
 
 import { events } from "@/lib/eventsData";
 import { blurForSrc } from "@/lib/culturinImages";
+import {
+  EDITORIAL_BG,
+  EDITORIAL_INK,
+  EDITORIAL_MUTED,
+  EDITORIAL_RULE,
+  editorialScopeClass,
+} from "@/lib/theme/culturinTokens";
 import BlurImage from "../components/motion/BlurImage";
 import Reveal from "../components/motion/Reveal";
+import CulturinMark from "../components/CulturinMark";
 
-const BG = "#e8e3da";
-const INK = "#1c1a17";
-const INK_MUTED = "#6b6456";
-const RULE = "#cec7be";
+const BG = EDITORIAL_BG;
+const INK = EDITORIAL_INK;
+const INK_MUTED = EDITORIAL_MUTED;
+const RULE = EDITORIAL_RULE;
 
 export const metadata: Metadata = {
   title: "Events | Culturin",
@@ -19,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function EventsPage() {
   return (
-    <div style={{ background: BG, color: INK, minHeight: "100dvh" }} className="font-sans antialiased">
+    <div style={{ background: BG, color: INK, minHeight: "100dvh" }} className={`${editorialScopeClass} font-sans antialiased`}>
 
       {/* ── Top bar ─────────────────────────────────────────────── */}
       <header
@@ -28,9 +36,10 @@ export default function EventsPage() {
       >
         <Link
           href="/"
-          className="text-xs font-semibold uppercase tracking-[0.22em] no-underline transition-opacity hover:opacity-60"
+          className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] no-underline transition-opacity hover:opacity-60"
           style={{ color: INK }}
         >
+          <CulturinMark size={16} />
           Culturin
         </Link>
         <Link

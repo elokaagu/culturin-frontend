@@ -3,13 +3,24 @@ import { notFound } from "next/navigation";
 
 import { getEventBySlug, events } from "@/lib/eventsData";
 import { blurForSrc } from "@/lib/culturinImages";
+import {
+  EDITORIAL_BG,
+  EDITORIAL_INK,
+  EDITORIAL_MUTED,
+  EDITORIAL_RULE,
+  EDITORIAL_ACCENT,
+  SURFACE_DARK,
+  editorialScopeClass,
+} from "@/lib/theme/culturinTokens";
 import BlurImage from "@/app/components/motion/BlurImage";
 import Reveal from "@/app/components/motion/Reveal";
 import RSVPForm from "./RSVPForm";
 
-const BG = "#e8e3da";
-const INK = "#1c1a17";
-const INK_MUTED = "#6b6456";
+const BG = EDITORIAL_BG;
+const INK = EDITORIAL_INK;
+const INK_MUTED = EDITORIAL_MUTED;
+const RULE = EDITORIAL_RULE;
+const ACCENT = EDITORIAL_ACCENT;
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -40,7 +51,7 @@ export default async function EventLandingPage({ params }: Props) {
   ];
 
   return (
-    <div style={{ background: BG, color: INK }} className="min-h-dvh font-sans antialiased">
+    <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} min-h-dvh font-sans antialiased`}>
 
       {/* ── Sticky nav ───────────────────────────────────────────── */}
       <nav
@@ -52,19 +63,19 @@ export default async function EventLandingPage({ params }: Props) {
         <a
           href="#home"
           className="flex shrink-0 items-center px-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white no-underline"
-          style={{ background: INK }}
+          style={{ background: SURFACE_DARK }}
         >
           {event.navLabel}
         </a>
 
         {/* Section links */}
-        <div className="flex flex-1 items-stretch border-b" style={{ borderColor: "#cec7be" }}>
+        <div className="flex flex-1 items-stretch border-b" style={{ borderColor: RULE }}>
           {navItems.map((item) => (
             <a
               key={item.label}
               href={item.href}
               className="flex flex-1 items-center justify-center text-[11px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
-              style={{ color: INK, borderRight: `1px solid #cec7be` }}
+              style={{ color: INK, borderRight: `1px solid ${RULE}` }}
             >
               {item.label}
             </a>
@@ -73,8 +84,8 @@ export default async function EventLandingPage({ params }: Props) {
           {/* RSVP CTA */}
           <a
             href="#rsvp"
-            className="flex shrink-0 items-center px-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-white no-underline transition-opacity hover:opacity-85"
-            style={{ background: "#5c7a6b" }}
+            className="flex shrink-0 items-center px-6 text-[11px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+            style={{ background: ACCENT, color: SURFACE_DARK }}
           >
             RSVP
           </a>
@@ -182,7 +193,7 @@ export default async function EventLandingPage({ params }: Props) {
       <section
         id="numbers"
         className="border-y px-8 sm:px-14"
-        style={{ borderColor: "#cec7be", paddingTop: "7rem", paddingBottom: "7rem" }}
+        style={{ borderColor: RULE, paddingTop: "7rem", paddingBottom: "7rem" }}
       >
         <p
           className="mb-12 text-center text-[10px] font-semibold uppercase tracking-[0.3em]"
@@ -236,7 +247,7 @@ export default async function EventLandingPage({ params }: Props) {
       <section
         id="rsvp"
         className="border-t px-8 sm:px-14"
-        style={{ borderColor: "#cec7be", paddingTop: "10rem", paddingBottom: "10rem" }}
+        style={{ borderColor: RULE, paddingTop: "10rem", paddingBottom: "10rem" }}
       >
         <Reveal className="mx-auto max-w-2xl">
           <p
@@ -261,7 +272,7 @@ export default async function EventLandingPage({ params }: Props) {
       {/* ── Minimal footer ───────────────────────────────────────── */}
       <footer
         className="flex items-center justify-between border-t px-8 py-6 sm:px-14"
-        style={{ borderColor: "#cec7be" }}
+        style={{ borderColor: RULE }}
       >
         <span className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: INK_MUTED }}>
           Culturin

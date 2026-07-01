@@ -2,18 +2,29 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { blurForSrc } from "@/lib/culturinImages";
+import {
+  EDITORIAL_BG,
+  EDITORIAL_INK,
+  EDITORIAL_MUTED,
+  EDITORIAL_RULE,
+  EDITORIAL_ACCENT,
+  SURFACE_DARK,
+  editorialScopeClass,
+} from "@/lib/theme/culturinTokens";
 import BlurImage from "../components/motion/BlurImage";
 import Reveal from "../components/motion/Reveal";
+import CulturinMark from "../components/CulturinMark";
 
 export const metadata: Metadata = {
   title: "Gallery | Culturin",
   description: "Images from Culturin events — Cannes, New York, Lagos, and beyond.",
 };
 
-const BG = "#e8e3da";
-const INK = "#1c1a17";
-const INK_MUTED = "#6b6456";
-const RULE = "#cec7be";
+const BG = EDITORIAL_BG;
+const INK = EDITORIAL_INK;
+const INK_MUTED = EDITORIAL_MUTED;
+const RULE = EDITORIAL_RULE;
+const ACCENT = EDITORIAL_ACCENT;
 
 const img = (file: string) => `/events/cannes-lions-2026/${file}`;
 
@@ -49,7 +60,7 @@ const GALLERY: GalleryItem[] = [
 
 export default function GalleryPage() {
   return (
-    <div style={{ background: BG, color: INK }} className="font-sans antialiased">
+    <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
 
       {/* ── Top bar ──────────────────────────────────────────────── */}
       <header
@@ -58,9 +69,10 @@ export default function GalleryPage() {
       >
         <Link
           href="/"
-          className="text-xs font-semibold uppercase tracking-[0.22em] no-underline transition-opacity hover:opacity-60"
+          className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] no-underline transition-opacity hover:opacity-60"
           style={{ color: INK }}
         >
+          <CulturinMark size={16} />
           Culturin
         </Link>
         <div className="flex items-center gap-6">
@@ -157,8 +169,8 @@ export default function GalleryPage() {
         </p>
         <Link
           href="/events"
-          className="inline-flex items-center gap-3 px-10 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white no-underline transition-opacity hover:opacity-85"
-          style={{ background: INK }}
+          className="inline-flex items-center gap-3 px-10 py-4 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+          style={{ background: ACCENT, color: SURFACE_DARK }}
         >
           View upcoming events →
         </Link>

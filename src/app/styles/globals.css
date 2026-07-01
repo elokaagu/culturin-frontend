@@ -97,6 +97,27 @@
     scroll-margin-top: 64px;
   }
 
+  /*
+   * Editorial marketing surface (home, events, gallery) — a warm
+   * cream/ink palette distinct from the app's neutral shadcn theme, but
+   * still reactive to the site-wide dark toggle via this scope.
+   */
+  .culturin-editorial {
+    --c-bg: #e8e3da;
+    --c-ink: #1c1a17;
+    --c-muted: #6b6456;
+    --c-rule: #cec7be;
+    --c-accent: #b5502e;
+  }
+
+  .dark .culturin-editorial {
+    --c-bg: #17130f;
+    --c-ink: #f1e9dc;
+    --c-muted: #b9ab98;
+    --c-rule: #3a332a;
+    --c-accent: #e08a5b;
+  }
+
   body {
     @apply min-h-dvh overflow-x-clip bg-transparent text-inherit antialiased;
     font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,

@@ -3,11 +3,22 @@ import Link from "next/link";
 
 import { events } from "@/lib/eventsData";
 import { blurForSrc } from "@/lib/culturinImages";
+import {
+  EDITORIAL_BG,
+  EDITORIAL_INK,
+  EDITORIAL_MUTED,
+  EDITORIAL_RULE,
+  EDITORIAL_ACCENT,
+  SURFACE_DARK,
+  ACCENT_ON_DARK,
+  editorialScopeClass,
+} from "@/lib/theme/culturinTokens";
 import BlurImage from "./components/motion/BlurImage";
 import Reveal from "./components/motion/Reveal";
 import ParallaxReveal from "./components/motion/ParallaxReveal";
 import EditorialStatement from "./components/EditorialStatement";
 import HomeFooter from "./components/HomeFooter";
+import CulturinMark from "./components/CulturinMark";
 
 export const metadata: Metadata = {
   title: "Culturin | Events that matter, with the world's leading brands",
@@ -15,11 +26,11 @@ export const metadata: Metadata = {
     "Culturin partners with the world's leading brands to build cultural events that matter — at Cannes Lions, the US Open, UNGA, and beyond.",
 };
 
-const BG = "#e8e3da";
-const INK = "#1c1a17";
-const INK_MUTED = "#6b6456";
-const RULE = "#cec7be";
-const ACCENT = "#5c7a6b";
+const BG = EDITORIAL_BG;
+const INK = EDITORIAL_INK;
+const INK_MUTED = EDITORIAL_MUTED;
+const RULE = EDITORIAL_RULE;
+const ACCENT = EDITORIAL_ACCENT;
 
 const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-70.jpg";
 const CANNES_SRC = "/events/cannes-lions-2026/UNIKday1-2.jpg";
@@ -59,7 +70,7 @@ function cityTag(location: string): string {
 
 export default function HomePage() {
   return (
-    <div style={{ background: BG, color: INK }} className="font-sans antialiased">
+    <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
 
       {/* ── Sticky nav ─────────────────────────────────────────── */}
       <nav
@@ -68,9 +79,10 @@ export default function HomePage() {
       >
         <Link
           href="/"
-          className="flex shrink-0 items-center px-6 text-xs font-semibold uppercase tracking-[0.28em] no-underline transition-opacity hover:opacity-70"
+          className="flex shrink-0 items-center gap-2 px-6 text-xs font-semibold uppercase tracking-[0.28em] no-underline transition-opacity hover:opacity-70"
           style={{ color: INK }}
         >
+          <CulturinMark size={18} />
           Culturin
         </Link>
         <div className="flex flex-1 items-stretch" style={{ borderLeft: `1px solid ${RULE}` }}>
@@ -90,8 +102,8 @@ export default function HomePage() {
           ))}
           <Link
             href="#partners"
-            className="flex shrink-0 items-center px-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-white no-underline transition-opacity hover:opacity-85"
-            style={{ background: ACCENT }}
+            className="flex shrink-0 items-center px-6 text-[11px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+            style={{ background: ACCENT, color: SURFACE_DARK }}
           >
             Partner with us
           </Link>
@@ -365,8 +377,8 @@ export default function HomePage() {
               <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <Link
                   href="/events/cannes-lions-2026"
-                  className="inline-flex items-center px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white no-underline transition-opacity hover:opacity-85"
-                  style={{ background: INK }}
+                  className="inline-flex items-center px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+                  style={{ background: ACCENT, color: SURFACE_DARK }}
                 >
                   View Cannes programming
                 </Link>
@@ -441,7 +453,7 @@ export default function HomePage() {
       <section
         id="partners"
         className="relative overflow-hidden border-t px-8 sm:px-14"
-        style={{ paddingTop: "9rem", paddingBottom: "9rem", borderColor: RULE, background: INK }}
+        style={{ paddingTop: "9rem", paddingBottom: "9rem", borderColor: RULE, background: SURFACE_DARK }}
       >
         <BlurImage
           src={PARTNER_SRC}
@@ -476,7 +488,7 @@ export default function HomePage() {
                 <a
                   href="mailto:partners@culturin.com?subject=Partnering%20with%20Culturin"
                   className="inline-flex w-fit items-center px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
-                  style={{ background: BG, color: INK }}
+                  style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
                 >
                   Become a partner
                 </a>

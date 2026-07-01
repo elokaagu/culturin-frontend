@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
-const INK = "#1c1a17";
+import { SURFACE_DARK, ACCENT_ON_DARK } from "@/lib/theme/culturinTokens";
+import CulturinMark from "./CulturinMark";
+
+const INK = SURFACE_DARK;
 const CREAM = "#e8e3da";
 const RULE = "#cec7be";
-const ACCENT = "#c9d6a3";
+const ACCENT = ACCENT_ON_DARK;
 
 function FooterSubscribe() {
   const [email, setEmail] = useState("");
@@ -109,7 +112,10 @@ export default function HomeFooter() {
       <div className="relative z-10 mx-auto max-w-6xl px-8 pt-16 sm:px-14">
         <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.28em] text-white/90">Culturin</p>
+            <p className="m-0 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.28em] text-white/90">
+              <CulturinMark size={16} className="text-white/90" />
+              Culturin
+            </p>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/55">
               Events that matter, with the world&apos;s leading brands.
             </p>
