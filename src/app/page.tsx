@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 import { events } from "@/lib/eventsData";
@@ -19,6 +18,7 @@ import Reveal from "./components/motion/Reveal";
 import ParallaxReveal from "./components/motion/ParallaxReveal";
 import EditorialStatement from "./components/EditorialStatement";
 import HomeFooter from "./components/HomeFooter";
+import IslandNav from "./components/IslandNav";
 
 export const metadata: Metadata = {
   title: "Culturin | Where Inspiration Meets Exploration",
@@ -76,55 +76,12 @@ export default function HomePage() {
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
 
-      {/* ── Sticky nav ─────────────────────────────────────────── */}
-      <nav
-        className="fixed inset-x-0 top-0 z-50 flex items-stretch border-b backdrop-blur-md"
-        style={{ height: 48, borderColor: RULE, background: "rgba(232,227,218,0.82)" }}
-      >
-        <Link
-          href="/"
-          className="flex shrink-0 items-center px-6 no-underline opacity-95 transition-opacity hover:opacity-100"
-          aria-label="Culturin home"
-        >
-          <Image
-            src="/culturin_logo.svg"
-            alt="Culturin"
-            width={84}
-            height={18}
-            className="h-4 w-auto max-w-[5.75rem]"
-            unoptimized
-            priority
-          />
-        </Link>
-        <div className="flex flex-1 items-stretch" style={{ borderLeft: `1px solid ${RULE}` }}>
-          {[
-            { label: "Events", href: "/events" },
-            { label: "Partners", href: "#partners" },
-            { label: "Gallery", href: "/gallery" },
-          ].map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="hidden flex-1 items-center justify-center text-[11px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60 sm:flex"
-              style={{ color: INK, borderRight: `1px solid ${RULE}` }}
-            >
-              {item.label}
-            </Link>
-          ))}
-          <Link
-            href="#partners"
-            className="flex shrink-0 items-center px-6 text-[11px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
-            style={{ background: ACCENT, color: SURFACE_DARK }}
-          >
-            Partner with us
-          </Link>
-        </div>
-      </nav>
+      {/* ── Dynamic island nav ─────────────────────────────────── */}
+      <IslandNav />
 
       {/* ── Hero ───────────────────────────────────────────────── */}
       <section
         className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-8 text-center sm:px-14"
-        style={{ paddingTop: 48 }}
       >
         <BlurImage
           src={HERO_SRC}
