@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { blurForSrc } from "@/lib/culturinImages";
+import { EDITORIAL_MUTED, EDITORIAL_RULE, SURFACE_DARK } from "@/lib/theme/culturinTokens";
 import BlurImage from "../components/motion/BlurImage";
 import Reveal from "../components/motion/Reveal";
 import Lightbox, { type LightboxItem } from "../components/Lightbox";
@@ -15,7 +16,13 @@ export type GalleryItem = {
   alt: string;
   event: string;
   location: string;
+  eventKey: string;
   orientation: Orientation;
+};
+
+export type GalleryFilter = {
+  key: string;
+  label: string;
 };
 
 const LARGE_DIMS: Record<Orientation, { width: number; height: number }> = {
@@ -23,10 +30,22 @@ const LARGE_DIMS: Record<Orientation, { width: number; height: number }> = {
   landscape: { width: 2600, height: 1734 },
 };
 
-export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
+export default function GalleryGrid({
+  items,
+  filters,
+}: {
+  items: GalleryItem[];
+  filters: GalleryFilter[];
+}) {
+  const [activeFilter, setActiveFilter] = useState<string>("all");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const lightboxItems: LightboxItem[] = items.map((item) => ({
+  const filteredItems = useMemo(
+    () => (activeFilter === "all" ? items : items.filter((item) => item.eventKey === activeFilter)),
+    [items, activeFilter],
+  );
+
+  const lightboxItems: LightboxItem[] = filteredItems.map((item) => ({
     src: item.largeSrc,
     alt: item.alt,
     ...LARGE_DIMS[item.orientation],
@@ -34,8 +53,33 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
 
   return (
     <>
+      {/* Filter tabs */}
+      <div className="mb-10 flex flex-wrap gap-2">
+        {filters.map((f) => {
+          const active = f.key === activeFilter;
+          return (
+            <button
+              key={f.key}
+              type="button"
+              onClick={() => {
+                setActiveFilter(f.key);
+                setOpenIndex(null);
+              }}
+              className="rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors"
+              style={
+                active
+                  ? { background: SURFACE_DARK, borderColor: SURFACE_DARK, color: "#f1e9dc" }
+                  : { background: "transparent", borderColor: EDITORIAL_RULE, color: EDITORIAL_MUTED }
+              }
+            >
+              {f.label}
+            </button>
+          );
+        })}
+      </div>
+
       <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
-        {items.map((item, i) => (
+        {filteredItems.map((item, i) => (
           <Reveal
             as="figure"
             key={item.src}

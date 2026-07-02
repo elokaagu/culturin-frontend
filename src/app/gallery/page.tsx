@@ -11,11 +11,11 @@ import {
   SURFACE_DARK,
   editorialScopeClass,
 } from "@/lib/theme/culturinTokens";
-import GalleryGrid, { type GalleryItem } from "./GalleryGrid";
+import GalleryGrid, { type GalleryFilter, type GalleryItem } from "./GalleryGrid";
 
 export const metadata: Metadata = {
   title: "Gallery | Culturin",
-  description: "Images from Culturin events — Cannes, New York, Lagos, and beyond.",
+  description: "Images from Culturin events — Cannes, New York, London, and beyond.",
 };
 
 const BG = EDITORIAL_BG;
@@ -24,28 +24,74 @@ const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
 
-const img = (file: string) => `/events/cannes-lions-2026/${file}`;
-const imgLarge = (file: string) => `/events/cannes-lions-2026/large/${file}`;
+const asset = (folder: string, file: string) => `/events/${folder}/${file}`;
+const assetLarge = (folder: string, file: string) => `/events/${folder}/large/${file}`;
+
+const FILTERS: GalleryFilter[] = [
+  { key: "all", label: "All" },
+  { key: "cannes-2026", label: "Cannes Lions 2026" },
+  { key: "cannes-2024", label: "Cannes Lions 2024" },
+  { key: "notting-hill-2024", label: "Notting Hill Carnival" },
+  { key: "nyfw-2024", label: "NY Fashion Week" },
+];
 
 // Real photography from Culturin's Cannes Lions 2026 nights.
-const GALLERY: GalleryItem[] = [
-  { src: img("UNIKday1-2.jpg"), largeSrc: imgLarge("UNIKday1-2.jpg"), alt: "Guest in a tailored blazer against a deep red backdrop", event: "Opening Night", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-22.jpg"), largeSrc: imgLarge("UNIKday1-22.jpg"), alt: "Guests gathered on a couch with champagne", event: "The Room", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday1-58.jpg"), largeSrc: imgLarge("UNIKday1-58.jpg"), alt: "DJ performing under a disco ball in red light", event: "After Dark", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-38.jpg"), largeSrc: imgLarge("UNIKday1-38.jpg"), alt: "Four guests posing together at a Culturin evening", event: "The Room", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday1-26.jpg"), largeSrc: imgLarge("UNIKday1-26.jpg"), alt: "Disco balls above the crowd", event: "After Dark", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-62.jpg"), largeSrc: imgLarge("UNIKday1-62.jpg"), alt: "Red-lit crowd on the dancefloor", event: "After Dark", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday1-14.jpg"), largeSrc: imgLarge("UNIKday1-14.jpg"), alt: "Couple portrait against a red-lit backdrop", event: "Opening Night", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-54.jpg"), largeSrc: imgLarge("UNIKday1-54.jpg"), alt: "Candid dancing at a Culturin evening", event: "After Dark", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday1-34.jpg"), largeSrc: imgLarge("UNIKday1-34.jpg"), alt: "Two guests portrait at the party", event: "Opening Night", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-46.jpg"), largeSrc: imgLarge("UNIKday1-46.jpg"), alt: "Guests mingling in a warm-lit lounge", event: "The Room", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday2-4.jpg"), largeSrc: imgLarge("UNIKday2-4.jpg"), alt: "Guest in a yellow jersey lit by red smoke", event: "Night Two", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday2-22.jpg"), largeSrc: imgLarge("UNIKday2-22.jpg"), alt: "Couple posing at the branded wall", event: "Night Two", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday2-30.jpg"), largeSrc: imgLarge("UNIKday2-30.jpg"), alt: "Full dancefloor under disco balls late at night", event: "Night Two", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday2-12.jpg"), largeSrc: imgLarge("UNIKday2-12.jpg"), alt: "Group of guests at a Culturin gathering", event: "Night Two", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday2-34.jpg"), largeSrc: imgLarge("UNIKday2-34.jpg"), alt: "Two guests laughing together late at night", event: "Night Two", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-70.jpg"), largeSrc: imgLarge("UNIKday1-70.jpg"), alt: "Guests dancing under disco balls with phones raised", event: "After Dark", location: "Cannes", orientation: "landscape" },
+const CANNES_2026: GalleryItem[] = [
+  { src: asset("cannes-lions-2026", "UNIKday1-2.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-2.jpg"), alt: "Guest in a tailored blazer against a deep red backdrop", event: "Opening Night", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
+  { src: asset("cannes-lions-2026", "UNIKday1-22.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-22.jpg"), alt: "Guests gathered on a couch with champagne", event: "The Room", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
+  { src: asset("cannes-lions-2026", "UNIKday1-58.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-58.jpg"), alt: "DJ performing under a disco ball in red light", event: "After Dark", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
+  { src: asset("cannes-lions-2026", "UNIKday1-38.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-38.jpg"), alt: "Four guests posing together at a Culturin evening", event: "The Room", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
+  { src: asset("cannes-lions-2026", "UNIKday1-26.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-26.jpg"), alt: "Disco balls above the crowd", event: "After Dark", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
+  { src: asset("cannes-lions-2026", "UNIKday1-62.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-62.jpg"), alt: "Red-lit crowd on the dancefloor", event: "After Dark", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
+  { src: asset("cannes-lions-2026", "UNIKday1-14.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-14.jpg"), alt: "Couple portrait against a red-lit backdrop", event: "Opening Night", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
+  { src: asset("cannes-lions-2026", "UNIKday1-54.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-54.jpg"), alt: "Candid dancing at a Culturin evening", event: "After Dark", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
+  { src: asset("cannes-lions-2026", "UNIKday1-34.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-34.jpg"), alt: "Two guests portrait at the party", event: "Opening Night", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
+  { src: asset("cannes-lions-2026", "UNIKday1-46.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-46.jpg"), alt: "Guests mingling in a warm-lit lounge", event: "The Room", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
+  { src: asset("cannes-lions-2026", "UNIKday2-4.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-4.jpg"), alt: "Guest in a yellow jersey lit by red smoke", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
+  { src: asset("cannes-lions-2026", "UNIKday2-22.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-22.jpg"), alt: "Couple posing at the branded wall", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
+  { src: asset("cannes-lions-2026", "UNIKday2-30.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-30.jpg"), alt: "Full dancefloor under disco balls late at night", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
+  { src: asset("cannes-lions-2026", "UNIKday2-12.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-12.jpg"), alt: "Group of guests at a Culturin gathering", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
+  { src: asset("cannes-lions-2026", "UNIKday2-34.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-34.jpg"), alt: "Two guests laughing together late at night", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
+  { src: asset("cannes-lions-2026", "UNIKday1-70.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-70.jpg"), alt: "Guests dancing under disco balls with phones raised", event: "After Dark", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
 ];
+
+// Real photography from Culturin's 2024 Cannes Lions night.
+const CANNES_2024: GalleryItem[] = [
+  { src: asset("cannes-lions-2024", "cannes-1.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-1.jpg"), alt: "Wide shot of a red-lit venue crowd under neon signage", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
+  { src: asset("cannes-lions-2024", "cannes-2.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-2.jpg"), alt: "DJ performing at a Cannes Lions night", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
+  { src: asset("cannes-lions-2024", "cannes-3.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-3.jpg"), alt: "Guests on a daylight terrace at a Cannes gathering", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
+  { src: asset("cannes-lions-2024", "cannes-4.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-4.jpg"), alt: "Guests gathered outdoors in the evening", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
+  { src: asset("cannes-lions-2024", "cannes-5.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-5.jpg"), alt: "Guests dancing with hands raised", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
+  { src: asset("cannes-lions-2024", "cannes-6.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-6.jpg"), alt: "Crowd under red neon signage", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
+  { src: asset("cannes-lions-2024", "cannes-7.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-7.jpg"), alt: "Group of guests embracing candidly", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
+  { src: asset("cannes-lions-2024", "cannes-8.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-8.jpg"), alt: "Guests walking together outdoors", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
+];
+
+// Real photography from Culturin's Notting Hill Carnival weekend after-party.
+const NOTTING_HILL_2024: GalleryItem[] = [
+  { src: asset("notting-hill-carnival-2024", "nhc-1.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-1.jpg"), alt: "DJ Tim Adé performing at the Carnival weekend after-party", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-2.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-2.jpg"), alt: "Guests gathered in a warm-lit lounge", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-3.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-3.jpg"), alt: "Guests dancing together at the after-party", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "portrait" },
+  { src: asset("notting-hill-carnival-2024", "nhc-4.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-4.jpg"), alt: "Storefront signage for the venue at night", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-5.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-5.jpg"), alt: "Guest in a colourful printed outfit", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "portrait" },
+  { src: asset("notting-hill-carnival-2024", "nhc-6.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-6.jpg"), alt: "Group of four guests in colourful attire", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-7.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-7.jpg"), alt: "A second DJ set at the after-party", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-8.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-8.jpg"), alt: "Guests in elaborate carnival-inspired outfits", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "portrait" },
+];
+
+// Real photography from Culturin's New York Fashion Week night.
+const NYFW_2024: GalleryItem[] = [
+  { src: asset("nyfw-2024", "nyfw-1.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-1.jpg"), alt: "Models walking in a red-lit venue during Fashion Week", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-2.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-2.jpg"), alt: "A performer on the mic during the night", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-3.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-3.jpg"), alt: "DJ booth at a red-lit Fashion Week night", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-4.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-4.jpg"), alt: "DJ mixing with hand raised", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-5.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-5.jpg"), alt: "Group of guests at the bar", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-6.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-6.jpg"), alt: "Guests by a red curtain", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-7.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-7.jpg"), alt: "Group portrait of guests at the venue", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-8.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-8.jpg"), alt: "Guests toasting with drinks", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+];
+
+const GALLERY: GalleryItem[] = [...CANNES_2026, ...CANNES_2024, ...NOTTING_HILL_2024, ...NYFW_2024];
 
 export default function GalleryPage() {
   return (
@@ -106,14 +152,14 @@ export default function GalleryPage() {
           Life inside the rooms.
         </h1>
         <p className="mt-6 max-w-lg text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          Two nights from Culturin at Cannes Lions 2026 — the guests, the music,
-          and the late hours. Every photo is a room we built.
+          Cannes, London, and New York — real nights we&apos;ve built. Every photo
+          is a room Culturin was actually in.
         </p>
       </div>
 
       {/* ── Masonry grid ─────────────────────────────────────────── */}
       <div className="px-8 py-16 sm:px-14">
-        <GalleryGrid items={GALLERY} />
+        <GalleryGrid items={GALLERY} filters={FILTERS} />
       </div>
 
       {/* ── CTA strip ────────────────────────────────────────────── */}
