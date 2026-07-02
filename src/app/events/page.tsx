@@ -77,7 +77,7 @@ export default function EventsPage() {
             Where we&apos;ll be next.
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed" style={{ color: INK_MUTED }}>
-            Creativity, sport, and diplomacy — Culturin builds rooms at the edges of the world&apos;s biggest gatherings, in partnership with the brands who want to be part of them. Every event is intimate, curated, and invitation-led.
+            Creativity, sport, and diplomacy — Culturin builds curated cultural events at the edges of the world&apos;s biggest gatherings, distributed across global locales. Every event is intimate, curated, and invitation-led.
           </p>
         </div>
       </Reveal>

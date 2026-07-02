@@ -121,7 +121,7 @@ export default function HomeFooter() {
               unoptimized
             />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/55">
-              Events that matter, with the world&apos;s leading brands.
+              Where inspiration meets exploration.
             </p>
             <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
               {socialLinks.map((s) => (
