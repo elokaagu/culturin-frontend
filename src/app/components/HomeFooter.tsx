@@ -12,6 +12,8 @@ const RULE = "#cec7be";
 const ACCENT = ACCENT_ON_DARK;
 
 function FooterSubscribe() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [pending, setPending] = useState(false);
   const [status, setStatus] = useState<"idle" | "ok" | "error">("idle");
@@ -19,6 +21,11 @@ function FooterSubscribe() {
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!firstName.trim() || !lastName.trim()) {
+      setStatus("error");
+      setMessage("Enter your first and last name.");
+      return;
+    }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       setStatus("error");
       setMessage("Enter a valid email address.");
@@ -30,7 +37,12 @@ function FooterSubscribe() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), marketingConsent: true }),
+        body: JSON.stringify({
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          email: email.trim(),
+          marketingConsent: true,
+        }),
       });
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
@@ -43,6 +55,8 @@ function FooterSubscribe() {
       }
       setStatus("ok");
       setMessage(data.alreadySubscribed ? "You're already on the list." : "You're on the list.");
+      setFirstName("");
+      setLastName("");
       setEmail("");
     } catch {
       setStatus("error");
@@ -52,31 +66,72 @@ function FooterSubscribe() {
     }
   }
 
+  const fieldClass =
+    "min-w-0 flex-1 bg-transparent px-4 py-2.5 text-sm outline-none placeholder:opacity-50 disabled:opacity-60";
+
   return (
     <div>
-      <form onSubmit={onSubmit} noValidate className="flex w-full max-w-sm items-stretch overflow-hidden rounded-full border" style={{ borderColor: RULE, background: CREAM }}>
-        <label htmlFor="home-footer-email" className="sr-only">
-          Email
-        </label>
-        <input
-          id="home-footer-email"
-          type="email"
-          autoComplete="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={pending}
-          className="min-w-0 flex-1 bg-transparent px-5 py-3 text-sm outline-none placeholder:opacity-50 disabled:opacity-60"
-          style={{ color: INK }}
-        />
-        <button
-          type="submit"
-          disabled={pending}
-          className="shrink-0 rounded-full px-6 py-3 text-xs font-semibold uppercase tracking-[0.15em] transition-opacity hover:opacity-85 disabled:opacity-60"
-          style={{ background: ACCENT, color: INK }}
+      <form onSubmit={onSubmit} noValidate className="flex w-full max-w-sm flex-col gap-2">
+        <div
+          className="flex items-stretch overflow-hidden rounded-full border"
+          style={{ borderColor: RULE, background: CREAM }}
         >
-          {pending ? "…" : "Subscribe →"}
-        </button>
+          <label htmlFor="home-footer-first-name" className="sr-only">
+            First name
+          </label>
+          <input
+            id="home-footer-first-name"
+            type="text"
+            autoComplete="given-name"
+            placeholder="First name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            disabled={pending}
+            className={fieldClass}
+            style={{ color: INK, borderRight: `1px solid ${RULE}` }}
+          />
+          <label htmlFor="home-footer-last-name" className="sr-only">
+            Last name
+          </label>
+          <input
+            id="home-footer-last-name"
+            type="text"
+            autoComplete="family-name"
+            placeholder="Last name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            disabled={pending}
+            className={fieldClass}
+            style={{ color: INK }}
+          />
+        </div>
+        <div
+          className="flex items-stretch overflow-hidden rounded-full border"
+          style={{ borderColor: RULE, background: CREAM }}
+        >
+          <label htmlFor="home-footer-email" className="sr-only">
+            Email
+          </label>
+          <input
+            id="home-footer-email"
+            type="email"
+            autoComplete="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={pending}
+            className={fieldClass}
+            style={{ color: INK }}
+          />
+          <button
+            type="submit"
+            disabled={pending}
+            className="shrink-0 rounded-full px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.15em] transition-opacity hover:opacity-85 disabled:opacity-60"
+            style={{ background: ACCENT, color: INK }}
+          >
+            {pending ? "…" : "Subscribe →"}
+          </button>
+        </div>
       </form>
       {message ? (
         <p
@@ -92,17 +147,14 @@ function FooterSubscribe() {
 }
 
 const footerLinks = [
-  { label: "Platform", href: "/destinations" },
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
   { label: "Partners", href: "#partners" },
-  { label: "Sign in", href: "/sign-in" },
 ];
 
 const socialLinks = [
   { label: "Instagram", href: "https://www.instagram.com/culturinworld/" },
   { label: "LinkedIn", href: "https://www.linkedin.com/company/culturin" },
-  { label: "TikTok", href: "https://www.tiktok.com" },
 ];
 
 export default function HomeFooter() {
@@ -158,10 +210,10 @@ export default function HomeFooter() {
         <div className="mt-14 flex items-center justify-between border-t py-6 text-xs" style={{ borderColor: "rgba(232,227,218,0.15)" }}>
           <span className="text-white/45">© {year} Culturin — All Rights Reserved.</span>
           <a
-            href="mailto:contact@culturin.com"
+            href="mailto:unik@culturin.com"
             className="text-white/45 no-underline transition-opacity hover:text-white/80"
           >
-            contact@culturin.com
+            unik@culturin.com
           </a>
         </div>
       </div>

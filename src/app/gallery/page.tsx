@@ -175,7 +175,7 @@ export default function GalleryPage() {
         </p>
         <Link
           href="/events"
-          className="inline-flex items-center gap-3 px-10 py-4 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+          className="inline-flex items-center gap-3 rounded-full px-10 py-4 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
           style={{ background: ACCENT, color: SURFACE_DARK }}
         >
           View upcoming events →

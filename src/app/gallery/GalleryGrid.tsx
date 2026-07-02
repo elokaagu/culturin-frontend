@@ -92,7 +92,7 @@ export default function GalleryGrid({
               onClick={() => setOpenIndex(i)}
               aria-label={`Open ${item.alt} in full size`}
               className="group relative block w-full cursor-zoom-in overflow-hidden border-0 bg-transparent p-0 text-left"
-              style={{ borderRadius: 2 }}
+              style={{ borderRadius: 16 }}
             >
               <BlurImage
                 src={item.src}

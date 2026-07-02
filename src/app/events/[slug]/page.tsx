@@ -151,7 +151,7 @@ export default async function EventLandingPage({ params }: Props) {
               delay={i * 120}
               className={`absolute hidden lg:block ${photo.position}`}
             >
-              <div className="overflow-hidden shadow-xl" style={{ borderRadius: 2 }}>
+              <div className="overflow-hidden shadow-xl" style={{ borderRadius: 16 }}>
                 <BlurImage
                   src={photo.src}
                   alt={photo.alt}

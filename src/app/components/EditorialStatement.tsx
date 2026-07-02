@@ -48,7 +48,7 @@ export default function EditorialStatement({
   return (
     <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
       <Reveal as="div" className={imageFirst ? "lg:order-1" : "lg:order-2"}>
-        <div className="relative aspect-[4/5] overflow-hidden" style={{ borderRadius: 2 }}>
+        <div className="relative aspect-[4/5] overflow-hidden" style={{ borderRadius: 16 }}>
           <BlurImage
             src={image}
             alt={imageAlt}

@@ -12,8 +12,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  const o = body as { email?: unknown; marketingConsent?: unknown };
+  const o = body as {
+    email?: unknown;
+    firstName?: unknown;
+    lastName?: unknown;
+    marketingConsent?: unknown;
+  };
   const emailRaw = typeof o.email === "string" ? o.email.trim() : "";
+  const firstNameRaw = typeof o.firstName === "string" ? o.firstName.trim() : "";
+  const lastNameRaw = typeof o.lastName === "string" ? o.lastName.trim() : "";
   const consent = o.marketingConsent === true;
 
   if (!consent) {
@@ -21,6 +28,10 @@ export async function POST(req: Request) {
       { error: "You need to accept the privacy policy to subscribe." },
       { status: 400 },
     );
+  }
+
+  if (!firstNameRaw || !lastNameRaw) {
+    return NextResponse.json({ error: "Enter your first and last name." }, { status: 400 });
   }
 
   if (!emailOk(emailRaw)) {
@@ -38,6 +49,8 @@ export async function POST(req: Request) {
 
   const { error } = await admin.from("newsletter_subscribers").insert({
     email,
+    first_name: firstNameRaw,
+    last_name: lastNameRaw,
     source: "footer",
   });
 

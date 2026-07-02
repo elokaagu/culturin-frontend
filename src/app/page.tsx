@@ -34,8 +34,8 @@ const ACCENT = EDITORIAL_ACCENT;
 
 const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-30.jpg";
 const CANNES_SRC = "/events/cannes-lions-2026/UNIKday1-2.jpg";
-const PARTNER_SRC = "/events/cannes-lions-2026/UNIKday1-22.jpg";
-const PARALLAX_SRC = "/events/cannes-lions-2026/UNIKday2-26.jpg";
+const PARTNER_SRC = "/events/nyfw-2024/nyfw-3.jpg";
+const PARALLAX_SRC = "/events/notting-hill-carnival-2024/nhc-1.jpg";
 
 const GALLERY_PREVIEW = [
   { src: "/events/cannes-lions-2026/UNIKday1-58.jpg", alt: "DJ under a disco ball at a Culturin night in Cannes", span: "row-span-2" },
@@ -197,8 +197,8 @@ export default function HomePage() {
             eyebrow="Education"
             headline={"Culture Is\nSomething You\nLearn, Not Just\nSee."}
             body="Most travel platforms show you a destination. Culturin teaches you how to actually engage with it — the history, the etiquette, and the stories beneath the surface, before you ever board a flight."
-            image="/events/cannes-lions-2026/UNIKday1-14.jpg"
-            imageAlt="Two guests in an intimate moment at a Culturin evening"
+            image="/events/notting-hill-carnival-2024/nhc-5.jpg"
+            imageAlt="Guest in a colourful printed outfit during Carnival weekend in London"
             imageSide="right"
             buttons={[
               { label: "Explore travel guides", href: "/travel-guides", variant: "solid" },
@@ -209,8 +209,8 @@ export default function HomePage() {
             eyebrow="Content"
             headline={"Culturin\nConvos."}
             body="Live conversations with artists, musicians, and entrepreneurs about travel, identity, and culture — the platform's original format, and still its heartbeat."
-            image="/events/cannes-lions-2026/UNIKday1-46.jpg"
-            imageAlt="Guests mingling in a warm-lit lounge at a Culturin evening"
+            image="/events/nyfw-2024/nyfw-7.jpg"
+            imageAlt="Group portrait of guests at a Culturin New York Fashion Week night"
             imageSide="left"
             buttons={[
               { label: "Watch Convos", href: "/videos", variant: "solid" },
@@ -221,8 +221,8 @@ export default function HomePage() {
             eyebrow="Credibility"
             headline={"Built By People\nWho've Done\nThis Before."}
             body="Our founding team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly — and built relationships with Nike, Virgin, and Microsoft along the way."
-            image="/events/cannes-lions-2026/UNIKday2-10.jpg"
-            imageAlt="Elegantly dressed couple at a Culturin reception"
+            image="/events/cannes-lions-2024/cannes-7.jpg"
+            imageAlt="Group of guests embracing candidly at Cannes Lions 2024"
             imageSide="right"
             buttons={[
               { label: "Meet the team", href: "/about", variant: "solid" },
@@ -365,7 +365,7 @@ export default function HomePage() {
               <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <Link
                   href="/events/cannes-lions-2026"
-                  className="inline-flex items-center px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+                  className="inline-flex items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
                   style={{ background: ACCENT, color: SURFACE_DARK }}
                 >
                   View Cannes programming
@@ -418,7 +418,7 @@ export default function HomePage() {
                   key={i}
                   href="/gallery"
                   className={`group relative block overflow-hidden no-underline ${item.span}`}
-                  style={{ borderRadius: 2 }}
+                  style={{ borderRadius: 16 }}
                 >
                   <BlurImage
                     src={item.src}
@@ -475,7 +475,7 @@ export default function HomePage() {
               <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <a
                   href="mailto:partners@culturin.com?subject=Partnering%20with%20Culturin"
-                  className="inline-flex w-fit items-center px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+                  className="inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
                   style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
                 >
                   Become a partner
