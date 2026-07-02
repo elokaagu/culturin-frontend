@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import { blurForSrc } from "@/lib/culturinImages";
 import {
   EDITORIAL_BG,
   EDITORIAL_INK,
@@ -12,8 +11,7 @@ import {
   SURFACE_DARK,
   editorialScopeClass,
 } from "@/lib/theme/culturinTokens";
-import BlurImage from "../components/motion/BlurImage";
-import Reveal from "../components/motion/Reveal";
+import GalleryGrid, { type GalleryItem } from "./GalleryGrid";
 
 export const metadata: Metadata = {
   title: "Gallery | Culturin",
@@ -27,35 +25,26 @@ const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
 
 const img = (file: string) => `/events/cannes-lions-2026/${file}`;
-
-type Orientation = "portrait" | "landscape";
-
-type GalleryItem = {
-  src: string;
-  alt: string;
-  event: string;
-  location: string;
-  orientation: Orientation;
-};
+const imgLarge = (file: string) => `/events/cannes-lions-2026/large/${file}`;
 
 // Real photography from Culturin's Cannes Lions 2026 nights.
 const GALLERY: GalleryItem[] = [
-  { src: img("UNIKday1-2.jpg"), alt: "Guest in a tailored blazer against a deep red backdrop", event: "Opening Night", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-22.jpg"), alt: "Guests gathered on a couch with champagne", event: "The Room", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday1-58.jpg"), alt: "DJ performing under a disco ball in red light", event: "After Dark", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-38.jpg"), alt: "Four guests posing together at a Culturin evening", event: "The Room", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday1-26.jpg"), alt: "Disco balls above the crowd", event: "After Dark", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-62.jpg"), alt: "Red-lit crowd on the dancefloor", event: "After Dark", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday1-14.jpg"), alt: "Couple portrait against a red-lit backdrop", event: "Opening Night", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-54.jpg"), alt: "Candid dancing at a Culturin evening", event: "After Dark", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday1-34.jpg"), alt: "Two guests portrait at the party", event: "Opening Night", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-46.jpg"), alt: "Guests mingling in a warm-lit lounge", event: "The Room", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday2-4.jpg"), alt: "Guest in a yellow jersey lit by red smoke", event: "Night Two", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday2-22.jpg"), alt: "Couple posing at the branded wall", event: "Night Two", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday2-30.jpg"), alt: "Full dancefloor under disco balls late at night", event: "Night Two", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday2-12.jpg"), alt: "Group of guests at a Culturin gathering", event: "Night Two", location: "Cannes", orientation: "landscape" },
-  { src: img("UNIKday2-34.jpg"), alt: "Two guests laughing together late at night", event: "Night Two", location: "Cannes", orientation: "portrait" },
-  { src: img("UNIKday1-70.jpg"), alt: "Guests dancing under disco balls with phones raised", event: "After Dark", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday1-2.jpg"), largeSrc: imgLarge("UNIKday1-2.jpg"), alt: "Guest in a tailored blazer against a deep red backdrop", event: "Opening Night", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-22.jpg"), largeSrc: imgLarge("UNIKday1-22.jpg"), alt: "Guests gathered on a couch with champagne", event: "The Room", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday1-58.jpg"), largeSrc: imgLarge("UNIKday1-58.jpg"), alt: "DJ performing under a disco ball in red light", event: "After Dark", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-38.jpg"), largeSrc: imgLarge("UNIKday1-38.jpg"), alt: "Four guests posing together at a Culturin evening", event: "The Room", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday1-26.jpg"), largeSrc: imgLarge("UNIKday1-26.jpg"), alt: "Disco balls above the crowd", event: "After Dark", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-62.jpg"), largeSrc: imgLarge("UNIKday1-62.jpg"), alt: "Red-lit crowd on the dancefloor", event: "After Dark", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday1-14.jpg"), largeSrc: imgLarge("UNIKday1-14.jpg"), alt: "Couple portrait against a red-lit backdrop", event: "Opening Night", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-54.jpg"), largeSrc: imgLarge("UNIKday1-54.jpg"), alt: "Candid dancing at a Culturin evening", event: "After Dark", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday1-34.jpg"), largeSrc: imgLarge("UNIKday1-34.jpg"), alt: "Two guests portrait at the party", event: "Opening Night", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-46.jpg"), largeSrc: imgLarge("UNIKday1-46.jpg"), alt: "Guests mingling in a warm-lit lounge", event: "The Room", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday2-4.jpg"), largeSrc: imgLarge("UNIKday2-4.jpg"), alt: "Guest in a yellow jersey lit by red smoke", event: "Night Two", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday2-22.jpg"), largeSrc: imgLarge("UNIKday2-22.jpg"), alt: "Couple posing at the branded wall", event: "Night Two", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday2-30.jpg"), largeSrc: imgLarge("UNIKday2-30.jpg"), alt: "Full dancefloor under disco balls late at night", event: "Night Two", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday2-12.jpg"), largeSrc: imgLarge("UNIKday2-12.jpg"), alt: "Group of guests at a Culturin gathering", event: "Night Two", location: "Cannes", orientation: "landscape" },
+  { src: img("UNIKday2-34.jpg"), largeSrc: imgLarge("UNIKday2-34.jpg"), alt: "Two guests laughing together late at night", event: "Night Two", location: "Cannes", orientation: "portrait" },
+  { src: img("UNIKday1-70.jpg"), largeSrc: imgLarge("UNIKday1-70.jpg"), alt: "Guests dancing under disco balls with phones raised", event: "After Dark", location: "Cannes", orientation: "landscape" },
 ];
 
 export default function GalleryPage() {
@@ -124,42 +113,7 @@ export default function GalleryPage() {
 
       {/* ── Masonry grid ─────────────────────────────────────────── */}
       <div className="px-8 py-16 sm:px-14">
-        <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
-          {GALLERY.map((item, i) => (
-            <Reveal
-              as="figure"
-              key={item.src}
-              delay={(i % 3) * 90}
-              y={28}
-              className="mb-5 block break-inside-avoid overflow-hidden"
-            >
-              <div className="group relative overflow-hidden" style={{ borderRadius: 2 }}>
-                <BlurImage
-                  src={item.src}
-                  alt={item.alt}
-                  width={item.orientation === "portrait" ? 800 : 1200}
-                  height={item.orientation === "portrait" ? 1200 : 800}
-                  className="block w-full transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-                  style={{ height: "auto" }}
-                  placeholder="blur"
-                  blurDataURL={blurForSrc(item.src)}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  unoptimized
-                />
-                {/* Caption overlay on hover */}
-                <figcaption
-                  className="absolute inset-x-0 bottom-0 translate-y-full p-4 transition-transform duration-300 ease-out group-hover:translate-y-0"
-                  style={{ background: "rgba(28,26,23,0.88)" }}
-                >
-                  <p className="m-0 text-xs font-semibold uppercase tracking-[0.15em] text-white">
-                    {item.event}
-                  </p>
-                  <p className="m-0 text-xs text-white/60">{item.location}</p>
-                </figcaption>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        <GalleryGrid items={GALLERY} />
       </div>
 
       {/* ── CTA strip ────────────────────────────────────────────── */}
