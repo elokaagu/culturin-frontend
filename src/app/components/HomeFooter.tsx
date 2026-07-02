@@ -92,6 +92,7 @@ function FooterSubscribe() {
 }
 
 const footerLinks = [
+  { label: "Platform", href: "/destinations" },
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
   { label: "Partners", href: "#partners" },
@@ -99,8 +100,8 @@ const footerLinks = [
 ];
 
 const socialLinks = [
-  { label: "Instagram", href: "https://www.instagram.com" },
-  { label: "LinkedIn", href: "https://www.linkedin.com" },
+  { label: "Instagram", href: "https://www.instagram.com/culturinworld/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/culturin" },
   { label: "TikTok", href: "https://www.tiktok.com" },
 ];
 
@@ -156,14 +157,12 @@ export default function HomeFooter() {
 
         <div className="mt-14 flex items-center justify-between border-t py-6 text-xs" style={{ borderColor: "rgba(232,227,218,0.15)" }}>
           <span className="text-white/45">© {year} Culturin — All Rights Reserved.</span>
-          <div className="flex gap-6">
-            <Link href="/privacy" className="text-white/45 no-underline transition-opacity hover:text-white/80">
-              Privacy Policy
-            </Link>
-            <Link href="/privacy" className="text-white/45 no-underline transition-opacity hover:text-white/80">
-              Terms &amp; Conditions
-            </Link>
-          </div>
+          <a
+            href="mailto:contact@culturin.com"
+            className="text-white/45 no-underline transition-opacity hover:text-white/80"
+          >
+            contact@culturin.com
+          </a>
         </div>
       </div>
 
