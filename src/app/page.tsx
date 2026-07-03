@@ -65,17 +65,16 @@ const PILLARS = [
   },
 ];
 
-// Text wordmarks for now — drop a logo file under /public/logos and set
-// `logoSrc` on the matching entry to switch it to the real mark.
 const PRODUCTION_HISTORY: LogoTickerItem[] = [
-  { name: "Super Bowl" },
-  { name: "The Oscars" },
-  { name: "Davos" },
+  { name: "Super Bowl", logoSrc: "/partners/super-bowl.webp" },
+  { name: "The Oscars", logoSrc: "/partners/oscars.jpg" },
+  { name: "Davos", logoSrc: "/partners/davos-logo.svg" },
+  // Logo provided is for Cannes Lions, not Cannes Film Festival — left as text until that's confirmed/replaced.
   { name: "Cannes Film Festival" },
-  { name: "UN Assembly" },
-  { name: "Nike" },
-  { name: "Virgin" },
-  { name: "Microsoft" },
+  { name: "UN Assembly", logoSrc: "/partners/unga-logo.png" },
+  { name: "Nike", logoSrc: "/partners/nike-logo.svg" },
+  { name: "Virgin", logoSrc: "/partners/virgin-logo.webp" },
+  { name: "Microsoft", logoSrc: "/partners/microsoft.webp" },
 ];
 
 const featuredEvents = events.filter((e) => !e.isPast).slice(0, 3);
