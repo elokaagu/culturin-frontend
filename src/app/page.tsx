@@ -196,8 +196,8 @@ export default function HomePage() {
             imageAlt="Guests mingling in a warm-lit lounge at a Culturin evening in Cannes"
             imageSide="right"
             buttons={[
-              { label: "Explore travel guides", href: "/travel-guides", variant: "solid" },
-              { label: "See destinations", href: "/destinations", variant: "text" },
+              { label: "Explore travel guides", href: "/travel-guides/nice-and-cannes", variant: "solid" },
+              { label: "Partner with us", href: "mailto:partners@culturin.com?subject=Partnering%20with%20Culturin", variant: "text" },
             ]}
           />
           <EditorialStatement
@@ -208,8 +208,8 @@ export default function HomePage() {
             imageAlt="Guest laughing and pointing at the camera beneath the disco balls in Cannes"
             imageSide="left"
             buttons={[
-              { label: "Watch videos", href: "/videos", variant: "solid" },
-              { label: "Read the latest", href: "/articles", variant: "text" },
+              { label: "See upcoming events", href: "/events", variant: "solid" },
+              { label: "Partner with us", href: "mailto:partners@culturin.com?subject=Partnering%20with%20Culturin", variant: "text" },
             ]}
           />
           <EditorialStatement
@@ -220,8 +220,8 @@ export default function HomePage() {
             imageAlt="Guest at a Culturin evening in Cannes"
             imageSide="right"
             buttons={[
-              { label: "Meet the team", href: "/about", variant: "solid" },
-              { label: "See our partners", href: "#partners", variant: "text" },
+              { label: "Partner with us", href: "mailto:partners@culturin.com?subject=Partnering%20with%20Culturin", variant: "solid" },
+              { label: "See upcoming events", href: "/events", variant: "text" },
             ]}
           />
         </div>
