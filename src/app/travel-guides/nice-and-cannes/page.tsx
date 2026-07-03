@@ -286,7 +286,7 @@ export default function NiceAndCannesGuidePage() {
       >
         <Reveal className="mx-auto max-w-xl">
           <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "rgba(232,227,218,0.6)" }}>
-            While you're there
+            While you&apos;re there
           </p>
           <h2
             className="m-0 text-3xl font-medium leading-[1.15] text-white sm:text-4xl"
