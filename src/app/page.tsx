@@ -69,8 +69,6 @@ const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Super Bowl", logoSrc: "/partners/super-bowl.webp" },
   { name: "The Oscars", logoSrc: "/partners/oscars.jpg" },
   { name: "Davos", logoSrc: "/partners/davos-logo.svg" },
-  // Logo provided is for Cannes Lions, not Cannes Film Festival — left as text until that's confirmed/replaced.
-  { name: "Cannes Film Festival" },
   { name: "UN Assembly", logoSrc: "/partners/unga-logo.png" },
   { name: "Nike", logoSrc: "/partners/nike-logo.svg" },
   { name: "Virgin", logoSrc: "/partners/virgin-logo.webp" },

@@ -25,16 +25,16 @@ export default function LogoTicker({
       className="overflow-hidden"
       style={{ maskImage: "linear-gradient(90deg, transparent, black 8%, black 92%, transparent)" }}
     >
-      <div className="flex w-max animate-marquee items-center gap-14">
+      <div className="flex w-max animate-marquee items-center gap-16">
         {track.map((item, i) => (
-          <div key={`${item.name}-${i}`} className="flex shrink-0 items-center justify-center" style={{ height: 28 }}>
+          <div key={`${item.name}-${i}`} className="flex shrink-0 items-center justify-center" style={{ height: 56 }}>
             {item.logoSrc ? (
               <Image
                 src={item.logoSrc}
                 alt={item.name}
-                width={120}
-                height={28}
-                className="h-7 w-auto object-contain opacity-80 grayscale"
+                width={220}
+                height={56}
+                className="h-14 w-auto object-contain opacity-80 grayscale"
                 unoptimized
               />
             ) : (
