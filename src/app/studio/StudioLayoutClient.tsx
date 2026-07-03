@@ -3,6 +3,7 @@
 import {
   BookOpen,
   Building2,
+  CalendarCheck,
   ExternalLink,
   Handshake,
   Images,
@@ -31,6 +32,7 @@ type StudioLayoutClientProps = {
   galleryCount: number;
   subscriberCount: number;
   partnerInquiryCount: number;
+  eventRsvpCount: number;
 };
 
 const navItemClass = (active: boolean) =>
@@ -69,6 +71,7 @@ export default function StudioLayoutClient({
   galleryCount,
   subscriberCount,
   partnerInquiryCount,
+  eventRsvpCount,
 }: StudioLayoutClientProps) {
   const router = useTransitionRouter();
   const pathname = usePathname() ?? "";
@@ -244,6 +247,22 @@ export default function StudioLayoutClient({
                     {countBadge(
                       partnerInquiryCount,
                       pathname === "/studio/partner-inquiries" || pathname?.startsWith("/studio/partner-inquiries/"),
+                    )}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/studio/event-rsvps"
+                    className={navItemClass(
+                      pathname === "/studio/event-rsvps" || pathname?.startsWith("/studio/event-rsvps/"),
+                    )}
+                    aria-current={pathname === "/studio/event-rsvps" ? "page" : undefined}
+                  >
+                    <CalendarCheck className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                    <span className="min-w-0 flex-1">Event RSVPs</span>
+                    {countBadge(
+                      eventRsvpCount,
+                      pathname === "/studio/event-rsvps" || pathname?.startsWith("/studio/event-rsvps/"),
                     )}
                   </Link>
                 </li>

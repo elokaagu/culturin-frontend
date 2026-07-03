@@ -8,22 +8,34 @@ export type StudioContentCounts = {
   galleryImages: number;
   subscribers: number;
   partnerInquiries: number;
+  eventRsvps: number;
 };
 
 export async function getStudioCounts(): Promise<StudioContentCounts> {
   const db = getSupabaseAdminOrNull();
   if (!db) {
-    return { blogs: 0, videos: 0, providers: 0, curators: 0, galleryImages: 0, subscribers: 0, partnerInquiries: 0 };
+    return {
+      blogs: 0,
+      videos: 0,
+      providers: 0,
+      curators: 0,
+      galleryImages: 0,
+      subscribers: 0,
+      partnerInquiries: 0,
+      eventRsvps: 0,
+    };
   }
-  const [blogs, videos, providers, curators, galleryImages, subscribers, partnerInquiries] = await Promise.all([
-    db.from("cms_blogs").select("id", { count: "exact", head: true }),
-    db.from("cms_videos").select("id", { count: "exact", head: true }),
-    db.from("cms_providers").select("id", { count: "exact", head: true }),
-    db.from("cms_curators").select("id", { count: "exact", head: true }),
-    db.from("gallery_images").select("id", { count: "exact", head: true }),
-    db.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
-    db.from("partner_inquiries").select("id", { count: "exact", head: true }),
-  ]);
+  const [blogs, videos, providers, curators, galleryImages, subscribers, partnerInquiries, eventRsvps] =
+    await Promise.all([
+      db.from("cms_blogs").select("id", { count: "exact", head: true }),
+      db.from("cms_videos").select("id", { count: "exact", head: true }),
+      db.from("cms_providers").select("id", { count: "exact", head: true }),
+      db.from("cms_curators").select("id", { count: "exact", head: true }),
+      db.from("gallery_images").select("id", { count: "exact", head: true }),
+      db.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
+      db.from("partner_inquiries").select("id", { count: "exact", head: true }),
+      db.from("event_rsvps").select("id", { count: "exact", head: true }),
+    ]);
 
   return {
     blogs: blogs.count ?? 0,
@@ -33,5 +45,6 @@ export async function getStudioCounts(): Promise<StudioContentCounts> {
     galleryImages: galleryImages.count ?? 0,
     subscribers: subscribers.count ?? 0,
     partnerInquiries: partnerInquiries.count ?? 0,
+    eventRsvps: eventRsvps.count ?? 0,
   };
 }

@@ -276,17 +276,28 @@ export default function HomePage() {
                   className="group relative flex h-full flex-col no-underline"
                   style={{ background: BG, color: INK }}
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <BlurImage
-                      src={event.heroImage}
-                      alt={event.heroImageAlt}
-                      fill
-                      className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.05]"
-                      placeholder="blur"
-                      blurDataURL={blurForSrc(event.heroImage)}
-                      sizes="(max-width: 640px) 100vw, 33vw"
-                      unoptimized
-                    />
+                  <div
+                    className="relative aspect-[4/3] overflow-hidden"
+                    style={{ background: event.heroImage ? undefined : SURFACE_DARK }}
+                  >
+                    {event.heroImage ? (
+                      <BlurImage
+                        src={event.heroImage}
+                        alt={event.heroImageAlt}
+                        fill
+                        className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.05]"
+                        placeholder="blur"
+                        blurDataURL={blurForSrc(event.heroImage)}
+                        sizes="(max-width: 640px) 100vw, 33vw"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <p className="m-0 px-6 text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-white/40">
+                          Photos coming soon
+                        </p>
+                      </div>
+                    )}
                     {/* Trippin-style tag chips overlaid on the image */}
                     <div className="absolute left-3 top-3 z-[1] flex flex-wrap gap-1.5">
                       <span className="rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-medium text-neutral-900">

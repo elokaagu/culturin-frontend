@@ -135,8 +135,8 @@ export const events: CulturinEvent[] = [
     date: "August 25 – September 7, 2026",
     location: "Flushing Meadows, New York",
     category: "Sport & Culture",
-    heroImage: "/events/cannes-lions-2026/UNIKday2-26.jpg",
-    heroImageAlt: "Guests filling a warm-lit room at a Culturin night",
+    heroImage: "",
+    heroImageAlt: "",
     stats: [
       { value: "2", label: "Weeks of play" },
       { value: "5", label: "Culturin evenings" },
@@ -149,54 +149,21 @@ export const events: CulturinEvent[] = [
         label: "PERSPECTIVE",
         headline: "The US Open brings the world to New York. Culturin brings the culture to the courtside.",
         body: "For two weeks every summer, New York becomes the centre of the sporting world. We take that energy and build something around it: intimate, curated, and firmly off the official schedule.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-61.jpg",
-            alt: "Guests laughing together near the entrance",
-            position: "top-16 left-[5%] w-64 rotate-[-1.5deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-46.jpg",
-            alt: "Guests mingling in a warm-lit lounge",
-            position: "top-40 right-[6%] w-60 rotate-[2deg]",
-          },
-        ],
+        photos: [],
       },
       {
         id: "who",
         label: "PROXIMITY",
         headline: "Athletes, tastemakers, and the people who move culture forward.",
         body: "Sport intersects with fashion, music, and business at the US Open like nowhere else. Culturin brings together the people who sit at all those intersections, for dinners, conversations, and access you won't find on StubHub.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-50.jpg",
-            alt: "Group of guests posing together",
-            position: "top-20 left-[8%] w-72 rotate-[1deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-42.jpg",
-            alt: "Two guests greeting each other warmly",
-            position: "bottom-16 right-[5%] w-56 rotate-[-2deg]",
-          },
-        ],
+        photos: [],
       },
       {
         id: "signal",
         label: "POSSIBILITY",
         headline: "Sport is the occasion. Culture is the point.",
         body: "A private Culturin hospitality suite, chef-curated dinners after the day's last match, live music, and a late-night close that keeps going long after the stadium empties.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday2-16.jpg",
-            alt: "Guest enjoying the evening in red light",
-            position: "top-10 right-[9%] w-52 rotate-[1.5deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-44.jpg",
-            alt: "Guest sharing a handshake on the dancefloor",
-            position: "bottom-12 left-[6%] w-64 rotate-[-1deg]",
-          },
-        ],
+        photos: [],
       },
     ],
     signalHeadline: "What to expect",
@@ -216,8 +183,8 @@ export const events: CulturinEvent[] = [
     date: "September 16 – 26, 2026",
     location: "Manhattan, New York",
     category: "Diplomacy & Culture",
-    heroImage: "/events/cannes-lions-2026/UNIKday1-22.jpg",
-    heroImageAlt: "Guests gathered together at an intimate Culturin evening",
+    heroImage: "",
+    heroImageAlt: "",
     stats: [
       { value: "193", label: "Nations convene" },
       { value: "1", label: "Week, September" },
@@ -230,59 +197,21 @@ export const events: CulturinEvent[] = [
         label: "PERSPECTIVE",
         headline: "UNGA brings 193 nations to New York. Culturin brings the cultural conversation to the margins.",
         body: "The real decisions at UNGA happen in the dinners, lounges, and side events running parallel to the official sessions. Culturin builds those rooms, with cultural leaders and diplomats who understand that soft power is real power.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday2-4.jpg",
-            alt: "Guest lit by red smoke at a warmly lit Culturin evening",
-            position: "top-20 left-[5%] w-56 rotate-[-1deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday2-12.jpg",
-            alt: "Group of guests gathered in conversation",
-            position: "top-52 right-[7%] w-64 rotate-[2deg]",
-          },
-        ],
+        photos: [],
       },
       {
         id: "who",
         label: "PROXIMITY",
         headline: "Diplomats, founders, and cultural ambassadors in the same room.",
         body: "UNGA week draws a rare mix: heads of state, NGO directors, diaspora entrepreneurs, and cultural figures all compressed into ten days in Manhattan. Culturin is the connective tissue, the event where those worlds actually meet.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-38.jpg",
-            alt: "Four guests posing together at a Culturin evening",
-            position: "top-16 left-[7%] w-72 rotate-[1.5deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday2-10.jpg",
-            alt: "Elegantly dressed couple at a reception",
-            position: "bottom-20 right-[4%] w-56 rotate-[-1.5deg]",
-          },
-        ],
+        photos: [],
       },
       {
         id: "signal",
         label: "POSSIBILITY",
         headline: "The conversations that shape the next decade start here.",
         body: "Four Culturin events across UNGA week: an opening dinner, a midweek cultural salon, a panel on diaspora and soft power, and a closing evening reception. Every seat is chosen with intention.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday2-26.jpg",
-            alt: "Guests on the dancefloor at a late-night reception",
-            position: "top-14 right-[8%] w-52 rotate-[2deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday2-22.jpg",
-            alt: "Couple posing at a branded event wall",
-            position: "bottom-14 left-[4%] w-56 rotate-[-2deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday2-34.jpg",
-            alt: "Guests laughing together late at night",
-            position: "top-56 left-[38%] w-44 rotate-[1deg]",
-          },
-        ],
+        photos: [],
       },
     ],
     signalHeadline: "What to expect",
@@ -291,92 +220,6 @@ export const events: CulturinEvent[] = [
     rsvpHeadline: "Request your seat.",
     rsvpSubtext:
       "UNGA week is by invitation. Submit your email and a brief note on your work, and our team will review every request personally.",
-  },
-  {
-    slug: "amafrobeat-lagos-2025",
-    name: "Amafrobeat Experience",
-    navLabel: "AMAFROBEAT 2025",
-    tagline: "Join The\nExperience.",
-    subtagline: "Culturin × Lagos · 2025",
-    shortDescription: "Three stages of live music, Lagos chefs, and art installations, one immersive night where culture is the only currency.",
-    date: "November 8, 2025",
-    location: "Victoria Island, Lagos",
-    category: "Music & Culture",
-    heroImage: "/events/cannes-lions-2026/UNIKday2-30.jpg",
-    heroImageAlt: "Packed dancefloor under disco balls at a Culturin night",
-    stats: [
-      { value: "500+", label: "Guests" },
-      { value: "12", label: "Cities represented" },
-      { value: "3", label: "Stages" },
-      { value: "1", label: "Night to remember" },
-    ],
-    sections: [
-      {
-        id: "vibe",
-        label: "PERSPECTIVE",
-        headline: "Lagos brings the world into one room. Culturin brings the right people around the same floor.",
-        body: "The Amafrobeat Experience is a night where culture is the currency. Artists, founders, and cultural leaders come together not to network, but to feel something.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday2-4.jpg",
-            alt: "Guest lit by red stage light and smoke",
-            position: "top-16 left-[5%] w-56 rotate-[-2deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-26.jpg",
-            alt: "Disco balls above the crowd",
-            position: "top-48 right-[6%] w-56 rotate-[1.5deg]",
-          },
-        ],
-      },
-      {
-        id: "who",
-        label: "PROXIMITY",
-        headline: "The conversations that matter.",
-        body: "Founders, artists, and cultural leaders. People who build things, tell stories, and move between cities. The Amafrobeat Experience is the room where those worlds collide.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-54.jpg",
-            alt: "Guests dancing and celebrating together",
-            position: "top-24 left-[8%] w-72 rotate-[1deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-22.jpg",
-            alt: "Guests gathered on a couch with champagne",
-            position: "bottom-20 right-[4%] w-64 rotate-[-1.5deg]",
-          },
-        ],
-      },
-      {
-        id: "signal",
-        label: "POSSIBILITY",
-        headline: "The right people, brought together with purpose.",
-        body: "Every detail is curated. The music, the food, the lineup, the people, all chosen to create an atmosphere that feels both intimate and electric. Expect the unexpected. Plan to stay late.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday2-13.jpg",
-            alt: "Guests smiling together at the Amafrobeat night",
-            position: "top-12 right-[10%] w-48 rotate-[2deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-48.jpg",
-            alt: "Guests laughing together in a red-lit lounge",
-            position: "bottom-10 left-[5%] w-60 rotate-[-1deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-40.jpg",
-            alt: "Guests arriving through the red curtained entrance",
-            position: "top-52 left-[40%] w-44 rotate-[1deg]",
-          },
-        ],
-      },
-    ],
-    signalHeadline: "What to expect",
-    signalBody:
-      "Three stages of live music across Afrobeats, Afro-soul, and Afro-fusion. A curated food corridor with Lagos-based chefs. Immersive art installations. A late-night close with a headliner you'll be talking about for weeks.",
-    rsvpHeadline: "Secure your place.",
-    rsvpSubtext:
-      "Capacity is limited. Drop your email and we'll send full details, ticket access, and a pre-event guide to the best of Lagos.",
   },
 ];
 

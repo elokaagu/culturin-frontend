@@ -8,6 +8,7 @@ import {
   EDITORIAL_INK,
   EDITORIAL_MUTED,
   EDITORIAL_RULE,
+  SURFACE_DARK,
   editorialScopeClass,
 } from "@/lib/theme/culturinTokens";
 import BlurImage from "../components/motion/BlurImage";
@@ -71,18 +72,26 @@ export default function EventsPage() {
                 {/* Image alternates left / right */}
                 <div
                   className={`relative w-full shrink-0 overflow-hidden lg:w-[48%] ${flip ? "lg:order-2" : ""}`}
-                  style={{ minHeight: 320 }}
+                  style={{ minHeight: 320, background: event.heroImage ? undefined : SURFACE_DARK }}
                 >
-                  <BlurImage
-                    src={event.heroImage}
-                    alt={event.heroImageAlt}
-                    fill
-                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-                    placeholder="blur"
-                    blurDataURL={blurForSrc(event.heroImage)}
-                    sizes="(max-width: 1024px) 100vw, 48vw"
-                    unoptimized
-                  />
+                  {event.heroImage ? (
+                    <BlurImage
+                      src={event.heroImage}
+                      alt={event.heroImageAlt}
+                      fill
+                      className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                      placeholder="blur"
+                      blurDataURL={blurForSrc(event.heroImage)}
+                      sizes="(max-width: 1024px) 100vw, 48vw"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <p className="m-0 px-8 text-center text-[11px] font-semibold uppercase tracking-[0.25em] text-white/40">
+                        Photos coming soon
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Details */}

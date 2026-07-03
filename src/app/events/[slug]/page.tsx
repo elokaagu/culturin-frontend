@@ -99,22 +99,27 @@ export default async function EventLandingPage({ params }: Props) {
       <section
         id="home"
         className="relative flex min-h-dvh flex-col justify-end overflow-hidden px-6 pb-16 sm:px-14"
+        style={event.heroImage ? undefined : { background: SURFACE_DARK }}
       >
-        <BlurImage
-          src={event.heroImage}
-          alt={event.heroImageAlt}
-          fill
-          priority
-          className="object-cover"
-          placeholder="blur"
-          blurDataURL={blurForSrc(event.heroImage)}
-          sizes="100vw"
-        />
-        {/* Gradient overlay */}
-        <div
-          className="absolute inset-0"
-          style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.1) 100%)" }}
-        />
+        {event.heroImage ? (
+          <>
+            <BlurImage
+              src={event.heroImage}
+              alt={event.heroImageAlt}
+              fill
+              priority
+              className="object-cover"
+              placeholder="blur"
+              blurDataURL={blurForSrc(event.heroImage)}
+              sizes="100vw"
+            />
+            {/* Gradient overlay */}
+            <div
+              className="absolute inset-0"
+              style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.1) 100%)" }}
+            />
+          </>
+        ) : null}
 
         <div className="relative z-10 max-w-3xl">
           {/* Culturin wordmark */}
@@ -281,7 +286,7 @@ export default async function EventLandingPage({ params }: Props) {
               View the gallery
             </a>
           ) : null}
-          <RSVPForm />
+          <RSVPForm eventSlug={event.slug} />
         </Reveal>
       </section>
 
