@@ -7,6 +7,7 @@ import {
   Images,
   LayoutDashboard,
   LogOut,
+  Mail,
   Moon,
   Sun,
   Users,
@@ -27,6 +28,7 @@ type StudioLayoutClientProps = {
   providerCount: number;
   curatorCount: number;
   galleryCount: number;
+  subscriberCount: number;
 };
 
 const navItemClass = (active: boolean) =>
@@ -63,6 +65,7 @@ export default function StudioLayoutClient({
   providerCount,
   curatorCount,
   galleryCount,
+  subscriberCount,
 }: StudioLayoutClientProps) {
   const router = useTransitionRouter();
   const pathname = usePathname() ?? "";
@@ -204,6 +207,28 @@ export default function StudioLayoutClient({
                 </li>
               </ul>
 
+            </nav>
+
+            <nav className="mt-5 space-y-4 px-2.5 pb-4 md:pb-6" aria-label="Audience management">
+              <p className={subLabelClass}>Audience</p>
+              <ul className="m-0 space-y-0.5 p-0">
+                <li>
+                  <Link
+                    href="/studio/subscribers"
+                    className={navItemClass(
+                      pathname === "/studio/subscribers" || pathname?.startsWith("/studio/subscribers/"),
+                    )}
+                    aria-current={pathname === "/studio/subscribers" ? "page" : undefined}
+                  >
+                    <Mail className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                    <span className="min-w-0 flex-1">Subscribers</span>
+                    {countBadge(
+                      subscriberCount,
+                      pathname === "/studio/subscribers" || pathname?.startsWith("/studio/subscribers/"),
+                    )}
+                  </Link>
+                </li>
+              </ul>
             </nav>
           </div>
           <div className="border-t border-neutral-200 px-2.5 py-2.5 dark:border-white/10">

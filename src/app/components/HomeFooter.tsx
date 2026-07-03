@@ -14,6 +14,7 @@ const ACCENT = ACCENT_ON_DARK;
 function FooterSubscribe() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
   const [pending, setPending] = useState(false);
   const [status, setStatus] = useState<"idle" | "ok" | "error">("idle");
@@ -40,6 +41,7 @@ function FooterSubscribe() {
         body: JSON.stringify({
           firstName: firstName.trim(),
           lastName: lastName.trim(),
+          company: company.trim(),
           email: email.trim(),
           marketingConsent: true,
         }),
@@ -57,6 +59,7 @@ function FooterSubscribe() {
       setMessage(data.alreadySubscribed ? "You're already on the list." : "You're on the list.");
       setFirstName("");
       setLastName("");
+      setCompany("");
       setEmail("");
     } catch {
       setStatus("error");
@@ -100,6 +103,25 @@ function FooterSubscribe() {
             placeholder="Last name"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+            disabled={pending}
+            className={fieldClass}
+            style={{ color: INK }}
+          />
+        </div>
+        <div
+          className="flex items-stretch overflow-hidden rounded-full border"
+          style={{ borderColor: RULE, background: CREAM }}
+        >
+          <label htmlFor="home-footer-company" className="sr-only">
+            Company
+          </label>
+          <input
+            id="home-footer-company"
+            type="text"
+            autoComplete="organization"
+            placeholder="Company (optional)"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
             disabled={pending}
             className={fieldClass}
             style={{ color: INK }}

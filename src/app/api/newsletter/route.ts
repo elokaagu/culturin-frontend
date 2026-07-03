@@ -16,11 +16,13 @@ export async function POST(req: Request) {
     email?: unknown;
     firstName?: unknown;
     lastName?: unknown;
+    company?: unknown;
     marketingConsent?: unknown;
   };
   const emailRaw = typeof o.email === "string" ? o.email.trim() : "";
   const firstNameRaw = typeof o.firstName === "string" ? o.firstName.trim() : "";
   const lastNameRaw = typeof o.lastName === "string" ? o.lastName.trim() : "";
+  const companyRaw = typeof o.company === "string" ? o.company.trim() : "";
   const consent = o.marketingConsent === true;
 
   if (!consent) {
@@ -51,6 +53,7 @@ export async function POST(req: Request) {
     email,
     first_name: firstNameRaw,
     last_name: lastNameRaw,
+    company: companyRaw || null,
     source: "footer",
   });
 

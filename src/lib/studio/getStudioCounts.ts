@@ -6,19 +6,21 @@ export type StudioContentCounts = {
   providers: number;
   curators: number;
   galleryImages: number;
+  subscribers: number;
 };
 
 export async function getStudioCounts(): Promise<StudioContentCounts> {
   const db = getSupabaseAdminOrNull();
   if (!db) {
-    return { blogs: 0, videos: 0, providers: 0, curators: 0, galleryImages: 0 };
+    return { blogs: 0, videos: 0, providers: 0, curators: 0, galleryImages: 0, subscribers: 0 };
   }
-  const [blogs, videos, providers, curators, galleryImages] = await Promise.all([
+  const [blogs, videos, providers, curators, galleryImages, subscribers] = await Promise.all([
     db.from("cms_blogs").select("id", { count: "exact", head: true }),
     db.from("cms_videos").select("id", { count: "exact", head: true }),
     db.from("cms_providers").select("id", { count: "exact", head: true }),
     db.from("cms_curators").select("id", { count: "exact", head: true }),
     db.from("gallery_images").select("id", { count: "exact", head: true }),
+    db.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
   ]);
 
   return {
@@ -27,5 +29,6 @@ export async function getStudioCounts(): Promise<StudioContentCounts> {
     providers: providers.count ?? 0,
     curators: curators.count ?? 0,
     galleryImages: galleryImages.count ?? 0,
+    subscribers: subscribers.count ?? 0,
   };
 }
