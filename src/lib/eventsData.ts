@@ -53,8 +53,8 @@ export const events: CulturinEvent[] = [
     date: "June 22 to 26, 2026",
     location: "Cannes, France",
     category: "Creativity & Culture",
-    heroImage: "/events/cannes-lions-2026/UNIKday1-70.jpg",
-    heroImageAlt: "Guests dancing under disco balls at a Culturin night in Cannes",
+    heroImage: "/events/cannes-lions-2026/UNIKday2-14.jpg",
+    heroImageAlt: "Guests laughing together beneath the disco balls in Cannes",
     isPast: true,
     stats: [
       { value: "2", label: "Nights of Culturin" },
@@ -106,8 +106,8 @@ export const events: CulturinEvent[] = [
         body: "Two nights of Culturin programming across the festival week: an intimate opening, live music, and a late-night close. Curated guest lists, warm rooms, and access you couldn't buy.",
         photos: [
           {
-            src: "/events/cannes-lions-2026/UNIKday1-58.jpg",
-            alt: "DJ performing under a disco ball in red light",
+            src: "/events/cannes-lions-2026/UNIKday1-77.jpg",
+            alt: "Guest laughing beneath the disco ball in red light",
             position: "top-10 right-[9%] w-52 rotate-[2deg]",
           },
           {
@@ -135,7 +135,7 @@ export const events: CulturinEvent[] = [
     date: "August 25 – September 7, 2026",
     location: "Flushing Meadows, New York",
     category: "Sport & Culture",
-    heroImage: "/events/cannes-lions-2026/UNIKday1-62.jpg",
+    heroImage: "/events/cannes-lions-2026/UNIKday2-26.jpg",
     heroImageAlt: "Guests filling a warm-lit room at a Culturin night",
     stats: [
       { value: "2", label: "Weeks of play" },
@@ -151,8 +151,8 @@ export const events: CulturinEvent[] = [
         body: "For two weeks every summer, New York becomes the centre of the sporting world. We take that energy and build something around it: intimate, curated, and firmly off the official schedule.",
         photos: [
           {
-            src: "/events/cannes-lions-2026/UNIKday1-6.jpg",
-            alt: "Two guests in conversation at a Culturin evening",
+            src: "/events/cannes-lions-2026/UNIKday1-61.jpg",
+            alt: "Guests laughing together near the entrance",
             position: "top-16 left-[5%] w-64 rotate-[-1.5deg]",
           },
           {
@@ -192,8 +192,8 @@ export const events: CulturinEvent[] = [
             position: "top-10 right-[9%] w-52 rotate-[1.5deg]",
           },
           {
-            src: "/events/cannes-lions-2026/UNIKday1-66.jpg",
-            alt: "Two guests sharing a moment on the dancefloor",
+            src: "/events/cannes-lions-2026/UNIKday1-44.jpg",
+            alt: "Guest sharing a handshake on the dancefloor",
             position: "bottom-12 left-[6%] w-64 rotate-[-1deg]",
           },
         ],
@@ -232,8 +232,8 @@ export const events: CulturinEvent[] = [
         body: "The real decisions at UNGA happen in the dinners, lounges, and side events running parallel to the official sessions. Culturin builds those rooms, with cultural leaders and diplomats who understand that soft power is real power.",
         photos: [
           {
-            src: "/events/cannes-lions-2026/UNIKday1-14.jpg",
-            alt: "Two guests in an intimate moment against a warm backdrop",
+            src: "/events/cannes-lions-2026/UNIKday2-4.jpg",
+            alt: "Guest lit by red smoke at a warmly lit Culturin evening",
             position: "top-20 left-[5%] w-56 rotate-[-1deg]",
           },
           {
@@ -278,8 +278,8 @@ export const events: CulturinEvent[] = [
             position: "bottom-14 left-[4%] w-56 rotate-[-2deg]",
           },
           {
-            src: "/events/cannes-lions-2026/UNIKday1-30.jpg",
-            alt: "Wide view of the venue in warm red light",
+            src: "/events/cannes-lions-2026/UNIKday2-34.jpg",
+            alt: "Guests laughing together late at night",
             position: "top-56 left-[38%] w-44 rotate-[1deg]",
           },
         ],
@@ -354,18 +354,18 @@ export const events: CulturinEvent[] = [
         body: "Every detail is curated. The music, the food, the lineup, the people, all chosen to create an atmosphere that feels both intimate and electric. Expect the unexpected. Plan to stay late.",
         photos: [
           {
-            src: "/events/cannes-lions-2026/UNIKday1-58.jpg",
-            alt: "DJ performing under a disco ball in red light",
+            src: "/events/cannes-lions-2026/UNIKday2-13.jpg",
+            alt: "Guests smiling together at the Amafrobeat night",
             position: "top-12 right-[10%] w-48 rotate-[2deg]",
           },
           {
-            src: "/events/cannes-lions-2026/UNIKday1-62.jpg",
-            alt: "Red-lit crowd on the dancefloor",
+            src: "/events/cannes-lions-2026/UNIKday1-48.jpg",
+            alt: "Guests laughing together in a red-lit lounge",
             position: "bottom-10 left-[5%] w-60 rotate-[-1deg]",
           },
           {
-            src: "/events/cannes-lions-2026/UNIKday1-70.jpg",
-            alt: "Guests dancing with phones raised",
+            src: "/events/cannes-lions-2026/UNIKday1-40.jpg",
+            alt: "Guests arriving through the red curtained entrance",
             position: "top-52 left-[40%] w-44 rotate-[1deg]",
           },
         ],

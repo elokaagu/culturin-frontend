@@ -32,18 +32,17 @@ const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
 
-const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-30.jpg";
+const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-71.jpg";
 const CANNES_SRC = "/events/cannes-lions-2026/UNIKday1-2.jpg";
-const PARTNER_SRC = "/events/nyfw-2024/nyfw-3.jpg";
-const PARALLAX_SRC = "/events/notting-hill-carnival-2024/nhc-1.jpg";
+const PARALLAX_SRC = "/events/cannes-lions-2026/UNIKday1-54.jpg";
 
 const GALLERY_PREVIEW = [
-  { src: "/events/cannes-lions-2026/UNIKday1-58.jpg", alt: "DJ under a disco ball at a Culturin night in Cannes", span: "row-span-2" },
-  { src: "/events/nyfw-2024/nyfw-1.jpg", alt: "Models walking in a red-lit venue during NY Fashion Week", span: "" },
-  { src: "/events/notting-hill-carnival-2024/nhc-6.jpg", alt: "Guests in colourful attire during Carnival weekend in London", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday1-34.jpg", alt: "Two guests portrait at a Culturin night in Cannes", span: "row-span-2" },
+  { src: "/events/cannes-lions-2026/UNIKday2-13.jpg", alt: "Guests smiling together in a red-lit lounge in Cannes", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday1-48.jpg", alt: "Guests laughing together in a red-lit lounge in Cannes", span: "" },
   { src: "/events/cannes-lions-2026/UNIKday1-26.jpg", alt: "Disco balls above the crowd in Cannes", span: "row-span-2" },
   { src: "/events/cannes-lions-2026/UNIKday1-38.jpg", alt: "Guests posing together at a Culturin evening in Cannes", span: "" },
-  { src: "/events/notting-hill-carnival-2024/nhc-1.jpg", alt: "DJ performing during Carnival weekend in London", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday1-40.jpg", alt: "Guests arriving through the red curtained entrance in Cannes", span: "" },
 ];
 
 const PILLARS = [
@@ -193,8 +192,8 @@ export default function HomePage() {
             eyebrow="Education"
             headline={"Culture Is\nSomething You\nLearn, Not Just\nSee."}
             body="Most travel platforms show you a destination. Culturin teaches you how to actually engage with it: the history, the etiquette, and the stories beneath the surface, before you ever board a flight."
-            image="/events/notting-hill-carnival-2024/nhc-5.jpg"
-            imageAlt="Guest in a colourful printed outfit during Carnival weekend in London"
+            image="/events/cannes-lions-2026/UNIKday1-46.jpg"
+            imageAlt="Guests mingling in a warm-lit lounge at a Culturin evening in Cannes"
             imageSide="right"
             buttons={[
               { label: "Explore travel guides", href: "/travel-guides", variant: "solid" },
@@ -205,8 +204,8 @@ export default function HomePage() {
             eyebrow="Content"
             headline={"Stories From\nThe Room."}
             body="Articles and video from artists, musicians, and entrepreneurs about travel, identity, and culture, captured from the same rooms Culturin builds."
-            image="/events/nyfw-2024/nyfw-7.jpg"
-            imageAlt="Group portrait of guests at a Culturin New York Fashion Week night"
+            image="/events/cannes-lions-2026/UNIKday2-16.jpg"
+            imageAlt="Guest laughing and pointing at the camera beneath the disco balls in Cannes"
             imageSide="left"
             buttons={[
               { label: "Watch videos", href: "/videos", variant: "solid" },
@@ -446,15 +445,6 @@ export default function HomePage() {
         className="relative overflow-hidden border-t px-8 sm:px-14"
         style={{ paddingTop: "9rem", paddingBottom: "9rem", borderColor: RULE, background: SURFACE_DARK }}
       >
-        <BlurImage
-          src={PARTNER_SRC}
-          alt="Guests gathered at a Culturin partner evening"
-          fill
-          className="object-cover opacity-25"
-          placeholder="blur"
-          blurDataURL={blurForSrc(PARTNER_SRC)}
-          sizes="100vw"
-        />
         <div className="relative z-10 mx-auto max-w-6xl">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
             <Reveal as="div">

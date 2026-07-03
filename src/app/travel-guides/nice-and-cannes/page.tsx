@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     "A Culturin travel guide to Nice and Cannes for business travelers: getting around, where to stay and work, and how to experience the real local culture between meetings.",
 };
 
-const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-6.jpg";
+const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-22.jpg";
 
 const GETTING_AROUND = [
   {
