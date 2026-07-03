@@ -47,6 +47,20 @@ export type CmsVideoRow = {
   updated_at: string;
 };
 
+export type GalleryImageRow = {
+  id: string;
+  event_key: string;
+  event_label: string;
+  caption: string;
+  location: string;
+  src: string;
+  large_src: string;
+  alt: string;
+  orientation: "portrait" | "landscape";
+  sort_order: number;
+  created_at: string;
+};
+
 export type CmsProviderRow = {
   id: string;
   slug: string;

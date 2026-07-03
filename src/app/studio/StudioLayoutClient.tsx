@@ -4,6 +4,7 @@ import {
   BookOpen,
   Building2,
   ExternalLink,
+  Images,
   LayoutDashboard,
   LogOut,
   Moon,
@@ -25,6 +26,7 @@ type StudioLayoutClientProps = {
   videoCount: number;
   providerCount: number;
   curatorCount: number;
+  galleryCount: number;
 };
 
 const navItemClass = (active: boolean) =>
@@ -60,6 +62,7 @@ export default function StudioLayoutClient({
   videoCount,
   providerCount,
   curatorCount,
+  galleryCount,
 }: StudioLayoutClientProps) {
   const router = useTransitionRouter();
   const pathname = usePathname() ?? "";
@@ -186,6 +189,17 @@ export default function StudioLayoutClient({
                       curatorCount,
                       pathname === "/studio/curators" || pathname?.startsWith("/studio/curators/"),
                     )}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/studio/gallery"
+                    className={navItemClass(pathname === "/studio/gallery" || pathname?.startsWith("/studio/gallery/"))}
+                    aria-current={pathname === "/studio/gallery" ? "page" : undefined}
+                  >
+                    <Images className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                    <span className="min-w-0 flex-1">Gallery</span>
+                    {countBadge(galleryCount, pathname === "/studio/gallery" || pathname?.startsWith("/studio/gallery/"))}
                   </Link>
                 </li>
               </ul>

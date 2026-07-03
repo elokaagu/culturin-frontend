@@ -13,7 +13,7 @@ import {
 import { tokenizeSearchQuery } from "@/lib/searchTokenize";
 
 import type { CmsDb } from "./types";
-import type { CmsBlogRow, CmsCuratorRow, CmsProviderRow, CmsVideoRow } from "./types";
+import type { CmsBlogRow, CmsCuratorRow, CmsProviderRow, CmsVideoRow, GalleryImageRow } from "./types";
 
 const blogSelect =
   "id, slug, title, summary, title_image_url, title_image, body, published_at, created_at, updated_at, curator_slug";
@@ -401,4 +401,66 @@ export async function searchProviders(db: CmsDb, term: string): Promise<provider
   if (!first) return [];
   const ids = Array.from(first.keys()).filter((id) => rest.every((m) => m.has(id)));
   return ids.map((id) => mapProviderRowToHero(first.get(id)!));
+}
+
+const gallerySelect = "id, event_key, event_label, caption, location, src, large_src, alt, orientation, sort_order, created_at";
+
+export type GalleryImagePublic = {
+  src: string;
+  largeSrc: string;
+  alt: string;
+  event: string;
+  location: string;
+  eventKey: string;
+  orientation: "portrait" | "landscape";
+};
+
+export async function listGalleryImagesPublic(db: CmsDb): Promise<GalleryImagePublic[]> {
+  const { data, error } = await db
+    .from("gallery_images")
+    .select(gallerySelect)
+    .order("event_key", { ascending: false })
+    .order("sort_order", { ascending: true });
+  if (error || !data) return [];
+  return (data as GalleryImageRow[]).map((row) => ({
+    src: row.src,
+    largeSrc: row.large_src,
+    alt: row.alt,
+    event: row.caption,
+    location: row.location,
+    eventKey: row.event_key,
+    orientation: row.orientation,
+  }));
+}
+
+export type StudioGalleryListItem = {
+  id: string;
+  eventKey: string;
+  eventLabel: string;
+  caption: string;
+  location: string;
+  src: string;
+  alt: string;
+  orientation: "portrait" | "landscape";
+  createdAt: string;
+};
+
+export async function listGalleryImagesForStudio(db: CmsDb): Promise<StudioGalleryListItem[]> {
+  const { data, error } = await db
+    .from("gallery_images")
+    .select(gallerySelect)
+    .order("event_key", { ascending: false })
+    .order("sort_order", { ascending: true });
+  if (error || !data) return [];
+  return (data as GalleryImageRow[]).map((row) => ({
+    id: row.id,
+    eventKey: row.event_key,
+    eventLabel: row.event_label,
+    caption: row.caption,
+    location: row.location,
+    src: row.src,
+    alt: row.alt,
+    orientation: row.orientation,
+    createdAt: row.created_at,
+  }));
 }

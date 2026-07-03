@@ -10,12 +10,16 @@ import {
   SURFACE_DARK,
   editorialScopeClass,
 } from "@/lib/theme/culturinTokens";
+import { listGalleryImagesPublic } from "@/lib/cms/queries";
+import { getCmsDbOrNull } from "@/lib/cms/server";
 import GalleryGrid, { type GalleryFilter, type GalleryItem } from "./GalleryGrid";
 import IslandNav from "../components/IslandNav";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Gallery | Culturin",
-  description: "Images from Culturin at Cannes Lions 2026.",
+  description: "Images from Culturin events, Cannes, New York, London, and beyond.",
 };
 
 const BG = EDITORIAL_BG;
@@ -27,12 +31,12 @@ const ACCENT = EDITORIAL_ACCENT;
 const asset = (folder: string, file: string) => `/events/${folder}/${file}`;
 const assetLarge = (folder: string, file: string) => `/events/${folder}/large/${file}`;
 
-// Only Cannes Lions 2026 is shown for now; other event photo sets stay
-// unlinked (files remain on disk under public/events/).
-const FILTERS: GalleryFilter[] = [];
-
-// Real photography from Culturin's Cannes Lions 2026 nights.
-const CANNES_2026: GalleryItem[] = [
+/**
+ * Static fallback shown only if the gallery_images table isn't reachable yet
+ * (e.g. the 030_gallery_images.sql migration hasn't been run). Mirrors that
+ * migration's seed rows so the page never renders empty.
+ */
+const FALLBACK_GALLERY: GalleryItem[] = [
   { src: asset("cannes-lions-2026", "UNIKday1-2.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-2.jpg"), alt: "Guest in a tailored blazer against a deep red backdrop", event: "Opening Night", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
   { src: asset("cannes-lions-2026", "UNIKday1-22.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-22.jpg"), alt: "Guests gathered on a couch with champagne", event: "The Room", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
   { src: asset("cannes-lions-2026", "UNIKday1-58.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-58.jpg"), alt: "DJ performing under a disco ball in red light", event: "After Dark", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
@@ -49,11 +53,53 @@ const CANNES_2026: GalleryItem[] = [
   { src: asset("cannes-lions-2026", "UNIKday2-12.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-12.jpg"), alt: "Group of guests at a Culturin gathering", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
   { src: asset("cannes-lions-2026", "UNIKday2-34.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-34.jpg"), alt: "Two guests laughing together late at night", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
   { src: asset("cannes-lions-2026", "UNIKday1-70.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-70.jpg"), alt: "Guests dancing under disco balls with phones raised", event: "After Dark", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-1.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-1.jpg"), alt: "DJ Tim Adé performing at the Carnival weekend after-party", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-2.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-2.jpg"), alt: "Guests gathered in a warm-lit lounge", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-3.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-3.jpg"), alt: "Guests dancing together at the after-party", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "portrait" },
+  { src: asset("notting-hill-carnival-2024", "nhc-4.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-4.jpg"), alt: "Storefront signage for the venue at night", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-5.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-5.jpg"), alt: "Guest in a colourful printed outfit", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "portrait" },
+  { src: asset("notting-hill-carnival-2024", "nhc-6.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-6.jpg"), alt: "Group of four guests in colourful attire", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-7.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-7.jpg"), alt: "A second DJ set at the after-party", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
+  { src: asset("notting-hill-carnival-2024", "nhc-8.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-8.jpg"), alt: "Guests in elaborate carnival-inspired outfits", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "portrait" },
+  { src: asset("nyfw-2024", "nyfw-1.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-1.jpg"), alt: "Models walking in a red-lit venue during Fashion Week", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-2.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-2.jpg"), alt: "A performer on the mic during the night", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-3.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-3.jpg"), alt: "DJ booth at a red-lit Fashion Week night", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-4.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-4.jpg"), alt: "DJ mixing with hand raised", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-5.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-5.jpg"), alt: "Group of guests at the bar", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-6.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-6.jpg"), alt: "Guests by a red curtain", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-7.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-7.jpg"), alt: "Group portrait of guests at the venue", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
+  { src: asset("nyfw-2024", "nyfw-8.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-8.jpg"), alt: "Guests toasting with drinks", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
 ];
 
-const GALLERY: GalleryItem[] = [...CANNES_2026];
+const FILTER_LABELS: Record<string, string> = {
+  "cannes-2026": "Cannes Lions 2026",
+  "notting-hill-2024": "Notting Hill Carnival",
+  "nyfw-2024": "NY Fashion Week",
+};
 
-export default function GalleryPage() {
+function buildFilters(items: GalleryItem[]): GalleryFilter[] {
+  const seen: string[] = [];
+  for (const item of items) {
+    if (!seen.includes(item.eventKey)) seen.push(item.eventKey);
+  }
+  if (seen.length <= 1) return [];
+  return [
+    { key: "all", label: "All" },
+    ...seen.map((key) => ({ key, label: FILTER_LABELS[key] ?? key })),
+  ];
+}
+
+async function loadGallery(): Promise<GalleryItem[]> {
+  const db = getCmsDbOrNull();
+  if (!db) return FALLBACK_GALLERY;
+  const rows = await listGalleryImagesPublic(db);
+  return rows.length > 0 ? rows : FALLBACK_GALLERY;
+}
+
+export default async function GalleryPage() {
+  const GALLERY = await loadGallery();
+  const FILTERS = buildFilters(GALLERY);
+
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
 
@@ -78,7 +124,7 @@ export default function GalleryPage() {
           Life inside the rooms.
         </h1>
         <p className="mt-6 max-w-lg text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          Two nights from Cannes Lions 2026, real rooms Culturin was actually in.
+          Real rooms Culturin has actually been in, Cannes, Notting Hill Carnival, and New York Fashion Week.
         </p>
       </div>
 

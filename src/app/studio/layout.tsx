@@ -60,6 +60,7 @@ export default async function StudioLayout({ children }: { children: ReactNode }
       videoCount={counts.videos}
       providerCount={counts.providers}
       curatorCount={counts.curators}
+      galleryCount={counts.galleryImages}
     >
       {children}
     </StudioLayoutClient>
