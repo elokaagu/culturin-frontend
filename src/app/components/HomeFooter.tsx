@@ -70,7 +70,7 @@ function FooterSubscribe() {
   }
 
   const fieldClass =
-    "min-w-0 flex-1 bg-transparent px-4 py-2.5 text-sm outline-none placeholder:opacity-50 disabled:opacity-60";
+    "min-w-0 flex-1 bg-transparent px-4 py-2.5 text-sm outline-none placeholder:opacity-70 disabled:opacity-60";
 
   return (
     <div>

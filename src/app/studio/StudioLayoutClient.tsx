@@ -4,6 +4,7 @@ import {
   BookOpen,
   Building2,
   ExternalLink,
+  Handshake,
   Images,
   LayoutDashboard,
   LogOut,
@@ -29,6 +30,7 @@ type StudioLayoutClientProps = {
   curatorCount: number;
   galleryCount: number;
   subscriberCount: number;
+  partnerInquiryCount: number;
 };
 
 const navItemClass = (active: boolean) =>
@@ -66,6 +68,7 @@ export default function StudioLayoutClient({
   curatorCount,
   galleryCount,
   subscriberCount,
+  partnerInquiryCount,
 }: StudioLayoutClientProps) {
   const router = useTransitionRouter();
   const pathname = usePathname() ?? "";
@@ -225,6 +228,22 @@ export default function StudioLayoutClient({
                     {countBadge(
                       subscriberCount,
                       pathname === "/studio/subscribers" || pathname?.startsWith("/studio/subscribers/"),
+                    )}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/studio/partner-inquiries"
+                    className={navItemClass(
+                      pathname === "/studio/partner-inquiries" || pathname?.startsWith("/studio/partner-inquiries/"),
+                    )}
+                    aria-current={pathname === "/studio/partner-inquiries" ? "page" : undefined}
+                  >
+                    <Handshake className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                    <span className="min-w-0 flex-1">Partner inquiries</span>
+                    {countBadge(
+                      partnerInquiryCount,
+                      pathname === "/studio/partner-inquiries" || pathname?.startsWith("/studio/partner-inquiries/"),
                     )}
                   </Link>
                 </li>

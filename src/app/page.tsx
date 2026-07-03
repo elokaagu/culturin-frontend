@@ -19,6 +19,7 @@ import ParallaxReveal from "./components/motion/ParallaxReveal";
 import EditorialStatement from "./components/EditorialStatement";
 import HomeFooter from "./components/HomeFooter";
 import IslandNav from "./components/IslandNav";
+import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
 
 export const metadata: Metadata = {
   title: "Culturin | Where Inspiration Meets Exploration",
@@ -62,6 +63,19 @@ const PILLARS = [
     label: "Brand & credibility",
     body: "Built by a team with production history at the Super Bowl, the Oscars, Davos, Cannes, and the UN Assembly.",
   },
+];
+
+// Text wordmarks for now — drop a logo file under /public/logos and set
+// `logoSrc` on the matching entry to switch it to the real mark.
+const PRODUCTION_HISTORY: LogoTickerItem[] = [
+  { name: "Super Bowl" },
+  { name: "The Oscars" },
+  { name: "Davos" },
+  { name: "Cannes Film Festival" },
+  { name: "UN Assembly" },
+  { name: "Nike" },
+  { name: "Virgin" },
+  { name: "Microsoft" },
 ];
 
 const featuredEvents = events.filter((e) => !e.isPast).slice(0, 3);
@@ -164,22 +178,12 @@ export default function HomePage() {
           </div>
 
           {/* Production history: team credentials, not claimed active sponsorships */}
-          <div className="mt-16 border-t pt-10 text-center" style={{ borderColor: RULE }}>
+          <div className="mt-16 border-t pt-10" style={{ borderColor: RULE }}>
             <Reveal delay={200}>
-              <p className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+              <p className="mb-6 text-center text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
                 Our team&apos;s production history includes
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
-                {["Super Bowl", "The Oscars", "Davos", "Cannes Film Festival", "UN Assembly", "Nike", "Virgin", "Microsoft"].map((name) => (
-                  <span
-                    key={name}
-                    className="text-sm font-medium uppercase tracking-[0.08em]"
-                    style={{ color: INK_MUTED }}
-                  >
-                    {name}
-                  </span>
-                ))}
-              </div>
+              <LogoTicker items={PRODUCTION_HISTORY} ink={INK_MUTED} />
             </Reveal>
           </div>
         </div>
@@ -192,24 +196,24 @@ export default function HomePage() {
             eyebrow="Education"
             headline={"Culture Is\nSomething You\nLearn, Not Just\nSee."}
             body="Most travel platforms show you a destination. Culturin teaches you how to actually engage with it: the history, the etiquette, and the stories beneath the surface, before you ever board a flight."
-            image="/events/cannes-lions-2026/UNIKday1-46.jpg"
-            imageAlt="Guests mingling in a warm-lit lounge at a Culturin evening in Cannes"
+            image="/events/cannes-lions-2026/UNIKday1-83.jpg"
+            imageAlt="Guests filling a red-lit room beneath the disco balls in Cannes"
             imageSide="right"
             buttons={[
               { label: "Explore travel guides", href: "/travel-guides/nice-and-cannes", variant: "solid" },
-              { label: "Partner with us", href: "mailto:partners@culturin.com?subject=Partnering%20with%20Culturin", variant: "text" },
+              { label: "Partner with us", href: "/partner", variant: "text" },
             ]}
           />
           <EditorialStatement
             eyebrow="Content"
             headline={"Stories From\nThe Room."}
             body="Articles and video from artists, musicians, and entrepreneurs about travel, identity, and culture, captured from the same rooms Culturin builds."
-            image="/events/cannes-lions-2026/UNIKday2-16.jpg"
-            imageAlt="Guest laughing and pointing at the camera beneath the disco balls in Cannes"
+            image="/events/cannes-lions-2026/UNIKday2-24.jpg"
+            imageAlt="Couple posing together at a branded photo wall in Cannes"
             imageSide="left"
             buttons={[
               { label: "See upcoming events", href: "/events", variant: "solid" },
-              { label: "Partner with us", href: "mailto:partners@culturin.com?subject=Partnering%20with%20Culturin", variant: "text" },
+              { label: "Partner with us", href: "/partner", variant: "text" },
             ]}
           />
           <EditorialStatement
@@ -220,7 +224,7 @@ export default function HomePage() {
             imageAlt="Guest at a Culturin evening in Cannes"
             imageSide="right"
             buttons={[
-              { label: "Partner with us", href: "mailto:partners@culturin.com?subject=Partnering%20with%20Culturin", variant: "solid" },
+              { label: "Partner with us", href: "/partner", variant: "solid" },
               { label: "See upcoming events", href: "/events", variant: "text" },
             ]}
           />
@@ -466,13 +470,13 @@ export default function HomePage() {
                 If you want your brand in the room where the real conversations happen, not just a name on a step-and-repeat, we should talk.
               </p>
               <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-                <a
-                  href="mailto:partners@culturin.com?subject=Partnering%20with%20Culturin"
+                <Link
+                  href="/partner"
                   className="inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
                   style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
                 >
                   Become a partner
-                </a>
+                </Link>
                 <Link
                   href="/events"
                   className="text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-70"

@@ -103,7 +103,7 @@ export default function IslandNav() {
 
           {/* CTA */}
           <Link
-            href="/#partners"
+            href="/partner"
             className="shrink-0 rounded-full bg-[#b5502e] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
           >
             Partner with us
@@ -177,7 +177,7 @@ export default function IslandNav() {
               {isDark ? "Light mode" : "Dark mode"}
             </button>
             <Link
-              href="/#partners"
+              href="/partner"
               onClick={() => setMobileOpen(false)}
               className="rounded-full bg-[#b5502e] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
             >
