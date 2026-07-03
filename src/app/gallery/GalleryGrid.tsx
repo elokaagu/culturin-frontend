@@ -53,30 +53,32 @@ export default function GalleryGrid({
 
   return (
     <>
-      {/* Filter tabs */}
-      <div className="mb-10 flex flex-wrap gap-2">
-        {filters.map((f) => {
-          const active = f.key === activeFilter;
-          return (
-            <button
-              key={f.key}
-              type="button"
-              onClick={() => {
-                setActiveFilter(f.key);
-                setOpenIndex(null);
-              }}
-              className="rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors"
-              style={
-                active
-                  ? { background: SURFACE_DARK, borderColor: SURFACE_DARK, color: "#f1e9dc" }
-                  : { background: "transparent", borderColor: EDITORIAL_RULE, color: EDITORIAL_MUTED }
-              }
-            >
-              {f.label}
-            </button>
-          );
-        })}
-      </div>
+      {/* Filter tabs (hidden when there's only one thing to show) */}
+      {filters.length > 1 ? (
+        <div className="mb-10 flex flex-wrap gap-2">
+          {filters.map((f) => {
+            const active = f.key === activeFilter;
+            return (
+              <button
+                key={f.key}
+                type="button"
+                onClick={() => {
+                  setActiveFilter(f.key);
+                  setOpenIndex(null);
+                }}
+                className="rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors"
+                style={
+                  active
+                    ? { background: SURFACE_DARK, borderColor: SURFACE_DARK, color: "#f1e9dc" }
+                    : { background: "transparent", borderColor: EDITORIAL_RULE, color: EDITORIAL_MUTED }
+                }
+              >
+                {f.label}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
 
       <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
         {filteredItems.map((item, i) => (

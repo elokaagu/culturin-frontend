@@ -34,16 +34,16 @@ const ACCENT = EDITORIAL_ACCENT;
 
 const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-30.jpg";
 const CANNES_SRC = "/events/cannes-lions-2026/UNIKday1-2.jpg";
-const PARTNER_SRC = "/events/nyfw-2024/nyfw-3.jpg";
-const PARALLAX_SRC = "/events/notting-hill-carnival-2024/nhc-1.jpg";
+const PARTNER_SRC = "/events/cannes-lions-2026/UNIKday1-50.jpg";
+const PARALLAX_SRC = "/events/cannes-lions-2026/UNIKday2-26.jpg";
 
 const GALLERY_PREVIEW = [
   { src: "/events/cannes-lions-2026/UNIKday1-58.jpg", alt: "DJ under a disco ball at a Culturin night in Cannes", span: "row-span-2" },
-  { src: "/events/nyfw-2024/nyfw-1.jpg", alt: "Models walking in a red-lit venue during NY Fashion Week", span: "" },
-  { src: "/events/notting-hill-carnival-2024/nhc-6.jpg", alt: "Guests in colourful attire during Carnival weekend in London", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday1-46.jpg", alt: "Guests mingling in a warm-lit lounge in Cannes", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday2-22.jpg", alt: "Couple posing at a branded wall in Cannes", span: "" },
   { src: "/events/cannes-lions-2026/UNIKday1-26.jpg", alt: "Disco balls above the crowd in Cannes", span: "row-span-2" },
   { src: "/events/cannes-lions-2026/UNIKday1-38.jpg", alt: "Guests posing together at a Culturin evening in Cannes", span: "" },
-  { src: "/events/notting-hill-carnival-2024/nhc-1.jpg", alt: "DJ performing during Carnival weekend in London", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday2-34.jpg", alt: "Two guests laughing together at a Culturin night in Cannes", span: "" },
 ];
 
 const PILLARS = [
@@ -101,9 +101,6 @@ export default function HomePage() {
           }}
         />
         <Reveal className="relative z-10 mx-auto flex max-w-2xl flex-col items-center" y={32}>
-          <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.32em] text-white/70">
-            Culture is the noun. Culturin is the verb.
-          </p>
           <h1
             className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
             style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
@@ -196,8 +193,8 @@ export default function HomePage() {
             eyebrow="Education"
             headline={"Culture Is\nSomething You\nLearn, Not Just\nSee."}
             body="Most travel platforms show you a destination. Culturin teaches you how to actually engage with it: the history, the etiquette, and the stories beneath the surface, before you ever board a flight."
-            image="/events/notting-hill-carnival-2024/nhc-5.jpg"
-            imageAlt="Guest in a colourful printed outfit during Carnival weekend in London"
+            image="/events/cannes-lions-2026/UNIKday1-14.jpg"
+            imageAlt="Guests in an intimate moment at a Culturin evening in Cannes"
             imageSide="right"
             buttons={[
               { label: "Explore travel guides", href: "/travel-guides", variant: "solid" },
@@ -208,8 +205,8 @@ export default function HomePage() {
             eyebrow="Content"
             headline={"Stories From\nThe Room."}
             body="Articles and video from artists, musicians, and entrepreneurs about travel, identity, and culture, captured from the same rooms Culturin builds."
-            image="/events/nyfw-2024/nyfw-7.jpg"
-            imageAlt="Group portrait of guests at a Culturin New York Fashion Week night"
+            image="/events/cannes-lions-2026/UNIKday1-66.jpg"
+            imageAlt="Guests sharing a moment on the dancefloor in Cannes"
             imageSide="left"
             buttons={[
               { label: "Watch videos", href: "/videos", variant: "solid" },

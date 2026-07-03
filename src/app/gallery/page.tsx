@@ -15,7 +15,7 @@ import IslandNav from "../components/IslandNav";
 
 export const metadata: Metadata = {
   title: "Gallery | Culturin",
-  description: "Images from Culturin events, Cannes, New York, London, and beyond.",
+  description: "Images from Culturin at Cannes Lions 2026.",
 };
 
 const BG = EDITORIAL_BG;
@@ -27,12 +27,9 @@ const ACCENT = EDITORIAL_ACCENT;
 const asset = (folder: string, file: string) => `/events/${folder}/${file}`;
 const assetLarge = (folder: string, file: string) => `/events/${folder}/large/${file}`;
 
-const FILTERS: GalleryFilter[] = [
-  { key: "all", label: "All" },
-  { key: "cannes-2026", label: "Cannes Lions 2026" },
-  { key: "notting-hill-2024", label: "Notting Hill Carnival" },
-  { key: "nyfw-2024", label: "NY Fashion Week" },
-];
+// Only Cannes Lions 2026 is shown for now; other event photo sets stay
+// unlinked (files remain on disk under public/events/).
+const FILTERS: GalleryFilter[] = [];
 
 // Real photography from Culturin's Cannes Lions 2026 nights.
 const CANNES_2026: GalleryItem[] = [
@@ -54,31 +51,7 @@ const CANNES_2026: GalleryItem[] = [
   { src: asset("cannes-lions-2026", "UNIKday1-70.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-70.jpg"), alt: "Guests dancing under disco balls with phones raised", event: "After Dark", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
 ];
 
-// Real photography from Culturin's Notting Hill Carnival weekend after-party.
-const NOTTING_HILL_2024: GalleryItem[] = [
-  { src: asset("notting-hill-carnival-2024", "nhc-1.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-1.jpg"), alt: "DJ Tim Adé performing at the Carnival weekend after-party", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
-  { src: asset("notting-hill-carnival-2024", "nhc-2.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-2.jpg"), alt: "Guests gathered in a warm-lit lounge", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
-  { src: asset("notting-hill-carnival-2024", "nhc-3.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-3.jpg"), alt: "Guests dancing together at the after-party", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "portrait" },
-  { src: asset("notting-hill-carnival-2024", "nhc-4.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-4.jpg"), alt: "Storefront signage for the venue at night", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
-  { src: asset("notting-hill-carnival-2024", "nhc-5.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-5.jpg"), alt: "Guest in a colourful printed outfit", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "portrait" },
-  { src: asset("notting-hill-carnival-2024", "nhc-6.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-6.jpg"), alt: "Group of four guests in colourful attire", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
-  { src: asset("notting-hill-carnival-2024", "nhc-7.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-7.jpg"), alt: "A second DJ set at the after-party", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "landscape" },
-  { src: asset("notting-hill-carnival-2024", "nhc-8.jpg"), largeSrc: assetLarge("notting-hill-carnival-2024", "nhc-8.jpg"), alt: "Guests in elaborate carnival-inspired outfits", event: "Carnival Weekend", location: "London", eventKey: "notting-hill-2024", orientation: "portrait" },
-];
-
-// Real photography from Culturin's New York Fashion Week night.
-const NYFW_2024: GalleryItem[] = [
-  { src: asset("nyfw-2024", "nyfw-1.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-1.jpg"), alt: "Models walking in a red-lit venue during Fashion Week", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
-  { src: asset("nyfw-2024", "nyfw-2.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-2.jpg"), alt: "A performer on the mic during the night", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
-  { src: asset("nyfw-2024", "nyfw-3.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-3.jpg"), alt: "DJ booth at a red-lit Fashion Week night", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
-  { src: asset("nyfw-2024", "nyfw-4.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-4.jpg"), alt: "DJ mixing with hand raised", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
-  { src: asset("nyfw-2024", "nyfw-5.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-5.jpg"), alt: "Group of guests at the bar", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
-  { src: asset("nyfw-2024", "nyfw-6.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-6.jpg"), alt: "Guests by a red curtain", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
-  { src: asset("nyfw-2024", "nyfw-7.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-7.jpg"), alt: "Group portrait of guests at the venue", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
-  { src: asset("nyfw-2024", "nyfw-8.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-8.jpg"), alt: "Guests toasting with drinks", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
-];
-
-const GALLERY: GalleryItem[] = [...CANNES_2026, ...NOTTING_HILL_2024, ...NYFW_2024];
+const GALLERY: GalleryItem[] = [...CANNES_2026];
 
 export default function GalleryPage() {
   return (
@@ -105,8 +78,7 @@ export default function GalleryPage() {
           Life inside the rooms.
         </h1>
         <p className="mt-6 max-w-lg text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          Cannes, London, and New York, real nights we&apos;ve built. Every photo
-          is a room Culturin was actually in.
+          Two nights from Cannes Lions 2026, real rooms Culturin was actually in.
         </p>
       </div>
 

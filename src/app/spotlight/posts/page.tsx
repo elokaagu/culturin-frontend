@@ -44,7 +44,7 @@ export default function SpotlightPosts() {
         <div className="mx-2.5 flex w-full max-w-3xl flex-col items-center sm:pl-7">
           <h1 className="w-full pl-0 pt-5 pr-5 text-3xl max-[428px]:ml-10">Cynthia Bailey</h1>
           <h3 className="w-full pl-0 pr-5 text-xl text-muted-foreground sm:pl-0 max-[428px]:pl-2.5">
-            Culturin Convos: A conversation with Cynthia Bailey
+            A conversation with Cynthia Bailey
           </h3>
         </div>
         <div
