@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="Culturin Card visual">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f1116" />
+      <stop offset="100%" stop-color="#1d222c" />
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f5d27a" stop-opacity="0.26" />
+      <stop offset="100%" stop-color="#f5d27a" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="chip" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0cf7e" />
+      <stop offset="100%" stop-color="#b6882f" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="#0b0d11" />
+  <g transform="translate(115 120)">
+    <rect x="0" y="0" width="970" height="520" rx="36" fill="url(#bg)" stroke="#444b57" stroke-opacity="0.6" stroke-width="3" />
+    <rect x="0" y="0" width="970" height="520" rx="36" fill="url(#shine)" />
+
+    <path d="M70 420 C260 320, 520 470, 860 300" stroke="#f5d27a" stroke-opacity="0.15" stroke-width="2" fill="none" />
+    <path d="M90 160 C330 30, 580 250, 900 120" stroke="#f5d27a" stroke-opacity="0.12" stroke-width="2" fill="none" />
+
+    <rect x="80" y="160" width="125" height="92" rx="12" fill="url(#chip)" />
+    <line x1="111" y1="160" x2="111" y2="252" stroke="#8f6820" stroke-opacity="0.7" />
+    <line x1="143" y1="160" x2="143" y2="252" stroke="#8f6820" stroke-opacity="0.7" />
+    <line x1="174" y1="160" x2="174" y2="252" stroke="#8f6820" stroke-opacity="0.7" />
+
+    <g transform="translate(780 155)" stroke="#d8dde7" stroke-opacity="0.7" stroke-width="8" fill="none" stroke-linecap="round">
+      <path d="M0 0a44 44 0 0 1 0 70" />
+      <path d="M18 14a26 26 0 0 1 0 42" />
+      <path d="M34 28a9 9 0 0 1 0 14" />
+    </g>
+
+    <text x="82" y="92" font-family="Inter, Arial, sans-serif" font-size="24" fill="#d4b56e" letter-spacing="7">MEMBER REWARDS</text>
+    <text x="82" y="336" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="700" fill="#f8fafc">CULTURIN CARD</text>
+    <text x="82" y="382" font-family="Inter, Arial, sans-serif" font-size="23" fill="#cfd4dd" fill-opacity="0.85">
+      Culture-first perks across destinations.
+    </text>
+
+    <text x="82" y="468" font-family="Inter, Arial, sans-serif" font-size="20" fill="#c1c7d2" fill-opacity="0.85">VALID THRU</text>
+    <text x="250" y="468" font-family="Inter, Arial, sans-serif" font-size="20" fill="#c1c7d2" fill-opacity="0.85">MEMBER</text>
+    <text x="82" y="505" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="600" fill="#eef2f7">12 / 31</text>
+    <text x="250" y="505" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="600" fill="#eef2f7">CULTURIN</text>
+  </g>
+</svg>
