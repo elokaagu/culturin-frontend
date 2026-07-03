@@ -470,10 +470,10 @@ export default function HomePage() {
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
-                We work with brands on event sponsorship, and with tourism boards and government agencies on consulting and campaigns that promote real cultural exchange, not just destination marketing.
+                We partner with the world&apos;s leading consumer and lifestyle brands on cultural programming built around marquee moments, Cannes Lions, the US Open, the UN General Assembly, and beyond. Every room we build delivers a curated, high-caliber audience: high-net-worth individuals, senior executives, and cultural tastemakers who actually show up.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
-                If you want to show up in culture in a way people actually remember, we should talk.
+                If you want your brand in the room where the real conversations happen, not just a name on a step-and-repeat, we should talk.
               </p>
               <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <a
