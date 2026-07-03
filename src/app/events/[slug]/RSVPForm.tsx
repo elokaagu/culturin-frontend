@@ -11,7 +11,7 @@ export default function RSVPForm() {
     e.preventDefault();
     if (!email) return;
     setLoading(true);
-    // Placeholder — wire to your mailing list / Supabase table when ready.
+    // Placeholder: wire to your mailing list / Supabase table when ready.
     await new Promise((r) => setTimeout(r, 800));
     setSubmitted(true);
     setLoading(false);

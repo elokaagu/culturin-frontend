@@ -18,7 +18,7 @@ type ParallaxRevealProps = {
  * Goals House-style pinned scroll section: the section is taller than the
  * viewport, and while it scrolls through, the image drifts slightly (parallax)
  * and darkens while a headline scales up and fades in, then the whole block
- * releases as the section clears — mimicking a cinematic sticky reveal.
+ * releases as the section clears, mimicking a cinematic sticky reveal.
  */
 export default function ParallaxReveal({
   src,

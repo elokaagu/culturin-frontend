@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 import {
@@ -12,10 +11,11 @@ import {
   editorialScopeClass,
 } from "@/lib/theme/culturinTokens";
 import GalleryGrid, { type GalleryFilter, type GalleryItem } from "./GalleryGrid";
+import IslandNav from "../components/IslandNav";
 
 export const metadata: Metadata = {
   title: "Gallery | Culturin",
-  description: "Images from Culturin events — Cannes, New York, London, and beyond.",
+  description: "Images from Culturin events, Cannes, New York, London, and beyond.",
 };
 
 const BG = EDITORIAL_BG;
@@ -30,7 +30,6 @@ const assetLarge = (folder: string, file: string) => `/events/${folder}/large/${
 const FILTERS: GalleryFilter[] = [
   { key: "all", label: "All" },
   { key: "cannes-2026", label: "Cannes Lions 2026" },
-  { key: "cannes-2024", label: "Cannes Lions 2024" },
   { key: "notting-hill-2024", label: "Notting Hill Carnival" },
   { key: "nyfw-2024", label: "NY Fashion Week" },
 ];
@@ -53,18 +52,6 @@ const CANNES_2026: GalleryItem[] = [
   { src: asset("cannes-lions-2026", "UNIKday2-12.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-12.jpg"), alt: "Group of guests at a Culturin gathering", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
   { src: asset("cannes-lions-2026", "UNIKday2-34.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-34.jpg"), alt: "Two guests laughing together late at night", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
   { src: asset("cannes-lions-2026", "UNIKday1-70.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday1-70.jpg"), alt: "Guests dancing under disco balls with phones raised", event: "After Dark", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
-];
-
-// Real photography from Culturin's 2024 Cannes Lions night.
-const CANNES_2024: GalleryItem[] = [
-  { src: asset("cannes-lions-2024", "cannes-1.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-1.jpg"), alt: "Wide shot of a red-lit venue crowd under neon signage", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
-  { src: asset("cannes-lions-2024", "cannes-2.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-2.jpg"), alt: "DJ performing at a Cannes Lions night", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
-  { src: asset("cannes-lions-2024", "cannes-3.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-3.jpg"), alt: "Guests on a daylight terrace at a Cannes gathering", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
-  { src: asset("cannes-lions-2024", "cannes-4.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-4.jpg"), alt: "Guests gathered outdoors in the evening", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
-  { src: asset("cannes-lions-2024", "cannes-5.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-5.jpg"), alt: "Guests dancing with hands raised", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
-  { src: asset("cannes-lions-2024", "cannes-6.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-6.jpg"), alt: "Crowd under red neon signage", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
-  { src: asset("cannes-lions-2024", "cannes-7.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-7.jpg"), alt: "Group of guests embracing candidly", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
-  { src: asset("cannes-lions-2024", "cannes-8.jpg"), largeSrc: assetLarge("cannes-lions-2024", "cannes-8.jpg"), alt: "Guests walking together outdoors", event: "Cannes Lions 2024", location: "Cannes", eventKey: "cannes-2024", orientation: "landscape" },
 ];
 
 // Real photography from Culturin's Notting Hill Carnival weekend after-party.
@@ -91,53 +78,19 @@ const NYFW_2024: GalleryItem[] = [
   { src: asset("nyfw-2024", "nyfw-8.jpg"), largeSrc: assetLarge("nyfw-2024", "nyfw-8.jpg"), alt: "Guests toasting with drinks", event: "NY Fashion Week", location: "New York", eventKey: "nyfw-2024", orientation: "landscape" },
 ];
 
-const GALLERY: GalleryItem[] = [...CANNES_2026, ...CANNES_2024, ...NOTTING_HILL_2024, ...NYFW_2024];
+const GALLERY: GalleryItem[] = [...CANNES_2026, ...NOTTING_HILL_2024, ...NYFW_2024];
 
 export default function GalleryPage() {
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
 
-      {/* ── Top bar ──────────────────────────────────────────────── */}
-      <header
-        className="flex items-center justify-between border-b px-8 sm:px-14"
-        style={{ height: 48, borderColor: RULE, background: BG }}
-      >
-        <Link
-          href="/"
-          className="flex items-center no-underline opacity-95 transition-opacity hover:opacity-100"
-          aria-label="Culturin home"
-        >
-          <Image
-            src="/culturin_logo.svg"
-            alt="Culturin"
-            width={84}
-            height={18}
-            className="h-4 w-auto max-w-[5.75rem]"
-            unoptimized
-          />
-        </Link>
-        <div className="flex items-center gap-6">
-          <Link
-            href="/events"
-            className="text-xs no-underline transition-opacity hover:opacity-60"
-            style={{ color: INK_MUTED }}
-          >
-            Events
-          </Link>
-          <Link
-            href="/"
-            className="text-xs no-underline transition-opacity hover:opacity-60"
-            style={{ color: INK_MUTED }}
-          >
-            ← Back
-          </Link>
-        </div>
-      </header>
+      {/* ── Dynamic island nav ─────────────────────────────────── */}
+      <IslandNav />
 
       {/* ── Page header ──────────────────────────────────────────── */}
       <div
         className="border-b px-8 sm:px-14"
-        style={{ paddingTop: "5rem", paddingBottom: "5rem", borderColor: RULE }}
+        style={{ paddingTop: "8rem", paddingBottom: "5rem", borderColor: RULE }}
       >
         <p
           className="mb-5 text-[10px] font-semibold uppercase tracking-[0.3em]"
@@ -152,7 +105,7 @@ export default function GalleryPage() {
           Life inside the rooms.
         </h1>
         <p className="mt-6 max-w-lg text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          Cannes, London, and New York — real nights we&apos;ve built. Every photo
+          Cannes, London, and New York, real nights we&apos;ve built. Every photo
           is a room Culturin was actually in.
         </p>
       </div>

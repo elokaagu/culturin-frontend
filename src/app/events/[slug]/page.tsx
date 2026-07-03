@@ -14,6 +14,7 @@ import {
 } from "@/lib/theme/culturinTokens";
 import BlurImage from "@/app/components/motion/BlurImage";
 import Reveal from "@/app/components/motion/Reveal";
+import IslandNav from "@/app/components/IslandNav";
 import RSVPForm from "./RSVPForm";
 
 const BG = EDITORIAL_BG;
@@ -43,6 +44,8 @@ export default async function EventLandingPage({ params }: Props) {
   const event = getEventBySlug(slug);
   if (!event) notFound();
 
+  const isPast = event.isPast === true;
+
   const navItems = [
     { label: "VIBE", href: "#vibe" },
     { label: "WHO", href: "#who" },
@@ -53,41 +56,39 @@ export default async function EventLandingPage({ params }: Props) {
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} min-h-dvh font-sans antialiased`}>
 
-      {/* ── Sticky nav ───────────────────────────────────────────── */}
+      {/* ── Dynamic island nav (global brand nav) ───────────────── */}
+      <IslandNav />
+
+      {/* ── Section-jump bar (sits below the island) ────────────── */}
       <nav
-        className="fixed inset-x-0 top-0 z-50 flex items-stretch"
-        style={{ height: 44 }}
+        className="fixed inset-x-0 z-40 hidden items-stretch sm:flex"
+        style={{ top: 60, height: 40 }}
         aria-label="Event sections"
       >
-        {/* Brand anchor */}
         <a
           href="#home"
-          className="flex shrink-0 items-center px-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white no-underline"
+          className="flex shrink-0 items-center px-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white no-underline"
           style={{ background: SURFACE_DARK }}
         >
           {event.navLabel}
         </a>
-
-        {/* Section links */}
         <div className="flex flex-1 items-stretch border-b" style={{ borderColor: RULE }}>
           {navItems.map((item) => (
             <a
               key={item.label}
               href={item.href}
-              className="flex flex-1 items-center justify-center text-[11px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
-              style={{ color: INK, borderRight: `1px solid ${RULE}` }}
+              className="flex flex-1 items-center justify-center text-[10px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
+              style={{ color: INK, borderRight: `1px solid ${RULE}`, background: BG }}
             >
               {item.label}
             </a>
           ))}
-
-          {/* RSVP CTA */}
           <a
             href="#rsvp"
-            className="flex shrink-0 items-center px-6 text-[11px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+            className="flex shrink-0 items-center px-6 text-[10px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
             style={{ background: ACCENT, color: SURFACE_DARK }}
           >
-            RSVP
+            {isPast ? "Recap" : "RSVP"}
           </a>
         </div>
       </nav>
@@ -95,8 +96,7 @@ export default async function EventLandingPage({ params }: Props) {
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section
         id="home"
-        className="relative flex min-h-dvh flex-col justify-end overflow-hidden pb-16 pl-8 sm:pl-14"
-        style={{ paddingTop: 44 }}
+        className="relative flex min-h-dvh flex-col justify-end overflow-hidden px-6 pb-16 sm:px-14"
       >
         <BlurImage
           src={event.heroImage}
@@ -119,8 +119,13 @@ export default async function EventLandingPage({ params }: Props) {
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
             Culturin
           </p>
+          {isPast ? (
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/60">
+              Recap
+            </p>
+          ) : null}
           <h1
-            className="font-display m-0 whitespace-pre-line text-6xl font-semibold leading-[1.0] text-white sm:text-8xl"
+            className="font-display m-0 whitespace-pre-line text-5xl font-semibold leading-[1.03] text-white sm:text-7xl lg:text-8xl"
             style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
           >
             {event.tagline}
@@ -142,7 +147,7 @@ export default async function EventLandingPage({ params }: Props) {
           className="relative overflow-visible px-8 sm:px-14"
           style={{ paddingTop: "12rem", paddingBottom: "12rem" }}
         >
-          {/* Scattered photos — absolute within the tall section */}
+          {/* Scattered photos, absolute within the tall section */}
           {section.photos.map((photo, i) => (
             <Reveal
               key={i}
@@ -168,7 +173,7 @@ export default async function EventLandingPage({ params }: Props) {
             </Reveal>
           ))}
 
-          {/* Text content — sits in the center of the wide canvas */}
+          {/* Text content, sits in the center of the wide canvas */}
           <Reveal className="relative z-10 mx-auto max-w-xl text-center lg:text-left">
             <p
               className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]"
@@ -218,7 +223,7 @@ export default async function EventLandingPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── Signal / What to expect ───────────────────────────────── */}
+      {/* ── Signal / What happened(ing) ──────────────────────────── */}
       <section
         id="signal"
         className="px-8 sm:px-14"
@@ -243,7 +248,7 @@ export default async function EventLandingPage({ params }: Props) {
         </Reveal>
       </section>
 
-      {/* ── RSVP ─────────────────────────────────────────────────── */}
+      {/* ── RSVP / Recap ─────────────────────────────────────────── */}
       <section
         id="rsvp"
         className="border-t px-8 sm:px-14"
@@ -254,7 +259,7 @@ export default async function EventLandingPage({ params }: Props) {
             className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]"
             style={{ color: INK_MUTED }}
           >
-            RSVP
+            {isPast ? "RECAP" : "RSVP"}
           </p>
           <h2
             className="m-0 text-4xl font-medium leading-[1.1] sm:text-6xl"
@@ -265,6 +270,15 @@ export default async function EventLandingPage({ params }: Props) {
           <p className="mt-6 max-w-md text-base leading-relaxed" style={{ color: INK_MUTED }}>
             {event.rsvpSubtext}
           </p>
+          {isPast ? (
+            <a
+              href="/gallery"
+              className="mt-8 inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+              style={{ background: ACCENT, color: SURFACE_DARK }}
+            >
+              View the gallery
+            </a>
+          ) : null}
           <RSVPForm />
         </Reveal>
       </section>

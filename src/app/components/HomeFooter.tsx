@@ -208,7 +208,7 @@ export default function HomeFooter() {
         </div>
 
         <div className="mt-14 flex items-center justify-between border-t py-6 text-xs" style={{ borderColor: "rgba(232,227,218,0.15)" }}>
-          <span className="text-white/45">© {year} Culturin — All Rights Reserved.</span>
+          <span className="text-white/45">© {year} Culturin. All Rights Reserved.</span>
           <a
             href="mailto:unik@culturin.com"
             className="text-white/45 no-underline transition-opacity hover:text-white/80"
@@ -218,7 +218,7 @@ export default function HomeFooter() {
         </div>
       </div>
 
-      {/* Giant wordmark, clipped at the bottom edge — OPUS-style footer signature */}
+      {/* Giant wordmark, clipped at the bottom edge: OPUS-style footer signature */}
       <p
         aria-hidden
         className="pointer-events-none relative z-0 m-0 select-none whitespace-nowrap text-center font-medium leading-none text-white/[0.06]"

@@ -23,7 +23,7 @@ import IslandNav from "./components/IslandNav";
 export const metadata: Metadata = {
   title: "Culturin | Where Inspiration Meets Exploration",
   description:
-    "Culturin is a curated travel & culture company — stories, curated events, and cultural education for people who want to experience the world with more depth.",
+    "Culturin is a curated travel & culture company, with stories, curated events, and cultural education for people who want to experience the world with more depth.",
 };
 
 const BG = EDITORIAL_BG;
@@ -42,22 +42,22 @@ const GALLERY_PREVIEW = [
   { src: "/events/nyfw-2024/nyfw-1.jpg", alt: "Models walking in a red-lit venue during NY Fashion Week", span: "" },
   { src: "/events/notting-hill-carnival-2024/nhc-6.jpg", alt: "Guests in colourful attire during Carnival weekend in London", span: "" },
   { src: "/events/cannes-lions-2026/UNIKday1-26.jpg", alt: "Disco balls above the crowd in Cannes", span: "row-span-2" },
-  { src: "/events/cannes-lions-2024/cannes-3.jpg", alt: "Daylight terrace crowd at a Cannes Lions gathering", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday1-38.jpg", alt: "Guests posing together at a Culturin evening in Cannes", span: "" },
   { src: "/events/notting-hill-carnival-2024/nhc-1.jpg", alt: "DJ performing during Carnival weekend in London", span: "" },
 ];
 
 const PILLARS = [
   {
     label: "Content & culture",
-    body: "Articles, video, and Culturin Convos — live conversations with artists, musicians, and cultural leaders about travel and identity.",
+    body: "Articles, video, and live conversations with artists, musicians, and cultural leaders about travel and identity.",
   },
   {
     label: "Curated events",
-    body: "Dinners, festivals, and gatherings distributed across global locales — Cannes, New York, Lagos, and beyond.",
+    body: "Dinners, festivals, and gatherings distributed across global locales, from Cannes to New York and beyond.",
   },
   {
     label: "Education",
-    body: "Cultural literacy programming that goes beyond the trip — helping travelers understand, not just visit, the places they explore.",
+    body: "Cultural literacy programming that goes beyond the trip, helping travelers understand, not just visit, the places they explore.",
   },
   {
     label: "Brand & credibility",
@@ -65,7 +65,7 @@ const PILLARS = [
   },
 ];
 
-const featuredEvents = events.slice(0, 3);
+const featuredEvents = events.filter((e) => !e.isPast).slice(0, 3);
 
 /** Short city label pulled from a full location string, for Trippin-style tag chips. */
 function cityTag(location: string): string {
@@ -111,13 +111,12 @@ export default function HomePage() {
             Where inspiration meets exploration.
           </h1>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-white/75">
-            Culturin is a curated travel &amp; culture company — stories, curated events, and cultural education for people who want to experience the world with more depth.
+            Culturin is a curated travel &amp; culture company, with stories, curated events, and cultural education for people who want to experience the world with more depth.
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/55">
             <span>Cannes</span>
             <span>New York</span>
             <span>London</span>
-            <span>Lagos</span>
           </div>
         </Reveal>
       </section>
@@ -145,10 +144,10 @@ export default function HomePage() {
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Culturin is a curated travel &amp; education company. Our goal is to help people learn and embody the art of culture — through stories, curated events, and experiences that go beyond the postcard version of a place.
+                Culturin is a curated travel &amp; education company. Our goal is to help people learn and embody the art of culture, through stories, curated events, and experiences that go beyond the postcard version of a place.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Our team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly. We bring that same care to every room we build — for our community, and for the partners who build alongside us.
+                Our team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly. We bring that same care to every room we build, for our community, and for the partners who build alongside us.
               </p>
             </Reveal>
           </div>
@@ -168,7 +167,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Production history — team credentials, not claimed active sponsorships */}
+          {/* Production history: team credentials, not claimed active sponsorships */}
           <div className="mt-16 border-t pt-10 text-center" style={{ borderColor: RULE }}>
             <Reveal delay={200}>
               <p className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
@@ -196,7 +195,7 @@ export default function HomePage() {
           <EditorialStatement
             eyebrow="Education"
             headline={"Culture Is\nSomething You\nLearn, Not Just\nSee."}
-            body="Most travel platforms show you a destination. Culturin teaches you how to actually engage with it — the history, the etiquette, and the stories beneath the surface, before you ever board a flight."
+            body="Most travel platforms show you a destination. Culturin teaches you how to actually engage with it: the history, the etiquette, and the stories beneath the surface, before you ever board a flight."
             image="/events/notting-hill-carnival-2024/nhc-5.jpg"
             imageAlt="Guest in a colourful printed outfit during Carnival weekend in London"
             imageSide="right"
@@ -207,22 +206,22 @@ export default function HomePage() {
           />
           <EditorialStatement
             eyebrow="Content"
-            headline={"Culturin\nConvos."}
-            body="Live conversations with artists, musicians, and entrepreneurs about travel, identity, and culture — the platform's original format, and still its heartbeat."
+            headline={"Stories From\nThe Room."}
+            body="Articles and video from artists, musicians, and entrepreneurs about travel, identity, and culture, captured from the same rooms Culturin builds."
             image="/events/nyfw-2024/nyfw-7.jpg"
             imageAlt="Group portrait of guests at a Culturin New York Fashion Week night"
             imageSide="left"
             buttons={[
-              { label: "Watch Convos", href: "/videos", variant: "solid" },
+              { label: "Watch videos", href: "/videos", variant: "solid" },
               { label: "Read the latest", href: "/articles", variant: "text" },
             ]}
           />
           <EditorialStatement
             eyebrow="Credibility"
             headline={"Built By People\nWho've Done\nThis Before."}
-            body="Our founding team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly — and built relationships with Nike, Virgin, and Microsoft along the way."
-            image="/events/cannes-lions-2024/cannes-7.jpg"
-            imageAlt="Group of guests embracing candidly at Cannes Lions 2024"
+            body="Our founding team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly, and built relationships with Nike, Virgin, and Microsoft along the way."
+            image="/events/cannes-lions-2026/UNIKday1-42.jpg"
+            imageAlt="Guest at a Culturin evening in Cannes"
             imageSide="right"
             buttons={[
               { label: "Meet the team", href: "/about", variant: "solid" },
@@ -334,7 +333,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <p className="mb-10 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-              Culturin Cannes Lions
+              Culturin at Cannes Lions 2026
             </p>
           </Reveal>
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
@@ -357,10 +356,10 @@ export default function HomePage() {
                 La Croisette.<br />Our way.
               </h2>
               <p className="mt-7 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Every June, the world&apos;s creative industry — CMOs, agency founders, artists, and brand builders — descends on a small city on the French Riviera for Cannes Lions. By day it&apos;s awards and panels. The real conversations happen after dark.
+                This June, the world&apos;s creative industry, CMOs, agency founders, artists, and brand builders, descended on a small city on the French Riviera for Cannes Lions. By day it was awards and panels. The real conversations happened after dark.
               </p>
               <p className="mt-5 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Culturin builds those nights. Curated guest lists, live music, warm rooms, and brand partnerships woven in with intention. Cannes, without the noise.
+                Culturin built those nights. Curated guest lists, live music, warm rooms, and brand partnerships woven in with intention. Cannes, without the noise.
               </p>
               <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <Link
@@ -368,16 +367,23 @@ export default function HomePage() {
                   className="inline-flex items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
                   style={{ background: ACCENT, color: SURFACE_DARK }}
                 >
-                  View Cannes programming
+                  View the recap
                 </Link>
                 <Link
-                  href="/events/cannes-lions-2026#rsvp"
+                  href="/gallery"
                   className="text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
                   style={{ color: INK }}
                 >
-                  Request access →
+                  See the gallery →
                 </Link>
               </div>
+              <Link
+                href="/travel-guides/nice-and-cannes"
+                className="mt-6 inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
+                style={{ color: INK_MUTED }}
+              >
+                Business travel guide to Nice &amp; Cannes →
+              </Link>
             </Reveal>
           </div>
         </div>
@@ -467,7 +473,7 @@ export default function HomePage() {
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
-                We work with brands on event sponsorship, and with tourism boards and government agencies on consulting and campaigns that promote real cultural exchange — not just destination marketing.
+                We work with brands on event sponsorship, and with tourism boards and government agencies on consulting and campaigns that promote real cultural exchange, not just destination marketing.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
                 If you want to show up in culture in a way people actually remember, we should talk.
@@ -508,15 +514,15 @@ export default function HomePage() {
                 className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                From Culturin Convos to a global festival.
+                From real conversations to a global festival.
               </h2>
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                We launched with Culturin Convos — conversations with artists, musicians, and entrepreneurs about travel and culture. Since then we&apos;ve been building out curated events, a growing content library, and the beginning of a real marketplace.
+                We launched with real conversations, artists, musicians, and entrepreneurs talking about travel and culture. Since then we&apos;ve been building out curated events, a growing content library, and the beginning of a real marketplace.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Next: certified cultural training programs, a first Culturin festival, and a production company built for cultural programming at the scale our team already knows — the Super Bowl, the Oscars, the UN Assembly.
+                Next: certified cultural training programs, a first Culturin festival, and a production company built for cultural programming at the scale our team already knows, the Super Bowl, the Oscars, the UN Assembly.
               </p>
               <Link
                 href="/events"

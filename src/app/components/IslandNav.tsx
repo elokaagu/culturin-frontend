@@ -7,11 +7,11 @@ import { useEffect, useState } from "react";
 const NAV = [
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Partners", href: "#partners" },
+  { label: "Partners", href: "/#partners" },
 ] as const;
 
 /**
- * Floating "dynamic island" nav — a centered, pill-shaped bar detached from
+ * Floating "dynamic island" nav: a centered, pill-shaped bar detached from
  * the screen edges that blurs the content behind it and tightens (stronger
  * background + shadow, slightly smaller) once the page is scrolled.
  */
@@ -73,7 +73,7 @@ export default function IslandNav() {
 
         {/* CTA */}
         <Link
-          href="#partners"
+          href="/#partners"
           className="shrink-0 rounded-full bg-[#b5502e] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
         >
           Partner<span className="hidden sm:inline"> with us</span>
