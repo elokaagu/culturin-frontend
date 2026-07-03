@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
+
+import { useTheme } from "../styles/ThemeContext";
 
 const NAV = [
   { label: "Events", href: "/events" },
@@ -17,6 +20,8 @@ const NAV = [
  */
 export default function IslandNav() {
   const [scrolled, setScrolled] = useState(false);
+  const { mode, toggleTheme } = useTheme();
+  const isDark = mode === "dark";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -70,6 +75,20 @@ export default function IslandNav() {
             </Link>
           ))}
         </div>
+
+        {/* Light / dark toggle */}
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          className="flex shrink-0 items-center justify-center rounded-full p-2 text-[#1c1a17] transition hover:bg-black/[0.05] dark:text-[#f1e9dc] dark:hover:bg-white/[0.07]"
+        >
+          {isDark ? (
+            <Sun className="h-4 w-4" strokeWidth={2} aria-hidden />
+          ) : (
+            <Moon className="h-4 w-4" strokeWidth={2} aria-hidden />
+          )}
+        </button>
 
         {/* CTA */}
         <Link
