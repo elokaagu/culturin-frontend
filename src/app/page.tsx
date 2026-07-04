@@ -20,6 +20,7 @@ import EditorialStatement from "./components/EditorialStatement";
 import HomeFooter from "./components/HomeFooter";
 import IslandNav from "./components/IslandNav";
 import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
+import AttendeeOriginMap from "./components/AttendeeOriginMap";
 
 export const metadata: Metadata = {
   title: "Culturin | Where Inspiration Meets Exploration",
@@ -524,6 +525,29 @@ export default function HomePage() {
               </div>
             </Reveal>
           </div>
+        </div>
+      </section>
+
+      {/* ── Where our community comes from ────────────────────── */}
+      <section
+        className="border-t px-8 sm:px-14"
+        style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE, background: SURFACE_DARK }}
+      >
+        <div className="mx-auto max-w-6xl">
+          <Reveal className="mb-12 text-center">
+            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "rgba(232,227,218,0.6)" }}>
+              A global room
+            </p>
+            <h2
+              className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+            >
+              People travel for the rooms we build.
+            </h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <AttendeeOriginMap />
+          </Reveal>
         </div>
       </section>
 
