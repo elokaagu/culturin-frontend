@@ -49,7 +49,7 @@ export const destinationContentBySlug: Record<string, DestinationContent> = {
     intro: "A hilltop city of Roman history, modern cafés, and easy access to Jordan's desert and sea landscapes.",
     vibe: "Layered, hospitable, and calm.",
     bestTime: "March to May and September to November.",
-    highlights: ["Citadel and Roman Theatre", "Rainbow Street walks", "Day trips to Dead Sea or Wadi Rum"],
+    highlights: ["Citadel and Roman Theater", "Rainbow Street walks", "Day trips to Dead Sea or Wadi Rum"],
     neighborhoods: ["Jabal Amman", "Abdoun", "Downtown"],
     foodToTry: ["Mansaf", "Falafel and hummus", "Kanafeh"],
     localTips: ["Wear good walking shoes for steep streets", "Taxi apps are easiest", "Fridays start later across many businesses"],

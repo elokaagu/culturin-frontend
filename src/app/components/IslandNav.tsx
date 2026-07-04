@@ -64,7 +64,7 @@ export default function IslandNav() {
             className="flex shrink-0 items-center rounded-full px-4 py-2 no-underline opacity-95 transition hover:bg-black/[0.04] hover:opacity-100 dark:hover:bg-white/[0.06]"
           >
             <Image
-              src="/culturin_logo.svg"
+              src={isDark ? "/culturin_logo.svg" : "/culturin_logo_black.svg"}
               alt="Culturin"
               width={84}
               height={18}

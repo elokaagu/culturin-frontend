@@ -163,7 +163,7 @@ export default function CuratorClient({
               {curator.specialties && curator.specialties.length > 0 ? (
                 <div className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
                   <h2 className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
-                    Specialises in
+                    Specializes in
                   </h2>
                   <div className="flex flex-wrap gap-2">
                     {curator.specialties.map((s) => (

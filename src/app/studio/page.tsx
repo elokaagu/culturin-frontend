@@ -49,7 +49,7 @@ export default async function StudioOverviewPage() {
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-300">Overview</p>
       <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">Culturin Studio</h1>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-600 dark:text-white/65">
-        Create and publish from this workspace. Counts reflect your live catalogue; use the sidebar to jump between editors
+        Create and publish from this workspace. Counts reflect your live catalog; use the sidebar to jump between editors
         and the site.
       </p>
 

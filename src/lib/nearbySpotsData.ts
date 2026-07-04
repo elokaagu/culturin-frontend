@@ -59,7 +59,7 @@ export const nearbySpots: NearbySpot[] = [
     distanceKm: 9.7,
     imageUrl:
       "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
-    imageAlt: "Street with colourful facades",
+    imageAlt: "Street with colorful facades",
     href: "/nearby/latin-groove",
     showMore: true,
   },
@@ -274,9 +274,9 @@ export const nearbyResultsBySlug: Record<string, NearbySpotResult> = {
     tips: ["Go early for quieter seating", "Great for small groups", "Best paired with sunset plans"],
     results: [
       {
-        title: "Hidden neighbourhood stories",
+        title: "Hidden neighborhood stories",
         description: "A local-led storytelling route that starts nearby.",
-        href: "/providers/hidden-neighbourhood-stories",
+        href: "/providers/hidden-neighborhood-stories",
         kind: "experience",
       },
       {
@@ -346,9 +346,9 @@ export const nearbyResultsBySlug: Record<string, NearbySpotResult> = {
     tips: ["Best in early morning", "Ideal for solo planning", "Pair with a short cultural route"],
     results: [
       {
-        title: "Hidden neighbourhood stories",
+        title: "Hidden neighborhood stories",
         description: "Walk local streets with guides and context.",
-        href: "/providers/hidden-neighbourhood-stories",
+        href: "/providers/hidden-neighborhood-stories",
         kind: "experience",
       },
       {

@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { Marquee } from "@/components/ui/marquee";
+
 export type LogoTickerItem = {
   name: string;
   /**
@@ -18,15 +20,13 @@ export default function LogoTicker({
   /** Text color for wordmark fallbacks (CSS color/var string). */
   ink: string;
 }) {
-  const track = [...items, ...items];
-
   return (
     <div
       className="overflow-hidden"
       style={{ maskImage: "linear-gradient(90deg, transparent, black 8%, black 92%, transparent)" }}
     >
-      <div className="flex w-max animate-marquee items-center gap-16 py-2">
-        {track.map((item, i) => (
+      <Marquee className="[--duration:28s] [--gap:4rem] py-2">
+        {items.map((item, i) => (
           <div key={`${item.name}-${i}`} className="flex shrink-0 items-center justify-center" style={{ height: 80 }}>
             {item.logoSrc ? (
               <Image
@@ -47,7 +47,7 @@ export default function LogoTicker({
             )}
           </div>
         ))}
-      </div>
+      </Marquee>
     </div>
   );
 }

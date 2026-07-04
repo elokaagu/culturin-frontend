@@ -8,7 +8,7 @@ const cardClass =
   "group relative block min-h-[17rem] w-full overflow-hidden rounded-[1.1rem] no-underline outline-none ring-offset-2 transition-[transform,box-shadow] focus-visible:ring-2 focus-visible:ring-amber-400 sm:min-h-[21rem] md:min-h-[22rem] dark:ring-offset-black";
 
 /**
- * Full-bleed image, colour overlay, article count + title (Travel Tools / Trippin-style).
+ * Full-bleed image, color overlay, article count + title (Travel Tools / Trippin-style).
  */
 export default function TravelGuidesCategoryGrid() {
   return (

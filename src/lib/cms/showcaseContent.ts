@@ -104,7 +104,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
     card: {
       title: "Lisbon in winter light: tiles, trams, and the long Atlantic afternoon",
       summary:
-        "Portugal — a colour-forward Lisbon weekend that stays walkable: miradouros, vintage shops, and seafood without the summer rush.",
+        "Portugal — a color-forward Lisbon weekend that stays walkable: miradouros, vintage shops, and seafood without the summer rush.",
       currentSlug: "lisbon-light-and-tiles",
       titleImageUrl: IMAGES.fitness,
     },
@@ -113,7 +113,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       title: "Lisbon in winter light: tiles, trams, and the long Atlantic afternoon",
       currentSlug: "lisbon-light-and-tiles",
       summary:
-        "Portugal — a colour-forward Lisbon weekend that stays walkable: miradouros, vintage shops, and seafood without the summer rush.",
+        "Portugal — a color-forward Lisbon weekend that stays walkable: miradouros, vintage shops, and seafood without the summer rush.",
       titleImageUrl: IMAGES.fitness,
       body: [
         {
@@ -272,7 +272,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
     card: {
       title: "Iceland’s coastal quiet: hot pools, long light, and when to skip the crowds",
       summary:
-        "Iceland — ring-road pacing, weather-wise stops, and small harbours where the North Atlantic feels personal.",
+        "Iceland — ring-road pacing, weather-wise stops, and small harbors where the North Atlantic feels personal.",
       currentSlug: "iceland-coastal-quiet",
       titleImageUrl:
         "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1200&q=80",
@@ -282,7 +282,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       title: "Iceland’s coastal quiet: hot pools, long light, and when to skip the crowds",
       currentSlug: "iceland-coastal-quiet",
       summary:
-        "Iceland — ring-road pacing, weather-wise stops, and small harbours where the North Atlantic feels personal.",
+        "Iceland — ring-road pacing, weather-wise stops, and small harbors where the North Atlantic feels personal.",
       titleImageUrl:
         "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1200&q=80",
       body: [
@@ -496,7 +496,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
     card: {
       title: "Ghana's Accra creative pulse: galleries, music, and a city rewriting its story",
       summary:
-        "Ghana — Accra's arts scene from wax-print studios to live highlife: the neighbourhoods where a new generation is making culture on their own terms.",
+        "Ghana — Accra's arts scene from wax-print studios to live highlife: the neighborhoods where a new generation is making culture on their own terms.",
       currentSlug: "ghana-accra-creative-pulse",
       titleImageUrl:
         "https://images.unsplash.com/photo-1580746738099-a01d18e06e1a?auto=format&fit=crop&w=1200&q=80",
@@ -506,7 +506,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       title: "Ghana's Accra creative pulse: galleries, music, and a city rewriting its story",
       currentSlug: "ghana-accra-creative-pulse",
       summary:
-        "Ghana — Accra's arts scene from wax-print studios to live highlife: the neighbourhoods where a new generation is making culture on their own terms.",
+        "Ghana — Accra's arts scene from wax-print studios to live highlife: the neighborhoods where a new generation is making culture on their own terms.",
       titleImageUrl:
         "https://images.unsplash.com/photo-1580746738099-a01d18e06e1a?auto=format&fit=crop&w=1200&q=80",
       body: [
@@ -519,7 +519,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
             {
               _type: "span",
               _key: "gh1c",
-              text: "Accra does not slow down for visitors. It keeps its own rhythm — a city of makerspaces, outdoor stages, and supper clubs that exist because someone decided the neighbourhood needed them.",
+              text: "Accra does not slow down for visitors. It keeps its own rhythm — a city of makerspaces, outdoor stages, and supper clubs that exist because someone decided the neighborhood needed them.",
               marks: [],
             },
           ],
@@ -596,7 +596,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
             {
               _type: "span",
               _key: "raj1c",
-              text: "Rajasthan is not one colour — it is an argument between ochre, blue, and rose that shifts with the hour. Fort walls hold centuries of trade routes; havelis hold painted ceilings that took lifetimes to finish.",
+              text: "Rajasthan is not one color — it is an argument between ochre, blue, and rose that shifts with the hour. Fort walls hold centuries of trade routes; havelis hold painted ceilings that took lifetimes to finish.",
               marks: [],
             },
           ],
@@ -648,7 +648,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
   },
   "colombia-cartagena-walled": {
     card: {
-      title: "Colombia's walled city: Cartagena heat, colour, and the walk that never repeats",
+      title: "Colombia's walled city: Cartagena heat, color, and the walk that never repeats",
       summary:
         "Colombia — inside Cartagena's old walls: Caribbean light on bougainvillea, colonial plazas, and the rooftop hour that makes the humidity worth it.",
       currentSlug: "colombia-cartagena-walled",
@@ -657,7 +657,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
     },
     full: {
       _id: "showcase-colombia-cartagena-walled",
-      title: "Colombia's walled city: Cartagena heat, colour, and the walk that never repeats",
+      title: "Colombia's walled city: Cartagena heat, color, and the walk that never repeats",
       currentSlug: "colombia-cartagena-walled",
       summary:
         "Colombia — inside Cartagena's old walls: Caribbean light on bougainvillea, colonial plazas, and the rooftop hour that makes the humidity worth it.",
@@ -673,7 +673,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
             {
               _type: "span",
               _key: "col1c",
-              text: "Cartagena is best understood as a colour conversation. Every street inside the walls offers a different argument between yellow walls, red bougainvillea, and the blue sky above balconies loaded with plants.",
+              text: "Cartagena is best understood as a color conversation. Every street inside the walls offers a different argument between yellow walls, red bougainvillea, and the blue sky above balconies loaded with plants.",
               marks: [],
             },
           ],
@@ -715,7 +715,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
             {
               _type: "span",
               _key: "col5c",
-              text: "The neighbourhoods outside the walls are where Cartagena actually lives — cumbia at corner stores, fruit carts in the morning, and conversations that go long past any reasonable dinner hour.",
+              text: "The neighborhoods outside the walls are where Cartagena actually lives — cumbia at corner stores, fruit carts in the morning, and conversations that go long past any reasonable dinner hour.",
               marks: [],
             },
           ],
@@ -1037,7 +1037,7 @@ const SHOWCASE_CURATORS: Record<string, ShowcaseCurator> = {
       name: "Pontoon",
       tagline: "Stories for women in motion",
       description:
-        "Pontoon is an editorial community built around women who move through the world on their own terms — photographers, writers, explorers, and makers who find meaning in motion. Through long-form interviews, travel stories, and cultural dispatches, Pontoon documents the lives of women whose sense of home is always evolving. Culturin is proud to feature Pontoon's work as part of our curated editorial programme.",
+        "Pontoon is an editorial community built around women who move through the world on their own terms — photographers, writers, explorers, and makers who find meaning in motion. Through long-form interviews, travel stories, and cultural dispatches, Pontoon documents the lives of women whose sense of home is always evolving. Culturin is proud to feature Pontoon's work as part of our curated editorial program.",
       avatarUrl:
         "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=400&q=80",
       bannerUrl:
@@ -1094,7 +1094,7 @@ const SHOWCASE_VIDEOS: Record<string, ShowcaseVideo> = {
   },
   "coast-by-rail": {
     card: {
-      title: "Coast by rail: one window, a hundred small harbours",
+      title: "Coast by rail: one window, a hundred small harbors",
       currentSlug: "coast-by-rail",
       uploader: "Culturin Studios",
       description: "No narration — just pace, glass, and the line where land meets water.",
@@ -1102,7 +1102,7 @@ const SHOWCASE_VIDEOS: Record<string, ShowcaseVideo> = {
     },
     full: {
       _id: "showcase-coast-by-rail",
-      title: "Coast by rail: one window, a hundred small harbours",
+      title: "Coast by rail: one window, a hundred small harbors",
       currentSlug: "coast-by-rail",
       uploader: "Culturin Studios",
       description: "No narration — just pace, glass, and the line where land meets water.",
@@ -1190,11 +1190,11 @@ const SHOWCASE_PROVIDERS: Record<string, ShowcaseProvider> = {
       },
     },
   },
-  "hidden-neighbourhood-stories": {
+  "hidden-neighborhood-stories": {
     card: {
       name: "Roots & Routes",
-      eventName: "Hidden neighbourhood stories",
-      slug: "hidden-neighbourhood-stories",
+      eventName: "Hidden neighborhood stories",
+      slug: "hidden-neighborhood-stories",
       bannerImage: {
         image: {
           url: IMAGES.portrait,
@@ -1204,14 +1204,14 @@ const SHOWCASE_PROVIDERS: Record<string, ShowcaseProvider> = {
     },
     full: {
       name: "Roots & Routes",
-      eventName: "Hidden neighbourhood stories",
-      slug: "hidden-neighbourhood-stories",
+      eventName: "Hidden neighborhood stories",
+      slug: "hidden-neighborhood-stories",
       description:
         "An intimate walk through overlooked neighborhoods, meeting community historians and makers who bring local culture to life.",
       location: "Lisbon, Portugal",
       contactEmail: "hello@rootsroutes.example",
       contactPhone: "+351 21 900 1234",
-      contactWebsite: "https://culturin.example/hidden-neighbourhood-stories",
+      contactWebsite: "https://culturin.example/hidden-neighborhood-stories",
       prices: [30, 50, 75],
       images: [
         { _id: "showcase-roots-1", url: IMAGES.portrait, dimensions: { width: 1200, height: 800 } },

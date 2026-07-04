@@ -82,7 +82,7 @@ export const destinations: Destination[] = [
     name: "Auckland",
     slug: "auckland",
     imageUrl: u("1507699622108-4be3abd695ad"),
-    imageAlt: "Harbour, hills, and city in New Zealand",
+    imageAlt: "Harbor, hills, and city in New Zealand",
     country: "New Zealand",
   },
   {

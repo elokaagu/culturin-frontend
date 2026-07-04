@@ -148,7 +148,7 @@ export const events: CulturinEvent[] = [
         id: "vibe",
         label: "PERSPECTIVE",
         headline: "The US Open brings the world to New York. Culturin brings the culture to the courtside.",
-        body: "For two weeks every summer, New York becomes the centre of the sporting world. We take that energy and build something around it: intimate, curated, and firmly off the official schedule.",
+        body: "For two weeks every summer, New York becomes the center of the sporting world. We take that energy and build something around it: intimate, curated, and firmly off the official schedule.",
         photos: [
           {
             src: "/events/cannes-lions-2026/UNIKday1-100.jpg",

@@ -1,6 +1,6 @@
 /**
  * Travel Guides hub — large category cards (image + color overlay) linking into search.
- * Swap for CMS counts or tags when your catalogue supports it.
+ * Swap for CMS counts or tags when your catalog supports it.
  */
 export type TravelGuideCategory = {
   slug: string;

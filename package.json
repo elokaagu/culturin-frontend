@@ -42,7 +42,9 @@
     "react-hook-form": "^7.51.2",
     "react-hot-toast": "^2.4.1",
     "react-player": "^2.14.1",
+    "rough-notation": "^0.5.1",
     "sharp": "^0.33.1",
+    "svg-dotted-map": "^2.0.1",
     "tailwind-merge": "2.5.4"
   },
   "devDependencies": {

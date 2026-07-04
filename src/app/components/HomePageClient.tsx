@@ -253,7 +253,7 @@ export default function HomePageClient({
               <CuratedExperiencesRail providers={initialProviders} />
             ) : (
               <EmptyRail
-                message="Experiences are loading into the catalogue. Visit curated experiences to see the full list."
+                message="Experiences are loading into the catalog. Visit curated experiences to see the full list."
                 href="/curated-experiences"
                 linkLabel="View experiences"
               />

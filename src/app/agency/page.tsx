@@ -105,7 +105,7 @@ export default function AgencyPage() {
           <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">What we do</p>
           <p className="m-0 mt-3 max-w-4xl text-lg leading-relaxed text-neutral-800 dark:text-white/85">
             Culturin Agency is the creative and experiential arm of Culturin. We design work that travels — without flattening
-            the places it comes from. That means strategy and craft that honour local context, then find the thread that connects
+            the places it comes from. That means strategy and craft that honor local context, then find the thread that connects
             with audiences everywhere.
           </p>
         </section>

@@ -220,7 +220,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
     articles.length > 0 || videos.length > 0 || providers.length > 0 || destinationHits.length > 0;
   const showSupplementNote =
     allCmsSearchesEmpty && hasResults
-      ? "Nothing in your live catalogue matched this term, so we’re also showing picks from the editorial demo catalogue. Add articles or guides with similar wording in Studio, or try different keywords."
+      ? "Nothing in your live catalog matched this term, so we’re also showing picks from the editorial demo catalog. Add articles or guides with similar wording in Studio, or try different keywords."
       : null;
 
   return (

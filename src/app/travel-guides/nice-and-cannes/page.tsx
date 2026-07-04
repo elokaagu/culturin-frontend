@@ -55,7 +55,7 @@ const CULTURE = [
   },
   {
     label: "Boulevard de la Croisette",
-    body: "Cannes's waterfront promenade is part business district, part people-watching theatre. Dress smart-casual here; it's genuinely part of how the street reads you.",
+    body: "Cannes's waterfront promenade is part business district, part people-watching theater. Dress smart-casual here; it's genuinely part of how the street reads you.",
   },
   {
     label: "Îles de Lérins",

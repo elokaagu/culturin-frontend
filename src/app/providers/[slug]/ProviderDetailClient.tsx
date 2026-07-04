@@ -489,7 +489,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
               </div>
 
               <div className="mt-6 rounded-xl border border-white/15 bg-black px-5 py-4">
-                <p className="m-0 text-base font-semibold text-white">Guest favourite</p>
+                <p className="m-0 text-base font-semibold text-white">Guest favorite</p>
                 <p className="m-0 mt-1 text-sm text-white/65">
                   One of the most loved curated experiences on Culturin.
                 </p>
