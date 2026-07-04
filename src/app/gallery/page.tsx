@@ -56,6 +56,9 @@ const FALLBACK_GALLERY: GalleryItem[] = [
 
 const FILTER_LABELS: Record<string, string> = {
   "cannes-2026": "Cannes Lions 2026",
+  "cannes-2025": "Cannes Lions 2025",
+  "notting-hill-2025": "Notting Hill Carnival 2025",
+  "nyfw-2025": "New York Fashion Week 2025",
 };
 
 function buildFilters(items: GalleryItem[]): GalleryFilter[] {
@@ -105,7 +108,7 @@ export default async function GalleryPage() {
           Life inside the rooms.
         </h1>
         <p className="mt-6 max-w-lg text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          Two nights from Cannes Lions 2026, real rooms Culturin was actually in.
+          From Cannes Lions to Notting Hill Carnival and New York Fashion Week — real rooms Culturin was actually in.
         </p>
       </div>
 

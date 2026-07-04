@@ -126,7 +126,7 @@ export default function IslandNav() {
           className="flex shrink-0 items-center no-underline"
         >
           <Image
-            src="/culturin_logo.svg"
+            src={isDark ? "/culturin_logo.svg" : "/culturin_logo_black.svg"}
             alt="Culturin"
             width={84}
             height={18}
