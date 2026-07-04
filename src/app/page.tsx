@@ -593,6 +593,52 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Collaborators ──────────────────────────────────────── */}
+      <section className="border-t px-8 sm:px-14" style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}>
+        <div className="mx-auto max-w-6xl">
+          <Reveal className="mb-12">
+            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+              Collaborators
+            </p>
+            <h2
+              className="m-0 max-w-2xl text-4xl font-medium leading-[1.08] sm:text-5xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+            >
+              Editorial voices we&apos;re proud to feature.
+            </h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <a
+              href="https://www.instagram.com/pontoon_co/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group grid grid-cols-1 gap-8 rounded-2xl border p-8 no-underline transition-colors sm:grid-cols-[auto_1fr] sm:items-center sm:p-10"
+              style={{ borderColor: RULE }}
+            >
+              <p
+                className="m-0 text-3xl font-medium sm:text-4xl"
+                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
+              >
+                Pontoon
+              </p>
+              <div>
+                <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
+                  Pontoon is an editorial community built around women who move through the world on their own
+                  terms — photographers, writers, explorers, and makers who find meaning in motion. Culturin is
+                  proud to feature Pontoon&apos;s work as part of our curated editorial program.
+                </p>
+                <span
+                  className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] transition-opacity group-hover:opacity-60"
+                  style={{ color: INK }}
+                >
+                  @pontoon_co on Instagram →
+                </span>
+              </div>
+            </a>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ── Press ──────────────────────────────────────────────── */}
       <section
         id="press"
