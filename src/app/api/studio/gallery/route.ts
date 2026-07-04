@@ -64,6 +64,49 @@ export async function POST(request: Request) {
   return NextResponse.json({ message: "Image added" });
 }
 
+export async function PATCH(request: Request) {
+  const { isAdmin } = await getCurrentAdminState();
+  if (!isAdmin) {
+    return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+  }
+
+  const entry = (await request.json()) as Record<string, unknown>;
+  const id = String(entry.id ?? "").trim();
+  if (!id) {
+    return NextResponse.json({ message: "An id is required." }, { status: 400 });
+  }
+
+  const eventKey = asEventKey(entry.event_key ?? entry.event_label);
+  if (!eventKey) {
+    return NextResponse.json({ message: "An event name is required." }, { status: 400 });
+  }
+
+  const admin = getSupabaseAdminOrNull();
+  if (!admin) {
+    return NextResponse.json(
+      { message: "Saving isn’t available—your workspace isn’t fully connected. Try again later or contact support." },
+      { status: 503 },
+    );
+  }
+
+  const payload = {
+    event_key: eventKey,
+    event_label: String(entry.event_label ?? "").trim() || eventKey,
+    caption: String(entry.caption ?? "").trim(),
+    location: String(entry.location ?? "").trim(),
+    alt: String(entry.alt ?? "").trim(),
+    orientation: asOrientation(entry.orientation),
+  };
+
+  const { error } = await admin.from("gallery_images").update(payload).eq("id", id);
+  if (error) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+
+  revalidatePath("/gallery");
+  return NextResponse.json({ message: "Image updated" });
+}
+
 export async function DELETE(request: Request) {
   const { isAdmin } = await getCurrentAdminState();
   if (!isAdmin) {

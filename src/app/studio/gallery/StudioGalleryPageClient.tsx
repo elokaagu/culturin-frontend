@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 
 import {
   studioCancelButtonClass,
@@ -24,6 +24,7 @@ export function StudioGalleryPageClient({
   const router = useRouter();
   const confirm = useStudioConfirm();
   const [createOpen, setCreateOpen] = useState(false);
+  const [editingImage, setEditingImage] = useState<StudioGalleryListItem | null>(null);
   const [removed, setRemoved] = useState<Set<string>>(() => new Set());
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -69,13 +70,23 @@ export function StudioGalleryPageClient({
 
   function handleSaved() {
     setCreateOpen(false);
+    setEditingImage(null);
     router.refresh();
+  }
+
+  function handleEdit(image: StudioGalleryListItem) {
+    setCreateOpen(false);
+    setEditingImage(image);
   }
 
   return (
     <>
       <div className="mt-6">
-        {!createOpen ? (
+        {editingImage ? (
+          <div className={studioCreateFormShellClass}>
+            <StudioGalleryForm initial={editingImage} onSaved={handleSaved} onCancel={() => setEditingImage(null)} />
+          </div>
+        ) : !createOpen ? (
           <button type="button" onClick={() => setCreateOpen(true)} className={studioCreateButtonClass}>
             Add photo
           </button>
@@ -130,16 +141,27 @@ export function StudioGalleryPageClient({
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={image.src} alt={image.alt} className="h-full w-full object-cover" />
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(image)}
-                        disabled={isDeleting}
-                        aria-label={`Delete photo: ${image.alt || image.eventLabel}`}
-                        title="Delete photo"
-                        className="absolute right-1.5 top-1.5 inline-flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white opacity-0 backdrop-blur transition hover:bg-rose-600 focus-visible:opacity-100 disabled:cursor-not-allowed disabled:opacity-60 group-hover:opacity-100"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
-                      </button>
+                      <div className="absolute right-1.5 top-1.5 flex gap-1 opacity-0 transition focus-within:opacity-100 group-hover:opacity-100">
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(image)}
+                          aria-label={`Edit photo: ${image.alt || image.eventLabel}`}
+                          title="Edit photo"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-culturin-600"
+                        >
+                          <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(image)}
+                          disabled={isDeleting}
+                          aria-label={`Delete photo: ${image.alt || image.eventLabel}`}
+                          title="Delete photo"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-rose-600 disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                        </button>
+                      </div>
                     </div>
                   );
                 })}
