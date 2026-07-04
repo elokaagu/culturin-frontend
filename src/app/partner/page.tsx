@@ -64,11 +64,11 @@ export default function PartnerPage() {
                 Prefer email?
               </p>
               <a
-                href="mailto:partners@culturin.com"
+                href="mailto:unik@culturin.com"
                 className="m-0 text-sm font-semibold no-underline transition-opacity hover:opacity-70"
                 style={{ color: INK }}
               >
-                partners@culturin.com
+                unik@culturin.com
               </a>
             </div>
           </div>

@@ -41,9 +41,8 @@ const GALLERY_PREVIEW = [
   { src: "/events/cannes-lions-2026/UNIKday1-34.jpg", alt: "Two guests portrait at a Culturin night in Cannes", span: "row-span-2" },
   { src: "/events/cannes-lions-2026/UNIKday1-41.jpg", alt: "Guests gathered together in a red-lit lounge in Cannes", span: "" },
   { src: "/events/cannes-lions-2026/UNIKday1-48.jpg", alt: "Guests laughing together in a red-lit lounge in Cannes", span: "" },
-  { src: "/events/cannes-lions-2026/UNIKday1-26.jpg", alt: "Disco balls above the crowd in Cannes", span: "row-span-2" },
+  { src: "/events/cannes-lions-2026/UNIKday1-26.jpg", alt: "Disco balls above the crowd in Cannes", span: "" },
   { src: "/events/cannes-lions-2026/UNIKday1-38.jpg", alt: "Guests posing together at a Culturin evening in Cannes", span: "" },
-  { src: "/events/cannes-lions-2026/UNIKday1-40.jpg", alt: "Guests arriving through the red curtained entrance in Cannes", span: "" },
 ];
 
 const PILLARS = [

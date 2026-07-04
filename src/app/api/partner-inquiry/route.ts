@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   const admin = getSupabaseAdminOrNull();
   if (!admin) {
     return NextResponse.json(
-      { error: "This form isn’t available right now. Please email partners@culturin.com directly." },
+      { error: "This form isn’t available right now. Please email unik@culturin.com directly." },
       { status: 503 },
     );
   }
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 
   if (error) {
     return NextResponse.json(
-      { error: "Could not send your inquiry. Try again in a moment, or email partners@culturin.com directly." },
+      { error: "Could not send your inquiry. Try again in a moment, or email unik@culturin.com directly." },
       { status: 500 },
     );
   }

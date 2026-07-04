@@ -7,6 +7,7 @@ import { EDITORIAL_MUTED, EDITORIAL_RULE, SURFACE_DARK } from "@/lib/theme/cultu
 import BlurImage from "../components/motion/BlurImage";
 import Reveal from "../components/motion/Reveal";
 import Lightbox, { type LightboxItem } from "../components/Lightbox";
+import GalleryDownloadDialog, { type GalleryDownloadTarget } from "../components/GalleryDownloadDialog";
 
 export type Orientation = "portrait" | "landscape";
 
@@ -39,6 +40,7 @@ export default function GalleryGrid({
 }) {
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [downloadTarget, setDownloadTarget] = useState<GalleryDownloadTarget | null>(null);
 
   const filteredItems = useMemo(
     () => (activeFilter === "all" ? items : items.filter((item) => item.eventKey === activeFilter)),
@@ -128,7 +130,10 @@ export default function GalleryGrid({
         index={openIndex}
         onClose={() => setOpenIndex(null)}
         onNavigate={setOpenIndex}
+        onDownloadRequest={(item) => setDownloadTarget({ src: item.src, alt: item.alt })}
       />
+
+      <GalleryDownloadDialog target={downloadTarget} onClose={() => setDownloadTarget(null)} />
     </>
   );
 }

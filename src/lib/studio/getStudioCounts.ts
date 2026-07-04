@@ -9,6 +9,7 @@ export type StudioContentCounts = {
   subscribers: number;
   partnerInquiries: number;
   eventRsvps: number;
+  galleryDownloads: number;
 };
 
 export async function getStudioCounts(): Promise<StudioContentCounts> {
@@ -23,9 +24,10 @@ export async function getStudioCounts(): Promise<StudioContentCounts> {
       subscribers: 0,
       partnerInquiries: 0,
       eventRsvps: 0,
+      galleryDownloads: 0,
     };
   }
-  const [blogs, videos, providers, curators, galleryImages, subscribers, partnerInquiries, eventRsvps] =
+  const [blogs, videos, providers, curators, galleryImages, subscribers, partnerInquiries, eventRsvps, galleryDownloads] =
     await Promise.all([
       db.from("cms_blogs").select("id", { count: "exact", head: true }),
       db.from("cms_videos").select("id", { count: "exact", head: true }),
@@ -35,6 +37,7 @@ export async function getStudioCounts(): Promise<StudioContentCounts> {
       db.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
       db.from("partner_inquiries").select("id", { count: "exact", head: true }),
       db.from("event_rsvps").select("id", { count: "exact", head: true }),
+      db.from("gallery_downloads").select("id", { count: "exact", head: true }),
     ]);
 
   return {
@@ -46,5 +49,6 @@ export async function getStudioCounts(): Promise<StudioContentCounts> {
     subscribers: subscribers.count ?? 0,
     partnerInquiries: partnerInquiries.count ?? 0,
     eventRsvps: eventRsvps.count ?? 0,
+    galleryDownloads: galleryDownloads.count ?? 0,
   };
 }

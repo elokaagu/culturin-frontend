@@ -14,6 +14,8 @@ type LightboxProps = {
   index: number | null;
   onClose: () => void;
   onNavigate: (index: number) => void;
+  /** Called instead of downloading directly, so the caller can gate it behind a form. */
+  onDownloadRequest?: (item: LightboxItem) => void;
 };
 
 /**
@@ -22,7 +24,7 @@ type LightboxProps = {
  * right-click → "Save Image As" downloads that exact file (no Next.js image
  * proxy in the way).
  */
-export default function Lightbox({ items, index, onClose, onNavigate }: LightboxProps) {
+export default function Lightbox({ items, index, onClose, onNavigate, onDownloadRequest }: LightboxProps) {
   const open = index !== null;
   const item = open ? items[index] : null;
 
@@ -113,13 +115,13 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Lightbox
         />
         <figcaption className="flex items-center gap-4 text-xs text-white/60">
           <span>{index !== null ? index + 1 : 0} / {items.length}</span>
-          <a
-            href={item.src}
-            download
+          <button
+            type="button"
+            onClick={() => onDownloadRequest?.(item)}
             className="text-white/80 underline underline-offset-2 transition hover:text-white"
           >
             Download full quality
-          </a>
+          </button>
         </figcaption>
       </figure>
     </div>

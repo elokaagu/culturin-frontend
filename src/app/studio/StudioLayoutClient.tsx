@@ -4,6 +4,7 @@ import {
   BookOpen,
   Building2,
   CalendarCheck,
+  Download,
   ExternalLink,
   Handshake,
   Images,
@@ -34,6 +35,7 @@ type StudioLayoutClientProps = {
   subscriberCount: number;
   partnerInquiryCount: number;
   eventRsvpCount: number;
+  galleryDownloadCount: number;
 };
 
 const navItemClass = (active: boolean) =>
@@ -73,6 +75,7 @@ export default function StudioLayoutClient({
   subscriberCount,
   partnerInquiryCount,
   eventRsvpCount,
+  galleryDownloadCount,
 }: StudioLayoutClientProps) {
   const router = useTransitionRouter();
   const pathname = usePathname() ?? "";
@@ -265,6 +268,22 @@ export default function StudioLayoutClient({
                     {countBadge(
                       eventRsvpCount,
                       pathname === "/studio/event-rsvps" || pathname?.startsWith("/studio/event-rsvps/"),
+                    )}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/studio/gallery-downloads"
+                    className={navItemClass(
+                      pathname === "/studio/gallery-downloads" || pathname?.startsWith("/studio/gallery-downloads/"),
+                    )}
+                    aria-current={pathname === "/studio/gallery-downloads" ? "page" : undefined}
+                  >
+                    <Download className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                    <span className="min-w-0 flex-1">Gallery downloads</span>
+                    {countBadge(
+                      galleryDownloadCount,
+                      pathname === "/studio/gallery-downloads" || pathname?.startsWith("/studio/gallery-downloads/"),
                     )}
                   </Link>
                 </li>

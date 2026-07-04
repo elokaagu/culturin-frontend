@@ -61,23 +61,44 @@ const FILTER_LABELS: Record<string, string> = {
   "nyfw-2025": "New York Fashion Week 2025",
 };
 
+/**
+ * Chronological rank by actual event date (lower = more recent). Drives both
+ * the filter tab order and the "All" grid order — newest event first.
+ * Cannes Lions: June. Notting Hill Carnival: August. NYFW: September.
+ */
+const EVENT_CHRONOLOGICAL_RANK: Record<string, number> = {
+  "cannes-2026": 0, // June 2026 — most recent
+  "nyfw-2025": 1, // September 2025
+  "notting-hill-2025": 2, // August 2025
+  "cannes-2025": 3, // June 2025
+};
+
+function eventRank(eventKey: string): number {
+  return EVENT_CHRONOLOGICAL_RANK[eventKey] ?? Number.MAX_SAFE_INTEGER;
+}
+
+function sortByEventRecency(items: GalleryItem[]): GalleryItem[] {
+  return [...items].sort((a, b) => eventRank(a.eventKey) - eventRank(b.eventKey));
+}
+
 function buildFilters(items: GalleryItem[]): GalleryFilter[] {
   const seen: string[] = [];
   for (const item of items) {
     if (!seen.includes(item.eventKey)) seen.push(item.eventKey);
   }
   if (seen.length <= 1) return [];
+  const ordered = [...seen].sort((a, b) => eventRank(a) - eventRank(b));
   return [
     { key: "all", label: "All" },
-    ...seen.map((key) => ({ key, label: FILTER_LABELS[key] ?? key })),
+    ...ordered.map((key) => ({ key, label: FILTER_LABELS[key] ?? key })),
   ];
 }
 
 async function loadGallery(): Promise<GalleryItem[]> {
   const db = getCmsDbOrNull();
-  if (!db) return FALLBACK_GALLERY;
+  if (!db) return sortByEventRecency(FALLBACK_GALLERY);
   const rows = await listGalleryImagesPublic(db);
-  return rows.length > 0 ? rows : FALLBACK_GALLERY;
+  return sortByEventRecency(rows.length > 0 ? rows : FALLBACK_GALLERY);
 }
 
 export default async function GalleryPage() {
