@@ -39,7 +39,7 @@ const PARALLAX_SRC = "/events/cannes-lions-2026/UNIKday1-54.jpg";
 
 const GALLERY_PREVIEW = [
   { src: "/events/cannes-lions-2026/UNIKday1-34.jpg", alt: "Two guests portrait at a Culturin night in Cannes", span: "row-span-2" },
-  { src: "/events/cannes-lions-2026/UNIKday2-13.jpg", alt: "Guests smiling together in a red-lit lounge in Cannes", span: "" },
+  { src: "/events/cannes-lions-2026/UNIKday1-41.jpg", alt: "Guests gathered together in a red-lit lounge in Cannes", span: "" },
   { src: "/events/cannes-lions-2026/UNIKday1-48.jpg", alt: "Guests laughing together in a red-lit lounge in Cannes", span: "" },
   { src: "/events/cannes-lions-2026/UNIKday1-26.jpg", alt: "Disco balls above the crowd in Cannes", span: "row-span-2" },
   { src: "/events/cannes-lions-2026/UNIKday1-38.jpg", alt: "Guests posing together at a Culturin evening in Cannes", span: "" },
@@ -67,7 +67,7 @@ const PILLARS = [
 
 const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Super Bowl", logoSrc: "/partners/super-bowl.webp" },
-  { name: "The Oscars", logoSrc: "/partners/oscars.jpg" },
+  { name: "The Oscars" },
   { name: "Davos", logoSrc: "/partners/davos-logo.svg" },
   { name: "UN Assembly", logoSrc: "/partners/unga-logo.png" },
   { name: "Nike", logoSrc: "/partners/nike-logo.svg" },

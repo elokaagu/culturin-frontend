@@ -52,7 +52,6 @@ const FALLBACK_GALLERY: GalleryItem[] = [
   { src: asset("cannes-lions-2026", "UNIKday2-30.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-30.jpg"), alt: "Full dancefloor under disco balls late at night", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
   { src: asset("cannes-lions-2026", "UNIKday2-12.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-12.jpg"), alt: "Group of guests at a Culturin gathering", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
   { src: asset("cannes-lions-2026", "UNIKday2-34.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-34.jpg"), alt: "Two guests laughing together late at night", event: "Night Two", location: "Cannes", eventKey: "cannes-2026", orientation: "portrait" },
-  { src: asset("cannes-lions-2026", "UNIKday2-13.jpg"), largeSrc: assetLarge("cannes-lions-2026", "UNIKday2-13.jpg"), alt: "Guests smiling together in a red-lit lounge", event: "The Room", location: "Cannes", eventKey: "cannes-2026", orientation: "landscape" },
 ];
 
 const FILTER_LABELS: Record<string, string> = {
