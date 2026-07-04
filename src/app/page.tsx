@@ -177,7 +177,7 @@ export default function HomePage() {
           {/* Production history: team credentials, not claimed active sponsorships */}
           <div className="mt-16 border-t pt-10" style={{ borderColor: RULE }}>
             <Reveal delay={200}>
-              <p className="mb-6 text-center text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+              <p className="mb-10 text-center text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
                 Our team&apos;s production history includes
               </p>
               <LogoTicker items={PRODUCTION_HISTORY} ink={INK_MUTED} />

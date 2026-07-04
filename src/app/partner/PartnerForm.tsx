@@ -1,9 +1,18 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Check, ChevronDown } from "lucide-react";
 
-import { EDITORIAL_INK, EDITORIAL_MUTED, EDITORIAL_RULE, EDITORIAL_ACCENT, SURFACE_DARK } from "@/lib/theme/culturinTokens";
+import {
+  EDITORIAL_BG,
+  EDITORIAL_INK,
+  EDITORIAL_MUTED,
+  EDITORIAL_RULE,
+  EDITORIAL_ACCENT,
+  SURFACE_DARK,
+} from "@/lib/theme/culturinTokens";
 
+const BG = EDITORIAL_BG;
 const INK = EDITORIAL_INK;
 const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
@@ -15,6 +24,94 @@ const INTERESTS = [
   { value: "attend", label: "Attending an upcoming event" },
   { value: "other", label: "Something else" },
 ];
+
+function InterestSelect({
+  value,
+  onChange,
+  disabled,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const selected = INTERESTS.find((opt) => opt.value === value) ?? INTERESTS[0];
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(e: PointerEvent) {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className="flex w-full items-center justify-between rounded-xl border bg-transparent px-4 py-3 text-left text-sm outline-none transition disabled:opacity-60"
+        style={{ color: INK, borderColor: RULE }}
+      >
+        <span>{selected.label}</span>
+        <ChevronDown
+          className="h-4 w-4 shrink-0 transition-transform"
+          style={{ color: INK_MUTED, transform: open ? "rotate(180deg)" : undefined }}
+          aria-hidden
+        />
+      </button>
+
+      {open ? (
+        <ul
+          role="listbox"
+          className="absolute z-10 mt-2 w-full overflow-hidden rounded-xl border p-1 shadow-lg"
+          style={{ background: BG, borderColor: RULE }}
+        >
+          {INTERESTS.map((opt) => {
+            const isSelected = opt.value === value;
+            return (
+              <li key={opt.value} role="option" aria-selected={isSelected}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setOpen(false);
+                  }}
+                  className="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition-colors"
+                  style={{
+                    color: INK,
+                    background: isSelected ? "rgba(181,80,46,0.12)" : "transparent",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) e.currentTarget.style.background = "rgba(181,80,46,0.08)";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) e.currentTarget.style.background = "transparent";
+                  }}
+                >
+                  {opt.label}
+                  {isSelected ? <Check className="h-4 w-4 shrink-0" style={{ color: ACCENT }} aria-hidden /> : null}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
 
 export function PartnerForm() {
   const [name, setName] = useState("");
@@ -142,19 +239,7 @@ export function PartnerForm() {
           <span className="font-medium" style={{ color: INK_MUTED }}>
             What are you interested in?
           </span>
-          <select
-            value={interest}
-            onChange={(e) => setInterest(e.target.value)}
-            disabled={pending}
-            className={fieldClass}
-            style={{ color: INK, borderColor: RULE }}
-          >
-            {INTERESTS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+          <InterestSelect value={interest} onChange={setInterest} disabled={pending} />
         </label>
       </div>
 

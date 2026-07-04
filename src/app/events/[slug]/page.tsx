@@ -46,54 +46,11 @@ export default async function EventLandingPage({ params }: Props) {
 
   const isPast = event.isPast === true;
 
-  const navItems = [
-    { label: "VIBE", href: "#vibe" },
-    { label: "WHO", href: "#who" },
-    { label: "NUMBERS", href: "#numbers" },
-    { label: "SIGNAL", href: "#signal" },
-  ];
-
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} min-h-dvh font-sans antialiased`}>
 
       {/* ── Dynamic island nav (global brand nav) ───────────────── */}
       <IslandNav />
-
-      {/* ── Section-jump bar (sits below the island) ────────────── */}
-      {isPast ? null : (
-        <nav
-          className="fixed inset-x-0 z-40 hidden items-stretch sm:flex"
-          style={{ top: 60, height: 40 }}
-          aria-label="Event sections"
-        >
-          <a
-            href="#home"
-            className="flex shrink-0 items-center px-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white no-underline"
-            style={{ background: SURFACE_DARK }}
-          >
-            {event.navLabel}
-          </a>
-          <div className="flex flex-1 items-stretch border-b" style={{ borderColor: RULE }}>
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="flex flex-1 items-center justify-center text-[10px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
-                style={{ color: INK, borderRight: `1px solid ${RULE}`, background: BG }}
-              >
-                {item.label}
-              </a>
-            ))}
-            <a
-              href="#rsvp"
-              className="flex shrink-0 items-center px-6 text-[10px] font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
-              style={{ background: ACCENT, color: SURFACE_DARK }}
-            >
-              RSVP
-            </a>
-          </div>
-        </nav>
-      )}
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section
