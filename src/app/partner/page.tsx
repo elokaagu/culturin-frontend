@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { EDITORIAL_BG, EDITORIAL_INK, EDITORIAL_MUTED, EDITORIAL_RULE, editorialScopeClass } from "@/lib/theme/culturinTokens";
 import IslandNav from "@/app/components/IslandNav";
 import HomeFooter from "@/app/components/HomeFooter";
+import { ShineBorder } from "@/components/ui/shine-border";
 import { PartnerForm } from "./PartnerForm";
 
 const BG = EDITORIAL_BG;
@@ -73,7 +74,10 @@ export default function PartnerPage() {
             </div>
           </div>
 
-          <PartnerForm />
+          <div className="relative overflow-hidden rounded-2xl border p-8" style={{ borderColor: RULE }}>
+            <ShineBorder shineColor={["#b5502e", "#e08a5b", "#f0ab85"]} />
+            <PartnerForm />
+          </div>
         </div>
       </div>
 
