@@ -1,8 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import type { StudioSubscriber } from "@/lib/studio/subscribers";
+import { parseSubscriberCsv } from "@/lib/studio/parseCsv";
+
+type ImportResult = { inserted: number; skippedExisting: number; duplicateInFile: number; invalid: number };
 
 function formatDate(iso: string): string {
   if (!iso) return "—";
@@ -18,7 +22,52 @@ export function StudioSubscribersPageClient({
   subscribers: StudioSubscriber[];
   hasDb: boolean;
 }) {
+  const router = useRouter();
   const [search, setSearch] = useState("");
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<ImportResult | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleFileSelected(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setImporting(true);
+    setImportError(null);
+    setImportResult(null);
+
+    const text = await file.text();
+    const { rows } = parseSubscriberCsv(text);
+
+    if (rows.length === 0) {
+      setImporting(false);
+      setImportError("Couldn't find any rows in that file. Make sure it has an Email column.");
+      return;
+    }
+
+    const response = await fetch("/api/studio/subscribers-import", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rows }),
+    });
+    const data = (await response.json().catch(() => ({}))) as Partial<ImportResult> & { message?: string };
+    setImporting(false);
+
+    if (!response.ok) {
+      setImportError(data.message ?? "Could not import that file.");
+      return;
+    }
+
+    setImportResult({
+      inserted: data.inserted ?? 0,
+      skippedExisting: data.skippedExisting ?? 0,
+      duplicateInFile: data.duplicateInFile ?? 0,
+      invalid: data.invalid ?? 0,
+    });
+    router.refresh();
+  }
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -34,12 +83,46 @@ export function StudioSubscribersPageClient({
         <h2 className="m-0 font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
           All subscribers
         </h2>
-        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90">
-          {search.trim()
-            ? `${filtered.length} of ${subscribers.length} shown`
-            : `${subscribers.length} subscriber${subscribers.length === 1 ? "" : "s"}`}
-        </span>
+        <div className="flex items-center gap-3">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv,text/csv"
+            onChange={handleFileSelected}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={importing}
+            className="inline-flex h-8 items-center rounded-full border border-culturin-700/25 bg-white px-3.5 text-xs font-semibold text-neutral-900 transition hover:border-culturin-600/40 hover:bg-culturin-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-culturin-400/40 dark:bg-white dark:text-black dark:hover:bg-culturin-100"
+          >
+            {importing ? "Importing…" : "Import CSV"}
+          </button>
+          <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90">
+            {search.trim()
+              ? `${filtered.length} of ${subscribers.length} shown`
+              : `${subscribers.length} subscriber${subscribers.length === 1 ? "" : "s"}`}
+          </span>
+        </div>
       </div>
+
+      {importError ? (
+        <p
+          role="alert"
+          className="mt-4 rounded-lg border border-rose-300/60 bg-rose-50 px-3 py-2 text-sm text-rose-800 dark:border-rose-400/30 dark:bg-rose-500/10 dark:text-rose-200"
+        >
+          {importError}
+        </p>
+      ) : null}
+      {importResult ? (
+        <p className="mt-4 rounded-lg border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm text-neutral-700 dark:border-white/15 dark:bg-white/5 dark:text-white/80">
+          Imported {importResult.inserted}
+          {importResult.skippedExisting > 0 ? `, skipped ${importResult.skippedExisting} already subscribed` : ""}
+          {importResult.duplicateInFile > 0 ? `, ${importResult.duplicateInFile} duplicate rows in file` : ""}
+          {importResult.invalid > 0 ? `, ${importResult.invalid} rows had no valid email` : ""}.
+        </p>
+      ) : null}
 
       {hasDb && subscribers.length > 0 ? (
         <label className="mt-5 flex flex-col gap-2 sm:max-w-sm">
