@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 import { blurForSrc } from "@/lib/culturinImages";
-import { EDITORIAL_MUTED, EDITORIAL_RULE, SURFACE_DARK } from "@/lib/theme/culturinTokens";
+import { EDITORIAL_BG, EDITORIAL_INK, EDITORIAL_MUTED, EDITORIAL_RULE, SURFACE_DARK } from "@/lib/theme/culturinTokens";
 import BlurImage from "../components/motion/BlurImage";
 import Reveal from "../components/motion/Reveal";
 import Lightbox, { type LightboxItem } from "../components/Lightbox";
@@ -41,6 +42,28 @@ export default function GalleryGrid({
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [downloadTarget, setDownloadTarget] = useState<GalleryDownloadTarget | null>(null);
+  const [filterMenuOpen, setFilterMenuOpen] = useState(false);
+  const filterMenuRef = useRef<HTMLDivElement>(null);
+
+  const activeFilterLabel = filters.find((f) => f.key === activeFilter)?.label ?? "All";
+
+  useEffect(() => {
+    if (!filterMenuOpen) return;
+    const onPointerDown = (e: MouseEvent) => {
+      if (filterMenuRef.current && !filterMenuRef.current.contains(e.target as Node)) {
+        setFilterMenuOpen(false);
+      }
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFilterMenuOpen(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [filterMenuOpen]);
 
   const filteredItems = useMemo(
     () => (activeFilter === "all" ? items : items.filter((item) => item.eventKey === activeFilter)),
@@ -55,30 +78,61 @@ export default function GalleryGrid({
 
   return (
     <>
-      {/* Filter tabs (hidden when there's only one thing to show) */}
+      {/* Filter dropdown (hidden when there's only one thing to show) */}
       {filters.length > 1 ? (
-        <div className="mb-10 flex flex-wrap gap-2">
-          {filters.map((f) => {
-            const active = f.key === activeFilter;
-            return (
-              <button
-                key={f.key}
-                type="button"
-                onClick={() => {
-                  setActiveFilter(f.key);
-                  setOpenIndex(null);
-                }}
-                className="rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors"
-                style={
-                  active
-                    ? { background: SURFACE_DARK, borderColor: SURFACE_DARK, color: "#f1e9dc" }
-                    : { background: "transparent", borderColor: EDITORIAL_RULE, color: EDITORIAL_MUTED }
-                }
+        <div className="mb-10">
+          <div ref={filterMenuRef} className="relative inline-block">
+            <button
+              type="button"
+              onClick={() => setFilterMenuOpen((o) => !o)}
+              aria-haspopup="listbox"
+              aria-expanded={filterMenuOpen}
+              className="flex items-center gap-3 rounded-full border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors"
+              style={{ borderColor: EDITORIAL_RULE, color: EDITORIAL_INK, background: "transparent" }}
+            >
+              <span className="text-[10px] opacity-55">Showing</span>
+              <span>{activeFilterLabel}</span>
+              <ChevronDown
+                className="h-4 w-4 transition-transform"
+                style={{ transform: filterMenuOpen ? "rotate(180deg)" : "none", color: EDITORIAL_MUTED }}
+                aria-hidden
+              />
+            </button>
+
+            {filterMenuOpen ? (
+              <div
+                role="listbox"
+                className="absolute left-0 top-full z-20 mt-2 min-w-[16rem] overflow-hidden rounded-2xl border shadow-[0_16px_40px_-16px_rgba(0,0,0,0.35)]"
+                style={{ borderColor: EDITORIAL_RULE, background: EDITORIAL_BG }}
               >
-                {f.label}
-              </button>
-            );
-          })}
+                {filters.map((f) => {
+                  const active = f.key === activeFilter;
+                  return (
+                    <button
+                      key={f.key}
+                      type="button"
+                      role="option"
+                      aria-selected={active}
+                      onClick={() => {
+                        setActiveFilter(f.key);
+                        setOpenIndex(null);
+                        setFilterMenuOpen(false);
+                      }}
+                      className="flex w-full items-center justify-between gap-4 px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.12em] transition-colors"
+                      style={
+                        active
+                          ? { background: SURFACE_DARK, color: "#f1e9dc" }
+                          : { background: "transparent", color: EDITORIAL_MUTED }
+                      }
+                    >
+                      {f.label}
+                      {active ? <span aria-hidden>✓</span> : null}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
         </div>
       ) : null}
 
