@@ -37,6 +37,37 @@ const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-71.jpg";
 const CANNES_SRC = "/events/cannes-lions-2026/UNIKday1-2.jpg";
 const PARALLAX_SRC = "/events/cannes-lions-2026/UNIKday1-54.jpg";
 
+const PRESS_MENTIONS = [
+  {
+    publication: "Digiday",
+    headline: "Meet the man behind Cannes Lions' most exclusive parties",
+    description:
+      "On Culturin, the media and travel company founded in 2024 that blends brand storytelling, cultural insight, and local knowledge across campaigns, content, and activations.",
+    href: "https://digiday.com/marketing/meet-the-man-behind-cannes-lions-most-exclusive-parties/",
+  },
+  {
+    publication: "CNBC Africa",
+    headline: "Resolving Africa's geopolitics to unlock global opportunities",
+    description:
+      "Culturin founder Unik Ernest on diplomatic engagement, corruption, and unlocking economic opportunity across the continent.",
+    href: "https://www.cnbcafrica.com/media/7756747595504/resolving-africas-geopolitics-to-unlock-global-opportunities-",
+  },
+  {
+    publication: "CEO Weekly",
+    headline: "Unik Ernest's Culturin Afterparty Series Celebrates Culture, Community, and Philanthropy",
+    description:
+      "“The world needs more beautiful stories,” Ernest said of the series, which showcased diverse entertainment experiences across five nights in Cannes.",
+    href: "https://ceoweekly.com/unik-ernests-culturin-afterparty-series/",
+  },
+  {
+    publication: "News Diary",
+    headline: "Cannes Lions: Unik Ernest to host Culturin afterparty",
+    description:
+      "Business strategist and cultural architect Unik Ernest hosted the Culturin Afterparty Series during the Cannes Lions International Festival of Creativity.",
+    href: "https://newsdiaryonline.com/cannes-lions-unik-ernest-to-host-culturin-afterparty-5-all-star-events/",
+  },
+] as const;
+
 const GALLERY_PREVIEW = [
   { src: "/events/cannes-lions-2026/UNIKday1-34.jpg", alt: "Two guests portrait at a Culturin night in Cannes", span: "row-span-2" },
   { src: "/events/cannes-lions-2026/UNIKday1-41.jpg", alt: "Guests gathered together in a red-lit lounge in Cannes", span: "" },
@@ -529,6 +560,63 @@ export default function HomePage() {
                 Explore upcoming events →
               </Link>
             </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Press ──────────────────────────────────────────────── */}
+      <section
+        id="press"
+        className="border-t px-8 sm:px-14"
+        style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
+      >
+        <div className="mx-auto max-w-6xl">
+          <Reveal className="mb-12">
+            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+              In the press
+            </p>
+            <h2
+              className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+            >
+              What people are saying.
+            </h2>
+          </Reveal>
+
+          <div className="grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2">
+            {PRESS_MENTIONS.map((item, i) => (
+              <Reveal key={item.href} delay={(i % 2) * 90}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block border-t pt-6 no-underline"
+                  style={{ borderColor: RULE }}
+                >
+                  <p
+                    className="m-0 text-[10px] font-semibold uppercase tracking-[0.2em] transition-opacity group-hover:opacity-70"
+                    style={{ color: ACCENT }}
+                  >
+                    {item.publication}
+                  </p>
+                  <h3
+                    className="m-0 mt-3 text-xl font-medium leading-snug sm:text-2xl"
+                    style={{ color: INK, fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+                  >
+                    {item.headline}
+                  </h3>
+                  <p className="m-0 mt-3 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
+                    {item.description}
+                  </p>
+                  <span
+                    className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] transition-opacity group-hover:opacity-60"
+                    style={{ color: INK }}
+                  >
+                    Read the piece →
+                  </span>
+                </a>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
