@@ -172,6 +172,7 @@ const footerLinks = [
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
   { label: "Partners", href: "#partners" },
+  { label: "Our Mission", href: "/our-mission" },
 ];
 
 const socialLinks = [
