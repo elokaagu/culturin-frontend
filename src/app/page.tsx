@@ -67,7 +67,6 @@ const PILLARS = [
 
 const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Super Bowl", logoSrc: "/partners/super-bowl.webp" },
-  { name: "The Oscars" },
   { name: "Davos", logoSrc: "/partners/davos-logo.svg" },
   { name: "UN Assembly", logoSrc: "/partners/unga-logo.png" },
   { name: "Nike", logoSrc: "/partners/nike-logo.svg" },
