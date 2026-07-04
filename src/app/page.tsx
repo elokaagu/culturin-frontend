@@ -21,6 +21,7 @@ import HomeFooter from "./components/HomeFooter";
 import IslandNav from "./components/IslandNav";
 import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
 import AttendeeOriginMap from "./components/AttendeeOriginMap";
+import { Highlighter } from "@/components/ui/highlighter";
 
 export const metadata: Metadata = {
   title: "Culturin | Where Inspiration Meets Exploration",
@@ -176,7 +177,11 @@ export default function HomePage() {
                 className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                Culture is not just a state of being. It&apos;s an action.
+                Culture is not just a state of being. It&apos;s{" "}
+                <Highlighter action="highlight" color="#e08a5b" isView>
+                  an action
+                </Highlighter>
+                .
               </h2>
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col gap-6">
