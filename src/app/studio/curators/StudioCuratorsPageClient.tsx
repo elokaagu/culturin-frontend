@@ -16,6 +16,7 @@ import {
 } from "@/app/studio/_components/StudioCulturinListKit";
 import { filterStudioList, sortStudioList, type StudioSortKey } from "@/app/studio/_lib/studioListShared";
 import { deleteCmsEntry } from "@/app/studio/_lib/postCmsEntry";
+import { useStudioConfirm } from "@/app/studio/_components/StudioConfirmDialog";
 import type { StudioCuratorListItem } from "@/lib/cms/queries";
 
 import { CuratorFormInitial, StudioCuratorForm } from "./StudioCuratorForm";
@@ -28,6 +29,7 @@ type StudioCuratorsPageClientProps = {
 
 export function StudioCuratorsPageClient({ curators, hasDb, editEntry }: StudioCuratorsPageClientProps) {
   const router = useRouter();
+  const confirm = useStudioConfirm();
   const [createOpen, setCreateOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<StudioSortKey>("date-newest");
@@ -68,9 +70,11 @@ export function StudioCuratorsPageClient({ curators, hasDb, editEntry }: StudioC
 
   async function handleDelete(curator: StudioCuratorListItem) {
     const label = curator.name || curator.slug;
-    const confirmed = window.confirm(
-      `Delete "${label}"? This permanently removes the curator profile from the public site.`,
-    );
+    const confirmed = await confirm({
+      title: `Delete "${label}"?`,
+      description: "This permanently removes the curator profile from the public site.",
+      confirmLabel: "Delete curator",
+    });
     if (!confirmed) return;
 
     setDeletingSlug(curator.slug);

@@ -21,6 +21,7 @@ import { useState, type ReactNode } from "react";
 
 import { useTheme } from "@/app/styles/ThemeContext";
 import { useSupabaseAuth } from "@/app/components/SupabaseAuthProvider";
+import { StudioConfirmProvider } from "./_components/StudioConfirmDialog";
 
 type StudioLayoutClientProps = {
   children: ReactNode;
@@ -80,6 +81,7 @@ export default function StudioLayoutClient({
   const [signingOut, setSigningOut] = useState(false);
 
   return (
+    <StudioConfirmProvider>
     <div className="flex h-dvh max-h-dvh flex-col overflow-hidden bg-neutral-50 text-neutral-900 dark:bg-[#121212] dark:text-white">
       <header className="flex shrink-0 items-center justify-between gap-3 border-b border-neutral-200/90 bg-white/90 px-3 py-2.5 backdrop-blur-sm dark:border-white/10 dark:bg-neutral-950/90 sm:px-4">
         <div className="flex min-w-0 items-center gap-3">
@@ -300,5 +302,6 @@ export default function StudioLayoutClient({
         </div>
       </div>
     </div>
+    </StudioConfirmProvider>
   );
 }

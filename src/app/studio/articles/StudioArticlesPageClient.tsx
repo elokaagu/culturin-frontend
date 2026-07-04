@@ -14,6 +14,7 @@ import {
 } from "@/app/studio/_components/StudioCulturinListKit";
 import { filterStudioList, sortStudioList, type StudioSortKey } from "@/app/studio/_lib/studioListShared";
 import { deleteCmsEntry } from "@/app/studio/_lib/postCmsEntry";
+import { useStudioConfirm } from "@/app/studio/_components/StudioConfirmDialog";
 import type { StudioBlogListItem } from "@/lib/cms/queries";
 
 type StudioArticlesPageClientProps = {
@@ -23,6 +24,7 @@ type StudioArticlesPageClientProps = {
 
 export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPageClientProps) {
   const router = useRouter();
+  const confirm = useStudioConfirm();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<StudioSortKey>("date-newest");
   const [removed, setRemoved] = useState<Set<string>>(() => new Set());
@@ -58,9 +60,11 @@ export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPage
     ) : null;
 
   async function handleDelete(article: StudioBlogListItem) {
-    const confirmed = window.confirm(
-      `Delete “${article.title}”? This permanently removes the article from the public site.`,
-    );
+    const confirmed = await confirm({
+      title: `Delete "${article.title}"?`,
+      description: "This permanently removes the article from the public site.",
+      confirmLabel: "Delete article",
+    });
     if (!confirmed) return;
 
     setDeletingSlug(article.currentSlug);

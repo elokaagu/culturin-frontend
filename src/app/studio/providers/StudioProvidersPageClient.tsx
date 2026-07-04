@@ -16,6 +16,7 @@ import {
 } from "@/app/studio/_components/StudioCulturinListKit";
 import { filterStudioList, sortStudioList, type StudioSortKey } from "@/app/studio/_lib/studioListShared";
 import { deleteCmsEntry } from "@/app/studio/_lib/postCmsEntry";
+import { useStudioConfirm } from "@/app/studio/_components/StudioConfirmDialog";
 import type { StudioProviderListItem } from "@/lib/cms/queries";
 
 import { ProviderFormInitial, StudioProviderForm } from "./StudioProviderForm";
@@ -32,6 +33,7 @@ type StudioProvidersPageClientProps = {
 
 export function StudioProvidersPageClient({ providers, hasDb, editEntry }: StudioProvidersPageClientProps) {
   const router = useRouter();
+  const confirm = useStudioConfirm();
   const [createOpen, setCreateOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<StudioSortKey>("date-newest");
@@ -78,9 +80,11 @@ export function StudioProvidersPageClient({ providers, hasDb, editEntry }: Studi
 
   async function handleDelete(provider: StudioProviderListItem) {
     const label = displayTitle(provider);
-    const confirmed = window.confirm(
-      `Delete “${label}”? This permanently removes the listing from the public site.`,
-    );
+    const confirmed = await confirm({
+      title: `Delete "${label}"?`,
+      description: "This permanently removes the listing from the public site.",
+      confirmLabel: "Delete listing",
+    });
     if (!confirmed) return;
 
     setDeletingSlug(provider.slug);

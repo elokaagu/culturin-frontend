@@ -14,6 +14,7 @@ import {
 } from "@/app/studio/_components/StudioCulturinListKit";
 import { filterStudioList, sortStudioList, type StudioSortKey } from "@/app/studio/_lib/studioListShared";
 import { deleteCmsEntry } from "@/app/studio/_lib/postCmsEntry";
+import { useStudioConfirm } from "@/app/studio/_components/StudioConfirmDialog";
 import type { StudioVideoListItem } from "@/lib/cms/queries";
 
 type StudioVideosPageClientProps = {
@@ -23,6 +24,7 @@ type StudioVideosPageClientProps = {
 
 export function StudioVideosPageClient({ videos, hasDb }: StudioVideosPageClientProps) {
   const router = useRouter();
+  const confirm = useStudioConfirm();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<StudioSortKey>("date-newest");
   const [removed, setRemoved] = useState<Set<string>>(() => new Set());
@@ -64,9 +66,11 @@ export function StudioVideosPageClient({ videos, hasDb }: StudioVideosPageClient
     ) : null;
 
   async function handleDelete(video: StudioVideoListItem) {
-    const confirmed = window.confirm(
-      `Delete “${video.title}”? This permanently removes the video from the public site.`,
-    );
+    const confirmed = await confirm({
+      title: `Delete "${video.title}"?`,
+      description: "This permanently removes the video from the public site.",
+      confirmLabel: "Delete video",
+    });
     if (!confirmed) return;
 
     setDeletingSlug(video.currentSlug);

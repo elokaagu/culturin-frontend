@@ -9,6 +9,7 @@ import {
   studioCreateButtonClass,
   studioCreateFormShellClass,
 } from "@/app/studio/_components/StudioCulturinListKit";
+import { useStudioConfirm } from "@/app/studio/_components/StudioConfirmDialog";
 import type { StudioGalleryListItem } from "@/lib/cms/queries";
 
 import { StudioGalleryForm } from "./StudioGalleryForm";
@@ -21,6 +22,7 @@ export function StudioGalleryPageClient({
   hasDb: boolean;
 }) {
   const router = useRouter();
+  const confirm = useStudioConfirm();
   const [createOpen, setCreateOpen] = useState(false);
   const [removed, setRemoved] = useState<Set<string>>(() => new Set());
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -42,7 +44,11 @@ export function StudioGalleryPageClient({
   }, [visible]);
 
   async function handleDelete(image: StudioGalleryListItem) {
-    const confirmed = window.confirm("Delete this photo? This removes it from the public gallery.");
+    const confirmed = await confirm({
+      title: "Delete this photo?",
+      description: "This removes it from the public gallery.",
+      confirmLabel: "Delete photo",
+    });
     if (!confirmed) return;
 
     setDeletingId(image.id);
