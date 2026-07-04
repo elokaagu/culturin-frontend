@@ -138,6 +138,8 @@ function TravelGuidesNavLink() {
 }
 
 function Logo() {
+  const { mode } = useTheme();
+  const isDark = mode === "dark";
   return (
     <Link
       href="/"
@@ -145,7 +147,7 @@ function Logo() {
       aria-label="Culturin home"
     >
       <Image
-        src="/culturin_logo.svg"
+        src={isDark ? "/culturin_logo.svg" : "/culturin_logo_black.svg"}
         alt="Culturin"
         width={84}
         height={18}
