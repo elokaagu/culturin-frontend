@@ -70,7 +70,7 @@ export function StudioGalleryForm({ onSaved }: { onSaved?: () => void }) {
           <select
             name="orientation"
             defaultValue="landscape"
-            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
+            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-culturin-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
           >
             <option value="landscape">Landscape</option>
             <option value="portrait">Portrait</option>

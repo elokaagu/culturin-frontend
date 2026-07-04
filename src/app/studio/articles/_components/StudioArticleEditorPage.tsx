@@ -99,7 +99,7 @@ export function StudioArticleEditorPage({ mode, initial, workspace = "studio" }:
       <div className="flex flex-wrap items-center gap-3">
         <Link
           href={isCreator ? "/creator/articles" : "/studio/articles"}
-          className="text-sm font-medium text-amber-800 underline-offset-2 hover:underline dark:text-amber-400/90"
+          className="text-sm font-medium text-culturin-800 underline-offset-2 hover:underline dark:text-culturin-400/90"
         >
           ← All articles
         </Link>
@@ -125,7 +125,7 @@ export function StudioArticleEditorPage({ mode, initial, workspace = "studio" }:
             name="title_image_url"
             value={titleImageUrl}
             onChange={(event) => setTitleImageUrl(event.target.value)}
-            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-amber-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
+            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-culturin-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
             placeholder="Image URL for the hero card and article header"
           />
           <StudioImageUploadButton onUploaded={setTitleImageUrl} buttonLabel="Upload title image" />

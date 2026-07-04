@@ -19,7 +19,7 @@ function AccessDenied() {
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center bg-neutral-50 px-4 py-12 text-neutral-900 dark:bg-[#121212] dark:text-white">
       <div className="w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-neutral-950/90">
-        <p className="text-sm font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">Culturin Studio</p>
+        <p className="text-sm font-semibold uppercase tracking-wide text-culturin-700 dark:text-culturin-300">Culturin Studio</p>
         <h1 className="mt-2 text-2xl font-semibold">Access denied</h1>
         <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
           Your account is signed in, but it does not have admin access to Studio yet.
@@ -27,7 +27,7 @@ function AccessDenied() {
         <p className="mt-6 flex flex-col gap-3 text-sm">
           <Link
             href="/creator"
-            className="font-medium text-amber-800 underline-offset-2 hover:underline dark:text-amber-400/90"
+            className="font-medium text-culturin-800 underline-offset-2 hover:underline dark:text-culturin-400/90"
           >
             Open Creator workspace (drafts &amp; submissions)
           </Link>

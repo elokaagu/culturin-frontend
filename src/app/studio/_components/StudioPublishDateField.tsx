@@ -37,8 +37,8 @@ function toIsoLocal(date: Date, timeHHmm: string): string {
 
 const triggerClass = cn(
   "flex w-full items-center justify-between gap-2 rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-left text-sm text-neutral-900 outline-none ring-offset-2 transition",
-  "hover:border-neutral-400 focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-400/25",
-  "dark:border-white/15 dark:bg-[#121212] dark:text-white dark:hover:border-white/25 dark:focus-visible:border-amber-400/45 dark:focus-visible:ring-amber-400/20",
+  "hover:border-neutral-400 focus-visible:border-culturin-500/60 focus-visible:ring-2 focus-visible:ring-culturin-400/25",
+  "dark:border-white/15 dark:bg-[#121212] dark:text-white dark:hover:border-white/25 dark:focus-visible:border-culturin-400/45 dark:focus-visible:ring-culturin-400/20",
 );
 
 const popoverSurfaceClass = cn(
@@ -85,7 +85,7 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
         <Popover.Trigger asChild>
           <button type="button" className={triggerClass} aria-expanded={open}>
             <span className="flex min-w-0 flex-1 items-center gap-2">
-              <CalendarDays className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400/90" aria-hidden />
+              <CalendarDays className="h-4 w-4 shrink-0 text-culturin-700 dark:text-culturin-400/90" aria-hidden />
               <span className={cn("truncate", !summary && "text-neutral-500 dark:text-white/58")}>
                 {summary ?? "Choose date & time (optional)"}
               </span>
@@ -105,10 +105,10 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
               className="studio-day-picker text-neutral-900 dark:text-white"
               style={
                 {
-                  ["--rdp-accent-color" as string]: "#f59e0b",
-                  ["--rdp-accent-background-color" as string]: "rgba(245, 158, 11, 0.18)",
+                  ["--rdp-accent-color" as string]: "#cd6b3f",
+                  ["--rdp-accent-background-color" as string]: "rgba(205, 107, 63, 0.18)",
                   ["--rdp-day_button-border-radius" as string]: "0.5rem",
-                  ["--rdp-today-color" as string]: "#f59e0b",
+                  ["--rdp-today-color" as string]: "#cd6b3f",
                 } as CSSProperties
               }
             >
@@ -153,7 +153,7 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
                 </button>
                 <button
                   type="button"
-                  className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600"
+                  className="rounded-lg bg-culturin-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-culturin-700 dark:bg-culturin-500 dark:hover:bg-culturin-600"
                   onClick={() => setOpen(false)}
                 >
                   Done

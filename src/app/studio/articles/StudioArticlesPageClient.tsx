@@ -111,7 +111,7 @@ export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPage
           </p>
         ) : visibleArticles.length === 0 ? (
           <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            No articles found. Use <span className="font-medium text-amber-800 dark:text-amber-300/90">Create article</span>{" "}
+            No articles found. Use <span className="font-medium text-culturin-800 dark:text-culturin-300/90">Create article</span>{" "}
             to add one.
           </p>
         ) : filteredSorted.length === 0 ? (
@@ -132,9 +132,9 @@ export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPage
                       target="_blank"
                       rel="noopener noreferrer"
                       title={`Open “${article.title}” in a new tab`}
-                      className="group min-w-0 flex-1 rounded-md no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400/50"
+                      className="group min-w-0 flex-1 rounded-md no-underline outline-none focus-visible:ring-2 focus-visible:ring-culturin-400/50"
                     >
-                      <p className="m-0 truncate text-sm font-semibold text-neutral-900 transition group-hover:text-amber-800 dark:text-white dark:group-hover:text-amber-300">
+                      <p className="m-0 truncate text-sm font-semibold text-neutral-900 transition group-hover:text-culturin-800 dark:text-white dark:group-hover:text-culturin-300">
                         {article.title}
                       </p>
                       <p className="m-0 mt-1 truncate text-xs text-neutral-500 dark:text-white/62">/{slug}</p>

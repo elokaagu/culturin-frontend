@@ -31,6 +31,20 @@ module.exports = {
         xl: "calc(var(--radius) + 4px)",
       },
       colors: {
+        /** Culturin terracotta/peach — used in Studio in place of stock `amber-*`. */
+        culturin: {
+          50: "#fdf4ef",
+          100: "#fbe7dc",
+          200: "#f6cbb0",
+          300: "#f0ab85",
+          400: "#e08a5b",
+          500: "#cd6b3f",
+          600: "#b5502e",
+          700: "#953f24",
+          800: "#7a341f",
+          900: "#642c1c",
+          950: "#36150c",
+        },
         background: "hsl(var(--background) / <alpha-value>)",
         foreground: "hsl(var(--foreground) / <alpha-value>)",
         card: {

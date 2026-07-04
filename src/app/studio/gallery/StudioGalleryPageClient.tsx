@@ -107,7 +107,7 @@ export function StudioGalleryPageClient({
           </p>
         ) : groups.length === 0 ? (
           <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            No photos yet. Use <span className="font-medium text-amber-800 dark:text-amber-300/90">Add photo</span> to upload one.
+            No photos yet. Use <span className="font-medium text-culturin-800 dark:text-culturin-300/90">Add photo</span> to upload one.
           </p>
         ) : (
           groups.map((group) => (
@@ -116,7 +116,7 @@ export function StudioGalleryPageClient({
                 <h2 className="m-0 font-display text-lg font-semibold tracking-tight text-neutral-900 dark:text-white">
                   {group.label}
                 </h2>
-                <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-amber-800 dark:text-amber-300/90">
+                <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90">
                   {group.items.length} photo{group.items.length === 1 ? "" : "s"}
                 </span>
               </div>

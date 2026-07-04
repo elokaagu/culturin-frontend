@@ -35,7 +35,7 @@ const editorWrapClass = cn(
   "dark:border-white/12 dark:bg-black/50 dark:text-white dark:shadow-black/40",
   "prose prose-neutral max-w-none dark:prose-invert",
   "prose-headings:font-display prose-headings:font-semibold prose-p:leading-relaxed",
-  "focus-within:border-amber-500/50 focus-within:ring-2 focus-within:ring-amber-400/20",
+  "focus-within:border-culturin-500/50 focus-within:ring-2 focus-within:ring-culturin-400/20",
 );
 
 const toolbarBtnClass = cn(
@@ -44,7 +44,7 @@ const toolbarBtnClass = cn(
   "disabled:pointer-events-none disabled:opacity-40",
 );
 
-const toolbarBtnActiveClass = "border-amber-500/40 bg-amber-500/10 dark:border-amber-400/35 dark:bg-amber-400/10";
+const toolbarBtnActiveClass = "border-culturin-500/40 bg-culturin-500/10 dark:border-culturin-400/35 dark:bg-culturin-400/10";
 
 type ArticleRichEditorProps = {
   initialBody: unknown;
@@ -65,14 +65,14 @@ export const ArticleRichEditor = forwardRef<ArticleRichEditorHandle, ArticleRich
           orderedList: { HTMLAttributes: { class: "list-decimal pl-6 my-3" } },
         }),
         Underline,
-        Link.configure({ openOnClick: false, autolink: true, HTMLAttributes: { class: "text-amber-700 underline dark:text-amber-400/90" } }),
+        Link.configure({ openOnClick: false, autolink: true, HTMLAttributes: { class: "text-culturin-700 underline dark:text-culturin-400/90" } }),
         Placeholder.configure({ placeholder: "Write the story — headings, lists, links, quotes…" }),
       ],
       content: initialRef.current,
       editorProps: {
         attributes: {
           class: cn(
-            "outline-none min-h-[20rem] [&_p]:my-3 [&_h2]:mt-8 [&_h2]:mb-3 [&_h3]:mt-6 [&_blockquote]:border-l-2 [&_blockquote]:border-amber-500/50 [&_blockquote]:pl-4 [&_blockquote]:italic",
+            "outline-none min-h-[20rem] [&_p]:my-3 [&_h2]:mt-8 [&_h2]:mb-3 [&_h3]:mt-6 [&_blockquote]:border-l-2 [&_blockquote]:border-culturin-500/50 [&_blockquote]:pl-4 [&_blockquote]:italic",
           ),
         },
       },

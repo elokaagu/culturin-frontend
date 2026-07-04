@@ -110,7 +110,7 @@ export function StudioConfirmProvider({ children }: { children: ReactNode }) {
                 onClick={() => settle(true)}
                 className={
                   pending.destructive === false
-                    ? "inline-flex h-9 items-center rounded-full border border-amber-700/25 bg-white px-4 text-sm font-semibold text-neutral-900 shadow-sm transition hover:border-amber-600/40 hover:bg-amber-50 dark:border-amber-400/40 dark:bg-white dark:text-black dark:hover:bg-amber-100"
+                    ? "inline-flex h-9 items-center rounded-full border border-culturin-700/25 bg-white px-4 text-sm font-semibold text-neutral-900 shadow-sm transition hover:border-culturin-600/40 hover:bg-culturin-50 dark:border-culturin-400/40 dark:bg-white dark:text-black dark:hover:bg-culturin-100"
                     : "inline-flex h-9 items-center rounded-full bg-rose-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-700 dark:bg-rose-600 dark:hover:bg-rose-500"
                 }
               >

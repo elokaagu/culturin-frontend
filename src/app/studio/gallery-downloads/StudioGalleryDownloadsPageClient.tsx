@@ -34,7 +34,7 @@ export function StudioGalleryDownloadsPageClient({
         <h2 className="m-0 font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
           All downloads
         </h2>
-        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-amber-800 dark:text-amber-300/90">
+        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90">
           {search.trim()
             ? `${filtered.length} of ${downloads.length} shown`
             : `${downloads.length} download${downloads.length === 1 ? "" : "s"}`}
@@ -52,7 +52,7 @@ export function StudioGalleryDownloadsPageClient({
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search name, email, photo…"
             autoComplete="off"
-            className="w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-inner shadow-neutral-900/5 outline-none transition placeholder:text-neutral-400 focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-400/25 dark:border-white/12 dark:bg-black/60 dark:text-white dark:shadow-black/40 dark:placeholder:text-white/35"
+            className="w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-inner shadow-neutral-900/5 outline-none transition placeholder:text-neutral-400 focus-visible:border-culturin-500/60 focus-visible:ring-2 focus-visible:ring-culturin-400/25 dark:border-white/12 dark:bg-black/60 dark:text-white dark:shadow-black/40 dark:placeholder:text-white/35"
           />
         </label>
       ) : null}

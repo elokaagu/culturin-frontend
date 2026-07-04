@@ -41,7 +41,7 @@ export function StudioPartnerInquiriesPageClient({
         <h2 className="m-0 font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
           All inquiries
         </h2>
-        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-amber-800 dark:text-amber-300/90">
+        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90">
           {search.trim()
             ? `${filtered.length} of ${inquiries.length} shown`
             : `${inquiries.length} inquir${inquiries.length === 1 ? "y" : "ies"}`}
@@ -59,7 +59,7 @@ export function StudioPartnerInquiriesPageClient({
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search name, email, company, message…"
             autoComplete="off"
-            className="w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-inner shadow-neutral-900/5 outline-none transition placeholder:text-neutral-400 focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-400/25 dark:border-white/12 dark:bg-black/60 dark:text-white dark:shadow-black/40 dark:placeholder:text-white/35"
+            className="w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-inner shadow-neutral-900/5 outline-none transition placeholder:text-neutral-400 focus-visible:border-culturin-500/60 focus-visible:ring-2 focus-visible:ring-culturin-400/25 dark:border-white/12 dark:bg-black/60 dark:text-white dark:shadow-black/40 dark:placeholder:text-white/35"
           />
         </label>
       ) : null}
@@ -97,7 +97,7 @@ export function StudioPartnerInquiriesPageClient({
                   </a>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
-                  <span className="rounded-full border border-amber-700/25 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-amber-800 dark:border-amber-400/30 dark:text-amber-300/90">
+                  <span className="rounded-full border border-culturin-700/25 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-culturin-800 dark:border-culturin-400/30 dark:text-culturin-300/90">
                     {INTEREST_LABELS[inq.interest] ?? inq.interest}
                   </span>
                   <span className="whitespace-nowrap text-xs text-neutral-500 dark:text-white/58">

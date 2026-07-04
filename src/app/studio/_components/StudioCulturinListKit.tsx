@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 /** Primary “create” CTA used across Studio entity pages (matches Culturin gold + pill pattern). */
 export const studioCreateButtonClass =
-  "inline-flex min-h-11 items-center justify-center rounded-full border border-amber-700/25 bg-white px-6 py-2.5 text-sm font-semibold text-neutral-900 shadow-sm transition hover:border-amber-600/40 hover:bg-amber-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500/80 dark:border-amber-400/40 dark:bg-white dark:text-black dark:hover:bg-amber-100 dark:hover:text-black";
+  "inline-flex min-h-11 items-center justify-center rounded-full border border-culturin-700/25 bg-white px-6 py-2.5 text-sm font-semibold text-neutral-900 shadow-sm transition hover:border-culturin-600/40 hover:bg-culturin-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-culturin-500/80 dark:border-culturin-400/40 dark:bg-white dark:text-black dark:hover:bg-culturin-100 dark:hover:text-black";
 
 /** Secondary cancel control beside expanded create forms. */
 export const studioCancelButtonClass =
@@ -16,18 +16,18 @@ export const studioCancelButtonClass =
 
 /** Panel wrapping an expanded “create” form. */
 export const studioCreateFormShellClass =
-  "relative rounded-2xl border border-neutral-200 bg-neutral-50/90 p-5 pt-4 dark:border-white/12 dark:bg-black/40 dark:ring-1 dark:ring-amber-400/15";
+  "relative rounded-2xl border border-neutral-200 bg-neutral-50/90 p-5 pt-4 dark:border-white/12 dark:bg-black/40 dark:ring-1 dark:ring-culturin-400/15";
 
 /** Muted label above search/sort (uppercase micro-label). */
 const labelClass =
   "text-[0.7rem] font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58";
 
 const inputClass =
-  "w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-inner shadow-neutral-900/5 outline-none transition placeholder:text-neutral-400 focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-400/25 dark:border-white/12 dark:bg-black/60 dark:text-white dark:shadow-black/40 dark:placeholder:text-white/35 dark:focus-visible:border-amber-400/55 dark:focus-visible:ring-amber-400/20";
+  "w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-inner shadow-neutral-900/5 outline-none transition placeholder:text-neutral-400 focus-visible:border-culturin-500/60 focus-visible:ring-2 focus-visible:ring-culturin-400/25 dark:border-white/12 dark:bg-black/60 dark:text-white dark:shadow-black/40 dark:placeholder:text-white/35 dark:focus-visible:border-culturin-400/55 dark:focus-visible:ring-culturin-400/20";
 
-/** Wrapper: inset amber bar on the left in dark mode (Culturin accent). */
+/** Wrapper: inset terracotta bar on the left in dark mode (Culturin accent). */
 const accentWrapClass =
-  "rounded-xl border border-neutral-300 bg-white shadow-inner shadow-neutral-900/5 transition focus-within:border-amber-500/55 focus-within:ring-2 focus-within:ring-amber-400/20 dark:border-white/12 dark:bg-black/60 dark:shadow-[inset_3px_0_0_0_rgba(251,191,36,0.42)] dark:shadow-black/40 dark:focus-within:border-amber-400/45 dark:focus-within:ring-amber-400/15";
+  "rounded-xl border border-neutral-300 bg-white shadow-inner shadow-neutral-900/5 transition focus-within:border-culturin-500/55 focus-within:ring-2 focus-within:ring-culturin-400/20 dark:border-white/12 dark:bg-black/60 dark:shadow-[inset_3px_0_0_0_rgba(224,138,91,0.42)] dark:shadow-black/40 dark:focus-within:border-culturin-400/45 dark:focus-within:ring-culturin-400/15";
 
 type StudioCulturinListSectionProps = {
   title: string;
@@ -38,7 +38,7 @@ type StudioCulturinListSectionProps = {
 };
 
 /**
- * Dark “Culturin” panel for Studio list views: serif title, amber micro-labels, black inputs on dark.
+ * Dark “Culturin” panel for Studio list views: serif title, terracotta micro-labels, black inputs on dark.
  */
 export function StudioCulturinListSection({ title, countLabel, toolbar, children }: StudioCulturinListSectionProps) {
   return (
@@ -52,7 +52,7 @@ export function StudioCulturinListSection({ title, countLabel, toolbar, children
         <h2 className="m-0 font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
           {title}
         </h2>
-        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-amber-800 dark:text-amber-300/90">
+        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90">
           {countLabel}
         </span>
       </div>
@@ -112,8 +112,8 @@ export function StudioCulturinSearchSortRow({
 
 /** List row card — Culturin rail / editorial panel. */
 export const studioListRowClass =
-  "rounded-xl border border-neutral-200 bg-white px-4 py-3.5 transition dark:border-white/12 dark:bg-white/[0.04] dark:hover:border-amber-400/25";
+  "rounded-xl border border-neutral-200 bg-white px-4 py-3.5 transition dark:border-white/12 dark:bg-white/[0.04] dark:hover:border-culturin-400/25";
 
 /** Inline text link button style for Edit links in lists. */
 export const studioListEditLinkClass =
-  "inline-flex h-8 shrink-0 items-center rounded-full border border-neutral-300 bg-white px-3 text-xs font-medium text-neutral-800 no-underline transition hover:border-amber-500/35 hover:bg-amber-50 dark:border-white/18 dark:bg-white/[0.06] dark:text-white dark:hover:border-amber-400/40 dark:hover:bg-white/10";
+  "inline-flex h-8 shrink-0 items-center rounded-full border border-neutral-300 bg-white px-3 text-xs font-medium text-neutral-800 no-underline transition hover:border-culturin-500/35 hover:bg-culturin-50 dark:border-white/18 dark:bg-white/[0.06] dark:text-white dark:hover:border-culturin-400/40 dark:hover:bg-white/10";

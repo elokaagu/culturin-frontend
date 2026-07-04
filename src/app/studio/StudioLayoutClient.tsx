@@ -90,7 +90,7 @@ export default function StudioLayoutClient({
         <div className="flex min-w-0 items-center gap-3">
           <Link
             href="/studio"
-            className="truncate font-display text-base font-semibold tracking-tight text-amber-800 no-underline dark:text-amber-300/95"
+            className="truncate font-display text-base font-semibold tracking-tight text-culturin-800 no-underline dark:text-culturin-300/95"
           >
             Culturin™ <span className="font-sans text-sm font-medium text-neutral-600 dark:text-white/60">Studio</span>
           </Link>
@@ -106,7 +106,7 @@ export default function StudioLayoutClient({
           </button>
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-800 no-underline transition hover:border-amber-400/50 hover:bg-neutral-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:border-amber-400/35 dark:hover:bg-white/10 sm:text-sm"
+            className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-800 no-underline transition hover:border-culturin-400/50 hover:bg-neutral-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:border-culturin-400/35 dark:hover:bg-white/10 sm:text-sm"
           >
             <ExternalLink className="h-3.5 w-3.5 opacity-80" aria-hidden />
             <span className="hidden sm:inline">View site</span>
