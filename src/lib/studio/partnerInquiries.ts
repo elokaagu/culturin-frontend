@@ -19,7 +19,13 @@ export async function listPartnerInquiriesForStudio(): Promise<StudioPartnerInqu
     .select("id, name, email, company, interest, message, created_at")
     .order("created_at", { ascending: false });
 
-  if (error || !data) return [];
+  if (error) {
+    // Surface real failures instead of silently rendering an empty list —
+    // an unreadable table shouldn't look identical to "no inquiries yet".
+    console.error("[studio] failed to list partner inquiries:", error.message);
+    return [];
+  }
+  if (!data) return [];
 
   return (data as Array<Record<string, unknown>>).map((row) => ({
     id: String(row.id ?? ""),
