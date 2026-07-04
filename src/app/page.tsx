@@ -60,7 +60,7 @@ const PILLARS = [
     body: "Cultural literacy programming that goes beyond the trip, helping travelers understand, not just visit, the places they explore.",
   },
   {
-    label: "Brand & credibility",
+    label: "Brand credibility",
     body: "Built by a team with production history at the Super Bowl, the Oscars, Davos, Cannes, and the UN Assembly.",
   },
 ];
