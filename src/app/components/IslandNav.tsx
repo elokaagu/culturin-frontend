@@ -65,11 +65,11 @@ export default function IslandNav() {
             className="flex shrink-0 items-center rounded-full px-4 py-2 no-underline opacity-95 transition hover:bg-black/[0.04] hover:opacity-100 dark:hover:bg-white/[0.06]"
           >
             <Image
-              src={isDark ? "/culturin_logo.svg" : "/culturin_logo_black.svg"}
+              src={isDark ? "/culturin_icon_yellow.png" : "/culturin_icon_black.png"}
               alt="Culturin"
-              width={84}
-              height={18}
-              className="h-4 w-auto max-w-[5.5rem]"
+              width={28}
+              height={28}
+              className="h-6 w-6"
               unoptimized
               priority
             />
@@ -129,11 +129,11 @@ export default function IslandNav() {
           className="flex shrink-0 items-center no-underline"
         >
           <Image
-            src={isDark ? "/culturin_logo.svg" : "/culturin_logo_black.svg"}
+            src={isDark ? "/culturin_icon_yellow.png" : "/culturin_icon_black.png"}
             alt="Culturin"
-            width={84}
-            height={18}
-            className="h-4 w-auto max-w-[5.5rem]"
+            width={26}
+            height={26}
+            className="h-[22px] w-[22px]"
             unoptimized
             priority
           />

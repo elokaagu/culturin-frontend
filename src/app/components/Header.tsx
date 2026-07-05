@@ -147,11 +147,11 @@ function Logo() {
       aria-label="Culturin home"
     >
       <Image
-        src={isDark ? "/culturin_logo.svg" : "/culturin_logo_black.svg"}
+        src={isDark ? "/culturin_icon_yellow.png" : "/culturin_icon_black.png"}
         alt="Culturin"
-        width={84}
-        height={18}
-        className="h-4 w-auto max-w-[5.75rem] opacity-95 transition-opacity group-hover:opacity-100 sm:h-[1.1rem] sm:max-w-[6.25rem]"
+        width={26}
+        height={26}
+        className="h-[22px] w-[22px] opacity-95 transition-opacity group-hover:opacity-100 sm:h-6 sm:w-6"
         unoptimized
         priority
       />

@@ -189,11 +189,11 @@ export default function HomeFooter() {
         <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <Image
-              src="/culturin_logo.svg"
+              src="/culturin_logotype_yellow.png"
               alt="Culturin"
-              width={84}
-              height={18}
-              className="h-4 w-auto max-w-[5.75rem]"
+              width={175}
+              height={26}
+              className="h-5 w-auto"
               unoptimized
             />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/55">

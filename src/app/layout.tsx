@@ -39,9 +39,9 @@ export const metadata: Metadata = {
   title: "Culturin | Where Inspiration Meets Exploration",
   description: "Travel, Culture, and Inspiration Platform",
   icons: {
-    icon: [{ url: "/culturin_logo.svg", type: "image/svg+xml" }],
-    shortcut: "/culturin_logo.svg",
-    apple: "/culturin_logo.svg",
+    icon: [{ url: "/culturin_icon_black.png", type: "image/png" }],
+    shortcut: "/culturin_icon_black.png",
+    apple: "/culturin_icon_black.png",
   },
 };
 
