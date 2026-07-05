@@ -56,6 +56,7 @@ const FALLBACK_GALLERY: GalleryItem[] = [
 
 const FILTER_LABELS: Record<string, string> = {
   "cannes-2026": "Cannes Lions 2026",
+  "miami-2025": "Muertos Dios 2025",
   "cannes-2025": "Cannes Lions 2025",
   "notting-hill-2025": "Notting Hill Carnival 2025",
   "nyfw-2025": "New York Fashion Week 2025",
@@ -65,12 +66,14 @@ const FILTER_LABELS: Record<string, string> = {
  * Chronological rank by actual event date (lower = more recent). Drives both
  * the filter tab order and the "All" grid order — newest event first.
  * Cannes Lions: June. Notting Hill Carnival: August. NYFW: September.
+ * Muertos Dios: November.
  */
 const EVENT_CHRONOLOGICAL_RANK: Record<string, number> = {
   "cannes-2026": 0, // June 2026 — most recent
-  "nyfw-2025": 1, // September 2025
-  "notting-hill-2025": 2, // August 2025
-  "cannes-2025": 3, // June 2025
+  "miami-2025": 1, // November 2025
+  "nyfw-2025": 2, // September 2025
+  "notting-hill-2025": 3, // August 2025
+  "cannes-2025": 4, // June 2025
 };
 
 function eventRank(eventKey: string): number {
@@ -129,7 +132,7 @@ export default async function GalleryPage() {
           Life inside the rooms.
         </h1>
         <p className="mt-6 max-w-lg text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          From Cannes Lions to Notting Hill Carnival and New York Fashion Week — real rooms Culturin was actually in.
+          From Cannes Lions to Notting Hill Carnival, New York Fashion Week, and Muertos Dios in Miami — real rooms Culturin was actually in.
         </p>
       </div>
 
