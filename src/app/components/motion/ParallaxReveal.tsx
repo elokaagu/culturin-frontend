@@ -62,7 +62,7 @@ export default function ParallaxReveal({
         />
         {/* Fade to the page background so the pinned section releases into the next one instead of cutting off hard. */}
         <div
-          className="absolute inset-x-0 bottom-0 z-[1] h-[26dvh]"
+          className="absolute inset-x-0 bottom-0 z-[1] h-[14dvh]"
           style={{ background: `linear-gradient(180deg, transparent 0%, ${EDITORIAL_BG} 100%)` }}
         />
         <motion.div

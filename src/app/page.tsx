@@ -144,7 +144,7 @@ export default function HomePage() {
         />
         {/* Fade to the page background so the hero blends into the next section instead of cutting off hard. */}
         <div
-          className="absolute inset-x-0 bottom-0 h-[28dvh]"
+          className="absolute inset-x-0 bottom-0 h-[14dvh]"
           style={{ background: `linear-gradient(180deg, transparent 0%, ${BG} 100%)` }}
         />
         <Reveal className="relative z-10 mx-auto flex max-w-2xl flex-col items-center" y={32}>
