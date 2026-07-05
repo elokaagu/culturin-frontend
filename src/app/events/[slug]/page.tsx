@@ -249,12 +249,17 @@ export default async function EventLandingPage({ params }: Props) {
 
       {/* ── Minimal footer ───────────────────────────────────────── */}
       <footer
-        className="flex items-center justify-between border-t px-8 py-6 sm:px-14"
+        className="flex flex-col gap-3 border-t px-8 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-14"
         style={{ borderColor: RULE }}
       >
         <span className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: INK_MUTED }}>
           Culturin
         </span>
+        {event.slug === "cannes-lions-2026" ? (
+          <span className="text-[11px]" style={{ color: INK_MUTED }}>
+            Photography: Juan Woodbury (@djsd) &amp; UnikGastro
+          </span>
+        ) : null}
         <span className="text-[11px]" style={{ color: INK_MUTED }}>
           © {new Date().getFullYear()}
         </span>

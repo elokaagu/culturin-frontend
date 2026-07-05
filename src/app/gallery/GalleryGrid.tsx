@@ -133,6 +133,11 @@ export default function GalleryGrid({
               </div>
             ) : null}
           </div>
+          {activeFilter === "cannes-2026" ? (
+            <p className="mt-3 text-xs" style={{ color: EDITORIAL_MUTED }}>
+              Photography: Juan Woodbury (@djsd) &amp; UnikGastro
+            </p>
+          ) : null}
         </div>
       ) : null}
 
