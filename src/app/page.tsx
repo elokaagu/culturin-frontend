@@ -23,6 +23,9 @@ import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
 import AttendeeOriginMap from "./components/AttendeeOriginMap";
 import MagneticButton from "./components/motion/MagneticButton";
 import { Highlighter } from "@/components/ui/highlighter";
+import { getSiteImagesMap, resolveSiteImage, manifestDefault } from "@/lib/siteImages";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Culturin | Where Inspiration Meets Exploration",
@@ -36,9 +39,6 @@ const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
 
-const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-71.jpg";
-const CANNES_SRC = "/events/cannes-lions-2026/UNIKday1-2.jpg";
-const PARALLAX_SRC = "/events/cannes-lions-2026/UNIKday1-54.jpg";
 
 const PRESS_MENTIONS = [
   {
@@ -71,13 +71,13 @@ const PRESS_MENTIONS = [
   },
 ] as const;
 
-const GALLERY_PREVIEW = [
-  { src: "/events/cannes-lions-2026/UNIKday1-34.jpg", alt: "Two guests portrait at a Culturin night in Cannes", span: "row-span-2" },
-  { src: "/events/cannes-lions-2026/UNIKday1-41.jpg", alt: "Guests gathered together in a red-lit lounge in Cannes", span: "" },
-  { src: "/events/cannes-lions-2026/UNIKday1-48.jpg", alt: "Guests laughing together in a red-lit lounge in Cannes", span: "" },
-  { src: "/events/cannes-lions-2026/UNIKday1-26.jpg", alt: "Disco balls above the crowd in Cannes", span: "" },
-  { src: "/events/cannes-lions-2026/UNIKday1-38.jpg", alt: "Guests posing together at a Culturin evening in Cannes", span: "" },
-];
+const GALLERY_PREVIEW_SLOTS = [
+  { key: "homepage-preview-1", span: "row-span-2" },
+  { key: "homepage-preview-2", span: "" },
+  { key: "homepage-preview-3", span: "" },
+  { key: "homepage-preview-4", span: "" },
+  { key: "homepage-preview-5", span: "" },
+] as const;
 
 const PILLARS = [
   {
@@ -114,7 +114,16 @@ function cityTag(location: string): string {
   return location.split(",")[0]?.trim() ?? location;
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const siteImages = await getSiteImagesMap();
+  const hero = resolveSiteImage(siteImages, "homepage-hero", manifestDefault("homepage-hero"));
+  const cannesSection = resolveSiteImage(siteImages, "homepage-cannes-section", manifestDefault("homepage-cannes-section"));
+  const parallax = resolveSiteImage(siteImages, "homepage-parallax", manifestDefault("homepage-parallax"));
+  const galleryPreview = GALLERY_PREVIEW_SLOTS.map((slot) => ({
+    ...resolveSiteImage(siteImages, slot.key, manifestDefault(slot.key)),
+    span: slot.span,
+  }));
+
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
 
@@ -126,13 +135,13 @@ export default function HomePage() {
         className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-8 text-center sm:px-14"
       >
         <BlurImage
-          src={HERO_SRC}
-          alt="A packed room at a Culturin night, red lighting and neon signage"
+          src={hero.src}
+          alt={hero.alt}
           fill
           priority
           className="object-cover"
           placeholder="blur"
-          blurDataURL={blurForSrc(HERO_SRC)}
+          blurDataURL={blurForSrc(hero.src)}
           sizes="100vw"
         />
         <div
@@ -271,9 +280,9 @@ export default function HomePage() {
 
       {/* ── Parallax movement break (Goals House-style pinned scroll) ── */}
       <ParallaxReveal
-        src={PARALLAX_SRC}
-        alt="Guests on the dancefloor at a late-night Culturin reception"
-        blurDataURL={blurForSrc(PARALLAX_SRC)}
+        src={parallax.src}
+        alt={parallax.alt}
+        blurDataURL={blurForSrc(parallax.src)}
         eyebrow="The Movement"
         headline="Culture doesn't wait for permission."
         body="Every room we build is a bet that people showing up for each other, in person, still matters more than any feed."
@@ -308,7 +317,11 @@ export default function HomePage() {
           </Reveal>
 
           <div className="grid grid-cols-1 gap-px sm:grid-cols-3" style={{ background: RULE }}>
-            {featuredEvents.map((event, i) => (
+            {featuredEvents.map((event, i) => {
+              const eventHero = event.heroImage
+                ? resolveSiteImage(siteImages, `event-hero-${event.slug}`, { src: event.heroImage, alt: event.heroImageAlt })
+                : null;
+              return (
               <Reveal key={event.slug} as="div" delay={i * 120}>
                 <Link
                   href={`/events/${event.slug}`}
@@ -317,16 +330,16 @@ export default function HomePage() {
                 >
                   <div
                     className="relative aspect-[4/3] overflow-hidden"
-                    style={{ background: event.heroImage ? undefined : SURFACE_DARK }}
+                    style={{ background: eventHero ? undefined : SURFACE_DARK }}
                   >
-                    {event.heroImage ? (
+                    {eventHero ? (
                       <BlurImage
-                        src={event.heroImage}
-                        alt={event.heroImageAlt}
+                        src={eventHero.src}
+                        alt={eventHero.alt}
                         fill
                         className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.05]"
                         placeholder="blur"
-                        blurDataURL={blurForSrc(event.heroImage)}
+                        blurDataURL={blurForSrc(eventHero.src)}
                         sizes="(max-width: 640px) 100vw, 33vw"
                         unoptimized
                       />
@@ -368,7 +381,8 @@ export default function HomePage() {
                   </div>
                 </Link>
               </Reveal>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -388,12 +402,12 @@ export default function HomePage() {
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
             <Reveal as="div" className="relative aspect-[3/4] overflow-hidden lg:aspect-auto lg:min-h-[520px]">
               <BlurImage
-                src={CANNES_SRC}
-                alt="Guest in a tailored blazer at a Culturin night in Cannes"
+                src={cannesSection.src}
+                alt={cannesSection.alt}
                 fill
                 className="object-cover"
                 placeholder="blur"
-                blurDataURL={blurForSrc(CANNES_SRC)}
+                blurDataURL={blurForSrc(cannesSection.src)}
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </Reveal>
@@ -468,7 +482,7 @@ export default function HomePage() {
 
           <Reveal>
             <div className="grid grid-cols-3 gap-5" style={{ gridTemplateRows: "240px 240px" }}>
-              {GALLERY_PREVIEW.map((item, i) => (
+              {galleryPreview.map((item, i) => (
                 <Link
                   key={i}
                   href="/gallery"

@@ -16,6 +16,7 @@ import BlurImage from "@/app/components/motion/BlurImage";
 import Reveal from "@/app/components/motion/Reveal";
 import CountUpStat from "@/app/components/motion/CountUpStat";
 import IslandNav from "@/app/components/IslandNav";
+import { getSiteImagesMap, resolveSiteImage } from "@/lib/siteImages";
 import RSVPForm from "./RSVPForm";
 
 const BG = EDITORIAL_BG;
@@ -23,6 +24,8 @@ const INK = EDITORIAL_INK;
 const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
+
+export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -46,6 +49,10 @@ export default async function EventLandingPage({ params }: Props) {
   if (!event) notFound();
 
   const isPast = event.isPast === true;
+  const siteImages = await getSiteImagesMap();
+  const hero = event.heroImage
+    ? resolveSiteImage(siteImages, `event-hero-${event.slug}`, { src: event.heroImage, alt: event.heroImageAlt })
+    : null;
 
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} min-h-dvh font-sans antialiased`}>
@@ -57,18 +64,18 @@ export default async function EventLandingPage({ params }: Props) {
       <section
         id="home"
         className="relative flex min-h-dvh flex-col justify-end overflow-hidden px-6 pb-16 sm:px-14"
-        style={event.heroImage ? undefined : { background: SURFACE_DARK }}
+        style={hero ? undefined : { background: SURFACE_DARK }}
       >
-        {event.heroImage ? (
+        {hero ? (
           <>
             <BlurImage
-              src={event.heroImage}
-              alt={event.heroImageAlt}
+              src={hero.src}
+              alt={hero.alt}
               fill
               priority
               className="object-cover"
               placeholder="blur"
-              blurDataURL={blurForSrc(event.heroImage)}
+              blurDataURL={blurForSrc(hero.src)}
               sizes="100vw"
             />
             {/* Gradient overlay */}

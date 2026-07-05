@@ -8,6 +8,7 @@ import {
   Download,
   ExternalLink,
   Handshake,
+  Image as ImageIcon,
   Images,
   LayoutDashboard,
   LogOut,
@@ -217,6 +218,18 @@ export default function StudioLayoutClient({
                     <Images className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                     <span className="min-w-0 flex-1">Gallery</span>
                     {countBadge(galleryCount, pathname === "/studio/gallery" || pathname?.startsWith("/studio/gallery/"))}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/studio/site-images"
+                    className={navItemClass(
+                      pathname === "/studio/site-images" || pathname?.startsWith("/studio/site-images/"),
+                    )}
+                    aria-current={pathname === "/studio/site-images" ? "page" : undefined}
+                  >
+                    <ImageIcon className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                    <span className="min-w-0 flex-1">Site images</span>
                   </Link>
                 </li>
               </ul>
