@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Moon, Sun } from "lucide-react";
 import Hamburger from "hamburger-react";
 import { useEffect, useState } from "react";
 
@@ -24,7 +23,7 @@ const NAV = [
 export default function IslandNav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { mode, toggleTheme } = useTheme();
+  const { mode } = useTheme();
   const isDark = mode === "dark";
 
   useEffect(() => {
@@ -87,20 +86,6 @@ export default function IslandNav() {
               </Link>
             ))}
           </div>
-
-          {/* Light / dark toggle */}
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            className="flex shrink-0 items-center justify-center rounded-full p-2 text-[#1c1a17] transition hover:bg-black/[0.05] dark:text-[#f1e9dc] dark:hover:bg-white/[0.07]"
-          >
-            {isDark ? (
-              <Sun className="h-4 w-4" strokeWidth={2} aria-hidden />
-            ) : (
-              <Moon className="h-4 w-4" strokeWidth={2} aria-hidden />
-            )}
-          </button>
 
           {/* CTA */}
           <MagneticButton strength={0.4} className="shrink-0">
@@ -170,19 +155,11 @@ export default function IslandNav() {
               </Link>
             ))}
           </div>
-          <div className="flex items-center justify-between gap-3 border-t border-[#cec7be]/80 px-4 py-4 dark:border-white/10">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="flex items-center gap-2 rounded-full px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1c1a17] transition hover:bg-black/[0.05] dark:text-[#f1e9dc] dark:hover:bg-white/[0.07]"
-            >
-              {isDark ? <Sun className="h-4 w-4" strokeWidth={2} aria-hidden /> : <Moon className="h-4 w-4" strokeWidth={2} aria-hidden />}
-              {isDark ? "Light mode" : "Dark mode"}
-            </button>
+          <div className="flex items-center justify-center border-t border-[#cec7be]/80 px-4 py-4 dark:border-white/10">
             <Link
               href="/partner"
               onClick={() => setMobileOpen(false)}
-              className="rounded-full bg-[#b5502e] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
+              className="w-full rounded-full bg-[#b5502e] px-5 py-2.5 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
             >
               Partner with us
             </Link>

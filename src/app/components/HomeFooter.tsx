@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Moon, Sun } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
 import { SURFACE_DARK, ACCENT_ON_DARK } from "@/lib/theme/culturinTokens";
+import { useTheme } from "../styles/ThemeContext";
 
 const INK = SURFACE_DARK;
 const CREAM = "#e8e3da";
@@ -182,6 +184,8 @@ const socialLinks = [
 
 export default function HomeFooter() {
   const year = new Date().getFullYear();
+  const { mode, toggleTheme } = useTheme();
+  const isDark = mode === "dark";
 
   return (
     <footer className="relative overflow-hidden border-t" style={{ borderColor: RULE, background: INK }}>
@@ -258,14 +262,25 @@ export default function HomeFooter() {
           </Link>
         </div>
 
-        <div className="mt-8 flex items-center justify-between border-t py-6 text-xs" style={{ borderColor: "rgba(232,227,218,0.15)" }}>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t py-6 text-xs" style={{ borderColor: "rgba(232,227,218,0.15)" }}>
           <span className="text-white/45">© {year} Culturin. All Rights Reserved.</span>
-          <a
-            href="mailto:unik@culturin.com"
-            className="text-white/45 no-underline transition-opacity hover:text-white/80"
-          >
-            unik@culturin.com
-          </a>
+          <div className="flex items-center gap-5">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              className="flex items-center gap-2 text-white/45 transition-opacity hover:text-white/80"
+            >
+              {isDark ? <Sun className="h-3.5 w-3.5" strokeWidth={2} aria-hidden /> : <Moon className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />}
+              {isDark ? "Light mode" : "Dark mode"}
+            </button>
+            <a
+              href="mailto:unik@culturin.com"
+              className="text-white/45 no-underline transition-opacity hover:text-white/80"
+            >
+              unik@culturin.com
+            </a>
+          </div>
         </div>
       </div>
 

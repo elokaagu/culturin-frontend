@@ -257,7 +257,7 @@ export default async function EventLandingPage({ params }: Props) {
         </span>
         {event.slug === "cannes-lions-2026" ? (
           <span className="text-[11px]" style={{ color: INK_MUTED }}>
-            Photography: Juan Woodbury (@djsd) &amp; UnikGastro
+            Photography: Juan Woodbury (@djsd)
           </span>
         ) : null}
         <span className="text-[11px]" style={{ color: INK_MUTED }}>
