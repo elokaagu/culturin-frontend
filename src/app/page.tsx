@@ -141,6 +141,11 @@ export default function HomePage() {
               "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.6) 100%)",
           }}
         />
+        {/* Fade to the page background so the hero blends into the next section instead of cutting off hard. */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-[28dvh]"
+          style={{ background: `linear-gradient(180deg, transparent 0%, ${BG} 100%)` }}
+        />
         <Reveal className="relative z-10 mx-auto flex max-w-2xl flex-col items-center" y={32}>
           <h1
             className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
