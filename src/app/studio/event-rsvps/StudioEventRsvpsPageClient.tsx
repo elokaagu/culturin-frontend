@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import type { StudioEventRsvp } from "@/lib/studio/eventRsvps";
 
@@ -42,7 +43,34 @@ export function StudioEventRsvpsPageClient({
   eventLabels: Record<string, string>;
   hasDb: boolean;
 }) {
+  const router = useRouter();
   const [search, setSearch] = useState("");
+  const [nominatingId, setNominatingId] = useState<string | null>(null);
+  const [nominationById, setNominationById] = useState<Record<string, "done" | "error">>({});
+
+  async function handleNominate(id: string) {
+    setNominatingId(id);
+    setNominationById((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+
+    const response = await fetch("/api/studio/event-rsvps/nominate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    setNominatingId(null);
+
+    if (!response.ok) {
+      setNominationById((prev) => ({ ...prev, [id]: "error" }));
+      return;
+    }
+
+    setNominationById((prev) => ({ ...prev, [id]: "done" }));
+    router.refresh();
+  }
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -177,6 +205,25 @@ export function StudioEventRsvpsPageClient({
                       <span className="whitespace-nowrap text-xs text-neutral-500 dark:text-white/58">
                         {formatDate(r.createdAt)}
                       </span>
+                    </div>
+                    <div className="mt-2.5 flex items-center gap-2">
+                      {nominationById[r.id] === "done" ? (
+                        <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                          Nominated for Card ✓
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleNominate(r.id)}
+                          disabled={nominatingId === r.id}
+                          className="inline-flex h-7 items-center rounded-full border border-culturin-700/30 bg-culturin-50 px-2.5 text-[0.7rem] font-medium text-culturin-800 transition hover:bg-culturin-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-culturin-300/25 dark:bg-culturin-400/10 dark:text-culturin-300 dark:hover:bg-culturin-400/15"
+                        >
+                          {nominatingId === r.id ? "Nominating…" : "Nominate to Card"}
+                        </button>
+                      )}
+                      {nominationById[r.id] === "error" ? (
+                        <span className="text-xs text-rose-600 dark:text-rose-400">Could not nominate.</span>
+                      ) : null}
                     </div>
                   </div>
                 ))}

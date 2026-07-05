@@ -7,6 +7,9 @@ import Header from "../../components/Header";
 import SiteFooter from "../../components/SiteFooter";
 
 export default function AdvisorsPage() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
   const [formState, setFormState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [formMessage, setFormMessage] = useState("");
@@ -30,7 +33,13 @@ export default function AdvisorsPage() {
       const res = await fetch("/api/advisor-inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed, billingCycle: "monthly" }),
+        body: JSON.stringify({
+          email: trimmed,
+          billingCycle: "monthly",
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          company: company.trim(),
+        }),
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
@@ -113,31 +122,81 @@ export default function AdvisorsPage() {
               profit to keep.
             </p>
 
-            <form onSubmit={handleApply} className="mt-5 flex w-full max-w-xl flex-col gap-3 sm:flex-row sm:items-start">
-              <label htmlFor="advisor-email" className="sr-only">
-                Email
+            <form onSubmit={handleApply} className="mt-5 flex w-full max-w-xl flex-col gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <div className="flex-1">
+                  <label htmlFor="advisor-first-name" className="sr-only">
+                    First name
+                  </label>
+                  <input
+                    id="advisor-first-name"
+                    name="firstName"
+                    type="text"
+                    autoComplete="given-name"
+                    placeholder="First name"
+                    value={firstName}
+                    onChange={(ev) => setFirstName(ev.target.value)}
+                    disabled={formState === "loading" || formState === "success"}
+                    className="h-11 w-full rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label htmlFor="advisor-last-name" className="sr-only">
+                    Last name
+                  </label>
+                  <input
+                    id="advisor-last-name"
+                    name="lastName"
+                    type="text"
+                    autoComplete="family-name"
+                    placeholder="Last name"
+                    value={lastName}
+                    onChange={(ev) => setLastName(ev.target.value)}
+                    disabled={formState === "loading" || formState === "success"}
+                    className="h-11 w-full rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
+                  />
+                </div>
+              </div>
+              <label htmlFor="advisor-company" className="sr-only">
+                Company
               </label>
               <input
-                id="advisor-email"
-                name="email"
-                type="email"
-                inputMode="email"
-                autoComplete="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(ev) => setEmail(ev.target.value)}
+                id="advisor-company"
+                name="company"
+                type="text"
+                autoComplete="organization"
+                placeholder="Company (optional)"
+                value={company}
+                onChange={(ev) => setCompany(ev.target.value)}
                 disabled={formState === "loading" || formState === "success"}
-                aria-invalid={formState === "error"}
-                aria-describedby={formMessage ? "apply-form-feedback" : undefined}
-                className="h-11 flex-1 rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
+                className="h-11 w-full rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
               />
-              <button
-                type="submit"
-                disabled={formState === "loading" || formState === "success"}
-                className="inline-flex h-11 items-center justify-center rounded-lg bg-white px-5 text-sm font-semibold text-black transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-65"
-              >
-                {formState === "loading" ? "Sending..." : "Apply"}
-              </button>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+                <label htmlFor="advisor-email" className="sr-only">
+                  Email
+                </label>
+                <input
+                  id="advisor-email"
+                  name="email"
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(ev) => setEmail(ev.target.value)}
+                  disabled={formState === "loading" || formState === "success"}
+                  aria-invalid={formState === "error"}
+                  aria-describedby={formMessage ? "apply-form-feedback" : undefined}
+                  className="h-11 flex-1 rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
+                />
+                <button
+                  type="submit"
+                  disabled={formState === "loading" || formState === "success"}
+                  className="inline-flex h-11 items-center justify-center rounded-lg bg-white px-5 text-sm font-semibold text-black transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-65"
+                >
+                  {formState === "loading" ? "Sending..." : "Apply"}
+                </button>
+              </div>
             </form>
 
             {formMessage ? (

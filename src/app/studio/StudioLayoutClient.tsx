@@ -4,6 +4,7 @@ import {
   BookOpen,
   Building2,
   CalendarCheck,
+  CreditCard,
   Download,
   ExternalLink,
   Handshake,
@@ -36,6 +37,7 @@ type StudioLayoutClientProps = {
   partnerInquiryCount: number;
   eventRsvpCount: number;
   galleryDownloadCount: number;
+  cardApplicationCount: number;
 };
 
 const navItemClass = (active: boolean) =>
@@ -76,6 +78,7 @@ export default function StudioLayoutClient({
   partnerInquiryCount,
   eventRsvpCount,
   galleryDownloadCount,
+  cardApplicationCount,
 }: StudioLayoutClientProps) {
   const router = useTransitionRouter();
   const pathname = usePathname() ?? "";
@@ -284,6 +287,22 @@ export default function StudioLayoutClient({
                     {countBadge(
                       galleryDownloadCount,
                       pathname === "/studio/gallery-downloads" || pathname?.startsWith("/studio/gallery-downloads/"),
+                    )}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/studio/card-applications"
+                    className={navItemClass(
+                      pathname === "/studio/card-applications" || pathname?.startsWith("/studio/card-applications/"),
+                    )}
+                    aria-current={pathname === "/studio/card-applications" ? "page" : undefined}
+                  >
+                    <CreditCard className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                    <span className="min-w-0 flex-1">Card applications</span>
+                    {countBadge(
+                      cardApplicationCount,
+                      pathname === "/studio/card-applications" || pathname?.startsWith("/studio/card-applications/"),
                     )}
                   </Link>
                 </li>
