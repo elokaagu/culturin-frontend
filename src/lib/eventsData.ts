@@ -135,8 +135,8 @@ export const events: CulturinEvent[] = [
     date: "August 25 – September 7, 2026",
     location: "Flushing Meadows, New York",
     category: "Sport & Culture",
-    heroImage: "/events/cannes-lions-2026/UNIKday1-10.jpg",
-    heroImageAlt: "Guests posing together against a red curtained backdrop",
+    heroImage: "/events/cannes-lions-2026/WelcomParty-0060.jpg",
+    heroImageAlt: "Guests mingling in a warm-lit room at a Culturin welcome party",
     stats: [
       { value: "2", label: "Weeks of play" },
       { value: "5", label: "Culturin evenings" },

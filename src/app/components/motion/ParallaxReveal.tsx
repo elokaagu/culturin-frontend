@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-import { EDITORIAL_BG } from "@/lib/theme/culturinTokens";
 import BlurImage from "./BlurImage";
 
 type ParallaxRevealProps = {
@@ -59,11 +58,6 @@ export default function ParallaxReveal({
         <motion.div
           className="absolute inset-0 bg-black"
           style={{ opacity: overlayOpacity }}
-        />
-        {/* Fade to the page background so the pinned section releases into the next one instead of cutting off hard. */}
-        <div
-          className="absolute inset-x-0 bottom-0 z-[1] h-[14dvh]"
-          style={{ background: `linear-gradient(180deg, transparent 0%, ${EDITORIAL_BG} 100%)` }}
         />
         <motion.div
           className="relative z-10 flex h-full flex-col items-center justify-center px-8 text-center"
