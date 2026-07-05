@@ -14,6 +14,7 @@ import {
 } from "@/lib/theme/culturinTokens";
 import BlurImage from "@/app/components/motion/BlurImage";
 import Reveal from "@/app/components/motion/Reveal";
+import CountUpStat from "@/app/components/motion/CountUpStat";
 import IslandNav from "@/app/components/IslandNav";
 import RSVPForm from "./RSVPForm";
 
@@ -173,12 +174,11 @@ export default async function EventLandingPage({ params }: Props) {
         <div className="mx-auto grid max-w-3xl grid-cols-2 gap-12 sm:grid-cols-4">
           {event.stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 100} className="text-center">
-              <p
+              <CountUpStat
+                value={stat.value}
                 className="m-0 text-5xl font-light sm:text-6xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
-              >
-                {stat.value}
-              </p>
+              />
               <p className="mt-3 text-xs uppercase tracking-[0.18em]" style={{ color: INK_MUTED }}>
                 {stat.label}
               </p>

@@ -21,6 +21,7 @@ import HomeFooter from "./components/HomeFooter";
 import IslandNav from "./components/IslandNav";
 import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
 import AttendeeOriginMap from "./components/AttendeeOriginMap";
+import MagneticButton from "./components/motion/MagneticButton";
 import { Highlighter } from "@/components/ui/highlighter";
 
 export const metadata: Metadata = {
@@ -518,13 +519,15 @@ export default function HomePage() {
                 If you want your brand in the room where the real conversations happen, not just a name on a step-and-repeat, we should talk.
               </p>
               <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-                <Link
-                  href="/partner"
-                  className="inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
-                  style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
-                >
-                  Become a partner
-                </Link>
+                <MagneticButton strength={0.35} className="w-fit">
+                  <Link
+                    href="/partner"
+                    className="inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+                    style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
+                  >
+                    Become a partner
+                  </Link>
+                </MagneticButton>
                 <Link
                   href="/events"
                   className="text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-70"

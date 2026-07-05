@@ -170,6 +170,14 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-vertical,
+  .motion-safe\:animate-shine {
+    animation: none !important;
+  }
+}
+
 /* Route changes: next-view-transitions + View Transitions API */
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root),

@@ -7,6 +7,7 @@ import Hamburger from "hamburger-react";
 import { useEffect, useState } from "react";
 
 import { useTheme } from "../styles/ThemeContext";
+import MagneticButton from "./motion/MagneticButton";
 
 const NAV = [
   { label: "Events", href: "/events" },
@@ -102,12 +103,14 @@ export default function IslandNav() {
           </button>
 
           {/* CTA */}
-          <Link
-            href="/partner"
-            className="shrink-0 rounded-full bg-[#b5502e] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
-          >
-            Partner with us
-          </Link>
+          <MagneticButton strength={0.4} className="shrink-0">
+            <Link
+              href="/partner"
+              className="block rounded-full bg-[#b5502e] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
+            >
+              Partner with us
+            </Link>
+          </MagneticButton>
         </div>
       </nav>
 

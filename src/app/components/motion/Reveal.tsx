@@ -26,6 +26,7 @@ export default function Reveal({
 }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [shown, setShown] = useState(false);
+  const [settled, setSettled] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -36,6 +37,7 @@ export default function Reveal({
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
       setShown(true);
+      setSettled(true);
       return;
     }
 
@@ -55,6 +57,14 @@ export default function Reveal({
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!shown) return;
+    // Drop the GPU-layer hint once the transition finishes — dozens of these
+    // wrappers on one page otherwise keep every one composited forever.
+    const timer = setTimeout(() => setSettled(true), 900 + delay);
+    return () => clearTimeout(timer);
+  }, [shown, delay]);
+
   const Tag = as as "div";
 
   return (
@@ -65,7 +75,7 @@ export default function Reveal({
         opacity: shown ? 1 : 0,
         transform: shown ? "translateY(0)" : `translateY(${y}px)`,
         transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
-        willChange: "opacity, transform",
+        willChange: settled ? "auto" : "opacity, transform",
       }}
     >
       {children}
