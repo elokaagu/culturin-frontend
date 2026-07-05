@@ -61,14 +61,23 @@ export default function IslandNav() {
           <Link
             href="/"
             aria-label="Culturin home"
-            className="flex shrink-0 items-center rounded-full px-4 py-2 no-underline opacity-95 transition hover:bg-black/[0.04] hover:opacity-100 dark:hover:bg-white/[0.06]"
+            className="flex shrink-0 items-center gap-2 rounded-full px-4 py-2 no-underline opacity-95 transition hover:bg-black/[0.04] hover:opacity-100 dark:hover:bg-white/[0.06]"
           >
             <Image
               src={isDark ? "/culturin_icon_yellow.png" : "/culturin_icon_black.png"}
-              alt="Culturin"
+              alt=""
               width={28}
               height={28}
               className="h-6 w-6"
+              unoptimized
+              priority
+            />
+            <Image
+              src={isDark ? "/culturin_logotype_yellow.png" : "/culturin_logotype_black.png"}
+              alt="Culturin"
+              width={130}
+              height={20}
+              className="h-[15px] w-auto"
               unoptimized
               priority
             />
@@ -93,7 +102,7 @@ export default function IslandNav() {
               href="/partner"
               className="block rounded-full bg-[#b5502e] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
             >
-              Partner with us
+              Contact
             </Link>
           </MagneticButton>
         </div>
@@ -111,14 +120,23 @@ export default function IslandNav() {
           href="/"
           aria-label="Culturin home"
           onClick={() => setMobileOpen(false)}
-          className="flex shrink-0 items-center no-underline"
+          className="flex shrink-0 items-center gap-2 no-underline"
         >
           <Image
             src={isDark ? "/culturin_icon_yellow.png" : "/culturin_icon_black.png"}
-            alt="Culturin"
+            alt=""
             width={26}
             height={26}
             className="h-[22px] w-[22px]"
+            unoptimized
+            priority
+          />
+          <Image
+            src={isDark ? "/culturin_logotype_yellow.png" : "/culturin_logotype_black.png"}
+            alt="Culturin"
+            width={120}
+            height={18}
+            className="h-[14px] w-auto"
             unoptimized
             priority
           />
@@ -161,7 +179,7 @@ export default function IslandNav() {
               onClick={() => setMobileOpen(false)}
               className="w-full rounded-full bg-[#b5502e] px-5 py-2.5 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
             >
-              Partner with us
+              Contact
             </Link>
           </div>
         </div>

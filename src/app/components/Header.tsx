@@ -143,15 +143,24 @@ function Logo() {
   return (
     <Link
       href="/"
-      className="group flex shrink-0 items-center rounded-md outline-none ring-offset-2 ring-offset-white focus-visible:ring-2 focus-visible:ring-amber-500/60 dark:ring-offset-neutral-950"
+      className="group flex shrink-0 items-center gap-2 rounded-md outline-none ring-offset-2 ring-offset-white focus-visible:ring-2 focus-visible:ring-amber-500/60 dark:ring-offset-neutral-950"
       aria-label="Culturin home"
     >
       <Image
         src={isDark ? "/culturin_icon_yellow.png" : "/culturin_icon_black.png"}
-        alt="Culturin"
+        alt=""
         width={26}
         height={26}
         className="h-[22px] w-[22px] opacity-95 transition-opacity group-hover:opacity-100 sm:h-6 sm:w-6"
+        unoptimized
+        priority
+      />
+      <Image
+        src={isDark ? "/culturin_logotype_yellow.png" : "/culturin_logotype_black.png"}
+        alt="Culturin"
+        width={120}
+        height={18}
+        className="h-[14px] w-auto opacity-95 transition-opacity group-hover:opacity-100 sm:h-4"
         unoptimized
         priority
       />

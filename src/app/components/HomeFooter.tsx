@@ -290,7 +290,11 @@ export default function HomeFooter() {
         className="pointer-events-none relative z-0 m-0 select-none whitespace-nowrap text-center font-medium leading-none text-white/[0.06]"
         style={{
           fontFamily: "var(--font-display), 'Times New Roman', serif",
-          fontSize: "min(22vw, 260px)",
+          // 260px previously overflowed the footer (got clipped mid-letter) on
+          // any viewport narrower than ~1300px, since the cap kicked in at
+          // 1182px but "CULTURIN" at 260px measures ~1285px wide. 200px keeps
+          // a comfortable margin at every width the vw scaling can reach.
+          fontSize: "min(18vw, 200px)",
           marginTop: "-2vw",
         }}
       >
