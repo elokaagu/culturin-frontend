@@ -227,35 +227,7 @@ export default function HomeFooter() {
           </div>
         </div>
 
-        {/* Culturin Card teaser */}
-        <div
-          className="mt-14 flex flex-col items-start justify-between gap-4 rounded-2xl border px-6 py-5 sm:flex-row sm:items-center"
-          style={{ borderColor: "rgba(232,227,218,0.15)" }}
-        >
-          <div>
-            <div className="flex flex-wrap items-center gap-2.5">
-              <p className="m-0 text-sm font-semibold uppercase tracking-[0.14em] text-white">Culturin Card</p>
-              <span
-                className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em]"
-                style={{ background: ACCENT, color: INK }}
-              >
-                Coming soon
-              </span>
-            </div>
-            <p className="m-0 mt-2 max-w-md text-sm leading-relaxed text-white/55">
-              A travel rewards membership — earn perks across events, bookings, and partner destinations.
-            </p>
-          </div>
-          <Link
-            href="/culturin-card"
-            className="shrink-0 rounded-full border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white no-underline transition hover:bg-white/10"
-            style={{ borderColor: "rgba(232,227,218,0.3)" }}
-          >
-            Learn more →
-          </Link>
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t py-6 text-xs" style={{ borderColor: "rgba(232,227,218,0.15)" }}>
+        <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t py-6 text-xs" style={{ borderColor: "rgba(232,227,218,0.15)" }}>
           <span className="text-white/45">© {year} Culturin. All Rights Reserved.</span>
           <div className="flex items-center gap-5">
             <button

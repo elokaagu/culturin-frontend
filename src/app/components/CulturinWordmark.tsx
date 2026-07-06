@@ -26,7 +26,7 @@ export default function CulturinWordmark({
       }}
       {...rest}
     >
-      CULTURIN
+      CULTURIN<sup className="text-[0.4em]">TM</sup>
     </span>
   );
 }
