@@ -62,6 +62,8 @@ export type ParsedSubscriberRow = {
   firstName: string;
   lastName: string;
   company: string;
+  /** Every column from the source file for this row, keyed by its original header — so Studio can show the full record, not just the mapped fields. */
+  raw: Record<string, string>;
 };
 
 /** Parses a CSV file's text into subscriber rows, matching common Mailchimp-style header names. */
@@ -85,12 +87,21 @@ export function parseSubscriberCsv(text: string): { rows: ParsedSubscriberRow[];
 
   const unmappedColumns = headerRow.filter((_, i) => !mappedIdx.has(i));
 
-  const rows: ParsedSubscriberRow[] = dataRows.map((cells) => ({
-    email: (columnIndex.email !== undefined ? cells[columnIndex.email] : "")?.trim() ?? "",
-    firstName: (columnIndex.firstName !== undefined ? cells[columnIndex.firstName] : "")?.trim() ?? "",
-    lastName: (columnIndex.lastName !== undefined ? cells[columnIndex.lastName] : "")?.trim() ?? "",
-    company: (columnIndex.company !== undefined ? cells[columnIndex.company] : "")?.trim() ?? "",
-  }));
+  const rows: ParsedSubscriberRow[] = dataRows.map((cells) => {
+    const raw: Record<string, string> = {};
+    headerRow.forEach((header, i) => {
+      const label = header.trim();
+      if (label) raw[label] = (cells[i] ?? "").trim();
+    });
+
+    return {
+      email: (columnIndex.email !== undefined ? cells[columnIndex.email] : "")?.trim() ?? "",
+      firstName: (columnIndex.firstName !== undefined ? cells[columnIndex.firstName] : "")?.trim() ?? "",
+      lastName: (columnIndex.lastName !== undefined ? cells[columnIndex.lastName] : "")?.trim() ?? "",
+      company: (columnIndex.company !== undefined ? cells[columnIndex.company] : "")?.trim() ?? "",
+      raw,
+    };
+  });
 
   return { rows, unmappedColumns };
 }

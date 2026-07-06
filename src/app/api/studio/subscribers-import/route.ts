@@ -5,7 +5,13 @@ import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
-type ImportRow = { email?: unknown; firstName?: unknown; lastName?: unknown; company?: unknown };
+type ImportRow = {
+  email?: unknown;
+  firstName?: unknown;
+  lastName?: unknown;
+  company?: unknown;
+  raw?: unknown;
+};
 
 export async function POST(request: Request) {
   const { isAdmin } = await getCurrentAdminState();
@@ -28,7 +34,14 @@ export async function POST(request: Request) {
   }
 
   const seen = new Set<string>();
-  const toInsert: Array<{ email: string; first_name: string; last_name: string; company: string | null; source: string }> = [];
+  const toInsert: Array<{
+    email: string;
+    first_name: string;
+    last_name: string;
+    company: string | null;
+    source: string;
+    raw_data: Record<string, string> | null;
+  }> = [];
   let invalid = 0;
   let duplicateInFile = 0;
 
@@ -37,6 +50,13 @@ export async function POST(request: Request) {
     const firstName = String(row.firstName ?? "").trim();
     const lastName = String(row.lastName ?? "").trim();
     const company = String(row.company ?? "").trim();
+    const raw =
+      row.raw && typeof row.raw === "object" && !Array.isArray(row.raw)
+        ? (row.raw as Record<string, unknown>)
+        : null;
+    const rawData: Record<string, string> | null = raw
+      ? Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, String(v ?? "")]))
+      : null;
 
     if (!email || !emailOk(email)) {
       invalid++;
@@ -47,7 +67,14 @@ export async function POST(request: Request) {
       continue;
     }
     seen.add(email);
-    toInsert.push({ email, first_name: firstName, last_name: lastName, company: company || null, source: "csv_import" });
+    toInsert.push({
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      company: company || null,
+      source: "csv_import",
+      raw_data: rawData,
+    });
   }
 
   if (toInsert.length === 0) {

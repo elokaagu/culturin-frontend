@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import type { StudioSubscriber } from "@/lib/studio/subscribers";
@@ -27,7 +27,17 @@ export function StudioSubscribersPageClient({
   const [importing, setImporting] = useState(false);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const [importError, setImportError] = useState<string | null>(null);
+  const [selected, setSelected] = useState<StudioSubscriber | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!selected) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelected(null);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [selected]);
 
   async function handleFileSelected(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -169,11 +179,11 @@ export function StudioSubscribersPageClient({
                 {filtered.map((s, i) => (
                   <tr
                     key={s.id}
-                    className={
-                      i % 2 === 1
-                        ? "bg-neutral-50/60 dark:bg-white/[0.015]"
-                        : undefined
-                    }
+                    onClick={() => setSelected(s)}
+                    className={[
+                      "cursor-pointer transition hover:bg-culturin-50 dark:hover:bg-white/[0.05]",
+                      i % 2 === 1 ? "bg-neutral-50/60 dark:bg-white/[0.015]" : "",
+                    ].join(" ")}
                   >
                     <td className="px-4 py-2.5 text-neutral-900 dark:text-white">{s.firstName || "—"}</td>
                     <td className="px-4 py-2.5 text-neutral-900 dark:text-white">{s.lastName || "—"}</td>
@@ -189,6 +199,74 @@ export function StudioSubscribersPageClient({
           </div>
         )}
       </div>
+
+      {selected ? (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setSelected(null)}
+            aria-hidden="true"
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="subscriber-detail-title"
+            className="relative max-h-[85vh] w-full max-w-md overflow-y-auto rounded-2xl border border-neutral-200 bg-white p-5 shadow-xl dark:border-white/12 dark:bg-[#181818] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <p
+                id="subscriber-detail-title"
+                className="m-0 font-display text-lg font-semibold tracking-tight text-neutral-900 dark:text-white"
+              >
+                {[selected.firstName, selected.lastName].filter(Boolean).join(" ") || selected.email}
+              </p>
+              <button
+                type="button"
+                onClick={() => setSelected(null)}
+                aria-label="Close"
+                className="shrink-0 rounded-full p-1 text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900 dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <dl className="mt-4 space-y-2.5 text-sm">
+              <div className="flex justify-between gap-4">
+                <dt className="text-neutral-500 dark:text-white/55">Email</dt>
+                <dd className="text-right text-neutral-900 dark:text-white">{selected.email}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-neutral-500 dark:text-white/55">Company</dt>
+                <dd className="text-right text-neutral-900 dark:text-white">{selected.company || "—"}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-neutral-500 dark:text-white/55">Joined</dt>
+                <dd className="text-right text-neutral-900 dark:text-white">{formatDate(selected.createdAt)}</dd>
+              </div>
+            </dl>
+
+            {Object.keys(selected.rawData).length > 0 ? (
+              <div className="mt-5 border-t border-neutral-200 pt-4 dark:border-white/10">
+                <p className="m-0 text-[0.7rem] font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/55">
+                  From the imported file
+                </p>
+                <dl className="mt-2.5 space-y-2.5 text-sm">
+                  {Object.entries(selected.rawData).map(([key, value]) => (
+                    <div key={key} className="flex justify-between gap-4">
+                      <dt className="text-neutral-500 dark:text-white/55">{key}</dt>
+                      <dd className="text-right text-neutral-900 dark:text-white">{value || "—"}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ) : (
+              <p className="mt-5 border-t border-neutral-200 pt-4 text-sm text-neutral-500 dark:border-white/10 dark:text-white/55">
+                This subscriber joined from the site footer, so there&apos;s no imported file data to show.
+              </p>
+            )}
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

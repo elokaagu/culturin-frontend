@@ -21,7 +21,7 @@ export default async function StudioSubscribersPage() {
       <p className="text-xs font-semibold uppercase tracking-wide text-culturin-700 dark:text-culturin-300">Audience</p>
       <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl dark:text-white">Subscribers</h1>
       <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
-        Everyone who has joined the mailing list from the site footer: first name, last name, email, and company.
+        Everyone who has joined the mailing list from the site footer or a CSV import. Click a row to see every field from the original file.
       </p>
 
       <StudioSubscribersPageClient subscribers={subscribers} hasDb={hasDb} />
