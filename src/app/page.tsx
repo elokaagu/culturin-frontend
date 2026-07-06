@@ -151,9 +151,9 @@ export default async function HomePage() {
               "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.6) 100%)",
           }}
         />
-        {/* Fade to the page background so the hero blends into the next section instead of cutting off hard. */}
+        {/* Fade to the page background so the hero blends into the next section instead of cutting off hard. Light mode's bg is a pale cream, which turned this into a washed-out haze over the photo, so it's dark-mode only. */}
         <div
-          className="absolute inset-x-0 bottom-0 h-[14dvh]"
+          className="absolute inset-x-0 bottom-0 hidden h-[14dvh] dark:block"
           style={{ background: `linear-gradient(180deg, transparent 0%, ${BG} 100%)` }}
         />
         <Reveal className="relative z-10 mx-auto flex max-w-2xl flex-col items-center" y={32}>
