@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Moon, Sun } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
 import { SURFACE_DARK, ACCENT_ON_DARK } from "@/lib/theme/culturinTokens";
 import { useTheme } from "../styles/ThemeContext";
+import CulturinWordmark from "./CulturinWordmark";
 
 const INK = SURFACE_DARK;
 const CREAM = "#e8e3da";
@@ -192,14 +192,7 @@ export default function HomeFooter() {
       <div className="relative z-10 mx-auto max-w-6xl px-8 pt-16 sm:px-14">
         <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <Image
-              src="/culturin_logotype_yellow.png"
-              alt="Culturin"
-              width={175}
-              height={26}
-              className="h-5 w-auto"
-              unoptimized
-            />
+            <CulturinWordmark isDark className="text-xl font-semibold tracking-tight" />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/55">
               Where inspiration meets exploration.
             </p>
@@ -285,11 +278,11 @@ export default function HomeFooter() {
       </div>
 
       {/* Giant wordmark, clipped at the bottom edge: OPUS-style footer signature */}
-      <p
+      <CulturinWordmark
+        isDark
         aria-hidden
-        className="pointer-events-none relative z-0 m-0 select-none whitespace-nowrap text-center font-medium leading-none text-white/[0.06]"
+        className="pointer-events-none relative z-0 m-0 block select-none whitespace-nowrap text-center font-medium leading-none !text-white/[0.06]"
         style={{
-          fontFamily: "var(--font-display), 'Times New Roman', serif",
           // 260px previously overflowed the footer (got clipped mid-letter) on
           // any viewport narrower than ~1300px, since the cap kicked in at
           // 1182px but "CULTURIN" at 260px measures ~1285px wide. 200px keeps
@@ -297,9 +290,7 @@ export default function HomeFooter() {
           fontSize: "min(18vw, 200px)",
           marginTop: "-2vw",
         }}
-      >
-        CULTURIN
-      </p>
+      />
     </footer>
   );
 }

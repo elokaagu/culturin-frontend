@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import { useTheme } from "../styles/ThemeContext";
 import MagneticButton from "./motion/MagneticButton";
+import CulturinWordmark from "./CulturinWordmark";
 
 const NAV = [
   { label: "Events", href: "/events" },
@@ -72,15 +73,7 @@ export default function IslandNav() {
               unoptimized
               priority
             />
-            <Image
-              src={isDark ? "/culturin_logotype_yellow.png" : "/culturin_logotype_black.png"}
-              alt="Culturin"
-              width={130}
-              height={20}
-              className="h-[15px] w-auto"
-              unoptimized
-              priority
-            />
+            <CulturinWordmark isDark={isDark} className="text-lg font-semibold tracking-tight" />
           </Link>
 
           {/* Links */}
@@ -131,15 +124,7 @@ export default function IslandNav() {
             unoptimized
             priority
           />
-          <Image
-            src={isDark ? "/culturin_logotype_yellow.png" : "/culturin_logotype_black.png"}
-            alt="Culturin"
-            width={120}
-            height={18}
-            className="h-[14px] w-auto"
-            unoptimized
-            priority
-          />
+          <CulturinWordmark isDark={isDark} className="text-base font-semibold tracking-tight" />
         </Link>
         <div className="text-[#1c1a17] dark:text-[#f1e9dc]">
           <Hamburger

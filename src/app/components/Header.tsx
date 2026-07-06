@@ -13,6 +13,7 @@ import { GoogleSignInButton } from "./AuthButtons";
 import { HeaderCreateMenu } from "./HeaderCreateMenu";
 import NearByPanel from "./NearByPanel";
 import Sidebar from "./Sidebar";
+import CulturinWordmark from "./CulturinWordmark";
 import { destinations } from "@/lib/destinationsData";
 
 const suggestionTags = [
@@ -155,14 +156,9 @@ function Logo() {
         unoptimized
         priority
       />
-      <Image
-        src={isDark ? "/culturin_logotype_yellow.png" : "/culturin_logotype_black.png"}
-        alt="Culturin"
-        width={120}
-        height={18}
-        className="h-[14px] w-auto opacity-95 transition-opacity group-hover:opacity-100 sm:h-4"
-        unoptimized
-        priority
+      <CulturinWordmark
+        isDark={isDark}
+        className="text-base font-semibold tracking-tight opacity-95 transition-opacity group-hover:opacity-100 sm:text-lg"
       />
     </Link>
   );
