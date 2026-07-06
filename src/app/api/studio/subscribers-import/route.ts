@@ -19,11 +19,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 
-  const body = (await request.json().catch(() => ({}))) as { rows?: ImportRow[] };
+  const body = (await request.json().catch(() => ({}))) as { rows?: ImportRow[]; source?: unknown };
   const rows = Array.isArray(body.rows) ? body.rows : [];
   if (rows.length === 0) {
     return NextResponse.json({ message: "No rows to import." }, { status: 400 });
   }
+
+  const sourceLabel = String(body.source ?? "").trim().slice(0, 120);
+  const source = sourceLabel || "csv_import";
 
   const admin = getSupabaseAdminOrNull();
   if (!admin) {
@@ -72,7 +75,7 @@ export async function POST(request: Request) {
       first_name: firstName,
       last_name: lastName,
       company: company || null,
-      source: "csv_import",
+      source,
       raw_data: rawData,
     });
   }

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import type { StudioSubscriber } from "@/lib/studio/subscribers";
+import { formatSubscriberSource, type StudioSubscriber } from "@/lib/studio/subscribers";
 import { parseSubscriberCsv } from "@/lib/studio/parseCsv";
 
 type ImportResult = { inserted: number; skippedExisting: number; duplicateInFile: number; invalid: number };
@@ -28,6 +28,7 @@ export function StudioSubscribersPageClient({
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const [importError, setImportError] = useState<string | null>(null);
   const [selected, setSelected] = useState<StudioSubscriber | null>(null);
+  const [importSourceLabel, setImportSourceLabel] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export function StudioSubscribersPageClient({
     const response = await fetch("/api/studio/subscribers-import", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rows }),
+      body: JSON.stringify({ rows, source: importSourceLabel.trim() }),
     });
     const data = (await response.json().catch(() => ({}))) as Partial<ImportResult> & { message?: string };
     setImporting(false);
@@ -83,7 +84,9 @@ export function StudioSubscribersPageClient({
     const q = search.trim().toLowerCase();
     if (!q) return subscribers;
     return subscribers.filter((s) =>
-      [s.firstName, s.lastName, s.email, s.company].some((f) => f.toLowerCase().includes(q)),
+      [s.firstName, s.lastName, s.email, s.company, formatSubscriberSource(s.source)].some((f) =>
+        f.toLowerCase().includes(q),
+      ),
     );
   }, [subscribers, search]);
 
@@ -93,7 +96,15 @@ export function StudioSubscribersPageClient({
         <h2 className="m-0 font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
           All subscribers
         </h2>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <input
+            type="text"
+            value={importSourceLabel}
+            onChange={(e) => setImportSourceLabel(e.target.value)}
+            placeholder="Source (e.g. NYFW 2025)"
+            maxLength={120}
+            className="h-8 w-44 rounded-full border border-neutral-300 bg-white px-3 text-xs text-neutral-900 outline-none transition placeholder:text-neutral-400 focus-visible:border-culturin-500/60 focus-visible:ring-2 focus-visible:ring-culturin-400/25 dark:border-white/15 dark:bg-black/60 dark:text-white dark:placeholder:text-white/35"
+          />
           <input
             ref={fileInputRef}
             type="file"
@@ -116,6 +127,9 @@ export function StudioSubscribersPageClient({
           </span>
         </div>
       </div>
+      <p className="mt-2 text-xs text-neutral-500 dark:text-white/50">
+        Give this batch a source label (e.g. an event name) before importing, so you can tell where each subscriber came from later. Leave it blank and it'll just be tagged "CSV import".
+      </p>
 
       {importError ? (
         <p
@@ -172,6 +186,7 @@ export function StudioSubscribersPageClient({
                   <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">Last name</th>
                   <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">Email</th>
                   <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">Company</th>
+                  <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">Source</th>
                   <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">Joined</th>
                 </tr>
               </thead>
@@ -189,6 +204,7 @@ export function StudioSubscribersPageClient({
                     <td className="px-4 py-2.5 text-neutral-900 dark:text-white">{s.lastName || "—"}</td>
                     <td className="px-4 py-2.5 text-neutral-700 dark:text-white/80">{s.email}</td>
                     <td className="px-4 py-2.5 text-neutral-700 dark:text-white/80">{s.company || "—"}</td>
+                    <td className="px-4 py-2.5 text-neutral-700 dark:text-white/80">{formatSubscriberSource(s.source)}</td>
                     <td className="whitespace-nowrap px-4 py-2.5 text-neutral-500 dark:text-white/58">
                       {formatDate(s.createdAt)}
                     </td>
@@ -238,6 +254,10 @@ export function StudioSubscribersPageClient({
               <div className="flex justify-between gap-4">
                 <dt className="text-neutral-500 dark:text-white/55">Company</dt>
                 <dd className="text-right text-neutral-900 dark:text-white">{selected.company || "—"}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-neutral-500 dark:text-white/55">Source</dt>
+                <dd className="text-right text-neutral-900 dark:text-white">{formatSubscriberSource(selected.source)}</dd>
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-neutral-500 dark:text-white/55">Joined</dt>
