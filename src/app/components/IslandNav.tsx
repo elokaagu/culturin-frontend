@@ -67,13 +67,13 @@ export default function IslandNav() {
             <Image
               src={isDark ? "/culturin_icon_yellow.png" : "/culturin_icon_black.png"}
               alt=""
-              width={28}
-              height={28}
-              className="h-6 w-6"
+              width={20}
+              height={20}
+              className="h-5 w-5"
               unoptimized
               priority
             />
-            <CulturinWordmark isDark={isDark} className="text-lg font-semibold tracking-tight" />
+            <CulturinWordmark isDark={isDark} className="text-base font-semibold tracking-tight" />
           </Link>
 
           {/* Links */}
@@ -118,13 +118,13 @@ export default function IslandNav() {
           <Image
             src={isDark ? "/culturin_icon_yellow.png" : "/culturin_icon_black.png"}
             alt=""
-            width={26}
-            height={26}
-            className="h-[22px] w-[22px]"
+            width={20}
+            height={20}
+            className="h-5 w-5"
             unoptimized
             priority
           />
-          <CulturinWordmark isDark={isDark} className="text-base font-semibold tracking-tight" />
+          <CulturinWordmark isDark={isDark} className="text-[15px] font-semibold tracking-tight" />
         </Link>
         <div className="text-[#1c1a17] dark:text-[#f1e9dc]">
           <Hamburger
