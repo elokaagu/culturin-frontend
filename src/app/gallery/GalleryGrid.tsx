@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
 import { blurForSrc } from "@/lib/culturinImages";
@@ -39,13 +40,34 @@ export default function GalleryGrid({
   items: GalleryItem[];
   filters: GalleryFilter[];
 }) {
-  const [activeFilter, setActiveFilter] = useState<string>("all");
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [downloadTarget, setDownloadTarget] = useState<GalleryDownloadTarget | null>(null);
   const [filterMenuOpen, setFilterMenuOpen] = useState(false);
   const filterMenuRef = useRef<HTMLDivElement>(null);
 
+  const activeFilter = useMemo(() => {
+    const fromUrl = searchParams.get("event");
+    if (fromUrl && filters.some((f) => f.key === fromUrl)) return fromUrl;
+    return "all";
+  }, [searchParams, filters]);
+
   const activeFilterLabel = filters.find((f) => f.key === activeFilter)?.label ?? "All";
+
+  function setActiveFilter(key: string) {
+    setOpenIndex(null);
+    setFilterMenuOpen(false);
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (key === "all") {
+      params.delete("event");
+    } else {
+      params.set("event", key);
+    }
+    const qs = params.toString();
+    router.replace(qs ? `/gallery?${qs}` : "/gallery", { scroll: false });
+  }
 
   useEffect(() => {
     if (!filterMenuOpen) return;
@@ -69,6 +91,10 @@ export default function GalleryGrid({
     () => (activeFilter === "all" ? items : items.filter((item) => item.eventKey === activeFilter)),
     [items, activeFilter],
   );
+
+  useEffect(() => {
+    setOpenIndex(null);
+  }, [activeFilter]);
 
   const lightboxItems: LightboxItem[] = filteredItems.map((item) => ({
     src: item.largeSrc,
@@ -113,11 +139,7 @@ export default function GalleryGrid({
                       type="button"
                       role="option"
                       aria-selected={active}
-                      onClick={() => {
-                        setActiveFilter(f.key);
-                        setOpenIndex(null);
-                        setFilterMenuOpen(false);
-                      }}
+                      onClick={() => setActiveFilter(f.key)}
                       className="flex w-full items-center justify-between gap-4 px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.12em] transition-colors"
                       style={
                         active

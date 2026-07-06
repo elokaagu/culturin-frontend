@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import {
   EDITORIAL_BG,
@@ -138,7 +139,9 @@ export default async function GalleryPage() {
 
       {/* ── Masonry grid ─────────────────────────────────────────── */}
       <div className="px-8 py-16 sm:px-14">
-        <GalleryGrid items={GALLERY} filters={FILTERS} />
+        <Suspense fallback={null}>
+          <GalleryGrid items={GALLERY} filters={FILTERS} />
+        </Suspense>
       </div>
 
       {/* ── CTA strip ────────────────────────────────────────────── */}

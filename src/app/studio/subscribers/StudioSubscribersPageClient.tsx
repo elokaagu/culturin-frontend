@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Trash2 } from "lucide-react";
 
+import { useStudioConfirm } from "@/app/studio/_components/StudioConfirmDialog";
 import { formatSubscriberSource, type StudioSubscriber } from "@/lib/studio/subscribers";
 import { parseSubscriberCsv } from "@/lib/studio/parseCsv";
 
@@ -23,12 +25,16 @@ export function StudioSubscribersPageClient({
   hasDb: boolean;
 }) {
   const router = useRouter();
+  const confirm = useStudioConfirm();
   const [search, setSearch] = useState("");
   const [importing, setImporting] = useState(false);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const [importError, setImportError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [selected, setSelected] = useState<StudioSubscriber | null>(null);
   const [importSourceLabel, setImportSourceLabel] = useState("");
+  const [removed, setRemoved] = useState<Set<string>>(() => new Set());
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -80,15 +86,45 @@ export function StudioSubscribersPageClient({
     router.refresh();
   }
 
+  async function handleDelete(subscriber: StudioSubscriber) {
+    const label = [subscriber.firstName, subscriber.lastName].filter(Boolean).join(" ") || subscriber.email;
+    const confirmed = await confirm({
+      title: `Remove ${label}?`,
+      description: "This permanently deletes them from the mailing list. They can sign up again from the site footer.",
+      confirmLabel: "Delete subscriber",
+    });
+    if (!confirmed) return;
+
+    setDeletingId(subscriber.id);
+    setDeleteError(null);
+
+    const response = await fetch(`/api/studio/subscribers?id=${encodeURIComponent(subscriber.id)}`, {
+      method: "DELETE",
+    });
+    const data = (await response.json().catch(() => ({}))) as { message?: string };
+    setDeletingId(null);
+
+    if (!response.ok) {
+      setDeleteError(data.message ?? "Could not delete subscriber.");
+      return;
+    }
+
+    setRemoved((prev) => new Set(prev).add(subscriber.id));
+    if (selected?.id === subscriber.id) setSelected(null);
+    router.refresh();
+  }
+
+  const visible = useMemo(() => subscribers.filter((s) => !removed.has(s.id)), [subscribers, removed]);
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return subscribers;
-    return subscribers.filter((s) =>
+    if (!q) return visible;
+    return visible.filter((s) =>
       [s.firstName, s.lastName, s.email, s.company, formatSubscriberSource(s.source)].some((f) =>
         f.toLowerCase().includes(q),
       ),
     );
-  }, [subscribers, search]);
+  }, [visible, search]);
 
   return (
     <section className="mt-10 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#121212] sm:p-6">
@@ -122,8 +158,8 @@ export function StudioSubscribersPageClient({
           </button>
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90">
             {search.trim()
-              ? `${filtered.length} of ${subscribers.length} shown`
-              : `${subscribers.length} subscriber${subscribers.length === 1 ? "" : "s"}`}
+              ? `${filtered.length} of ${visible.length} shown`
+              : `${visible.length} subscriber${visible.length === 1 ? "" : "s"}`}
           </span>
         </div>
       </div>
@@ -148,7 +184,16 @@ export function StudioSubscribersPageClient({
         </p>
       ) : null}
 
-      {hasDb && subscribers.length > 0 ? (
+      {deleteError ? (
+        <p
+          role="alert"
+          className="mt-4 rounded-lg border border-rose-300/60 bg-rose-50 px-3 py-2 text-sm text-rose-800 dark:border-rose-400/30 dark:bg-rose-500/10 dark:text-rose-200"
+        >
+          {deleteError}
+        </p>
+      ) : null}
+
+      {hasDb && visible.length > 0 ? (
         <label className="mt-5 flex flex-col gap-2 sm:max-w-sm">
           <span className="text-[0.7rem] font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58">
             Search
@@ -169,7 +214,7 @@ export function StudioSubscribersPageClient({
           <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             Your content library isn&apos;t connected in this preview, so subscribers can&apos;t be listed yet.
           </p>
-        ) : subscribers.length === 0 ? (
+        ) : visible.length === 0 ? (
           <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
             No subscribers yet. New footer sign-ups will show up here.
           </p>
@@ -188,10 +233,15 @@ export function StudioSubscribersPageClient({
                   <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">Company</th>
                   <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">Source</th>
                   <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">Joined</th>
+                  <th className="w-12 px-2 py-2.5">
+                    <span className="sr-only">Actions</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((s, i) => (
+                {filtered.map((s, i) => {
+                  const isDeleting = deletingId === s.id;
+                  return (
                   <tr
                     key={s.id}
                     onClick={() => setSelected(s)}
@@ -208,8 +258,25 @@ export function StudioSubscribersPageClient({
                     <td className="whitespace-nowrap px-4 py-2.5 text-neutral-500 dark:text-white/58">
                       {formatDate(s.createdAt)}
                     </td>
+                    <td className="px-2 py-2.5">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          void handleDelete(s);
+                        }}
+                        disabled={isDeleting}
+                        aria-label={`Delete ${s.email}`}
+                        title="Delete subscriber"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-700 transition hover:border-rose-400/60 hover:bg-rose-50 hover:text-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400/70 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/18 dark:bg-white/[0.06] dark:text-white/85 dark:hover:border-rose-400/40 dark:hover:bg-rose-500/15 dark:hover:text-rose-200"
+                      >
+                        <Trash2 className="h-4 w-4" aria-hidden="true" />
+                        <span className="sr-only">{isDeleting ? "Deleting…" : "Delete"}</span>
+                      </button>
+                    </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -284,6 +351,17 @@ export function StudioSubscribersPageClient({
                 This subscriber joined from the site footer, so there&apos;s no imported file data to show.
               </p>
             )}
+
+            <div className="mt-6 border-t border-neutral-200 pt-4 dark:border-white/10">
+              <button
+                type="button"
+                onClick={() => void handleDelete(selected)}
+                disabled={deletingId === selected.id}
+                className="inline-flex h-9 items-center rounded-full border border-rose-300/70 bg-rose-50 px-4 text-sm font-semibold text-rose-800 transition hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-rose-400/35 dark:bg-rose-500/10 dark:text-rose-200 dark:hover:bg-rose-500/20"
+              >
+                {deletingId === selected.id ? "Deleting…" : "Delete subscriber"}
+              </button>
+            </div>
           </div>
         </div>
       ) : null}
