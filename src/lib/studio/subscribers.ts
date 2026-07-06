@@ -20,18 +20,8 @@ export function formatSubscriberSource(source: string): string {
   return source;
 }
 
-export async function listSubscribersForStudio(): Promise<StudioSubscriber[]> {
-  const admin = getSupabaseAdminOrNull();
-  if (!admin) return [];
-
-  const { data, error } = await admin
-    .from("newsletter_subscribers")
-    .select("id, first_name, last_name, email, company, created_at, source, raw_data")
-    .order("created_at", { ascending: false });
-
-  if (error || !data) return [];
-
-  return (data as Array<Record<string, unknown>>).map((row) => ({
+function toSubscriber(row: Record<string, unknown>): StudioSubscriber {
+  return {
     id: String(row.id ?? ""),
     firstName: String(row.first_name ?? ""),
     lastName: String(row.last_name ?? ""),
@@ -43,5 +33,34 @@ export async function listSubscribersForStudio(): Promise<StudioSubscriber[]> {
       row.raw_data && typeof row.raw_data === "object" && !Array.isArray(row.raw_data)
         ? Object.fromEntries(Object.entries(row.raw_data as Record<string, unknown>).map(([k, v]) => [k, String(v ?? "")]))
         : {},
-  }));
+  };
+}
+
+export async function listSubscribersForStudio(): Promise<StudioSubscriber[]> {
+  const admin = getSupabaseAdminOrNull();
+  if (!admin) return [];
+
+  const { data, error } = await admin
+    .from("newsletter_subscribers")
+    .select("id, first_name, last_name, email, company, created_at, source, raw_data")
+    .order("created_at", { ascending: false });
+
+  if (!error && data) return (data as Array<Record<string, unknown>>).map(toSubscriber);
+
+  // `source`/`raw_data` are newer columns (migration 037); if that hasn't been
+  // run yet against this database, fall back to the original columns instead
+  // of silently showing zero subscribers.
+  console.error("listSubscribersForStudio: full select failed, falling back to base columns", error);
+
+  const fallback = await admin
+    .from("newsletter_subscribers")
+    .select("id, first_name, last_name, email, company, created_at")
+    .order("created_at", { ascending: false });
+
+  if (fallback.error || !fallback.data) {
+    console.error("listSubscribersForStudio: fallback select also failed", fallback.error);
+    return [];
+  }
+
+  return (fallback.data as Array<Record<string, unknown>>).map(toSubscriber);
 }
