@@ -22,7 +22,6 @@ import IslandNav from "./components/IslandNav";
 import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
 import AttendeeOriginMap from "./components/AttendeeOriginMap";
 import MagneticButton from "./components/motion/MagneticButton";
-import { Highlighter } from "@/components/ui/highlighter";
 import { getSiteImagesMap, resolveSiteImage, manifestDefault } from "@/lib/siteImages";
 
 export const dynamic = "force-dynamic";
@@ -193,9 +192,9 @@ export default async function HomePage() {
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
                 Culture is not just a state of being. It&apos;s{" "}
-                <Highlighter action="highlight" color="#e08a5b" isView>
+                <span className="rounded-sm px-1.5 py-0.5" style={{ backgroundColor: "#e08a5b" }}>
                   an action
-                </Highlighter>
+                </span>
                 .
               </h2>
             </Reveal>
