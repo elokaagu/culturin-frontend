@@ -128,7 +128,7 @@ export function StudioSubscribersPageClient({
         </div>
       </div>
       <p className="mt-2 text-xs text-neutral-500 dark:text-white/50">
-        Give this batch a source label (e.g. an event name) before importing, so you can tell where each subscriber came from later. Leave it blank and it'll just be tagged "CSV import".
+        Give this batch a source label (e.g. an event name) before importing, so you can tell where each subscriber came from later. Leave it blank and it&apos;ll just be tagged &quot;CSV import&quot;.
       </p>
 
       {importError ? (
