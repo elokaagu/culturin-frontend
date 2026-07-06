@@ -72,14 +72,18 @@ export const SITE_IMAGE_SLOTS: SiteImageSlot[] = [
   {
     key: "event-hero-us-open-2026",
     label: "Event hero — Culturin at the US Open",
-    defaultSrc: "/events/cannes-lions-2026/WelcomParty-0060.jpg",
-    defaultAlt: "Guests mingling in a warm-lit room at a Culturin welcome party",
+    // No real US Open photography exists yet — leave unset (shows "Photos
+    // coming soon") rather than default to a Cannes Lions photo.
+    defaultSrc: "",
+    defaultAlt: "",
   },
   {
     key: "event-hero-unga-2026",
     label: "Event hero — Culturin at UNGA",
-    defaultSrc: "/events/cannes-lions-2026/UNIKday1-106.jpg",
-    defaultAlt: "Guest smiling against a branded backdrop",
+    // No real UNGA photography exists yet — leave unset (shows "Photos
+    // coming soon") rather than default to a Cannes Lions photo.
+    defaultSrc: "",
+    defaultAlt: "",
   },
 ];
 

@@ -50,9 +50,13 @@ export default async function EventLandingPage({ params }: Props) {
 
   const isPast = event.isPast === true;
   const siteImages = await getSiteImagesMap();
-  const hero = event.heroImage
-    ? resolveSiteImage(siteImages, `event-hero-${event.slug}`, { src: event.heroImage, alt: event.heroImageAlt })
-    : null;
+  const resolvedHero = resolveSiteImage(siteImages, `event-hero-${event.slug}`, {
+    src: event.heroImage,
+    alt: event.heroImageAlt,
+  });
+  // Falls back to the "photos coming soon" hero treatment until either the
+  // manifest default or a Studio admin sets a real photo for this slot.
+  const hero = resolvedHero.src ? resolvedHero : null;
 
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} min-h-dvh font-sans antialiased`}>

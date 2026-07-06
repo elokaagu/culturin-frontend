@@ -135,8 +135,12 @@ export const events: CulturinEvent[] = [
     date: "August 25 – September 7, 2026",
     location: "Flushing Meadows, New York",
     category: "Sport & Culture",
-    heroImage: "/events/cannes-lions-2026/WelcomParty-0060.jpg",
-    heroImageAlt: "Guests mingling in a warm-lit room at a Culturin welcome party",
+    // No US Open photography exists yet (this event hasn't happened) — leave
+    // blank rather than reuse Cannes Lions photos under a different event's
+    // name. The events index and event page both render a "Photos coming
+    // soon" state when heroImage is empty.
+    heroImage: "",
+    heroImageAlt: "",
     stats: [
       { value: "2", label: "Weeks of play" },
       { value: "5", label: "Culturin evenings" },
@@ -149,54 +153,23 @@ export const events: CulturinEvent[] = [
         label: "PERSPECTIVE",
         headline: "The US Open brings the world to New York. Culturin brings the culture to the courtside.",
         body: "For two weeks every summer, New York becomes the center of the sporting world. We take that energy and build something around it: intimate, curated, and firmly off the official schedule.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-100.jpg",
-            alt: "Guests mingling together at a Culturin evening",
-            position: "top-16 left-[5%] w-64 rotate-[-1.5deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-101.jpg",
-            alt: "Guest portrait against a red-lit backdrop",
-            position: "top-40 right-[6%] w-60 rotate-[2deg]",
-          },
-        ],
+        // No real US Open photography yet — leave empty rather than reuse
+        // Cannes Lions photos under this event's name.
+        photos: [],
       },
       {
         id: "who",
         label: "PROXIMITY",
         headline: "Athletes, tastemakers, and the people who move culture forward.",
         body: "Sport intersects with fashion, music, and business at the US Open like nowhere else. Culturin brings together the people who sit at all those intersections, for dinners, conversations, and access you won't find on StubHub.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-102.jpg",
-            alt: "Guests posing together at a Culturin evening",
-            position: "top-20 left-[8%] w-72 rotate-[1deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-103.jpg",
-            alt: "Guest portrait at a Culturin evening",
-            position: "bottom-16 right-[5%] w-56 rotate-[-2deg]",
-          },
-        ],
+        photos: [],
       },
       {
         id: "signal",
         label: "POSSIBILITY",
         headline: "Sport is the occasion. Culture is the point.",
         body: "A private Culturin hospitality suite, chef-curated dinners after the day's last match, live music, and a late-night close that keeps going long after the stadium empties.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-104.jpg",
-            alt: "Guests enjoying the evening together",
-            position: "top-10 right-[9%] w-52 rotate-[1.5deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-105.jpg",
-            alt: "Guest portrait at a Culturin evening",
-            position: "bottom-12 left-[6%] w-64 rotate-[-1deg]",
-          },
-        ],
+        photos: [],
       },
     ],
     signalHeadline: "What to expect",
@@ -216,8 +189,10 @@ export const events: CulturinEvent[] = [
     date: "September 16 – 26, 2026",
     location: "Manhattan, New York",
     category: "Diplomacy & Culture",
-    heroImage: "/events/cannes-lions-2026/UNIKday1-106.jpg",
-    heroImageAlt: "Guest smiling against a branded backdrop",
+    // No real UNGA photography yet — leave empty rather than reuse Cannes
+    // Lions photos under this event's name.
+    heroImage: "",
+    heroImageAlt: "",
     stats: [
       { value: "193", label: "Nations convene" },
       { value: "1", label: "Week, September" },
@@ -230,54 +205,23 @@ export const events: CulturinEvent[] = [
         label: "PERSPECTIVE",
         headline: "UNGA brings 193 nations to New York. Culturin brings the cultural conversation to the margins.",
         body: "The real decisions at UNGA happen in the dinners, lounges, and side events running parallel to the official sessions. Culturin builds those rooms, with cultural leaders and diplomats who understand that soft power is real power.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-107.jpg",
-            alt: "Guest portrait at a Culturin evening",
-            position: "top-20 left-[5%] w-56 rotate-[-1deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-108.jpg",
-            alt: "Guests gathered in conversation",
-            position: "top-52 right-[7%] w-64 rotate-[2deg]",
-          },
-        ],
+        // No real UNGA photography yet — leave empty rather than reuse
+        // Cannes Lions photos under this event's name.
+        photos: [],
       },
       {
         id: "who",
         label: "PROXIMITY",
         headline: "Diplomats, founders, and cultural ambassadors in the same room.",
         body: "UNGA week draws a rare mix: heads of state, NGO directors, diaspora entrepreneurs, and cultural figures all compressed into ten days in Manhattan. Culturin is the connective tissue, the event where those worlds actually meet.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-109.jpg",
-            alt: "Guests posing together at a reception",
-            position: "top-16 left-[7%] w-72 rotate-[1.5deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-110.jpg",
-            alt: "Guest portrait at a reception",
-            position: "bottom-20 right-[4%] w-56 rotate-[-1.5deg]",
-          },
-        ],
+        photos: [],
       },
       {
         id: "signal",
         label: "POSSIBILITY",
         headline: "The conversations that shape the next decade start here.",
         body: "Four Culturin events across UNGA week: an opening dinner, a midweek cultural salon, a panel on diaspora and soft power, and a closing evening reception. Every seat is chosen with intention.",
-        photos: [
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-111.jpg",
-            alt: "Guest portrait at an evening reception",
-            position: "top-14 right-[8%] w-52 rotate-[2deg]",
-          },
-          {
-            src: "/events/cannes-lions-2026/UNIKday1-112.jpg",
-            alt: "Guests gathered together at a reception",
-            position: "bottom-14 left-[4%] w-56 rotate-[-2deg]",
-          },
-        ],
+        photos: [],
       },
     ],
     signalHeadline: "What to expect",
