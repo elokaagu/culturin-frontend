@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getEventBySlug, events } from "@/lib/eventsData";
+import { getEventBySlug, events, galleryHrefForEvent } from "@/lib/eventsData";
 import { blurForSrc } from "@/lib/culturinImages";
 import {
   EDITORIAL_BG,
@@ -240,13 +241,13 @@ export default async function EventLandingPage({ params }: Props) {
             {event.rsvpSubtext}
           </p>
           {isPast ? (
-            <a
-              href="/gallery"
+            <Link
+              href={galleryHrefForEvent(event)}
               className="mt-8 inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
               style={{ background: ACCENT, color: SURFACE_DARK }}
             >
               View the gallery
-            </a>
+            </Link>
           ) : null}
           <RSVPForm eventSlug={event.slug} />
         </Reveal>

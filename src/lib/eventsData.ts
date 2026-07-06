@@ -38,6 +38,8 @@ export type CulturinEvent = {
   signalBody: string;
   /** True once the event has actually happened: swaps the RSVP flow for a recap. */
   isPast?: boolean;
+  /** `/gallery?event=` filter key when this event has photos in the public gallery. */
+  galleryEventKey?: string;
   rsvpHeadline: string;
   rsvpSubtext: string;
 };
@@ -56,6 +58,7 @@ export const events: CulturinEvent[] = [
     heroImage: "/events/cannes-lions-2026/UNIKday2-14.jpg",
     heroImageAlt: "Guests laughing together beneath the disco balls in Cannes",
     isPast: true,
+    galleryEventKey: "cannes-2026",
     stats: [
       { value: "2", label: "Nights of Culturin" },
       { value: "500+", label: "Guests in the room" },
@@ -235,4 +238,10 @@ export const events: CulturinEvent[] = [
 
 export function getEventBySlug(slug: string): CulturinEvent | undefined {
   return events.find((e) => e.slug === slug);
+}
+
+export function galleryHrefForEvent(event: Pick<CulturinEvent, "galleryEventKey">): string {
+  return event.galleryEventKey
+    ? `/gallery?event=${encodeURIComponent(event.galleryEventKey)}`
+    : "/gallery";
 }

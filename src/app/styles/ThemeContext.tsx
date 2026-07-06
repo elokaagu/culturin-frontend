@@ -50,7 +50,7 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [mode, setModeState] = useState<ThemeMode>("light");
+  const [mode, setModeState] = useState<ThemeMode>("dark");
 
   const setMode = useCallback((next: ThemeMode) => {
     setModeState(next);
@@ -68,7 +68,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useLayoutEffect(() => {
     const stored = readStoredMode();
-    const initial = stored ?? "light";
+    const initial = stored ?? "dark";
     setModeState(initial);
     applyThemeToDocument(initial);
   }, []);

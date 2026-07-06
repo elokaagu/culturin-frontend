@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { events } from "@/lib/eventsData";
+import { events, galleryHrefForEvent } from "@/lib/eventsData";
 import { blurForSrc } from "@/lib/culturinImages";
 import {
   EDITORIAL_BG,
@@ -107,6 +107,7 @@ const PRODUCTION_HISTORY: LogoTickerItem[] = [
 ];
 
 const featuredEvents = events.filter((e) => !e.isPast).slice(0, 3);
+const cannesRecapEvent = events.find((e) => e.slug === "cannes-lions-2026");
 
 /** Short city label pulled from a full location string, for Trippin-style tag chips. */
 function cityTag(location: string): string {
@@ -430,7 +431,7 @@ export default async function HomePage() {
                   View the recap
                 </Link>
                 <Link
-                  href="/gallery"
+                  href={cannesRecapEvent ? galleryHrefForEvent(cannesRecapEvent) : "/gallery"}
                   className="text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
                   style={{ color: INK }}
                 >

@@ -279,38 +279,40 @@ export default function NiceAndCannesGuidePage() {
         </div>
       </section>
 
-      {/* ── CTA ────────────────────────────────────────────────── */}
+      {/* ── Partner CTA ──────────────────────────────────────────── */}
       <section
         className="relative overflow-hidden px-8 py-24 text-center sm:px-14"
         style={{ background: SURFACE_DARK }}
       >
-        <Reveal className="mx-auto max-w-xl">
+        <Reveal className="mx-auto max-w-2xl">
           <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "rgba(232,227,218,0.6)" }}>
-            While you&apos;re there
+            For brands &amp; corporate teams
           </p>
           <h2
             className="m-0 text-3xl font-medium leading-[1.15] text-white sm:text-4xl"
             style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
           >
-            Culturin builds nights in Cannes too.
+            Planning an experience on the Riviera? We consult on that.
           </h2>
           <p className="mt-5 text-base leading-relaxed" style={{ color: "rgba(232,227,218,0.82)" }}>
-            See the recap from Cannes Lions 2026, or get on the list for what&apos;s next.
+            Culturin partners with brands and companies on cultural programming, hospitality, and activations during
+            marquee moments like Cannes Lions — curated guest lists, the room, the nights. If you&apos;re building
+            something here and want a team that&apos;s actually been in those rooms, we should talk.
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
-              href="/events/cannes-lions-2026"
+              href="/partner"
               className="inline-flex items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
               style={{ background: ACCENT, color: SURFACE_DARK }}
             >
-              See the Cannes recap
+              Let&apos;s talk
             </Link>
             <Link
-              href="/travel-guides"
+              href="/events/cannes-lions-2026"
               className="text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-70"
               style={{ color: "rgba(232,227,218,0.85)" }}
             >
-              More travel guides →
+              See how we showed up at Cannes →
             </Link>
           </div>
         </Reveal>

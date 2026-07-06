@@ -11,7 +11,7 @@ import ViewTransitionsRoot from "./components/ViewTransitionsRoot";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "./styles/ThemeContext";
 
-const themeInitScript = `(function(){try{var k='culturin-theme';var v=localStorage.getItem(k);var r=document.documentElement;if(v==='dark')r.classList.add('dark');else r.classList.remove('dark');}catch(e){}})();`;
+const themeInitScript = `(function(){try{var k='culturin-theme';var v=localStorage.getItem(k);var r=document.documentElement;if(v==='light')r.classList.remove('dark');else r.classList.add('dark');}catch(e){}})();`;
 
 const twkEverett = localFont({
   variable: "--font-sans",
