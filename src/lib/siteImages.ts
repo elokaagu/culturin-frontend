@@ -118,3 +118,15 @@ export function manifestDefault(slotKey: string): SiteImage {
   const slot = SITE_IMAGE_SLOTS.find((s) => s.key === slotKey);
   return { src: slot?.defaultSrc ?? "", alt: slot?.defaultAlt ?? "" };
 }
+
+/** Event hero for cards and detail pages — Studio slot, then manifest heroImage, else null. */
+export function resolveEventHero(
+  map: Record<string, SiteImage>,
+  event: { slug: string; heroImage: string; heroImageAlt: string },
+): SiteImage | null {
+  const resolved = resolveSiteImage(map, `event-hero-${event.slug}`, {
+    src: event.heroImage,
+    alt: event.heroImageAlt,
+  });
+  return resolved.src ? resolved : null;
+}

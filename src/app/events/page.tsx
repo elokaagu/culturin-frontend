@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { events } from "@/lib/eventsData";
 import { blurForSrc } from "@/lib/culturinImages";
+import { getSiteImagesMap, resolveEventHero } from "@/lib/siteImages";
 import {
   EDITORIAL_BG,
   EDITORIAL_INK,
@@ -20,13 +21,17 @@ const INK = EDITORIAL_INK;
 const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Events | Culturin",
   description:
     "Culturin events, curated cultural experiences at the US Open, United Nations General Assembly, and beyond.",
 };
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const siteImages = await getSiteImagesMap();
+
   return (
     <div style={{ background: BG, color: INK, minHeight: "100dvh" }} className={`${editorialScopeClass} font-sans antialiased`}>
 
@@ -62,6 +67,7 @@ export default function EventsPage() {
       <ol className="list-none m-0 p-0">
         {events.map((event, index) => {
           const flip = index % 2 === 1;
+          const eventHero = resolveEventHero(siteImages, event);
           return (
             <Reveal as="li" key={event.slug} className="block border-b" y={32}>
               <Link
@@ -72,16 +78,16 @@ export default function EventsPage() {
                 {/* Image alternates left / right */}
                 <div
                   className={`relative w-full shrink-0 overflow-hidden lg:w-[48%] ${flip ? "lg:order-2" : ""}`}
-                  style={{ minHeight: 320, background: event.heroImage ? undefined : SURFACE_DARK }}
+                  style={{ minHeight: 320, background: eventHero ? undefined : SURFACE_DARK }}
                 >
-                  {event.heroImage ? (
+                  {eventHero ? (
                     <BlurImage
-                      src={event.heroImage}
-                      alt={event.heroImageAlt}
+                      src={eventHero.src}
+                      alt={eventHero.alt}
                       fill
                       className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                       placeholder="blur"
-                      blurDataURL={blurForSrc(event.heroImage)}
+                      blurDataURL={blurForSrc(eventHero.src)}
                       sizes="(max-width: 1024px) 100vw, 48vw"
                       unoptimized
                     />

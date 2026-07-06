@@ -51,14 +51,22 @@ function SlotCard({ slot, onSaved }: { slot: StudioSiteImageSlot; onSaved: () =>
       </div>
 
       <div className="mt-4 flex flex-col gap-4 sm:flex-row">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src || undefined}
-          alt=""
-          className="h-32 w-full shrink-0 rounded-xl border border-neutral-200 object-cover dark:border-white/10 sm:w-48"
-        />
+        {src ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={src}
+            alt=""
+            className="h-32 w-full shrink-0 rounded-xl border border-neutral-200 object-cover dark:border-white/10 sm:w-48"
+          />
+        ) : (
+          <div className="flex h-32 w-full shrink-0 items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-neutral-900 dark:border-white/15 sm:w-48">
+            <p className="m-0 px-4 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
+              No photo yet
+            </p>
+          </div>
+        )}
         <div className="flex flex-1 flex-col gap-3">
-          <StudioImageUploadButton onUploaded={setSrc} buttonLabel="Replace photo" />
+          <StudioImageUploadButton onUploaded={setSrc} buttonLabel={src ? "Replace photo" : "Add photo"} />
           <label className="flex flex-col gap-1.5 text-sm">
             <span className="font-medium text-neutral-700 dark:text-white/80">Alt text</span>
             <input

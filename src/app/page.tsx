@@ -22,7 +22,7 @@ import IslandNav from "./components/IslandNav";
 import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
 import AttendeeOriginMap from "./components/AttendeeOriginMap";
 import MagneticButton from "./components/motion/MagneticButton";
-import { getSiteImagesMap, resolveSiteImage, manifestDefault } from "@/lib/siteImages";
+import { getSiteImagesMap, resolveSiteImage, resolveEventHero, manifestDefault } from "@/lib/siteImages";
 
 export const dynamic = "force-dynamic";
 
@@ -317,9 +317,7 @@ export default async function HomePage() {
 
           <div className="grid grid-cols-1 gap-px sm:grid-cols-3" style={{ background: RULE }}>
             {featuredEvents.map((event, i) => {
-              const eventHero = event.heroImage
-                ? resolveSiteImage(siteImages, `event-hero-${event.slug}`, { src: event.heroImage, alt: event.heroImageAlt })
-                : null;
+              const eventHero = resolveEventHero(siteImages, event);
               return (
               <Reveal key={event.slug} as="div" delay={i * 120}>
                 <Link

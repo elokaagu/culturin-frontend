@@ -44,6 +44,7 @@ export async function PATCH(request: Request) {
   }
 
   revalidatePath("/");
+  revalidatePath("/events");
   revalidatePath("/events/[slug]", "page");
 
   return NextResponse.json({ message: "Image updated" });

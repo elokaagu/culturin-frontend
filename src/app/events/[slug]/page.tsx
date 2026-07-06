@@ -16,7 +16,7 @@ import BlurImage from "@/app/components/motion/BlurImage";
 import Reveal from "@/app/components/motion/Reveal";
 import CountUpStat from "@/app/components/motion/CountUpStat";
 import IslandNav from "@/app/components/IslandNav";
-import { getSiteImagesMap, resolveSiteImage } from "@/lib/siteImages";
+import { getSiteImagesMap, resolveEventHero } from "@/lib/siteImages";
 import RSVPForm from "./RSVPForm";
 
 const BG = EDITORIAL_BG;
@@ -50,13 +50,7 @@ export default async function EventLandingPage({ params }: Props) {
 
   const isPast = event.isPast === true;
   const siteImages = await getSiteImagesMap();
-  const resolvedHero = resolveSiteImage(siteImages, `event-hero-${event.slug}`, {
-    src: event.heroImage,
-    alt: event.heroImageAlt,
-  });
-  // Falls back to the "photos coming soon" hero treatment until either the
-  // manifest default or a Studio admin sets a real photo for this slot.
-  const hero = resolvedHero.src ? resolvedHero : null;
+  const hero = resolveEventHero(siteImages, event);
 
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} min-h-dvh font-sans antialiased`}>

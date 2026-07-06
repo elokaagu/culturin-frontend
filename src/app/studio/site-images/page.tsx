@@ -33,8 +33,9 @@ export default async function StudioSiteImagesPage() {
       <p className="text-xs font-semibold uppercase tracking-wide text-culturin-700 dark:text-culturin-300">Content</p>
       <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl dark:text-white">Site images</h1>
       <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
-        Replace the homepage hero, gallery preview grid, and event hero photos without a code change. Each of these
-        is a fixed spot on the site, so there&apos;s no delete here — just swap in a different photo.
+        Replace the homepage hero, gallery preview grid, and event card photos (homepage upcoming events, events
+        index, and event detail pages) without a code change. Each of these is a fixed spot on the site, so
+        there&apos;s no delete here — just swap in a different photo.
       </p>
 
       <StudioSiteImagesPageClient slots={slots} hasDb={hasDb} />
