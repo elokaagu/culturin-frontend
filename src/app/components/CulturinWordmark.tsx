@@ -26,7 +26,10 @@ export default function CulturinWordmark({
       }}
       {...rest}
     >
-      CULTURIN<sup className="text-[0.4em]">TM</sup>
+      CULTURIN
+      <sup className="align-top text-[0.4em] leading-none" style={{ verticalAlign: "top" }}>
+        TM
+      </sup>
     </span>
   );
 }
