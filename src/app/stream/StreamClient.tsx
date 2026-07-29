@@ -60,8 +60,11 @@ export default function StreamClient({ videos, selectedSlug }: StreamClientProps
             )}
           </div>
           <div className="flex flex-col justify-center p-5 sm:p-6 lg:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-400/80">Now streaming</p>
-            <h1 className="mt-3 text-2xl font-semibold leading-tight tracking-tight text-white sm:text-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: "#e08a5b" }}>Now streaming</p>
+            <h1
+              className="mt-3 text-2xl font-medium leading-tight tracking-tight text-white sm:text-3xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+            >
               {selectedVideo.title}
             </h1>
             {selectedVideo.uploader ? <p className="mt-2 text-sm text-white/65">{selectedVideo.uploader}</p> : null}
@@ -71,7 +74,8 @@ export default function StreamClient({ videos, selectedSlug }: StreamClientProps
             <div className="mt-6">
               <Link
                 href={`/stream?play=${selectedVideo.currentSlug}`}
-                className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black no-underline transition hover:bg-neutral-200"
+                className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white no-underline transition hover:opacity-90"
+                style={{ background: "#e08a5b", color: "#1c1a17" }}
               >
                 <Play className="h-4 w-4" fill="currentColor" />
                 Play from start
@@ -83,7 +87,11 @@ export default function StreamClient({ videos, selectedSlug }: StreamClientProps
 
       {rowVideos.length > 0 ? (
         <section aria-labelledby="stream-trending-now">
-          <h2 id="stream-trending-now" className="mb-4 text-xl font-semibold tracking-tight text-white sm:text-2xl">
+          <h2
+            id="stream-trending-now"
+            className="mb-4 text-xl font-medium tracking-tight text-white sm:text-2xl"
+            style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+          >
             Trending now
           </h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">

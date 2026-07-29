@@ -2,7 +2,9 @@
 "use client";
 
 import React from "react";
-import Header from "../../components/Header";
+import IslandNav from "../../components/IslandNav";
+import HomeFooter from "../../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { SPOTLIGHT_DEMO } from "@/lib/remoteImageUrls";
@@ -11,18 +13,18 @@ import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
 
 export default function SpotlightPosts() {
   return (
-    <>
-      <Header />
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
       <div
-        className="flex h-full min-h-full flex-col items-center bg-background px-6 py-10 pt-[var(--header-offset)] text-foreground sm:px-10"
-        style={{ lineHeight: 2 }}
+        className="flex h-full min-h-full flex-col items-center px-6 pb-10 sm:px-10"
+        style={{ lineHeight: 2, paddingTop: "8rem" }}
       >
         <Link
           href="/community"
           className="fixed left-12 top-[12.5rem] z-10 hidden min-[429px]:inline-flex"
           aria-label="Back to community"
         >
-          <span className="inline-flex items-center gap-1 pb-5 text-amber-400 no-underline transition hover:text-foreground">
+          <span className="inline-flex items-center gap-1 pb-5 no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
             <svg
               width="16"
               height="16"
@@ -42,8 +44,13 @@ export default function SpotlightPosts() {
           </span>
         </Link>
         <div className="mx-2.5 flex w-full max-w-3xl flex-col items-center sm:pl-7">
-          <h1 className="w-full pl-0 pt-5 pr-5 text-3xl max-[428px]:ml-10">Cynthia Bailey</h1>
-          <h3 className="w-full pl-0 pr-5 text-xl text-muted-foreground sm:pl-0 max-[428px]:pl-2.5">
+          <h1
+            className="w-full pl-0 pt-5 pr-5 text-3xl font-medium max-[428px]:ml-10"
+            style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+          >
+            Cynthia Bailey
+          </h1>
+          <h3 className="w-full pl-0 pr-5 text-xl sm:pl-0 max-[428px]:pl-2.5" style={{ color: "var(--c-muted)" }}>
             A conversation with Cynthia Bailey
           </h3>
         </div>
@@ -70,7 +77,7 @@ export default function SpotlightPosts() {
           <VideoPlayer src="https://www.youtube.com/watch?v=IX8reBGLQFk" />
         </div>
         <div className="mx-auto w-full max-w-[50%] flex-col self-center sm:pl-6 sm:pr-4 max-[428px]:w-full max-[428px]:items-start max-[428px]:pl-5">
-          <p className="pt-5 text-lg text-foreground max-[428px]:text-lg">
+          <p className="pt-5 text-lg max-[428px]:text-lg" style={{ color: "var(--c-ink)" }}>
             Cynthia, often referred to as the "Coal City State," is a Nigerian city that boasts a diverse and vibrant
             cultural heritage. Located in the southeastern region of Nigeria, Enugu is not only known for its
             historical significance but also for the tapestry of cultures that have woven together to create a unique
@@ -83,6 +90,7 @@ export default function SpotlightPosts() {
           </p>
         </div>
       </div>
-    </>
+      <HomeFooter />
+    </div>
   );
 }

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 
-import Header from "../components/Header";
+import IslandNav from "../components/IslandNav";
+import HomeFooter from "../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../components/SafeContentImage";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listBlogs, listProviders, listVideos } from "../../lib/cms/queries";
@@ -38,8 +40,13 @@ function TrendingSection({
   return (
     <section className="mt-10">
       <header className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-white sm:text-2xl">{title}</h2>
-        <span className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58">{countLabel}</span>
+        <h2
+          className="text-xl font-medium tracking-tight sm:text-2xl"
+          style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+        >
+          {title}
+        </h2>
+        <span className="text-xs font-medium uppercase tracking-[0.12em]" style={{ color: "var(--c-muted)" }}>{countLabel}</span>
       </header>
       {children}
     </section>
@@ -57,13 +64,18 @@ export default async function TrendingPage() {
   const providers = providersFromCms.length > 0 ? providersFromCms : getShowcaseProviderCards();
 
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh pb-20" style={{ paddingTop: "8rem" }}>
         <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
-          <header className="border-b border-neutral-200 pb-8 dark:border-white/10">
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Trending</h1>
-            <p className="mt-3 max-w-3xl text-base leading-relaxed text-neutral-600 dark:text-white/65 sm:text-lg">
+          <header className="border-b pb-8" style={{ borderColor: "var(--c-rule)" }}>
+            <h1
+              className="text-4xl font-medium tracking-tight sm:text-5xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+            >
+              Trending
+            </h1>
+            <p className="mt-3 max-w-3xl text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
               What the Culturin community is reading, watching, and booking right now.
             </p>
           </header>
@@ -161,6 +173,7 @@ export default async function TrendingPage() {
           </TrendingSection>
         </div>
       </main>
-    </>
+      <HomeFooter />
+    </div>
   );
 }

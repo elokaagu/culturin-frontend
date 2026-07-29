@@ -3,8 +3,14 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
 
-import Header from "../../components/Header";
-import SiteFooter from "../../components/SiteFooter";
+import IslandNav from "../../components/IslandNav";
+import HomeFooter from "../../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
+
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
+const cardStyle = { borderColor: "var(--c-rule)" };
+const inputClass = "h-11 w-full rounded-lg border px-3 text-base outline-none focus-visible:ring-2";
+const inputStyle = { borderColor: "var(--c-rule)", background: "var(--c-bg)", color: "var(--c-ink)" };
 
 export default function AdvisorsPage() {
   const [firstName, setFirstName] = useState("");
@@ -56,20 +62,20 @@ export default function AdvisorsPage() {
   }
 
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh pb-20" style={{ paddingTop: "8rem" }}>
         <div className="mx-auto w-full max-w-[52rem] px-4 pt-8 sm:px-6 sm:pt-10">
           <header className="max-w-[40rem]">
-            <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 sm:text-[2.7rem] dark:text-white">
+            <h1 className="text-4xl font-medium tracking-tight sm:text-[2.7rem]" style={{ ...displayFont, color: "var(--c-ink)" }}>
               Become a Culturin advisor
             </h1>
-            <p className="mt-4 text-lg leading-relaxed text-neutral-600 dark:text-zinc-200">
+            <p className="mt-4 text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
               Culturin is designed for the innovative and entrepreneurial travel advisor of tomorrow. Our core mission
               is to empower those with a deep-rooted passion for exploration and travel to generate a flexible income by
               curating and booking unforgettable journeys.
             </p>
-            <p className="mt-3 text-lg leading-relaxed text-neutral-600 dark:text-zinc-200">
+            <p className="mt-3 text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
               Whether you are just starting out or looking to elevate your existing travel advisory business, Culturin
               offers the tools, resources, and community support needed to thrive in the dynamic world of travel
               planning.
@@ -77,18 +83,19 @@ export default function AdvisorsPage() {
             <button
               type="button"
               onClick={scrollToApply}
-              className="mt-5 inline-flex h-9 min-w-[4.25rem] items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-black transition hover:bg-neutral-200"
+              className="mt-5 inline-flex h-9 min-w-[4.25rem] items-center justify-center rounded-full px-5 text-sm font-semibold text-white transition hover:opacity-90"
+              style={{ background: "var(--c-accent)" }}
             >
               Apply
             </button>
           </header>
 
           <section className="mt-8 space-y-4">
-            <article className="rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6 dark:border-white/15 dark:bg-zinc-900/90">
-              <h2 className="text-[1.75rem] font-semibold tracking-tight text-neutral-900 dark:text-white">
+            <article className="rounded-2xl border p-5 sm:p-6" style={cardStyle}>
+              <h2 className="text-[1.75rem] font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>
                 Community
               </h2>
-              <p className="mt-2 max-w-2xl text-lg leading-relaxed text-neutral-600 dark:text-zinc-200">
+              <p className="mt-2 max-w-2xl text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
                 Our diverse, inclusive and engaged global community is designed to make you feel welcome.
               </p>
             </article>
@@ -100,24 +107,18 @@ export default function AdvisorsPage() {
                 "Weekly online community and partner events",
                 "Mentorship, FAM trips and site visits",
               ].map((item) => (
-                <article
-                  key={item}
-                  className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/15 dark:bg-zinc-900/90"
-                >
-                  <p className="text-base leading-relaxed text-neutral-700 dark:text-zinc-200">{item}</p>
+                <article key={item} className="rounded-2xl border p-5" style={cardStyle}>
+                  <p className="text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>{item}</p>
                 </article>
               ))}
             </div>
           </section>
 
-          <section
-            id="apply-form"
-            className="mt-10 rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6 dark:border-white/15 dark:bg-zinc-900/90"
-          >
-            <h2 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+          <section id="apply-form" className="mt-10 rounded-2xl border p-5 sm:p-6" style={cardStyle}>
+            <h2 className="text-2xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>
               Apply to join Culturin today
             </h2>
-            <p className="mt-2 max-w-2xl text-base leading-relaxed text-neutral-600 dark:text-zinc-200">
+            <p className="mt-2 max-w-2xl text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>
               Book just $360/month in travel and you will cover your subscription fees. Everything after that is your
               profit to keep.
             </p>
@@ -137,7 +138,8 @@ export default function AdvisorsPage() {
                     value={firstName}
                     onChange={(ev) => setFirstName(ev.target.value)}
                     disabled={formState === "loading" || formState === "success"}
-                    className="h-11 w-full rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
+                    className={inputClass}
+                    style={inputStyle}
                   />
                 </div>
                 <div className="flex-1">
@@ -153,7 +155,8 @@ export default function AdvisorsPage() {
                     value={lastName}
                     onChange={(ev) => setLastName(ev.target.value)}
                     disabled={formState === "loading" || formState === "success"}
-                    className="h-11 w-full rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
+                    className={inputClass}
+                    style={inputStyle}
                   />
                 </div>
               </div>
@@ -169,7 +172,8 @@ export default function AdvisorsPage() {
                 value={company}
                 onChange={(ev) => setCompany(ev.target.value)}
                 disabled={formState === "loading" || formState === "success"}
-                className="h-11 w-full rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
+                className={inputClass}
+                style={inputStyle}
               />
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
                 <label htmlFor="advisor-email" className="sr-only">
@@ -187,12 +191,14 @@ export default function AdvisorsPage() {
                   disabled={formState === "loading" || formState === "success"}
                   aria-invalid={formState === "error"}
                   aria-describedby={formMessage ? "apply-form-feedback" : undefined}
-                  className="h-11 flex-1 rounded-lg border border-neutral-300 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 dark:border-white/20 dark:bg-[#121212] dark:text-white dark:placeholder:text-white/40"
+                  className={`flex-1 ${inputClass}`}
+                  style={inputStyle}
                 />
                 <button
                   type="submit"
                   disabled={formState === "loading" || formState === "success"}
-                  className="inline-flex h-11 items-center justify-center rounded-lg bg-white px-5 text-sm font-semibold text-black transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-65"
+                  className="inline-flex h-11 items-center justify-center rounded-lg px-5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-65"
+                  style={{ background: "var(--c-accent)" }}
                 >
                   {formState === "loading" ? "Sending..." : "Apply"}
                 </button>
@@ -202,7 +208,7 @@ export default function AdvisorsPage() {
             {formMessage ? (
               <p
                 id="apply-form-feedback"
-                className={["mt-3 text-sm", formState === "success" ? "text-emerald-400" : "text-rose-400"].join(" ")}
+                className={["mt-3 text-sm", formState === "success" ? "text-emerald-500" : "text-rose-500"].join(" ")}
                 role={formState === "error" ? "alert" : "status"}
               >
                 {formMessage}
@@ -211,7 +217,7 @@ export default function AdvisorsPage() {
           </section>
         </div>
       </main>
-      <SiteFooter />
-    </>
+      <HomeFooter />
+    </div>
   );
 }

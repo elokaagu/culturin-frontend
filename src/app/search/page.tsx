@@ -21,9 +21,10 @@ import {
   resolveContentImageSrc,
   resolveVideoThumbnailSrc,
 } from "../../lib/imagePlaceholder";
-import Header from "../components/Header";
+import IslandNav from "../components/IslandNav";
+import HomeFooter from "../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../components/SafeContentImage";
-import SiteFooter from "../components/SiteFooter";
 
 export const revalidate = 120;
 
@@ -148,10 +149,13 @@ function SearchSection({
   return (
     <section className="mt-10 first:mt-0">
       <header className="mb-4 flex items-center justify-between gap-4">
-        <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
+        <h2
+          className="text-xl font-medium tracking-tight sm:text-2xl"
+          style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+        >
           {title}
         </h2>
-        <span className="shrink-0 text-xs font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58">
+        <span className="shrink-0 text-xs font-medium uppercase tracking-[0.12em]" style={{ color: "var(--c-muted)" }}>
           {count} result{count === 1 ? "" : "s"}
         </span>
       </header>
@@ -161,12 +165,14 @@ function SearchSection({
 }
 
 function resultCardClassName() {
-  return "group block overflow-hidden rounded-2xl border border-neutral-200/90 bg-white no-underline shadow-sm transition hover:border-amber-300/40 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-amber-400/25";
+  return "group block overflow-hidden rounded-2xl border no-underline transition";
 }
 
-const resultTextTitle = "line-clamp-2 text-lg font-semibold leading-tight text-neutral-900 dark:text-white";
-const resultTextBody = "mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-600 dark:text-white/70";
-const resultMeta = "mt-1 text-sm text-neutral-500 dark:text-white/60";
+const resultCardStyle = { borderColor: "var(--c-rule)" };
+const resultTextTitle = "line-clamp-2 text-lg font-medium leading-tight";
+const resultTextTitleStyle = { fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" };
+const resultTextBody = "mt-2 line-clamp-2 text-sm leading-relaxed";
+const resultMeta = "mt-1 text-sm";
 
 type SearchPageProps = {
   searchParams?: { query?: string; country?: string };
@@ -224,28 +230,27 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
       : null;
 
   return (
-    <>
-      <Header />
-      <main
-        className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased selection:bg-amber-500/25 dark:bg-[#121212] dark:text-white"
-        id="main-content"
-      >
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh pb-20 antialiased" id="main-content" style={{ paddingTop: "8rem" }}>
         <div className={appPageContainerClass}>
           <nav className="mb-6 text-sm" aria-label="Breadcrumb">
-            <Link
-              href="/"
-              className="font-medium text-amber-800 no-underline transition hover:underline dark:text-amber-300/90"
-            >
+            <Link href="/" className="font-medium no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
               Home
             </Link>
-            <span className="px-1.5 text-neutral-400 dark:text-white/45" aria-hidden>
+            <span className="px-1.5" style={{ color: "var(--c-muted)" }} aria-hidden>
               /
             </span>
-            <span className="text-neutral-600 dark:text-white/65">Search</span>
+            <span style={{ color: "var(--c-muted)" }}>Search</span>
           </nav>
 
-          <h1 className="font-display m-0 text-3xl font-semibold tracking-tight sm:text-4xl">Search</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-white/60">
+          <h1
+            className="m-0 text-3xl font-medium tracking-tight sm:text-4xl"
+            style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+          >
+            Search
+          </h1>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed sm:text-base" style={{ color: "var(--c-muted)" }}>
             {searchParams?.country && rawQuery
               ? `Places, stories, and media related to ${rawQuery}.`
               : query
@@ -254,33 +259,36 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
           </p>
 
           {showSupplementNote ? (
-            <p className="mt-4 max-w-2xl text-xs text-neutral-500 dark:text-white/62">{showSupplementNote}</p>
+            <p className="mt-4 max-w-2xl text-xs" style={{ color: "var(--c-muted)" }}>{showSupplementNote}</p>
           ) : null}
 
           {!hasResults && query ? (
-            <div className="mt-8 rounded-2xl border border-neutral-200/90 bg-white px-6 py-12 text-center shadow-sm dark:border-white/10 dark:bg-white/[0.04] sm:px-8">
-              <p className="m-0 text-base font-medium text-neutral-800 dark:text-white/90">
+            <div className="mt-8 rounded-2xl border px-6 py-12 text-center sm:px-8" style={{ borderColor: "var(--c-rule)" }}>
+              <p className="m-0 text-base font-medium" style={{ color: "var(--c-ink)" }}>
                 No index matches for &ldquo;{rawQuery}&rdquo;.
               </p>
-              <p className="m-0 mt-2 text-sm text-neutral-600 dark:text-white/60">
+              <p className="m-0 mt-2 text-sm" style={{ color: "var(--c-muted)" }}>
                 Try a city, a region, a topic like food or art, or browse the library first.
               </p>
               <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
                 <Link
                   href="/travel-guides"
-                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-neutral-300 bg-white px-5 text-sm font-semibold text-neutral-900 no-underline transition hover:bg-neutral-50 dark:border-white/20 dark:bg-white/[0.1] dark:text-white dark:hover:bg-white/[0.16]"
+                  className="inline-flex min-h-10 items-center justify-center rounded-full border px-5 text-sm font-semibold no-underline transition hover:opacity-80"
+                  style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                 >
                   Browse travel guides
                 </Link>
                 <Link
                   href="/destinations"
-                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-neutral-200 bg-neutral-100 px-5 text-sm font-semibold text-neutral-800 no-underline transition hover:bg-neutral-200/80 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                  className="inline-flex min-h-10 items-center justify-center rounded-full border px-5 text-sm font-semibold no-underline transition hover:opacity-80"
+                  style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                 >
                   Destinations
                 </Link>
                 <Link
                   href="/videos"
-                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-neutral-200 bg-neutral-100 px-5 text-sm font-semibold text-neutral-800 no-underline transition hover:bg-neutral-200/80 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                  className="inline-flex min-h-10 items-center justify-center rounded-full border px-5 text-sm font-semibold no-underline transition hover:opacity-80"
+                  style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                 >
                   Videos
                 </Link>
@@ -289,8 +297,8 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
           ) : null}
 
           {!query ? (
-            <p className="mt-6 max-w-2xl text-sm text-neutral-500 dark:text-white/65">
-              Add a <span className="font-mono text-xs text-amber-800/90 dark:text-amber-300/90">?query=</span> or use the
+            <p className="mt-6 max-w-2xl text-sm" style={{ color: "var(--c-muted)" }}>
+              Add a <span className="font-mono text-xs" style={{ color: "var(--c-accent)" }}>?query=</span> or use the
               search bar in the header.
             </p>
           ) : null}
@@ -302,7 +310,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                   const imageSrc = resolveContentImageSrc(article.titleImageUrl);
                   return (
                     <li key={article.currentSlug} className="min-w-0">
-                      <Link href={`/articles/${article.currentSlug}`} className={resultCardClassName()}>
+                      <Link href={`/articles/${article.currentSlug}`} className={resultCardClassName()} style={resultCardStyle}>
                         <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
                           <SafeContentImage
                             src={imageSrc}
@@ -314,8 +322,8 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                           />
                         </div>
                         <div className="p-4 sm:p-5">
-                          <h3 className={resultTextTitle}>{article.title}</h3>
-                          {article.summary ? <p className={resultTextBody}>{article.summary}</p> : null}
+                          <h3 className={resultTextTitle} style={resultTextTitleStyle}>{article.title}</h3>
+                          {article.summary ? <p className={resultTextBody} style={{ color: "var(--c-muted)" }}>{article.summary}</p> : null}
                         </div>
                       </Link>
                     </li>
@@ -332,7 +340,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                   const thumbSrc = resolveVideoThumbnailSrc(video.videoThumbnailUrl);
                   return (
                     <li key={video.currentSlug} className="min-w-0">
-                      <Link href={`/stream?play=${encodeURIComponent(video.currentSlug)}`} className={resultCardClassName()}>
+                      <Link href={`/stream?play=${encodeURIComponent(video.currentSlug)}`} className={resultCardClassName()} style={resultCardStyle}>
                         <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
                           <SafeContentImage
                             src={thumbSrc}
@@ -344,8 +352,8 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                           />
                         </div>
                         <div className="p-4 sm:p-5">
-                          <h3 className={resultTextTitle}>{video.title}</h3>
-                          {video.uploader ? <p className={resultMeta}>{video.uploader}</p> : null}
+                          <h3 className={resultTextTitle} style={resultTextTitleStyle}>{video.title}</h3>
+                          {video.uploader ? <p className={resultMeta} style={{ color: "var(--c-muted)" }}>{video.uploader}</p> : null}
                         </div>
                       </Link>
                     </li>
@@ -363,7 +371,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                   const imgAlt = provider.bannerImage?.image?.alt || provider.eventName || provider.name || "Experience";
                   return (
                     <li key={provider.slug} className="min-w-0">
-                      <Link href={`/providers/${provider.slug}`} className={resultCardClassName()}>
+                      <Link href={`/providers/${provider.slug}`} className={resultCardClassName()} style={resultCardStyle}>
                         <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
                           <SafeContentImage
                             src={imageSrc}
@@ -375,8 +383,8 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                           />
                         </div>
                         <div className="p-4 sm:p-5">
-                          <h3 className={resultTextTitle}>{provider.eventName || provider.name}</h3>
-                          {provider.name ? <p className={resultMeta}>{provider.name}</p> : null}
+                          <h3 className={resultTextTitle} style={resultTextTitleStyle}>{provider.eventName || provider.name}</h3>
+                          {provider.name ? <p className={resultMeta} style={{ color: "var(--c-muted)" }}>{provider.name}</p> : null}
                         </div>
                       </Link>
                     </li>
@@ -393,7 +401,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                   const imageSrc = resolveContentImageSrc(destination.imageUrl);
                   return (
                     <li key={destination.slug} className="min-w-0">
-                      <Link href={`/destinations/${destination.slug}`} className={resultCardClassName()}>
+                      <Link href={`/destinations/${destination.slug}`} className={resultCardClassName()} style={resultCardStyle}>
                         <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
                           <SafeContentImage
                             src={imageSrc}
@@ -405,8 +413,8 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                           />
                         </div>
                         <div className="p-4 sm:p-5">
-                          <h3 className={resultTextTitle}>{destination.name}</h3>
-                          {destination.country ? <p className={resultMeta}>{destination.country}</p> : null}
+                          <h3 className={resultTextTitle} style={resultTextTitleStyle}>{destination.name}</h3>
+                          {destination.country ? <p className={resultMeta} style={{ color: "var(--c-muted)" }}>{destination.country}</p> : null}
                         </div>
                       </Link>
                     </li>
@@ -417,7 +425,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
           ) : null}
         </div>
       </main>
-      <SiteFooter />
-    </>
+      <HomeFooter />
+    </div>
   );
 }

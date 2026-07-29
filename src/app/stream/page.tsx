@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 
-import Header from "../components/Header";
+import IslandNav from "../components/IslandNav";
+import HomeFooter from "../components/HomeFooter";
+import { SURFACE_DARK, ON_DARK_TEXT } from "@/lib/theme/culturinTokens";
 import StreamClient from "./StreamClient";
 import { isVideoHiddenFromSite, filterPublicVideos } from "../../lib/cms/blockedFromSite";
 import { getCmsDbOrNull } from "../../lib/cms/server";
@@ -27,10 +29,11 @@ export default async function StreamLandingPage({
 
   return (
     <>
-      <Header />
-      <main className="min-h-dvh bg-black pb-16 pt-[var(--header-offset)] text-white">
+      <IslandNav />
+      <main className="min-h-dvh pb-16" style={{ background: SURFACE_DARK, color: ON_DARK_TEXT, paddingTop: "8rem" }}>
         <StreamClient videos={allVideos} selectedSlug={selectedSlug} />
       </main>
+      <HomeFooter />
     </>
   );
 }

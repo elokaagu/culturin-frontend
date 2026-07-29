@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import { Link } from "next-view-transitions";
 
-import Header from "../../components/Header";
+import IslandNav from "../../components/IslandNav";
+import HomeFooter from "../../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../../components/SafeContentImage";
 import {
   getNearbySpotBySlug,
@@ -13,6 +15,8 @@ import { cmsImageUnoptimized, IMAGE_BLUR_DATA_URL, resolveContentImageSrc } from
 type PageProps = {
   params: { slug: string };
 };
+
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
 
 const kindLabel: Record<"experience" | "guide" | "video" | "destination", string> = {
   experience: "Experience",
@@ -35,38 +39,38 @@ export default function NearbyResultPage({ params }: PageProps) {
   const heroSrc = resolveContentImageSrc(spot.imageUrl);
 
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh pb-16" style={{ paddingTop: "8rem" }}>
         <section className="mx-auto w-full max-w-5xl px-4 sm:px-6">
-          <nav className="mb-6 pt-6 text-sm text-neutral-600 dark:text-white/65" aria-label="Breadcrumb">
-            <Link href="/" className="text-amber-300/95 no-underline transition hover:text-amber-200">
+          <nav className="mb-6 pt-6 text-sm" style={{ color: "var(--c-muted)" }} aria-label="Breadcrumb">
+            <Link href="/" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
               Home
             </Link>
-            <span className="px-1 text-neutral-400 dark:text-white/40" aria-hidden>
+            <span className="px-1" style={{ color: "var(--c-muted)" }} aria-hidden>
               /
             </span>
-            <Link href="/" className="text-amber-300/95 no-underline transition hover:text-amber-200">
+            <Link href="/" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
               Nearby
             </Link>
-            <span className="px-1 text-neutral-400 dark:text-white/40" aria-hidden>
+            <span className="px-1" style={{ color: "var(--c-muted)" }} aria-hidden>
               /
             </span>
-            <span className="text-neutral-800 dark:text-white/80">{spot.title}</span>
+            <span style={{ color: "var(--c-ink)" }}>{spot.title}</span>
           </nav>
 
-          <div className="grid gap-8 rounded-3xl border border-neutral-200 bg-white p-4 sm:p-6 dark:border-white/10 dark:bg-white/[0.03] lg:grid-cols-[1.1fr,0.9fr]">
+          <div className="grid gap-8 rounded-3xl border p-4 sm:p-6 lg:grid-cols-[1.1fr,0.9fr]" style={{ borderColor: "var(--c-rule)" }}>
             <div className="space-y-4">
-              <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/58">Nearby result</p>
-              <h1 className="m-0 text-3xl tracking-tight sm:text-4xl">{spot.title}</h1>
-              <p className="m-0 text-sm text-neutral-600 dark:text-white/60">
+              <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: "var(--c-muted)" }}>Nearby result</p>
+              <h1 className="m-0 text-3xl font-medium tracking-tight sm:text-4xl" style={{ ...displayFont, color: "var(--c-ink)" }}>{spot.title}</h1>
+              <p className="m-0 text-sm" style={{ color: "var(--c-muted)" }}>
                 {spot.city} · {spot.category}
               </p>
-              <p className="m-0 max-w-xl text-base leading-relaxed text-neutral-700 dark:text-white/80">{data.intro}</p>
+              <p className="m-0 max-w-xl text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>{data.intro}</p>
 
-              <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4 dark:border-white/10 dark:bg-black/60">
-                <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">Quick tips</p>
-                <ul className="m-0 mt-3 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
+              <div className="rounded-2xl border p-4" style={{ borderColor: "var(--c-rule)" }}>
+                <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--c-muted)" }}>Quick tips</p>
+                <ul className="m-0 mt-3 list-disc space-y-1.5 pl-5 text-sm" style={{ color: "var(--c-muted)" }}>
                   {data.tips.map((tip) => (
                     <li key={tip}>{tip}</li>
                   ))}
@@ -74,7 +78,7 @@ export default function NearbyResultPage({ params }: PageProps) {
               </div>
             </div>
 
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-neutral-900">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border bg-neutral-900" style={{ borderColor: "var(--c-rule)" }}>
               <SafeContentImage
                 src={heroSrc}
                 alt={spot.imageAlt}
@@ -87,19 +91,20 @@ export default function NearbyResultPage({ params }: PageProps) {
           </div>
 
           <section className="mt-8">
-            <h2 className="m-0 text-lg font-semibold text-neutral-900 dark:text-white">Suggested results</h2>
+            <h2 className="m-0 text-lg font-medium" style={{ ...displayFont, color: "var(--c-ink)" }}>Suggested results</h2>
             <ul className="m-0 mt-4 grid list-none gap-3 p-0">
               {data.results.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="block rounded-xl border border-neutral-200 bg-white px-4 py-4 no-underline transition hover:border-neutral-300 hover:bg-neutral-50 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/25 dark:hover:bg-white/[0.06]"
+                    className="block rounded-xl border px-4 py-4 no-underline transition hover:opacity-90"
+                    style={{ borderColor: "var(--c-rule)" }}
                   >
-                    <p className="m-0 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/58">
+                    <p className="m-0 text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "var(--c-muted)" }}>
                       {kindLabel[item.kind]}
                     </p>
-                    <p className="m-0 mt-2 text-base font-medium text-neutral-900 dark:text-white">{item.title}</p>
-                    <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/70">{item.description}</p>
+                    <p className="m-0 mt-2 text-base font-medium" style={{ color: "var(--c-ink)" }}>{item.title}</p>
+                    <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>{item.description}</p>
                   </Link>
                 </li>
               ))}
@@ -107,6 +112,7 @@ export default function NearbyResultPage({ params }: PageProps) {
           </section>
         </section>
       </main>
-    </>
+      <HomeFooter />
+    </div>
   );
 }
