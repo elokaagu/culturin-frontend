@@ -1,7 +1,9 @@
 import { Link } from "next-view-transitions";
 
 import type { providerHeroCard } from "@/lib/interface";
-import Header from "../components/Header";
+import IslandNav from "../components/IslandNav";
+import HomeFooter from "../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listProviders } from "../../lib/cms/queries";
 import { getShowcaseProviderCards } from "../../lib/cms/showcaseContent";
@@ -12,6 +14,8 @@ import {
 } from "../../lib/imagePlaceholder";
 import SafeContentImage from "../components/SafeContentImage";
 
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
+
 export default async function ProvidersPage() {
   const db = getCmsDbOrNull();
   const providersFromCms = db ? await listProviders(db) : [];
@@ -19,30 +23,32 @@ export default async function ProvidersPage() {
     providersFromCms.length > 0 ? providersFromCms : getShowcaseProviderCards();
 
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh pb-16" style={{ paddingTop: "8rem" }}>
         <section className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-          <div className="mb-8 border-b border-neutral-200 pb-6 pt-6 dark:border-white/10">
+          <div className="mb-8 border-b pb-6 pt-6" style={{ borderColor: "var(--c-rule)" }}>
             <nav className="mb-4 text-sm" aria-label="Breadcrumb">
-              <Link href="/" className="text-amber-300/95 no-underline transition hover:text-amber-200">
+              <Link href="/" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
                 Home
               </Link>
-              <span className="px-1 text-neutral-400 dark:text-white/45" aria-hidden>
+              <span className="px-1" style={{ color: "var(--c-muted)" }} aria-hidden>
                 /
               </span>
-              <span className="text-neutral-600 dark:text-white/65">Providers</span>
+              <span style={{ color: "var(--c-muted)" }}>Providers</span>
             </nav>
-            <h1 className="m-0 text-3xl tracking-tight sm:text-5xl">Local providers</h1>
-            <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed text-neutral-600 dark:text-white/70 sm:text-lg">
+            <h1 className="m-0 text-3xl font-medium tracking-tight sm:text-5xl" style={{ ...displayFont, color: "var(--c-ink)" }}>
+              Local providers
+            </h1>
+            <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
               Discover curated experiences hosted by trusted local partners. Open any card to view the full details and
               booking options.
             </p>
           </div>
 
           {providers.length === 0 ? (
-            <div className="rounded-2xl border border-neutral-200 bg-white p-8 text-center dark:border-white/10 dark:bg-white/[0.03]" role="status">
-              <p className="m-0 text-neutral-600 dark:text-white/70">No providers are available yet. Check back shortly.</p>
+            <div className="rounded-2xl border p-8 text-center" style={{ borderColor: "var(--c-rule)" }} role="status">
+              <p className="m-0" style={{ color: "var(--c-muted)" }}>No providers are available yet. Check back shortly.</p>
             </div>
           ) : (
             <ul className="m-0 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2 lg:grid-cols-3">
@@ -57,7 +63,8 @@ export default async function ProvidersPage() {
                   <li key={slug} className="min-w-0">
                     <Link
                       href={`/providers/${slug}`}
-                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white no-underline transition hover:-translate-y-0.5 hover:border-neutral-300 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/25"
+                      className="group flex h-full flex-col overflow-hidden rounded-2xl border no-underline transition hover:-translate-y-0.5"
+                      style={{ borderColor: "var(--c-rule)" }}
                     >
                       <div className="relative aspect-[4/3] w-full bg-neutral-900">
                         <SafeContentImage
@@ -70,8 +77,10 @@ export default async function ProvidersPage() {
                         />
                       </div>
                       <div className="space-y-1 px-4 py-4">
-                        <h2 className="m-0 line-clamp-2 text-lg font-semibold leading-snug text-white">{provider.eventName}</h2>
-                        <p className="m-0 text-sm text-white/65">{provider.name}</p>
+                        <h2 className="m-0 line-clamp-2 text-lg font-medium leading-snug" style={{ ...displayFont, color: "var(--c-ink)" }}>
+                          {provider.eventName}
+                        </h2>
+                        <p className="m-0 text-sm" style={{ color: "var(--c-muted)" }}>{provider.name}</p>
                       </div>
                     </Link>
                   </li>
@@ -81,6 +90,7 @@ export default async function ProvidersPage() {
           )}
         </section>
       </main>
-    </>
+      <HomeFooter />
+    </div>
   );
 }

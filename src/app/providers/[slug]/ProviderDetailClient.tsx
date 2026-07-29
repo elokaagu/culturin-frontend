@@ -5,7 +5,9 @@ import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
 
-import Header from "../../components/Header";
+import IslandNav from "../../components/IslandNav";
+import HomeFooter from "../../components/HomeFooter";
+import { SURFACE_DARK, ON_DARK_TEXT } from "@/lib/theme/culturinTokens";
 import { CulturinBookingDateField } from "../../components/detail/CulturinBookingDateField";
 import { CulturinGuestSelect } from "../../components/detail/CulturinGuestSelect";
 import { ProviderGalleryLightbox } from "../../components/detail/ProviderGalleryLightbox";
@@ -387,8 +389,8 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
 
   return (
     <>
-      <Header />
-      <main className="min-h-dvh !bg-black pb-16 pt-[var(--header-offset)] !text-white">
+      <IslandNav />
+      <main className="min-h-dvh pb-16" style={{ background: SURFACE_DARK, color: ON_DARK_TEXT, paddingTop: "8rem" }}>
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           <nav className="mb-6 pt-4" aria-label="Breadcrumb">
             <Link
@@ -671,6 +673,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
           </div>
         </div>
       </main>
+      <HomeFooter />
 
       <ProviderGalleryLightbox
         open={lightboxIndex !== null}

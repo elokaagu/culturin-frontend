@@ -26,7 +26,8 @@ export default function TravelGuidesContactCta({ supportEmail }: TravelGuidesCon
   if (status === "loading") {
     return (
       <div
-        className="rounded-2xl border border-neutral-200 bg-white/80 p-5 dark:border-white/10 dark:bg-neutral-950/60"
+        className="rounded-2xl border p-5"
+        style={{ borderColor: "var(--c-rule)" }}
         role="status"
         aria-label="Loading sign-in"
       >
@@ -36,17 +37,20 @@ export default function TravelGuidesContactCta({ supportEmail }: TravelGuidesCon
     );
   }
 
+  const headingStyle = { fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" };
+
   if (status === "authenticated" && mailtoHref) {
     return (
-      <div className="rounded-2xl border border-amber-400/30 bg-amber-50/90 p-5 sm:p-6 dark:border-amber-400/20 dark:bg-amber-950/25">
-        <h2 className="m-0 text-lg font-semibold tracking-tight text-neutral-900 dark:text-white">Talk to our curators</h2>
-        <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/70">
+      <div className="rounded-2xl border p-5 sm:p-6" style={{ borderColor: "#e08a5b", background: "rgba(224,138,91,0.08)" }}>
+        <h2 className="m-0 text-lg font-medium tracking-tight" style={headingStyle}>Talk to our curators</h2>
+        <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
           You are signed in. Send a message about a specific guide, a collaboration, or a destination you would like
           covered.
         </p>
         <a
           href={mailtoHref}
-          className="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-full bg-neutral-900 px-6 text-sm font-semibold text-white no-underline transition hover:bg-neutral-800 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+          className="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-full px-6 text-sm font-semibold text-white no-underline transition hover:opacity-90"
+          style={{ background: "var(--c-accent)" }}
         >
           Contact the team
         </a>
@@ -55,9 +59,9 @@ export default function TravelGuidesContactCta({ supportEmail }: TravelGuidesCon
   }
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white/90 p-5 sm:p-6 dark:border-white/10 dark:bg-neutral-950/60">
-      <h2 className="m-0 text-lg font-semibold tracking-tight text-neutral-900 dark:text-white">Talk to our curators</h2>
-      <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/70">
+    <div className="rounded-2xl border p-5 sm:p-6" style={{ borderColor: "var(--c-rule)" }}>
+      <h2 className="m-0 text-lg font-medium tracking-tight" style={headingStyle}>Talk to our curators</h2>
+      <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
         Sign in with your account to message the team about a guide, partnership, or a trip you are planning.
       </p>
       <div className="mt-4">

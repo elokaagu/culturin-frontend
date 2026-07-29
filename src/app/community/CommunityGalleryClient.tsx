@@ -103,23 +103,28 @@ export default function CommunityGalleryClient({ initialTiles }: { initialTiles:
     <div className="w-full min-w-0">
       <section
         id="community-share"
-        className="mb-8 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.03]"
+        className="mb-8 rounded-2xl border p-5"
+        style={{ borderColor: "var(--c-rule)" }}
       >
-        <h2 className="m-0 text-lg font-semibold tracking-tight text-neutral-900 dark:text-white">
+        <h2
+          className="m-0 text-lg font-medium tracking-tight"
+          style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+        >
           Share your travels
         </h2>
-        <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/60">
+        <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>
           Upload a photo from your trip. It appears in this gallery for everyone alongside Culturin stories and videos.
         </p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
           <label className="flex min-w-0 flex-1 flex-col gap-1.5">
-            <span className="text-xs font-medium text-neutral-500 dark:text-white/58">Caption (optional)</span>
+            <span className="text-xs font-medium" style={{ color: "var(--c-muted)" }}>Caption (optional)</span>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Sunset in Lisbon"
               disabled={busy}
-              className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-white/15 dark:bg-[#121212] dark:text-white"
+              className="rounded-lg border px-3 py-2 text-sm"
+              style={{ borderColor: "var(--c-rule)", background: "var(--c-bg)", color: "var(--c-ink)" }}
             />
           </label>
           <input
@@ -133,13 +138,14 @@ export default function CommunityGalleryClient({ initialTiles }: { initialTiles:
             type="button"
             disabled={busy || !user}
             onClick={() => fileRef.current?.click()}
-            className="inline-flex shrink-0 items-center justify-center rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
+            className="inline-flex shrink-0 items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            style={{ background: "var(--c-accent)" }}
           >
             {busy ? (uploading ? "Uploading…" : "Publishing…") : "Add photo"}
           </button>
         </div>
         {!user ? (
-          <p className="mt-3 text-sm text-amber-800 dark:text-amber-200/90">
+          <p className="mt-3 text-sm" style={{ color: "var(--c-accent)" }}>
             <Link href="/login?next=/community" className="font-medium underline-offset-2 hover:underline">
               Sign in
             </Link>{" "}
@@ -147,16 +153,16 @@ export default function CommunityGalleryClient({ initialTiles }: { initialTiles:
           </p>
         ) : null}
         {message ? (
-          <p className="mt-3 text-sm text-neutral-600 dark:text-white/65" role="status">
+          <p className="mt-3 text-sm" style={{ color: "var(--c-muted)" }} role="status">
             {message}
           </p>
         ) : null}
       </section>
 
       {initialTiles.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-neutral-300 px-6 py-16 text-center text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
+        <p className="rounded-xl border border-dashed px-6 py-16 text-center text-sm" style={{ borderColor: "var(--c-rule)", color: "var(--c-muted)" }}>
           No images yet. Check back soon for new stories and videos, or{" "}
-          <button type="button" onClick={scrollToUpload} className="font-medium text-amber-700 underline-offset-2 hover:underline dark:text-amber-300/90">
+          <button type="button" onClick={scrollToUpload} className="font-medium underline-offset-2 hover:underline" style={{ color: "var(--c-accent)" }}>
             share a travel photo
           </button>
           .

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 
-import Header from "../components/Header";
+import IslandNav from "../components/IslandNav";
+import HomeFooter from "../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listCurators } from "../../lib/cms/queries";
 import { getShowcaseCuratorCards } from "../../lib/cms/showcaseContent";
@@ -12,33 +14,37 @@ export const metadata: Metadata = {
   description: "Editorial partners and voices that Culturin is proud to feature.",
 };
 
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
+
 export default async function CuratorsPage() {
   const db = getCmsDbOrNull();
   const fromCms = db ? await listCurators(db) : [];
   const curators: curatorCard[] = fromCms.length > 0 ? fromCms : getShowcaseCuratorCards();
 
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh pb-16" style={{ paddingTop: "8rem" }}>
         <section className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-          <div className="mb-10 border-b border-neutral-200 pb-6 pt-6 dark:border-white/10">
+          <div className="mb-10 border-b pb-6 pt-6" style={{ borderColor: "var(--c-rule)" }}>
             <nav className="mb-4 text-sm" aria-label="Breadcrumb">
-              <Link href="/" className="text-amber-700 no-underline transition hover:text-amber-900 dark:text-amber-400/80 dark:hover:text-amber-300">
+              <Link href="/" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
                 Home
               </Link>
-              <span className="px-1 text-neutral-400 dark:text-white/45" aria-hidden>/</span>
-              <span className="text-neutral-600 dark:text-white/65">Curators</span>
+              <span className="px-1" style={{ color: "var(--c-muted)" }} aria-hidden>/</span>
+              <span style={{ color: "var(--c-muted)" }}>Curators</span>
             </nav>
-            <h1 className="m-0 text-3xl font-semibold tracking-tight sm:text-5xl">Curators</h1>
-            <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed text-neutral-600 dark:text-white/70 sm:text-lg">
+            <h1 className="m-0 text-3xl font-medium tracking-tight sm:text-5xl" style={{ ...displayFont, color: "var(--c-ink)" }}>
+              Curators
+            </h1>
+            <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
               Editorial partners and independent voices whose work we are proud to syndicate on Culturin.
             </p>
           </div>
 
           {curators.length === 0 ? (
-            <div className="rounded-2xl border border-neutral-200 bg-white p-8 text-center dark:border-white/10 dark:bg-white/[0.03]" role="status">
-              <p className="m-0 text-neutral-600 dark:text-white/70">No curators yet. Check back soon.</p>
+            <div className="rounded-2xl border p-8 text-center" style={{ borderColor: "var(--c-rule)" }} role="status">
+              <p className="m-0" style={{ color: "var(--c-muted)" }}>No curators yet. Check back soon.</p>
             </div>
           ) : (
             <ul className="m-0 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2 lg:grid-cols-3">
@@ -46,26 +52,31 @@ export default async function CuratorsPage() {
                 <li key={curator.slug}>
                   <Link
                     href={`/curators/${curator.slug}`}
-                    className="group flex h-full flex-col gap-4 overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 no-underline transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/20"
+                    className="group flex h-full flex-col gap-4 overflow-hidden rounded-2xl border p-5 no-underline transition hover:-translate-y-0.5"
+                    style={{ borderColor: "var(--c-rule)" }}
                   >
                     <div className="flex items-center gap-3">
                       {curator.avatarUrl ? (
                         <img
                           src={curator.avatarUrl}
                           alt={curator.name}
-                          className="h-14 w-14 shrink-0 rounded-full object-cover ring-1 ring-neutral-200 dark:ring-white/10"
+                          className="h-14 w-14 shrink-0 rounded-full object-cover"
+                          style={{ boxShadow: "0 0 0 1px var(--c-rule)" }}
                         />
                       ) : (
-                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-amber-100 text-xl font-semibold text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
+                        <div
+                          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-xl font-semibold"
+                          style={{ background: "rgba(224,138,91,0.15)", color: "var(--c-accent)" }}
+                        >
                           {curator.name.charAt(0)}
                         </div>
                       )}
                       <div className="min-w-0">
-                        <h2 className="m-0 text-base font-semibold leading-snug text-neutral-900 dark:text-white">
+                        <h2 className="m-0 text-base font-medium leading-snug" style={{ ...displayFont, color: "var(--c-ink)" }}>
                           {curator.name}
                         </h2>
                         {curator.tagline ? (
-                          <p className="m-0 mt-0.5 text-sm text-neutral-500 dark:text-white/62">{curator.tagline}</p>
+                          <p className="m-0 mt-0.5 text-sm" style={{ color: "var(--c-muted)" }}>{curator.tagline}</p>
                         ) : null}
                       </div>
                     </div>
@@ -74,14 +85,15 @@ export default async function CuratorsPage() {
                         {curator.specialties.slice(0, 4).map((s) => (
                           <span
                             key={s}
-                            className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-600 dark:bg-white/[0.06] dark:text-white/65"
+                            className="rounded-full px-2.5 py-0.5 text-xs font-medium"
+                            style={{ background: "rgba(28,26,23,0.06)", color: "var(--c-muted)" }}
                           >
                             {s}
                           </span>
                         ))}
                       </div>
                     ) : null}
-                    <span className="mt-auto text-xs font-medium text-amber-700 transition group-hover:text-amber-900 dark:text-amber-400/80 dark:group-hover:text-amber-300">
+                    <span className="mt-auto text-xs font-medium transition" style={{ color: "var(--c-accent)" }}>
                       View profile →
                     </span>
                   </Link>
@@ -91,6 +103,7 @@ export default async function CuratorsPage() {
           )}
         </section>
       </main>
-    </>
+      <HomeFooter />
+    </div>
   );
 }

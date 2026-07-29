@@ -2,13 +2,19 @@
 
 import { Link } from "next-view-transitions";
 import type { fullCurator, simpleBlogCard } from "@/lib/interface";
-import Header from "../../components/Header";
+import IslandNav from "../../components/IslandNav";
+import HomeFooter from "../../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../../components/SafeContentImage";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../../lib/imagePlaceholder";
+
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
+const eyebrowClass = "mb-4 text-[0.65rem] font-semibold uppercase tracking-[0.18em]";
+const cardStyle = { borderColor: "var(--c-rule)" };
 
 export default function CuratorClient({
   curator,
@@ -21,9 +27,9 @@ export default function CuratorClient({
   const avatarSrc = resolveContentImageSrc(curator.avatarUrl);
 
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 text-neutral-900 dark:bg-[#121212] dark:text-white">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh">
 
         {/* ── Hero ─────────────────────────────────────────────────── */}
         <div className="relative w-full overflow-hidden bg-neutral-900" style={{ height: "clamp(320px, 45vw, 520px)" }}>
@@ -38,7 +44,7 @@ export default function CuratorClient({
               unoptimized={isBundledPlaceholderSrc(bannerSrc)}
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-950/70 to-neutral-950" />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(224,138,91,0.35), #17130f)" }} />
           )}
           {/* Gradient overlay — darkens bottom so text is legible */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
@@ -60,7 +66,10 @@ export default function CuratorClient({
                     />
                   </div>
                 ) : (
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-amber-200 text-2xl font-semibold text-amber-900 ring-2 ring-white/30 sm:h-24 sm:w-24">
+                  <div
+                    className="flex h-20 w-20 items-center justify-center rounded-full text-2xl font-semibold ring-2 ring-white/30 sm:h-24 sm:w-24"
+                    style={{ background: "#f0ab85", color: "#4a1b0c" }}
+                  >
                     {curator.name.charAt(0)}
                   </div>
                 )}
@@ -75,7 +84,7 @@ export default function CuratorClient({
                   <span className="px-1.5" aria-hidden>/</span>
                   <span className="text-white/70">{curator.name}</span>
                 </nav>
-                <h1 className="m-0 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                <h1 className="m-0 text-3xl font-medium tracking-tight text-white sm:text-4xl" style={displayFont}>
                   {curator.name}
                 </h1>
                 {curator.tagline ? (
@@ -96,10 +105,10 @@ export default function CuratorClient({
               {/* About */}
               {curator.description ? (
                 <section>
-                  <h2 className="mb-4 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
+                  <h2 className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
                     About
                   </h2>
-                  <p className="m-0 max-w-2xl text-base leading-relaxed text-neutral-700 dark:text-white/75">
+                  <p className="m-0 max-w-2xl text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>
                     {curator.description}
                   </p>
                 </section>
@@ -107,11 +116,11 @@ export default function CuratorClient({
 
               {/* Articles */}
               <section>
-                <h2 className="mb-6 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
+                <h2 className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
                   From {curator.name}
                 </h2>
                 {articles.length === 0 ? (
-                  <p className="text-sm text-neutral-500 dark:text-white/50">No articles yet.</p>
+                  <p className="text-sm" style={{ color: "var(--c-muted)" }}>No articles yet.</p>
                 ) : (
                   <ul className="m-0 grid list-none grid-cols-1 gap-6 p-0 sm:grid-cols-2">
                     {articles.map((article) => {
@@ -120,7 +129,8 @@ export default function CuratorClient({
                         <li key={article.currentSlug}>
                           <Link
                             href={`/articles/${article.currentSlug}`}
-                            className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white no-underline transition hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/20"
+                            className="group flex h-full flex-col overflow-hidden rounded-2xl border no-underline transition hover:-translate-y-0.5"
+                            style={cardStyle}
                           >
                             {imgSrc ? (
                               <div className="relative aspect-[16/9] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900">
@@ -135,15 +145,15 @@ export default function CuratorClient({
                               </div>
                             ) : null}
                             <div className="flex flex-1 flex-col gap-2 p-5">
-                              <h3 className="m-0 line-clamp-2 text-base font-semibold leading-snug text-neutral-900 dark:text-white">
+                              <h3 className="m-0 line-clamp-2 text-base font-medium leading-snug" style={{ ...displayFont, color: "var(--c-ink)" }}>
                                 {article.title}
                               </h3>
                               {article.summary ? (
-                                <p className="m-0 line-clamp-3 text-sm leading-relaxed text-neutral-500 dark:text-white/62">
+                                <p className="m-0 line-clamp-3 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
                                   {article.summary}
                                 </p>
                               ) : null}
-                              <span className="mt-auto pt-2 text-xs font-medium text-amber-700 transition group-hover:text-amber-900 dark:text-amber-400/80 dark:group-hover:text-amber-300">
+                              <span className="mt-auto pt-2 text-xs font-medium transition" style={{ color: "var(--c-accent)" }}>
                                 Read article →
                               </span>
                             </div>
@@ -161,15 +171,16 @@ export default function CuratorClient({
 
               {/* Specialties */}
               {curator.specialties && curator.specialties.length > 0 ? (
-                <div className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
-                  <h2 className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
+                <div className="rounded-2xl border p-5" style={cardStyle}>
+                  <h2 className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
                     Specializes in
                   </h2>
                   <div className="flex flex-wrap gap-2">
                     {curator.specialties.map((s) => (
                       <span
                         key={s}
-                        className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800 dark:bg-amber-900/25 dark:text-amber-300/90"
+                        className="rounded-full px-3 py-1 text-xs font-medium"
+                        style={{ background: "rgba(224,138,91,0.15)", color: "var(--c-accent)" }}
                       >
                         {s}
                       </span>
@@ -180,8 +191,8 @@ export default function CuratorClient({
 
               {/* Follow links */}
               {(curator.websiteUrl || curator.instagramUrl || curator.shopUrl) ? (
-                <div className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
-                  <h2 className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
+                <div className="rounded-2xl border p-5" style={cardStyle}>
+                  <h2 className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
                     Follow
                   </h2>
                   <div className="flex flex-col gap-2">
@@ -190,7 +201,8 @@ export default function CuratorClient({
                         href={curator.websiteUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2.5 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm font-medium text-neutral-700 no-underline transition hover:border-amber-300/60 hover:bg-amber-50 hover:text-amber-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-amber-300"
+                        className="inline-flex items-center gap-2.5 rounded-xl border px-4 py-2.5 text-sm font-medium no-underline transition hover:opacity-80"
+                        style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                       >
                         <span className="text-base leading-none">🌐</span>
                         Visit website
@@ -201,7 +213,8 @@ export default function CuratorClient({
                         href={curator.instagramUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2.5 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm font-medium text-neutral-700 no-underline transition hover:border-amber-300/60 hover:bg-amber-50 hover:text-amber-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-amber-300"
+                        className="inline-flex items-center gap-2.5 rounded-xl border px-4 py-2.5 text-sm font-medium no-underline transition hover:opacity-80"
+                        style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                       >
                         <span className="text-base leading-none">📷</span>
                         Instagram
@@ -212,7 +225,8 @@ export default function CuratorClient({
                         href={curator.shopUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2.5 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm font-medium text-neutral-700 no-underline transition hover:border-amber-300/60 hover:bg-amber-50 hover:text-amber-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-amber-300"
+                        className="inline-flex items-center gap-2.5 rounded-xl border px-4 py-2.5 text-sm font-medium no-underline transition hover:opacity-80"
+                        style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                       >
                         <span className="text-base leading-none">🛍</span>
                         Shop
@@ -225,6 +239,7 @@ export default function CuratorClient({
           </div>
         </div>
       </main>
-    </>
+      <HomeFooter />
+    </div>
   );
 }

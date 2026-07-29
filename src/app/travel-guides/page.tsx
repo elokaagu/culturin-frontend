@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 
-import Header from "../components/Header";
-import SiteFooter from "../components/SiteFooter";
+import IslandNav from "../components/IslandNav";
+import HomeFooter from "../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { getCmsDbOrNull } from "@/lib/cms/server";
 import { listProvidersAsCards } from "@/lib/cms/queries";
 import { IMAGE_BLUR_DATA_URL, isBundledPlaceholderSrc } from "@/lib/imagePlaceholder";
@@ -14,6 +15,8 @@ import TravelGuidesContactCta from "./TravelGuidesContactCta";
 import GuideProfilesSection from "./GuideProfilesSection";
 
 export const revalidate = 300;
+
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -28,31 +31,28 @@ export default async function TravelGuidesMarketplacePage() {
   const guides = db ? await listProvidersAsCards(db) : [];
 
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-[#121212] dark:text-white">
-        <div className="border-b border-neutral-200 bg-white dark:border-white/10 dark:bg-neutral-950/40">
-          <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-[calc(var(--header-offset)+1.5rem)] sm:px-6 sm:pb-12 sm:pt-[calc(var(--header-offset)+2rem)]">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh antialiased">
+        <div className="border-b" style={{ borderColor: "var(--c-rule)" }}>
+          <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-32 sm:px-6 sm:pb-12">
             <nav className="mb-6 text-sm" aria-label="Breadcrumb">
-              <Link
-                href="/"
-                className="font-medium text-amber-800 no-underline transition hover:underline dark:text-amber-300/95"
-              >
+              <Link href="/" className="font-medium no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
                 Home
               </Link>
-              <span className="px-1.5 text-neutral-400 dark:text-white/45" aria-hidden>
+              <span className="px-1.5" style={{ color: "var(--c-muted)" }} aria-hidden>
                 /
               </span>
-              <span className="text-neutral-600 dark:text-white/65">Travel guides</span>
+              <span style={{ color: "var(--c-muted)" }}>Travel guides</span>
             </nav>
 
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/58">
+            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: "var(--c-muted)" }}>
               Marketplace
             </p>
-            <h1 className="m-0 mt-3 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
+            <h1 className="m-0 mt-3 max-w-4xl text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl md:text-6xl" style={{ ...displayFont, color: "var(--c-ink)" }}>
               Curated travel guides
             </h1>
-            <p className="m-0 mt-4 max-w-2xl text-base leading-relaxed text-neutral-600 dark:text-white/70 sm:text-lg">
+            <p className="m-0 mt-4 max-w-2xl text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
               Explore themed collections from the Culturin team—deep dives you can use to plan, dream, and go. Sign in to
               reach our curators with questions or ideas.
             </p>
@@ -63,9 +63,9 @@ export default async function TravelGuidesMarketplacePage() {
               </div>
             </div>
 
-            <p className="m-0 mt-8 text-sm text-neutral-500 dark:text-white/62">
+            <p className="m-0 mt-8 text-sm" style={{ color: "var(--c-muted)" }}>
               Looking for every editorial story?{" "}
-              <Link href="/articles" className="font-medium text-amber-800 underline-offset-2 hover:underline dark:text-amber-400/90">
+              <Link href="/articles" className="font-medium underline-offset-2 hover:underline" style={{ color: "var(--c-accent)" }}>
                 Browse all articles
               </Link>
             </p>
@@ -75,9 +75,11 @@ export default async function TravelGuidesMarketplacePage() {
         <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
           <GuideProfilesSection guides={guides} />
 
-          <header className="mb-8 border-b border-neutral-200 pb-6 dark:border-white/10">
-            <h2 className="m-0 text-2xl font-semibold tracking-tight sm:text-3xl">Guides by theme</h2>
-            <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/65">
+          <header className="mb-8 border-b pb-6" style={{ borderColor: "var(--c-rule)" }}>
+            <h2 className="m-0 text-2xl font-medium tracking-tight sm:text-3xl" style={{ ...displayFont, color: "var(--c-ink)" }}>
+              Guides by theme
+            </h2>
+            <p className="m-0 mt-2 text-sm" style={{ color: "var(--c-muted)" }}>
               Pick a collection—each one opens a dedicated hub of ideas and related reads.
             </p>
           </header>
@@ -87,7 +89,8 @@ export default async function TravelGuidesMarketplacePage() {
               <li key={cat.slug} className="min-w-0">
                 <Link
                   href={cat.href}
-                  className="group relative block overflow-hidden rounded-2xl border border-neutral-200 no-underline shadow-sm transition hover:border-amber-400/35 hover:shadow-md dark:border-white/10 dark:hover:border-amber-400/25"
+                  className="group relative block overflow-hidden rounded-2xl border no-underline shadow-sm transition"
+                  style={{ borderColor: "var(--c-rule)" }}
                 >
                   <div className="relative aspect-[16/9] w-full sm:aspect-[2/1]">
                     {cat.imageUrl ? (
@@ -112,7 +115,7 @@ export default async function TravelGuidesMarketplacePage() {
                     )}
                     <div className="absolute inset-0 z-[1] flex flex-col justify-end p-5 sm:p-6 [text-shadow:0_1px_4px_rgba(0,0,0,0.45)]">
                       <span className="text-xs font-semibold uppercase tracking-[0.2em] text-white/90">Collection</span>
-                      <h3 className="mt-2 line-clamp-2 text-xl font-semibold leading-snug text-white sm:text-2xl">
+                      <h3 className="mt-2 line-clamp-2 text-xl font-medium leading-snug text-white sm:text-2xl" style={displayFont}>
                         {cat.title}
                       </h3>
                       <span className="mt-1 text-sm text-white/85">
@@ -126,7 +129,7 @@ export default async function TravelGuidesMarketplacePage() {
           </ul>
         </div>
       </main>
-      <SiteFooter />
-    </>
+      <HomeFooter />
+    </div>
   );
 }
