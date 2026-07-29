@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 
 import { ContentPageShell } from "../../components/layout/ContentPageShell";
-import SiteFooter from "../../components/SiteFooter";
 import { getCardInviteByToken } from "@/lib/cardMembership";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -49,13 +48,12 @@ export default async function CulturinCardClaimPage({
   }
 
   return (
-    <>
-      <ContentPageShell
-        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white"
-        innerClassName="mx-auto w-full max-w-2xl px-4 sm:px-6"
-      >
-        <div className="pt-10">
-          {!invite ? (
+    <ContentPageShell
+      mainClassName="min-h-dvh pb-16"
+      innerClassName="mx-auto w-full max-w-2xl px-4 sm:px-6"
+    >
+      <div className="pt-10">
+        {!invite ? (
             <InvalidInvite />
           ) : (
             <section className="rounded-2xl border border-neutral-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]">
@@ -90,9 +88,7 @@ export default async function CulturinCardClaimPage({
               )}
             </section>
           )}
-        </div>
-      </ContentPageShell>
-      <SiteFooter />
-    </>
+      </div>
+    </ContentPageShell>
   );
 }

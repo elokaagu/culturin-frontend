@@ -13,6 +13,8 @@ import { ThemeProvider } from "./styles/ThemeContext";
 
 const themeInitScript = `(function(){try{var k='culturin-theme';var v=localStorage.getItem(k);var r=document.documentElement;if(v==='light')r.classList.remove('dark');else r.classList.add('dark');}catch(e){}})();`;
 
+const GA_MEASUREMENT_ID = "G-WXNRNB0VXV";
+
 const twkEverett = localFont({
   variable: "--font-sans",
   display: "swap",
@@ -83,6 +85,18 @@ export default async function RootLayout({
       >
         <Script id="culturin-theme-init" strategy="beforeInteractive">
           {themeInitScript}
+        </Script>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
         </Script>
         <ThemeProvider>
           <SupabaseAuthProvider initialUser={initialUser}>

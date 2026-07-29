@@ -4,7 +4,6 @@ import { Link } from "next-view-transitions";
 
 import { ContentPageShell } from "../components/layout/ContentPageShell";
 import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
-import SiteFooter from "../components/SiteFooter";
 
 /** Same Unsplash + query pattern as /about; concert/crowd asset used elsewhere in the app. */
 const HERO_SRC =
@@ -54,24 +53,23 @@ export const metadata: Metadata = {
 
 export default function AgencyPage() {
   return (
-    <>
-      <ContentPageShell
-        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
-        innerClassName="mx-auto w-full max-w-6xl px-4 sm:px-6"
-      >
+    <ContentPageShell
+      mainClassName="min-h-dvh pb-16 antialiased"
+      innerClassName="mx-auto w-full max-w-6xl px-4 sm:px-6"
+    >
         <nav aria-label="Breadcrumb" className="mb-6 pt-6">
           <div className="flex items-center gap-1 text-sm">
-            <Link href="/" className="text-amber-700 no-underline transition hover:underline dark:text-amber-300/95 dark:hover:text-amber-200">
+            <Link href="/" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
               Home
             </Link>
-            <span className="text-neutral-400 dark:text-white/45" aria-hidden>
+            <span style={{ color: "var(--c-muted)" }} aria-hidden>
               /
             </span>
-            <span className="text-neutral-600 dark:text-white/65">Agency</span>
+            <span style={{ color: "var(--c-muted)" }}>Agency</span>
           </div>
         </nav>
 
-        <section className="relative overflow-hidden rounded-3xl border border-neutral-200 dark:border-white/10">
+        <section className="relative overflow-hidden rounded-3xl border" style={{ borderColor: "var(--c-rule)" }}>
           <div className="relative min-h-[18rem] sm:min-h-[24rem]">
             <Image
               src={HERO_SRC}
@@ -85,12 +83,15 @@ export default function AgencyPage() {
               unoptimized
             />
             <div
-              className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/20 dark:from-black/85 dark:via-black/40 dark:to-black/25"
+              className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/20"
               aria-hidden
             />
             <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8 md:p-10">
               <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-white/75">Culturin Agency</p>
-              <h1 className="m-0 mt-3 max-w-3xl font-semibold leading-tight tracking-tight text-white text-balance text-3xl sm:text-5xl">
+              <h1
+                className="m-0 mt-3 max-w-3xl text-balance text-3xl font-medium leading-tight tracking-tight text-white sm:text-5xl"
+                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+              >
                 Campaigns, events, and experiences that promote local cultures — globally
               </h1>
               <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg">
@@ -101,9 +102,9 @@ export default function AgencyPage() {
           </div>
         </section>
 
-        <section className="mt-10 rounded-3xl border border-neutral-200 bg-white p-5 sm:p-8 dark:border-white/10 dark:bg-white/[0.02]">
-          <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">What we do</p>
-          <p className="m-0 mt-3 max-w-4xl text-lg leading-relaxed text-neutral-800 dark:text-white/85">
+        <section className="mt-10 rounded-3xl border p-5 sm:p-8" style={{ borderColor: "var(--c-rule)", background: "rgba(28,26,23,0.03)" }}>
+          <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--c-muted)" }}>What we do</p>
+          <p className="m-0 mt-3 max-w-4xl text-lg leading-relaxed" style={{ color: "var(--c-ink)" }}>
             Culturin Agency is the creative and experiential arm of Culturin. We design work that travels — without flattening
             the places it comes from. That means strategy and craft that honor local context, then find the thread that connects
             with audiences everywhere.
@@ -111,66 +112,78 @@ export default function AgencyPage() {
         </section>
 
         <section className="mt-10 grid gap-4 sm:grid-cols-3">
-          {pillars.map((item) => (
-            item.href ? (
-              <Link
-                key={item.title}
-                href={item.href}
-                className="rounded-2xl border border-neutral-200 bg-white p-5 no-underline transition hover:border-amber-400/45 hover:shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-amber-400/35"
-              >
-                <h2 className="m-0 text-lg font-semibold text-neutral-900 dark:text-white">{item.title}</h2>
-                <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/75">{item.text}</p>
+          {pillars.map((item) => {
+            const cardClass = "rounded-2xl border p-5 no-underline transition hover:shadow-sm block";
+            const cardStyle = { borderColor: "var(--c-rule)" };
+            return item.href ? (
+              <Link key={item.title} href={item.href} className={cardClass} style={cardStyle}>
+                <h2
+                  className="m-0 text-lg font-medium"
+                  style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+                >
+                  {item.title}
+                </h2>
+                <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>{item.text}</p>
               </Link>
             ) : (
-              <article
-                key={item.title}
-                className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]"
-              >
-                <h2 className="m-0 text-lg font-semibold text-neutral-900 dark:text-white">{item.title}</h2>
-                <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/75">{item.text}</p>
+              <article key={item.title} className={cardClass} style={cardStyle}>
+                <h2
+                  className="m-0 text-lg font-medium"
+                  style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+                >
+                  {item.title}
+                </h2>
+                <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>{item.text}</p>
               </article>
-            )
-          ))}
+            );
+          })}
         </section>
 
         <section className="mt-10">
-          <h2 className="m-0 text-2xl font-semibold tracking-tight text-neutral-900 dark:text-white">How we show up</h2>
+          <h2
+            className="m-0 text-2xl font-medium tracking-tight"
+            style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+          >
+            How we show up
+          </h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
             {scope.map((item) => (
-              <article
-                key={item.title}
-                className="rounded-xl border border-neutral-200 bg-white px-4 py-4 dark:border-white/10 dark:bg-[#121212]"
-              >
-                <h3 className="m-0 text-base font-semibold text-neutral-900 dark:text-white">{item.title}</h3>
-                <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-700 dark:text-white/78">{item.text}</p>
+              <article key={item.title} className="rounded-xl border px-4 py-4" style={{ borderColor: "var(--c-rule)" }}>
+                <h3 className="m-0 text-base font-semibold" style={{ color: "var(--c-ink)" }}>{item.title}</h3>
+                <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>{item.text}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="mt-10 rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6 dark:border-white/10 dark:bg-white/[0.03]">
-          <h2 className="m-0 text-xl font-semibold text-neutral-900 dark:text-white">Work with us</h2>
-          <p className="m-0 mt-2 max-w-2xl text-neutral-600 dark:text-white/75">
+        <section className="mt-10 rounded-2xl border p-5 sm:p-6" style={{ borderColor: "var(--c-rule)" }}>
+          <h2
+            className="m-0 text-xl font-medium"
+            style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+          >
+            Work with us
+          </h2>
+          <p className="m-0 mt-2 max-w-2xl" style={{ color: "var(--c-muted)" }}>
             Tell us about your market, timeline, and what “local” should feel like for your audience. We will match you with the
             right producers, creatives, and on-the-ground partners.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
               href="/join-us/advisors"
-              className="inline-flex min-h-[42px] items-center rounded-full border border-neutral-900 bg-neutral-900 px-5 text-sm font-semibold text-white no-underline transition hover:bg-neutral-800 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
+              className="inline-flex min-h-[42px] items-center rounded-full px-5 text-xs font-semibold uppercase tracking-[0.16em] text-white no-underline transition hover:opacity-90"
+              style={{ background: "var(--c-accent)" }}
             >
               Partner with Culturin
             </Link>
             <Link
               href="/about"
-              className="inline-flex min-h-[42px] items-center rounded-full border border-neutral-300 bg-white px-5 text-sm font-semibold text-neutral-900 no-underline transition hover:bg-neutral-50 dark:border-white/20 dark:bg-white/[0.06] dark:text-white dark:hover:bg-white/10"
+              className="inline-flex min-h-[42px] items-center rounded-full border px-5 text-xs font-semibold uppercase tracking-[0.16em] no-underline transition hover:opacity-80"
+              style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
             >
               About the platform
             </Link>
           </div>
         </section>
-      </ContentPageShell>
-      <SiteFooter />
-    </>
+    </ContentPageShell>
   );
 }

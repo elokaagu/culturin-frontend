@@ -3,7 +3,6 @@ import { Link } from "next-view-transitions";
 
 import { ContentPageShell } from "@/app/components/layout/ContentPageShell";
 import SafeContentImage from "@/app/components/SafeContentImage";
-import SiteFooter from "@/app/components/SiteFooter";
 import { IMAGE_BLUR_DATA_URL } from "@/lib/imagePlaceholder";
 
 type Experience = {
@@ -109,35 +108,37 @@ export const metadata: Metadata = {
 
 export default function AgencyEventsPage() {
   return (
-    <>
-      <ContentPageShell
-        mainClassName="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
-        innerClassName="mx-auto w-full max-w-6xl px-4 sm:px-6"
-      >
+    <ContentPageShell
+      mainClassName="min-h-dvh pb-16 antialiased"
+      innerClassName="mx-auto w-full max-w-6xl px-4 sm:px-6"
+    >
         <nav aria-label="Breadcrumb" className="mb-6 pt-6">
           <div className="flex items-center gap-1 text-sm">
-            <Link href="/" className="text-amber-700 no-underline transition hover:underline dark:text-amber-300/95">
+            <Link href="/" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
               Home
             </Link>
-            <span className="text-neutral-400 dark:text-white/45" aria-hidden>
+            <span style={{ color: "var(--c-muted)" }} aria-hidden>
               /
             </span>
-            <Link href="/agency" className="text-amber-700 no-underline transition hover:underline dark:text-amber-300/95">
+            <Link href="/agency" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
               Agency
             </Link>
-            <span className="text-neutral-400 dark:text-white/45" aria-hidden>
+            <span style={{ color: "var(--c-muted)" }} aria-hidden>
               /
             </span>
-            <span className="text-neutral-600 dark:text-white/65">Events</span>
+            <span style={{ color: "var(--c-muted)" }}>Events</span>
           </div>
         </nav>
 
         <section className="mb-8">
-          <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/58">Culturin Agency</p>
-          <h1 className="m-0 mt-3 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
-            Events & experiences gallery
+          <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: "var(--c-muted)" }}>Culturin Agency</p>
+          <h1
+            className="m-0 mt-3 max-w-4xl text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl"
+            style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+          >
+            Events &amp; experiences gallery
           </h1>
-          <p className="m-0 mt-4 max-w-3xl text-base leading-relaxed text-neutral-600 dark:text-white/75">
+          <p className="m-0 mt-4 max-w-3xl text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>
             A Pinterest-style look at Culturin moments we have produced, hosted, and activated — with the Amafrobeat
             Experience as the flagship format.
           </p>
@@ -147,7 +148,8 @@ export default function AgencyEventsPage() {
           {experiences.map((item) => (
             <article
               key={item.title}
-              className="mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-neutral-200 bg-white dark:border-white/10 dark:bg-white/[0.03]"
+              className="mb-4 break-inside-avoid overflow-hidden rounded-2xl border"
+              style={{ borderColor: "var(--c-rule)" }}
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-900">
                 <SafeContentImage
@@ -161,7 +163,10 @@ export default function AgencyEventsPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
                 <div className="absolute left-3 top-3 z-[2] flex flex-wrap gap-2">
                   {item.primary ? (
-                    <span className="rounded-full border border-amber-300/80 bg-amber-300/20 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-100">
+                    <span
+                      className="rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide"
+                      style={{ borderColor: "#e08a5b", background: "rgba(224,138,91,0.2)", color: "#f0ab85" }}
+                    >
                       Primary
                     </span>
                   ) : null}
@@ -173,15 +178,18 @@ export default function AgencyEventsPage() {
                   </span>
                 </div>
                 <div className="absolute inset-x-0 bottom-0 z-[1] px-4 pb-4 pt-16">
-                  <h2 className="m-0 text-lg font-semibold text-white">{item.title}</h2>
+                  <h2
+                    className="m-0 text-lg font-medium text-white"
+                    style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+                  >
+                    {item.title}
+                  </h2>
                   <p className="m-0 mt-2 text-sm leading-relaxed text-white/85">{item.summary}</p>
                 </div>
               </div>
             </article>
           ))}
         </section>
-      </ContentPageShell>
-      <SiteFooter />
-    </>
+    </ContentPageShell>
   );
 }

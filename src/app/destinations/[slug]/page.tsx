@@ -21,6 +21,11 @@ import DestinationTravelersSection from "./DestinationTravelersSection";
 
 type PageProps = { params: { slug: string } };
 
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
+const eyebrowClass = "m-0 text-xs font-semibold uppercase tracking-[0.2em]";
+const cardClass = "rounded-2xl border p-5";
+const cardStyle = { borderColor: "var(--c-rule)", background: "rgba(28,26,23,0.03)" };
+
 export function generateStaticParams() {
   return destinations.map((d) => ({ slug: d.slug }));
 }
@@ -88,80 +93,67 @@ export default async function DestinationDetailPage({ params }: PageProps) {
 
   return (
     <ContentPageShell
-      mainClassName="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
+      mainClassName="min-h-dvh pb-20 antialiased"
       innerClassName={appPageContainerClass}
     >
-      <nav
-        className="mb-8 pt-6 text-sm text-neutral-600 dark:text-white/62"
-        aria-label="Breadcrumb"
-      >
+      <nav className="mb-8 pt-6 text-sm" style={{ color: "var(--c-muted)" }} aria-label="Breadcrumb">
         <div className="flex flex-wrap items-center gap-1.5">
-          <Link
-            href="/"
-            className="text-amber-600 no-underline transition hover:text-amber-700 dark:text-amber-300/90 dark:hover:text-amber-200"
-          >
+          <Link href="/" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
             Home
           </Link>
-          <span className="text-neutral-400 dark:text-white/50" aria-hidden>
+          <span style={{ color: "var(--c-muted)" }} aria-hidden>
             /
           </span>
-          <Link
-            href="/destinations"
-            className="text-amber-600 no-underline transition hover:text-amber-700 dark:text-amber-300/90 dark:hover:text-amber-200"
-          >
+          <Link href="/destinations" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
             Destinations
           </Link>
-          <span className="text-neutral-400 dark:text-white/50" aria-hidden>
+          <span style={{ color: "var(--c-muted)" }} aria-hidden>
             /
           </span>
-          <span className="text-neutral-800 dark:text-white/75">{d.name}</span>
+          <span style={{ color: "var(--c-ink)" }}>{d.name}</span>
         </div>
       </nav>
 
       <section className="grid grid-cols-1 gap-10 lg:grid-cols-[1.25fr,0.75fr] lg:items-start">
         <div className="space-y-7">
           <header className="space-y-3">
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/58">
+            <p className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
               Destination guide
             </p>
-            <h1 className="m-0 text-4xl leading-tight text-neutral-900 dark:text-white sm:text-5xl">{d.name}</h1>
-            <p className="m-0 text-base text-neutral-600 dark:text-white/65">{d.country ?? "Worldwide"}</p>
-            <p className="m-0 max-w-3xl text-lg leading-relaxed text-neutral-700 dark:text-white/80">
+            <h1 className="m-0 text-4xl font-medium leading-tight sm:text-5xl" style={{ ...displayFont, color: "var(--c-ink)" }}>
+              {d.name}
+            </h1>
+            <p className="m-0 text-base" style={{ color: "var(--c-muted)" }}>{d.country ?? "Worldwide"}</p>
+            <p className="m-0 max-w-3xl text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
               {content?.intro ??
                 `${d.name} is a destination worth exploring through neighborhood culture, food, and local stories.`}
             </p>
           </header>
 
-          <div className="grid gap-4 rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm sm:grid-cols-2 dark:border-white/10 dark:bg-white/5 dark:shadow-none">
+          <div className={`grid gap-4 sm:grid-cols-2 ${cardClass}`} style={cardStyle}>
             <div>
-              <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">Vibe</p>
-              <p className="m-0 mt-2 text-base text-neutral-800 dark:text-white/85">
+              <p className={eyebrowClass} style={{ color: "var(--c-muted)" }}>Vibe</p>
+              <p className="m-0 mt-2 text-base" style={{ color: "var(--c-ink)" }}>
                 {content?.vibe ?? "Cultural, social, and always evolving."}
               </p>
             </div>
             <div>
-              <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">
+              <p className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
                 Best time to visit
               </p>
-              <p className="m-0 mt-2 text-base text-neutral-800 dark:text-white/85">
+              <p className="m-0 mt-2 text-base" style={{ color: "var(--c-ink)" }}>
                 {content?.bestTime ?? "Year-round, with peak season in mild weather months."}
               </p>
             </div>
           </div>
 
           <section aria-labelledby="dest-highlights">
-            <h2
-              id="dest-highlights"
-              className="m-0 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58"
-            >
+            <h2 id="dest-highlights" className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
               Top highlights
             </h2>
             <ul className="m-0 mt-4 grid list-none gap-2 p-0">
               {highlights.map((item) => (
-                <li
-                  key={item}
-                  className="rounded-xl border border-neutral-200 bg-neutral-100/80 px-4 py-3 text-neutral-800 dark:border-white/10 dark:bg-white/[0.03] dark:text-white/85"
-                >
+                <li key={item} className="rounded-xl border px-4 py-3" style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}>
                   {item}
                 </li>
               ))}
@@ -170,18 +162,18 @@ export default async function DestinationDetailPage({ params }: PageProps) {
 
           <section className="grid gap-6 sm:grid-cols-2">
             <div>
-              <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">
+              <h2 className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
                 Neighborhoods
               </h2>
-              <ul className="m-0 mt-3 list-disc space-y-1.5 pl-5 text-neutral-700 dark:text-white/80">
+              <ul className="m-0 mt-3 list-disc space-y-1.5 pl-5" style={{ color: "var(--c-muted)" }}>
                 {neighborhoods.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </div>
             <div>
-              <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">Food to try</h2>
-              <ul className="m-0 mt-3 list-disc space-y-1.5 pl-5 text-neutral-700 dark:text-white/80">
+              <h2 className={eyebrowClass} style={{ color: "var(--c-muted)" }}>Food to try</h2>
+              <ul className="m-0 mt-3 list-disc space-y-1.5 pl-5" style={{ color: "var(--c-muted)" }}>
                 {foodToTry.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
@@ -190,8 +182,8 @@ export default async function DestinationDetailPage({ params }: PageProps) {
           </section>
 
           <section>
-            <h2 className="m-0 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">Local tips</h2>
-            <ul className="m-0 mt-3 list-disc space-y-2 pl-5 text-neutral-700 dark:text-white/80">
+            <h2 className={eyebrowClass} style={{ color: "var(--c-muted)" }}>Local tips</h2>
+            <ul className="m-0 mt-3 list-disc space-y-2 pl-5" style={{ color: "var(--c-muted)" }}>
               {localTips.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -203,22 +195,22 @@ export default async function DestinationDetailPage({ params }: PageProps) {
           ) : null}
 
           {matchedBlogs.length > 0 || matchedVideos.length > 0 || matchedProviders.length > 0 ? (
-            <section className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
-              <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+            <section className={cardClass} style={cardStyle}>
+              <h2 className="m-0 text-xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>
                 More for {d.name}
               </h2>
-              <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/70">
+              <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>
                 Location-specific stories, videos, and curated recommendations.
               </p>
               <div className="mt-4 grid gap-4 sm:grid-cols-3">
                 <div>
-                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/58">
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: "var(--c-muted)" }}>
                     Articles
                   </h3>
-                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
+                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm" style={{ color: "var(--c-muted)" }}>
                     {matchedBlogs.slice(0, 5).map((item) => (
                       <li key={item.currentSlug}>
-                        <Link href={`/articles/${item.currentSlug}`} className="no-underline hover:underline">
+                        <Link href={`/articles/${item.currentSlug}`} className="no-underline hover:underline" style={{ color: "var(--c-ink)" }}>
                           {item.title}
                         </Link>
                       </li>
@@ -226,13 +218,13 @@ export default async function DestinationDetailPage({ params }: PageProps) {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/58">
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: "var(--c-muted)" }}>
                     Videos
                   </h3>
-                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
+                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm" style={{ color: "var(--c-muted)" }}>
                     {matchedVideos.slice(0, 5).map((item) => (
                       <li key={item.currentSlug}>
-                        <Link href={`/stream?play=${encodeURIComponent(item.currentSlug)}`} className="no-underline hover:underline">
+                        <Link href={`/stream?play=${encodeURIComponent(item.currentSlug)}`} className="no-underline hover:underline" style={{ color: "var(--c-ink)" }}>
                           {item.title}
                         </Link>
                       </li>
@@ -240,13 +232,13 @@ export default async function DestinationDetailPage({ params }: PageProps) {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/58">
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: "var(--c-muted)" }}>
                     Experiences
                   </h3>
-                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
+                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm" style={{ color: "var(--c-muted)" }}>
                     {matchedProviders.slice(0, 5).map((item) => (
                       <li key={item.slug}>
-                        <Link href={`/providers/${item.slug}`} className="no-underline hover:underline">
+                        <Link href={`/providers/${item.slug}`} className="no-underline hover:underline" style={{ color: "var(--c-ink)" }}>
                           {item.eventName || item.name}
                         </Link>
                       </li>
@@ -258,8 +250,8 @@ export default async function DestinationDetailPage({ params }: PageProps) {
           ) : null}
         </div>
 
-        <aside className="space-y-5 lg:sticky lg:top-[calc(var(--header-offset)+1.5rem)]">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 dark:border-white/10 dark:bg-neutral-950">
+        <aside className="space-y-5 lg:sticky lg:top-24">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border" style={{ borderColor: "var(--c-rule)" }}>
             <Image
               src={d.imageUrl}
               alt={d.imageAlt}
@@ -271,14 +263,15 @@ export default async function DestinationDetailPage({ params }: PageProps) {
               sizes="(max-width: 1024px) 100vw, 28rem"
             />
           </div>
-          <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none">
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">Next steps</p>
-            <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/75">
+          <div className={cardClass} style={cardStyle}>
+            <p className={eyebrowClass} style={{ color: "var(--c-muted)" }}>Next steps</p>
+            <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
               Discover more places on the destinations index, then pair this city with travel guides and curated experiences.
             </p>
             <Link
               href="/destinations"
-              className="mt-3 inline-flex items-center text-sm font-medium text-amber-600 no-underline transition hover:text-amber-800 dark:text-amber-300/90 dark:hover:text-amber-200"
+              className="mt-3 inline-flex items-center text-sm font-medium no-underline transition hover:opacity-80"
+              style={{ color: "var(--c-accent)" }}
             >
               Browse all destinations
             </Link>

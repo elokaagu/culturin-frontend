@@ -17,30 +17,38 @@ export default function DestinationsPage() {
   return (
     <ContentPageShell
       innerClassName={appPageContainerClass}
-      mainClassName="min-h-dvh bg-neutral-50 px-0 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
+      mainClassName="min-h-dvh px-0 pb-16 antialiased"
     >
-      <div className="mb-8 border-b border-neutral-200 pb-6 pt-6 dark:border-white/10">
+      <div className="mb-8 border-b pb-6 pt-6" style={{ borderColor: "var(--c-rule)" }}>
         <nav className="mb-5" aria-label="Breadcrumb">
-          <Link
-            href="/"
-            className="text-sm font-medium text-amber-600 no-underline hover:underline dark:text-amber-300/95"
-          >
+          <Link href="/" className="text-sm font-medium no-underline hover:opacity-80" style={{ color: "var(--c-accent)" }}>
             Home
           </Link>
-          <span className="px-1 text-neutral-400 dark:text-white/45" aria-hidden>
+          <span className="px-1" style={{ color: "var(--c-muted)" }} aria-hidden>
             /
           </span>
-          <span className="text-sm text-neutral-600 dark:text-white/60">Destinations</span>
+          <span className="text-sm" style={{ color: "var(--c-muted)" }}>Destinations</span>
         </nav>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
-            <h1 className="m-0 text-3xl tracking-tight text-neutral-900 dark:text-white sm:text-5xl">Destinations</h1>
-            <p className="m-0 mt-3 text-base leading-relaxed text-neutral-600 sm:text-lg dark:text-white/70">
+            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: "var(--c-muted)" }}>
+              Platform
+            </p>
+            <h1
+              className="m-0 mt-3 text-3xl font-medium tracking-tight sm:text-5xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
+            >
+              Destinations
+            </h1>
+            <p className="m-0 mt-3 text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
               Browse cities, discover local context, and open detailed destination pages with tailored recommendations.
             </p>
           </div>
-          <p className="m-0 text-sm text-neutral-600 dark:text-white/60">
-            <span className="rounded-md bg-neutral-200 px-2 py-0.5 font-mono text-xs text-neutral-800 dark:bg-white/10 dark:text-white/90">
+          <p className="m-0 text-sm" style={{ color: "var(--c-muted)" }}>
+            <span
+              className="rounded-full px-2.5 py-0.5 text-xs font-semibold"
+              style={{ background: "rgba(28,26,23,0.06)", color: "var(--c-ink)" }}
+            >
               {destinationsCount}
             </span>{" "}
             places
