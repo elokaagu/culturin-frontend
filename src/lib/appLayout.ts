@@ -21,4 +21,4 @@ export const appPageRailScrollPadClass =
  * Use with `header` that is `flex items-start justify-between gap-4`.
  */
 export const homeSectionSeeAllClass =
-  "shrink-0 self-center inline-flex min-h-[38px] min-w-[4.5rem] items-center justify-center rounded-full border border-neutral-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-neutral-900 no-underline transition-colors hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:border-white/20 dark:bg-white/[0.08] dark:text-white dark:hover:bg-white/[0.14]";
+  "shrink-0 self-center inline-flex min-h-[38px] min-w-[4.5rem] items-center justify-center rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] no-underline transition-colors";

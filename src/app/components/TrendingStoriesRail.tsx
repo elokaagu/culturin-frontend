@@ -31,7 +31,7 @@ export default function TrendingStoriesRail({ stories }: TrendingStoriesRailProp
           >
             <Link
               href={`/articles/${story.currentSlug}`}
-              className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="group block w-full no-underline outline-none"
             >
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-neutral-900 ring-1 ring-white/10 sm:rounded-2xl">
                 <SafeContentImage

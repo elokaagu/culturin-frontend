@@ -35,7 +35,7 @@ export default function CuratedExperiencesRail({ providers }: CuratedExperiences
           >
             <Link
               href={`/providers/${p.slug}`}
-              className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-black"
+              className="group block w-full no-underline outline-none"
             >
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-neutral-200 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10 sm:rounded-2xl">
                 <SafeContentImage

@@ -4,8 +4,9 @@ import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { useCallback, type ReactNode } from "react";
 
-import Header from "./Header";
-import SiteFooter from "./SiteFooter";
+import IslandNav from "./IslandNav";
+import HomeFooter from "./HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import ExploreWorldCountriesRail from "./ExploreWorldCountriesRail";
 import CuratedExperiencesRail from "./CuratedExperiencesRail";
 import TopVideosRail from "./TopVideosRail";
@@ -24,8 +25,9 @@ type HomePageClientProps = {
 const HERO_IMAGE =
   "https://www.forbes.com/advisor/wp-content/uploads/2021/03/traveling-based-on-fare-deals.jpg";
 
-const mainClass =
-  "min-h-dvh w-full min-w-0 overflow-x-clip bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white";
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
+
+const mainClass = "min-h-dvh w-full min-w-0 overflow-x-clip pb-16 antialiased";
 
 const containerClass = appPageContainerClass;
 
@@ -41,12 +43,9 @@ function EmptyRail({
   linkLabel: string;
 }) {
   return (
-    <div
-      className="rounded-xl border border-neutral-200 bg-white px-4 py-10 text-center shadow-none sm:px-6 dark:border-white/10 dark:bg-white/[0.04]"
-      role="status"
-    >
-      <p className="text-sm text-neutral-600 sm:text-base dark:text-white/70">{message}</p>
-      <Link href={href} className={`mt-5 ${homeSectionSeeAllClass}`}>
+    <div className="rounded-xl border px-4 py-10 text-center sm:px-6" style={{ borderColor: "var(--c-rule)" }} role="status">
+      <p className="text-sm sm:text-base" style={{ color: "var(--c-muted)" }}>{message}</p>
+      <Link href={href} className={`mt-5 ${homeSectionSeeAllClass}`} style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}>
         {linkLabel}
       </Link>
     </div>
@@ -79,15 +78,16 @@ function HomeSection({
           <div className="min-w-0 flex-1 pr-2">
             <h2
               id={headingId}
-              className="text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white"
+              className="text-xl font-medium tracking-tight sm:text-2xl"
+              style={{ ...displayFont, color: "var(--c-ink)" }}
             >
               {title}
             </h2>
-            <p className="mt-1 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:mt-1.5 sm:text-[0.95rem] dark:text-white/65">
+            <p className="mt-1 max-w-2xl text-sm leading-relaxed sm:mt-1.5 sm:text-[0.95rem]" style={{ color: "var(--c-muted)" }}>
               {description}
             </p>
           </div>
-          <Link href={viewAllHref} className={homeSectionSeeAllClass}>
+          <Link href={viewAllHref} className={homeSectionSeeAllClass} style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}>
             See all
           </Link>
         </header>
@@ -109,16 +109,19 @@ export default function HomePageClient({
   }, []);
 
   return (
-    <>
-      <Header />
-      <main id="main-content" className={mainClass}>
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main id="main-content" className={mainClass} style={{ paddingTop: "8rem" }}>
         <section
           className={`${heroShellClass} pb-6 pt-4 sm:pb-8 sm:pt-6`}
           aria-labelledby="home-hero-heading"
         >
           <div className="grid grid-cols-1">
             <div className="min-w-0">
-              <div className="relative mx-auto aspect-[16/10] min-h-[min(48vh,26rem)] w-full overflow-hidden rounded-3xl border border-neutral-200 shadow-[0_28px_90px_-28px_rgba(0,0,0,0.18)] sm:min-h-[min(52vh,28rem)] dark:border-white/10 dark:shadow-[0_24px_80px_-24px_rgba(0,0,0,0.85)]">
+              <div
+                className="relative mx-auto aspect-[16/10] min-h-[min(48vh,26rem)] w-full overflow-hidden rounded-3xl border sm:min-h-[min(52vh,28rem)]"
+                style={{ borderColor: "var(--c-rule)" }}
+              >
                 <Image
                   src={HERO_IMAGE}
                   alt="Wide landscape view suggesting global travel and exploration"
@@ -139,7 +142,7 @@ export default function HomePageClient({
                   aria-hidden
                 />
                 <div
-                  className="absolute inset-0 bg-gradient-to-t from-neutral-900/85 via-neutral-900/35 to-neutral-900/25 dark:from-black/85 dark:via-black/40 dark:to-black/25"
+                  className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/25"
                   aria-hidden
                 />
                 <div className="pointer-events-none absolute inset-x-0 top-5 flex flex-wrap justify-center gap-2 px-4 sm:top-7 md:top-8">
@@ -155,17 +158,19 @@ export default function HomePageClient({
                 <div className="absolute inset-0 flex flex-col items-center justify-end px-6 pb-10 pt-24 text-center sm:justify-center sm:pb-12 sm:pt-20 md:pt-16">
                   <h1
                     id="home-hero-heading"
-                    className="max-w-[22rem] text-balance text-3xl font-bold tracking-tight text-white drop-shadow-sm sm:max-w-xl sm:text-4xl sm:leading-[1.1] md:text-5xl md:leading-[1.08]"
+                    className="max-w-[22rem] text-balance text-3xl font-medium tracking-tight text-white drop-shadow-sm sm:max-w-xl sm:text-4xl sm:leading-[1.1] md:text-5xl md:leading-[1.08]"
+                    style={displayFont}
                   >
                     Travel global, live local
                   </h1>
-                  <p className="mt-4 max-w-md text-pretty text-base font-medium leading-relaxed text-white/95 sm:text-lg dark:text-white/90">
+                  <p className="mt-4 max-w-md text-pretty text-base font-medium leading-relaxed text-white/95 sm:text-lg">
                     Discover a world of culture, stories, and experiences worth your time.
                   </p>
                   <button
                     type="button"
                     onClick={scrollToDiscover}
-                    className="mt-8 inline-flex min-h-[44px] min-w-[8.5rem] items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold text-neutral-900 shadow-lg transition-[transform,box-shadow,background-color] hover:bg-neutral-100 hover:shadow-xl active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300 dark:text-black"
+                    className="mt-8 inline-flex min-h-[44px] min-w-[8.5rem] items-center justify-center rounded-full px-8 py-3 text-sm font-semibold text-white shadow-lg transition-[transform,box-shadow,background-color] hover:opacity-90 active:translate-y-px"
+                    style={{ background: "var(--c-accent)" }}
                   >
                     Explore
                   </button>
@@ -181,7 +186,7 @@ export default function HomePageClient({
           aria-hidden
         >
           <div className="pointer-events-none relative h-16 w-full sm:h-24 md:h-28">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neutral-200/55 to-neutral-50 dark:from-transparent dark:via-zinc-950/90 dark:to-black" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--c-bg)]" />
             <div
               className="absolute inset-0 supports-[backdrop-filter]:backdrop-blur-2xl"
               style={{
@@ -194,7 +199,8 @@ export default function HomePageClient({
 
         <section
           id="discover"
-          className="scroll-mt-[var(--header-offset)] -mt-10 border-b border-neutral-200 bg-neutral-50 pb-8 pt-4 sm:-mt-14 sm:pb-10 sm:pt-6 dark:border-white/10 dark:bg-[#121212]"
+          className="-mt-10 border-b pb-8 pt-4 sm:-mt-14 sm:pb-10 sm:pt-6"
+          style={{ borderColor: "var(--c-rule)" }}
           aria-labelledby="explore-world-heading"
         >
           <div className={containerClass}>
@@ -208,7 +214,7 @@ export default function HomePageClient({
           </div>
         </section>
 
-        <div className="bg-neutral-50 pb-4 pt-2 sm:pt-3 dark:bg-[#121212]">
+        <div className="pb-4 pt-2 sm:pt-3">
           <HomeSection
             id="trending-stories"
             title="Trending stories"
@@ -261,9 +267,8 @@ export default function HomePageClient({
           </HomeSection>
 
         </div>
-
-        <SiteFooter />
       </main>
-    </>
+      <HomeFooter />
+    </div>
   );
 }

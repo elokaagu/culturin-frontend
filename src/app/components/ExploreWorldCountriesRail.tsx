@@ -12,6 +12,9 @@ import {
 import MarqueeFadeRail from "./MarqueeFadeRail";
 import SafeContentImage from "./SafeContentImage";
 
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
+const seeAllStyle = { borderColor: "var(--c-rule)", color: "var(--c-ink)" };
+
 type ExploreWorldCountriesRailProps = {
   countries: ExploreWorldCountry[];
   /** Main row title (e.g. “Explore the World”) */
@@ -34,21 +37,18 @@ export default function ExploreWorldCountriesRail({
       <div className="w-full min-w-0">
         <header className="mb-4 flex items-start justify-between gap-4 sm:mb-5">
           <div className="min-w-0 flex-1 pr-2">
-            <h2
-              id={headingId}
-              className="text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white"
-            >
+            <h2 id={headingId} className="text-xl font-medium tracking-tight sm:text-2xl" style={{ ...displayFont, color: "var(--c-ink)" }}>
               {title}
             </h2>
-            <p className="mt-1 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:mt-1.5 sm:text-[0.95rem] dark:text-white/60">
+            <p className="mt-1 max-w-2xl text-sm leading-relaxed sm:mt-1.5 sm:text-[0.95rem]" style={{ color: "var(--c-muted)" }}>
               {description}
             </p>
           </div>
-          <Link href={viewAllHref} className={homeSectionSeeAllClass}>
+          <Link href={viewAllHref} className={homeSectionSeeAllClass} style={seeAllStyle}>
             See all
           </Link>
         </header>
-        <p className="text-sm text-neutral-600 dark:text-white/62">No countries to show right now.</p>
+        <p className="text-sm" style={{ color: "var(--c-muted)" }}>No countries to show right now.</p>
       </div>
     );
   }
@@ -57,17 +57,14 @@ export default function ExploreWorldCountriesRail({
     <div className="w-full min-w-0">
       <header className="relative z-10 mb-4 flex items-start justify-between gap-4 sm:mb-5">
         <div className="min-w-0 flex-1 pr-2">
-          <h2
-            id={headingId}
-            className="text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white"
-          >
+          <h2 id={headingId} className="text-xl font-medium tracking-tight sm:text-2xl" style={{ ...displayFont, color: "var(--c-ink)" }}>
             {title}
           </h2>
-          <p className="mt-1 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:mt-1.5 sm:text-[0.95rem] dark:text-white/60">
+          <p className="mt-1 max-w-2xl text-sm leading-relaxed sm:mt-1.5 sm:text-[0.95rem]" style={{ color: "var(--c-muted)" }}>
             {description}
           </p>
         </div>
-        <Link href={viewAllHref} className={homeSectionSeeAllClass}>
+        <Link href={viewAllHref} className={homeSectionSeeAllClass} style={seeAllStyle}>
           See all
         </Link>
       </header>
@@ -87,10 +84,7 @@ export default function ExploreWorldCountriesRail({
               role="listitem"
               className="w-[min(13.5rem,64vw)] shrink-0 snap-start"
             >
-              <Link
-                href={href}
-                className="group block w-full no-underline outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-black"
-              >
+              <Link href={href} className="group block w-full no-underline outline-none">
                 <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-neutral-900 dark:bg-neutral-950">
                   <SafeContentImage
                     src={src}
@@ -103,7 +97,7 @@ export default function ExploreWorldCountriesRail({
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3 sm:p-4">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/80">Country</p>
-                    <h3 className="mt-1 text-lg font-semibold tracking-tight text-white drop-shadow-sm sm:text-xl">{c.name}</h3>
+                    <h3 className="mt-1 text-lg font-medium tracking-tight text-white drop-shadow-sm sm:text-xl" style={displayFont}>{c.name}</h3>
                     <p className="mt-1 text-xs font-medium text-white/85">Stories & guides →</p>
                   </div>
                 </div>

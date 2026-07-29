@@ -10,7 +10,7 @@ import MagneticButton from "./motion/MagneticButton";
 import CulturinWordmark from "./CulturinWordmark";
 
 const NAV = [
-  { label: "Platform", href: "/destinations" },
+  { label: "Platform", href: "/platform" },
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
   { label: "Partners", href: "/#partners" },
