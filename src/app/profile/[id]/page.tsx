@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import { Link } from "next-view-transitions";
 
-import Header from "../../components/Header";
+import IslandNav from "../../components/IslandNav";
+import HomeFooter from "../../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import FollowTravelerButton from "../../components/FollowTravelerButton";
 import { ensureAppUser } from "@/lib/api/ensureAppUser";
 import { getTravelerProfile, listSuggestedTravelers } from "@/lib/repositories/followRepository";
@@ -10,6 +12,9 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 type PageProps = {
   params: { id: string };
 };
+
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
+const cardStyle = { borderColor: "var(--c-rule)" };
 
 function initialsFromName(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -35,22 +40,22 @@ export default async function ProfileByIdPage({ params }: PageProps) {
   }).catch(() => []);
 
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh pb-20" style={{ paddingTop: "8rem" }}>
         <div className="mx-auto w-full max-w-6xl px-5 pt-8 sm:px-6">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
             <div>
-              <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none">
+              <div className="rounded-2xl border p-6" style={cardStyle}>
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-neutral-200 text-lg font-semibold text-neutral-700 dark:bg-white/10 dark:text-white/90">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full text-lg font-semibold" style={{ background: "rgba(28,26,23,0.06)", color: "var(--c-ink)" }}>
                       {initialsFromName(profile.name)}
                     </div>
                     <div>
-                      <h1 className="m-0 text-2xl font-semibold tracking-tight">{profile.name}</h1>
-                      <p className="m-0 mt-1 text-sm text-neutral-500 dark:text-white/65">{profile.handle}</p>
-                      <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/65">
+                      <h1 className="m-0 text-2xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>{profile.name}</h1>
+                      <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>{profile.handle}</p>
+                      <p className="m-0 mt-1 text-xs" style={{ color: "var(--c-muted)" }}>
                         {profile.followersCount} follower(s) · {profile.followingCount} following
                       </p>
                     </div>
@@ -65,7 +70,8 @@ export default async function ProfileByIdPage({ params }: PageProps) {
                     ) : (
                       <Link
                         href="/profile"
-                        className="rounded-full border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-900 no-underline transition hover:bg-neutral-50 dark:border-white/20 dark:bg-white/10 dark:text-white"
+                        className="rounded-full border px-4 py-2 text-sm font-medium no-underline transition hover:opacity-80"
+                        style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                       >
                         Edit my profile
                       </Link>
@@ -75,47 +81,41 @@ export default async function ProfileByIdPage({ params }: PageProps) {
               </div>
 
               <section className="mt-6">
-                <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">
-                  Saved itineraries & recommendations
+                <h2 className="m-0 text-xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>
+                  Saved itineraries &amp; recommendations
                 </h2>
-                <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/65">
+                <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>
                   Browse lists this traveler has saved for places they have explored.
                 </p>
                 {profile.lists.length === 0 ? (
-                  <p className="m-0 mt-6 rounded-xl border border-neutral-200 bg-white px-4 py-4 text-sm text-neutral-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-white/65">
+                  <p className="m-0 mt-6 rounded-xl border px-4 py-4 text-sm" style={{ borderColor: "var(--c-rule)", color: "var(--c-muted)" }}>
                     No saved lists yet.
                   </p>
                 ) : (
                   <ul className="m-0 mt-5 space-y-4 p-0">
                     {profile.lists.map((list) => (
-                      <li
-                        key={list.id}
-                        className="list-none rounded-xl border border-neutral-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.03]"
-                      >
-                        <p className="m-0 text-sm font-semibold text-neutral-900 dark:text-white">{list.title}</p>
-                        <p className="m-0 mt-1 text-[11px] font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/65">
+                      <li key={list.id} className="list-none rounded-xl border p-4" style={cardStyle}>
+                        <p className="m-0 text-sm font-semibold" style={{ color: "var(--c-ink)" }}>{list.title}</p>
+                        <p className="m-0 mt-1 text-[11px] font-semibold uppercase tracking-wide" style={{ color: "var(--c-muted)" }}>
                           {list.list_type}
                         </p>
                         {list.place_label ? (
-                          <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/65">{list.place_label}</p>
+                          <p className="m-0 mt-1 text-xs" style={{ color: "var(--c-muted)" }}>{list.place_label}</p>
                         ) : null}
                         {list.description ? (
-                          <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/65">{list.description}</p>
+                          <p className="m-0 mt-1 text-xs" style={{ color: "var(--c-muted)" }}>{list.description}</p>
                         ) : null}
                         {list.items.length > 0 ? (
                           <ul className="m-0 mt-3 space-y-2 p-0">
                             {list.items.map((item) => (
-                              <li
-                                key={item.id}
-                                className="list-none rounded-lg bg-neutral-50 px-3 py-2 text-sm text-neutral-700 dark:bg-black/40 dark:text-white/80"
-                              >
+                              <li key={item.id} className="list-none rounded-lg px-3 py-2 text-sm" style={{ background: "rgba(28,26,23,0.04)", color: "var(--c-ink)" }}>
                                 <span className="font-medium">{item.title}</span>
-                                {item.notes ? <span className="text-neutral-500 dark:text-white/60"> — {item.notes}</span> : null}
+                                {item.notes ? <span style={{ color: "var(--c-muted)" }}> — {item.notes}</span> : null}
                               </li>
                             ))}
                           </ul>
                         ) : (
-                          <p className="m-0 mt-2 text-sm text-neutral-500 dark:text-white/65">No spots added yet.</p>
+                          <p className="m-0 mt-2 text-sm" style={{ color: "var(--c-muted)" }}>No spots added yet.</p>
                         )}
                       </li>
                     ))}
@@ -124,39 +124,37 @@ export default async function ProfileByIdPage({ params }: PageProps) {
               </section>
 
               <section className="mt-6">
-                <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">Playlists</h2>
-                <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/65">
+                <h2 className="m-0 text-xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>Playlists</h2>
+                <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>
                   Public playlists imported from Spotify.
                 </p>
                 {profile.spotifyPlaylists.length === 0 ? (
-                  <p className="m-0 mt-4 rounded-xl border border-neutral-200 bg-white px-4 py-4 text-sm text-neutral-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-white/65">
+                  <p className="m-0 mt-4 rounded-xl border px-4 py-4 text-sm" style={{ borderColor: "var(--c-rule)", color: "var(--c-muted)" }}>
                     No public playlists yet.
                   </p>
                 ) : (
                   <ul className="m-0 mt-5 space-y-3 p-0">
                     {profile.spotifyPlaylists.map((playlist) => (
-                      <li
-                        key={playlist.id}
-                        className="list-none rounded-xl border border-neutral-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.03]"
-                      >
+                      <li key={playlist.id} className="list-none rounded-xl border p-4" style={cardStyle}>
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex min-w-0 items-center gap-3">
                             {playlist.image_url ? (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img src={playlist.image_url} alt={playlist.name} className="h-14 w-14 rounded-md object-cover" />
                             ) : (
-                              <div className="h-14 w-14 rounded-md bg-neutral-200 dark:bg-white/10" />
+                              <div className="h-14 w-14 rounded-md" style={{ background: "rgba(28,26,23,0.06)" }} />
                             )}
                             <div className="min-w-0">
-                              <p className="m-0 truncate text-sm font-semibold text-neutral-900 dark:text-white">{playlist.name}</p>
-                              <p className="m-0 mt-1 text-xs text-neutral-500 dark:text-white/65">{playlist.tracks_total} tracks</p>
+                              <p className="m-0 truncate text-sm font-semibold" style={{ color: "var(--c-ink)" }}>{playlist.name}</p>
+                              <p className="m-0 mt-1 text-xs" style={{ color: "var(--c-muted)" }}>{playlist.tracks_total} tracks</p>
                             </div>
                           </div>
                           <a
                             href={playlist.spotify_url}
                             target="_blank"
                             rel="noreferrer"
-                            className="rounded-full border border-neutral-300 px-3 py-1.5 text-xs font-medium text-neutral-800 no-underline transition hover:bg-neutral-50 dark:border-white/20 dark:text-white"
+                            className="rounded-full border px-3 py-1.5 text-xs font-medium no-underline transition hover:opacity-80"
+                            style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                           >
                             Open
                           </a>
@@ -168,16 +166,16 @@ export default async function ProfileByIdPage({ params }: PageProps) {
               </section>
 
               {profile.languageSummary ? (
-                <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
-                  <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">Language learning</h2>
-                  <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/65">
+                <section className="mt-6 rounded-2xl border p-5" style={cardStyle}>
+                  <h2 className="m-0 text-xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>Language learning</h2>
+                  <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>
                     Studying {profile.languageSummary.targetLanguage} ({profile.languageSummary.proficiencyLevel}).
                   </p>
                   <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                    <p className="m-0 rounded-xl bg-neutral-50 px-3 py-2 text-sm text-neutral-700 dark:bg-black/40 dark:text-white/80">
+                    <p className="m-0 rounded-xl px-3 py-2 text-sm" style={{ background: "rgba(28,26,23,0.04)", color: "var(--c-ink)" }}>
                       Words saved: <span className="font-semibold">{profile.languageSummary.totalWords}</span>
                     </p>
-                    <p className="m-0 rounded-xl bg-neutral-50 px-3 py-2 text-sm text-neutral-700 dark:bg-black/40 dark:text-white/80">
+                    <p className="m-0 rounded-xl px-3 py-2 text-sm" style={{ background: "rgba(28,26,23,0.04)", color: "var(--c-ink)" }}>
                       Current streak: <span className="font-semibold">{profile.languageSummary.currentStreak}</span>
                     </p>
                   </div>
@@ -185,33 +183,30 @@ export default async function ProfileByIdPage({ params }: PageProps) {
               ) : null}
             </div>
 
-            <aside className="lg:sticky lg:top-[calc(var(--header-offset)+1.25rem)] lg:self-start">
-              <section className="rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none">
+            <aside className="lg:sticky lg:top-24 lg:self-start">
+              <section className="rounded-3xl border p-5" style={cardStyle}>
                 <div className="mb-4 flex items-center justify-between gap-3">
-                  <h2 className="m-0 text-3xl font-semibold tracking-tight text-neutral-900 dark:text-white">Suggested</h2>
-                  <Link
-                    href="/profile"
-                    className="text-xl font-semibold text-neutral-900 no-underline transition hover:opacity-80 dark:text-white"
-                  >
+                  <h2 className="m-0 text-3xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>Suggested</h2>
+                  <Link href="/profile" className="text-xl font-medium no-underline transition hover:opacity-80" style={{ ...displayFont, color: "var(--c-ink)" }}>
                     See all
                   </Link>
                 </div>
                 {suggested.length === 0 ? (
-                  <p className="m-0 text-sm text-neutral-500 dark:text-white/65">No suggestions yet.</p>
+                  <p className="m-0 text-sm" style={{ color: "var(--c-muted)" }}>No suggestions yet.</p>
                 ) : (
                   <ul className="m-0 space-y-4 p-0">
                     {suggested.map((traveler) => (
                       <li key={traveler.id} className="list-none">
                         <div className="flex items-center justify-between gap-3">
                           <Link href={`/profile/${traveler.id}`} className="min-w-0 flex items-center gap-3 no-underline">
-                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-sm font-semibold text-neutral-700 dark:bg-white/10 dark:text-white/85">
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-sm font-semibold" style={{ background: "rgba(28,26,23,0.06)", color: "var(--c-ink)" }}>
                               {initialsFromName(traveler.name)}
                             </div>
                             <div className="min-w-0">
-                              <p className="m-0 truncate text-lg font-semibold text-neutral-900 dark:text-white">
+                              <p className="m-0 truncate text-lg font-medium" style={{ ...displayFont, color: "var(--c-ink)" }}>
                                 {traveler.name}
                               </p>
-                              <p className="m-0 text-sm text-neutral-500 dark:text-white/60">Selected by Culturin</p>
+                              <p className="m-0 text-sm" style={{ color: "var(--c-muted)" }}>Selected by Culturin</p>
                             </div>
                           </Link>
                           <FollowTravelerButton
@@ -229,6 +224,7 @@ export default async function ProfileByIdPage({ params }: PageProps) {
           </div>
         </div>
       </main>
-    </>
+      <HomeFooter />
+    </div>
   );
 }

@@ -23,6 +23,11 @@ import DestinationTravelersSection from "../../destinations/[slug]/DestinationTr
 
 type PageProps = { params: { slug: string } };
 
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
+const eyebrowClass = "m-0 text-xs font-semibold uppercase tracking-[0.22em]";
+const cardClass = "rounded-2xl border p-5";
+const cardStyle = { borderColor: "var(--c-rule)" };
+
 export function generateStaticParams() {
   return exploreWorldCountries.map((c) => ({ slug: c.id }));
 }
@@ -85,48 +90,43 @@ export default async function ExploreCountryPage({ params }: PageProps) {
 
   return (
     <ContentPageShell
-      mainClassName="min-h-dvh bg-neutral-50 pb-20 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white"
+      mainClassName="min-h-dvh pb-20 antialiased"
       innerClassName={appPageContainerClass}
     >
-      <nav className="mb-8 pt-6 text-sm text-neutral-600 dark:text-white/62" aria-label="Breadcrumb">
+      <nav className="mb-8 pt-6 text-sm" style={{ color: "var(--c-muted)" }} aria-label="Breadcrumb">
         <div className="flex flex-wrap items-center gap-1.5">
-          <Link
-            href="/"
-            className="text-amber-600 no-underline transition hover:text-amber-700 dark:text-amber-300/90 dark:hover:text-amber-200"
-          >
+          <Link href="/" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
             Home
           </Link>
-          <span className="text-neutral-400 dark:text-white/50" aria-hidden>
+          <span style={{ color: "var(--c-muted)" }} aria-hidden>
             /
           </span>
-          <Link
-            href="/destinations"
-            className="text-amber-600 no-underline transition hover:text-amber-700 dark:text-amber-300/90 dark:hover:text-amber-200"
-          >
+          <Link href="/destinations" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
             Destinations
           </Link>
-          <span className="text-neutral-400 dark:text-white/50" aria-hidden>
+          <span style={{ color: "var(--c-muted)" }} aria-hidden>
             /
           </span>
-          <span className="text-neutral-800 dark:text-white/75">{country.name}</span>
+          <span style={{ color: "var(--c-ink)" }}>{country.name}</span>
         </div>
       </nav>
 
       <section className="grid grid-cols-1 gap-10 lg:grid-cols-[1.25fr,0.75fr] lg:items-start">
         <div className="space-y-7">
           <header className="space-y-3">
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-white/58">
+            <p className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
               Country
             </p>
-            <h1 className="m-0 text-4xl leading-tight text-neutral-900 dark:text-white sm:text-5xl">{country.name}</h1>
-            <p className="m-0 max-w-3xl text-lg leading-relaxed text-neutral-700 dark:text-white/80">
+            <h1 className="m-0 text-4xl font-medium leading-tight sm:text-5xl" style={{ ...displayFont, color: "var(--c-ink)" }}>{country.name}</h1>
+            <p className="m-0 max-w-3xl text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
               Stories, guides, and experiences connected to {country.name}. Browse highlights below or open the full
               search for every match.
             </p>
             <p className="m-0">
               <Link
                 href={`/search?country=${encodeURIComponent(country.searchLabel)}`}
-                className="text-sm font-medium text-amber-600 no-underline hover:underline dark:text-amber-300/90"
+                className="text-sm font-medium no-underline hover:underline"
+                style={{ color: "var(--c-accent)" }}
               >
                 Search all results for {country.name} →
               </Link>
@@ -138,22 +138,22 @@ export default async function ExploreCountryPage({ params }: PageProps) {
           ) : null}
 
           {matchedBlogs.length > 0 || matchedVideos.length > 0 || matchedProviders.length > 0 ? (
-            <section className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
-              <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+            <section className={cardClass} style={cardStyle}>
+              <h2 className="m-0 text-xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>
                 Highlights for {country.name}
               </h2>
-              <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/70">
+              <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>
                 Articles, videos, and curated picks that mention this country.
               </p>
               <div className="mt-4 grid gap-4 sm:grid-cols-3">
                 <div>
-                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/58">
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: "var(--c-muted)" }}>
                     Articles
                   </h3>
-                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
+                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm" style={{ color: "var(--c-muted)" }}>
                     {matchedBlogs.slice(0, 8).map((item) => (
                       <li key={item.currentSlug}>
-                        <Link href={`/articles/${item.currentSlug}`} className="no-underline hover:underline">
+                        <Link href={`/articles/${item.currentSlug}`} className="no-underline hover:underline" style={{ color: "var(--c-ink)" }}>
                           {item.title}
                         </Link>
                       </li>
@@ -161,15 +161,16 @@ export default async function ExploreCountryPage({ params }: PageProps) {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/58">
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: "var(--c-muted)" }}>
                     Videos
                   </h3>
-                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
+                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm" style={{ color: "var(--c-muted)" }}>
                     {matchedVideos.slice(0, 8).map((item) => (
                       <li key={item.currentSlug}>
                         <Link
                           href={`/stream?play=${encodeURIComponent(item.currentSlug)}`}
                           className="no-underline hover:underline"
+                          style={{ color: "var(--c-ink)" }}
                         >
                           {item.title}
                         </Link>
@@ -178,13 +179,13 @@ export default async function ExploreCountryPage({ params }: PageProps) {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-white/58">
+                  <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: "var(--c-muted)" }}>
                     Experiences
                   </h3>
-                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm text-neutral-700 dark:text-white/80">
+                  <ul className="m-0 mt-2 list-disc space-y-1.5 pl-5 text-sm" style={{ color: "var(--c-muted)" }}>
                     {matchedProviders.slice(0, 8).map((item) => (
                       <li key={item.slug}>
-                        <Link href={`/providers/${item.slug}`} className="no-underline hover:underline">
+                        <Link href={`/providers/${item.slug}`} className="no-underline hover:underline" style={{ color: "var(--c-ink)" }}>
                           {item.eventName || item.name}
                         </Link>
                       </li>
@@ -194,14 +195,14 @@ export default async function ExploreCountryPage({ params }: PageProps) {
               </div>
             </section>
           ) : (
-            <p className="m-0 text-sm text-neutral-600 dark:text-white/60">
+            <p className="m-0 text-sm" style={{ color: "var(--c-muted)" }}>
               No indexed stories matched yet. Try the search link above for a broader view.
             </p>
           )}
         </div>
 
-        <aside className="space-y-5 lg:sticky lg:top-[calc(var(--header-offset)+1.5rem)]">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 dark:border-white/10 dark:bg-neutral-950">
+        <aside className="space-y-5 lg:sticky lg:top-24">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border" style={{ borderColor: "var(--c-rule)" }}>
             <Image
               src={heroSrc}
               alt={country.imageAlt}
@@ -214,16 +215,17 @@ export default async function ExploreCountryPage({ params }: PageProps) {
               unoptimized={cmsImageUnoptimized(heroSrc)}
             />
           </div>
-          <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none">
-            <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 dark:text-white/58">
+          <div className={cardClass} style={cardStyle}>
+            <p className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
               Explore further
             </p>
-            <p className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/75">
+            <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
               City guides live on the destinations index. Regional overviews are under Countries in the menu.
             </p>
             <Link
               href="/destinations"
-              className="mt-3 inline-flex items-center text-sm font-medium text-amber-600 no-underline transition hover:text-amber-800 dark:text-amber-300/90 dark:hover:text-amber-200"
+              className="mt-3 inline-flex items-center text-sm font-medium no-underline transition hover:opacity-80"
+              style={{ color: "var(--c-accent)" }}
             >
               Browse destinations
             </Link>
