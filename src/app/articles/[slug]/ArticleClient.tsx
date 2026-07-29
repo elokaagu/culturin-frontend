@@ -9,7 +9,9 @@ import { Bookmark, Share2, Clock } from "lucide-react";
 import { SaveFavoriteModal } from "../../components/detail/SaveFavoriteModal";
 import { ShareLinkModal } from "../../components/detail/ShareLinkModal";
 import { useAppAuth } from "../../components/SupabaseAuthProvider";
-import Header from "../../components/Header";
+import IslandNav from "../../components/IslandNav";
+import HomeFooter from "../../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../../components/SafeContentImage";
 import { appPageContainerClass } from "@/lib/appLayout";
 import {
@@ -45,8 +47,8 @@ function estimateReadMinutesFromBody(body: unknown): number {
   return Math.max(1, Math.min(60, Math.round(words / 200) || 1));
 }
 
-const proseLinkClass =
-  "font-medium text-amber-700 underline decoration-amber-600/40 underline-offset-[3px] transition hover:text-amber-900 hover:decoration-amber-800/50 dark:text-amber-400/90 dark:decoration-amber-400/35 dark:hover:text-amber-200 dark:hover:decoration-amber-200/50";
+const proseLinkClass = "font-medium underline underline-offset-[3px] transition hover:opacity-80";
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
 
 export default function ArticleClient({ data, curator }: { data: fullBlog; curator?: curatorCard | null }) {
   const pathname = usePathname();
@@ -68,37 +70,37 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
     () => ({
       block: {
         h2: ({ children }) => (
-          <h2 className="mt-10 scroll-mt-24 text-3xl font-semibold leading-tight tracking-tight text-neutral-900 sm:text-[2.2rem] dark:text-white">
+          <h2 className="mt-10 scroll-mt-24 text-3xl font-medium leading-tight tracking-tight sm:text-[2.2rem]" style={{ ...displayFont, color: "var(--c-ink)" }}>
             {children}
           </h2>
         ),
         h3: ({ children }) => (
-          <h3 className="mt-8 scroll-mt-24 text-2xl font-semibold leading-snug text-neutral-900 dark:text-white/95">
+          <h3 className="mt-8 scroll-mt-24 text-2xl font-medium leading-snug" style={{ ...displayFont, color: "var(--c-ink)" }}>
             {children}
           </h3>
         ),
         h4: ({ children }) => (
-          <h4 className="mt-6 text-lg font-semibold text-neutral-800 dark:text-white/90">{children}</h4>
+          <h4 className="mt-6 text-lg font-semibold" style={{ color: "var(--c-ink)" }}>{children}</h4>
         ),
         blockquote: ({ children }) => (
-          <blockquote className="my-8 border-l-[3px] border-amber-600/45 pl-5 text-lg leading-relaxed text-neutral-700 dark:border-amber-500/50 dark:text-white/78">
+          <blockquote className="my-8 border-l-[3px] pl-5 text-lg leading-relaxed" style={{ borderColor: "var(--c-accent)", color: "var(--c-muted)" }}>
             {children}
           </blockquote>
         ),
         normal: ({ children }) => (
-          <p className="text-[1.05rem] leading-[1.75] text-neutral-800 [&+p]:mt-4 dark:text-white/[0.86]">
+          <p className="text-[1.05rem] leading-[1.75] [&+p]:mt-4" style={{ color: "var(--c-ink)" }}>
             {children}
           </p>
         ),
       },
       list: {
         bullet: ({ children }) => (
-          <ul className="my-4 list-outside list-disc space-y-2.5 pl-5 text-[1.05rem] leading-relaxed text-neutral-800 marker:text-amber-700 dark:text-white/[0.86] dark:marker:text-amber-400/80">
+          <ul className="my-4 list-outside list-disc space-y-2.5 pl-5 text-[1.05rem] leading-relaxed" style={{ color: "var(--c-ink)" }}>
             {children}
           </ul>
         ),
         number: ({ children }) => (
-          <ol className="my-4 list-outside list-decimal space-y-2.5 pl-5 text-[1.05rem] leading-relaxed text-neutral-800 marker:font-medium marker:text-amber-700 dark:text-white/[0.86] dark:marker:text-amber-400/90">
+          <ol className="my-4 list-outside list-decimal space-y-2.5 pl-5 text-[1.05rem] leading-relaxed" style={{ color: "var(--c-ink)" }}>
             {children}
           </ol>
         ),
@@ -109,10 +111,10 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
       },
       marks: {
         strong: ({ children }) => (
-          <strong className="font-semibold text-neutral-950 dark:text-white">{children}</strong>
+          <strong className="font-semibold" style={{ color: "var(--c-ink)" }}>{children}</strong>
         ),
         em: ({ children }) => (
-          <em className="italic text-neutral-800 dark:text-white/90">{children}</em>
+          <em className="italic" style={{ color: "var(--c-ink)" }}>{children}</em>
         ),
         link: ({ value, children }) => {
           const href = value && typeof (value as { href?: string }).href === "string" ? (value as { href: string }).href : "#";
@@ -121,6 +123,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
             <a
               href={href}
               className={proseLinkClass}
+              style={{ color: "var(--c-accent)" }}
               rel={isExternal ? "noopener noreferrer" : undefined}
               target={isExternal ? "_blank" : undefined}
             >
@@ -129,15 +132,15 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
           );
         },
         underline: ({ children }) => (
-          <span className="underline decoration-neutral-400 underline-offset-2 dark:decoration-white/30">{children}</span>
+          <span className="underline underline-offset-2" style={{ color: "var(--c-ink)" }}>{children}</span>
         ),
         code: ({ children }) => (
-          <code className="rounded-md bg-neutral-200 px-1.5 py-0.5 font-mono text-[0.9em] text-amber-900/95 dark:bg-white/10 dark:text-amber-100/95">
+          <code className="rounded-md px-1.5 py-0.5 font-mono text-[0.9em]" style={{ background: "rgba(28,26,23,0.08)", color: "var(--c-accent)" }}>
             {children}
           </code>
         ),
         "strike-through": ({ children }) => (
-          <s className="text-neutral-600 line-through decoration-neutral-400 dark:text-white/65 dark:decoration-white/25">
+          <s className="line-through" style={{ color: "var(--c-muted)" }}>
             {children}
           </s>
         ),
@@ -202,12 +205,12 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
   };
 
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased selection:bg-amber-500/20 dark:bg-[#121212] dark:text-white dark:selection:bg-amber-500/30">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh antialiased">
         <article itemScope itemType="https://schema.org/Article">
           <div className={appPageContainerClass}>
-            <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-8 pt-[calc(var(--header-offset)+1.5rem)] pb-10 sm:gap-10 sm:pt-[calc(var(--header-offset)+2rem)] sm:pb-12">
+            <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-8 pb-10 sm:gap-10 sm:pb-12" style={{ paddingTop: "8rem" }}>
               <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-neutral-200 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-white/10">
                 <SafeContentImage
                   src={coverSrc}
@@ -220,41 +223,44 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
               </div>
 
               <header className="flex flex-col gap-4">
-                <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-amber-700 dark:text-amber-400/75">
+                <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: "var(--c-accent)" }}>
                   Travel guide
                 </p>
                 <h1
-                  className="m-0 text-[2rem] font-semibold leading-[1.04] tracking-tight text-neutral-900 sm:text-[2.7rem] dark:text-white"
+                  className="m-0 text-[2rem] font-medium leading-[1.04] tracking-tight sm:text-[2.7rem]"
+                  style={{ ...displayFont, color: "var(--c-ink)" }}
                   itemProp="headline"
                 >
                   {data.title}
                 </h1>
                 {data.summary ? (
                   <p
-                    className="m-0 max-w-3xl text-lg font-normal leading-relaxed text-neutral-600 dark:text-white/72"
+                    className="m-0 max-w-3xl text-lg font-normal leading-relaxed"
+                    style={{ color: "var(--c-muted)" }}
                     itemProp="description"
                   >
                     {data.summary}
                   </p>
                 ) : null}
 
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-neutral-500 dark:text-white/58">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm" style={{ color: "var(--c-muted)" }}>
                   <span className="inline-flex items-center gap-1.5">
-                    <Clock className="h-4 w-4 text-amber-700 dark:text-amber-400/75" aria-hidden />
+                    <Clock className="h-4 w-4" style={{ color: "var(--c-accent)" }} aria-hidden />
                     <span>{readMinutes} min read</span>
                   </span>
-                  <span className="hidden h-1 w-1 rounded-full bg-neutral-300 sm:inline dark:bg-white/20" aria-hidden />
+                  <span className="hidden h-1 w-1 rounded-full sm:inline" style={{ background: "var(--c-rule)" }} aria-hidden />
                   {curator ? (
                     <a
                       href={`/curators/${curator.slug}`}
-                      className="text-amber-700 transition hover:text-amber-900 dark:text-amber-400/80 dark:hover:text-amber-300"
+                      className="transition hover:opacity-80"
+                      style={{ color: "var(--c-accent)" }}
                       itemProp="publisher"
                     >
                       {curator.name}
                     </a>
                   ) : (
                     <span
-                      className="text-neutral-500 dark:text-white/50"
+                      style={{ color: "var(--c-muted)" }}
                       itemProp="publisher"
                       itemScope
                       itemType="https://schema.org/Organization"
@@ -265,16 +271,13 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
                 </div>
               </header>
 
-              <div
-                className="border-t border-neutral-200 pt-8 dark:border-white/10"
-                itemProp="articleBody"
-              >
+              <div className="border-t pt-8" style={{ borderColor: "var(--c-rule)" }} itemProp="articleBody">
                 <PortableText value={data.body as PortableTextBlock[]} components={portableTextComponents} />
               </div>
 
               {curator ? (
-                <div className="mt-2 rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.04]">
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-white/45">
+                <div className="mt-2 rounded-2xl border p-5" style={{ borderColor: "var(--c-rule)" }}>
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "var(--c-muted)" }}>
                     Featured in
                   </p>
                   <div className="flex items-start gap-4">
@@ -282,23 +285,26 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
                       <img
                         src={curator.avatarUrl}
                         alt={curator.name}
-                        className="h-12 w-12 shrink-0 rounded-full object-cover ring-1 ring-neutral-200 dark:ring-white/10"
+                        className="h-12 w-12 shrink-0 rounded-full object-cover"
+                        style={{ boxShadow: "0 0 0 1px var(--c-rule)" }}
                       />
                     ) : null}
                     <div className="min-w-0 flex-1">
                       <a
                         href={`/curators/${curator.slug}`}
-                        className="font-semibold text-neutral-900 no-underline transition hover:text-amber-700 dark:text-white dark:hover:text-amber-300"
+                        className="font-semibold no-underline transition hover:opacity-80"
+                        style={{ color: "var(--c-ink)" }}
                       >
                         {curator.name}
                       </a>
                       {curator.tagline ? (
-                        <p className="mt-0.5 text-sm text-neutral-500 dark:text-white/62">{curator.tagline}</p>
+                        <p className="mt-0.5 text-sm" style={{ color: "var(--c-muted)" }}>{curator.tagline}</p>
                       ) : null}
                       <div className="mt-2.5 flex flex-wrap items-center gap-2">
                         <a
                           href={`/curators/${curator.slug}`}
-                          className="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3.5 py-1 text-xs font-medium text-neutral-700 no-underline transition hover:border-amber-400/50 hover:bg-amber-50 hover:text-amber-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:border-amber-400/30 dark:hover:text-amber-300"
+                          className="inline-flex items-center rounded-full border px-3.5 py-1 text-xs font-medium no-underline transition hover:opacity-80"
+                          style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                         >
                           See all from {curator.name}
                         </a>
@@ -307,7 +313,8 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
                             href={curator.websiteUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3.5 py-1 text-xs font-medium text-neutral-700 no-underline transition hover:border-amber-400/50 hover:bg-amber-50 hover:text-amber-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:border-amber-400/30 dark:hover:text-amber-300"
+                            className="inline-flex items-center rounded-full border px-3.5 py-1 text-xs font-medium no-underline transition hover:opacity-80"
+                            style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                           >
                             Visit website ↗
                           </a>
@@ -317,7 +324,8 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
                             href={curator.instagramUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3.5 py-1 text-xs font-medium text-neutral-700 no-underline transition hover:border-amber-400/50 hover:bg-amber-50 hover:text-amber-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:border-amber-400/30 dark:hover:text-amber-300"
+                            className="inline-flex items-center rounded-full border px-3.5 py-1 text-xs font-medium no-underline transition hover:opacity-80"
+                            style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                           >
                             Instagram ↗
                           </a>
@@ -329,18 +337,16 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
               ) : null}
 
               {isSignedIn ? (
-                <div
-                  className="mt-8 flex flex-col gap-4 border-t border-neutral-200 pt-7 sm:mt-10 dark:border-white/10"
-                  aria-label="Article actions"
-                >
-                  <p className="m-0 text-sm font-medium text-neutral-500 dark:text-white/50">
+                <div className="mt-8 flex flex-col gap-4 border-t pt-7 sm:mt-10" style={{ borderColor: "var(--c-rule)" }} aria-label="Article actions">
+                  <p className="m-0 text-sm font-medium" style={{ color: "var(--c-muted)" }}>
                     Save or share this guide
                   </p>
                   <div className="flex flex-wrap items-center gap-3">
                     <button
                       type="button"
                       onClick={openSaveModal}
-                      className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-300 bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900 shadow-sm transition hover:border-amber-500/50 hover:bg-amber-50/60 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 active:translate-y-px dark:border-white/15 dark:bg-white/[0.08] dark:text-white dark:shadow-none dark:hover:border-amber-400/35 dark:hover:bg-white/12 dark:focus-visible:ring-offset-black"
+                      className="inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:opacity-80 active:translate-y-px"
+                      style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                     >
                       <Bookmark className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
                       Add to profile
@@ -348,7 +354,8 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
                     <button
                       type="button"
                       onClick={openShareModal}
-                      className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-300 bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900 shadow-sm transition hover:border-amber-500/50 hover:bg-amber-50/60 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 active:translate-y-px dark:border-white/15 dark:bg-white/[0.08] dark:text-white dark:shadow-none dark:hover:border-amber-400/35 dark:hover:bg-white/12 dark:focus-visible:ring-offset-black"
+                      className="inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:opacity-80 active:translate-y-px"
+                      style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                     >
                       <Share2 className="h-4 w-4 opacity-80" strokeWidth={2.25} aria-hidden />
                       Share
@@ -360,6 +367,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
           </div>
         </article>
       </main>
+      <HomeFooter />
 
       <ShareLinkModal
         open={activeModal === "share"}
@@ -400,16 +408,16 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
           aria-live="polite"
           data-variant={toast.variant}
           className={[
-            "fixed bottom-6 left-1/2 z-[2000] w-[min(720px,calc(100vw-32px))] -translate-x-1/2 rounded-xl border px-3.5 py-3 text-sm shadow-2xl",
-            "border-neutral-200 bg-white/95 text-neutral-900 backdrop-blur-sm dark:border-white/12 dark:bg-neutral-950/90 dark:text-white",
+            "fixed bottom-6 left-1/2 z-[2000] w-[min(720px,calc(100vw-32px))] -translate-x-1/2 rounded-xl border px-3.5 py-3 text-sm shadow-2xl backdrop-blur-sm",
             toast.variant === "success" ? "border-emerald-500/30" : "",
-            toast.variant === "info" ? "border-amber-500/40 dark:border-amber-400/35" : "",
+            toast.variant === "info" ? "border-amber-500/40" : "",
             toast.variant === "error" ? "border-rose-500/30" : "",
           ].join(" ")}
+          style={{ background: "var(--c-bg)", color: "var(--c-ink)" }}
         >
           {toast.message}
         </div>
       ) : null}
-    </>
+    </div>
   );
 }

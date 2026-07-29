@@ -1,13 +1,14 @@
 import { appPageContainerClass } from "@/lib/appLayout";
-import Header from "../../components/Header";
+import IslandNav from "../../components/IslandNav";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 
 export default function ArticleDetailLoading() {
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-[#121212] dark:text-white">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh antialiased">
         <div className={appPageContainerClass}>
-          <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-8 pt-[calc(var(--header-offset)+1.5rem)] pb-10 sm:gap-10 sm:pt-[calc(var(--header-offset)+2rem)] sm:pb-12">
+          <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-8 pb-10 sm:gap-10 sm:pb-12" style={{ paddingTop: "8rem" }}>
             <div
               className="aspect-[16/9] w-full animate-pulse rounded-2xl bg-neutral-200 dark:bg-white/10"
               aria-hidden
@@ -35,6 +36,6 @@ export default function ArticleDetailLoading() {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }

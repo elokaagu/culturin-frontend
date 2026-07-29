@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 import { notFound } from "next/navigation";
 
-import Header from "../../../components/Header";
+import IslandNav from "../../../components/IslandNav";
+import HomeFooter from "../../../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../../../components/SafeContentImage";
 import { getTravelGuideCategory, getTravelGuideContent } from "../../../../lib/travelGuideContent";
 import { getShowcaseBlogCards } from "../../../../lib/cms/showcaseContent";
@@ -13,6 +15,8 @@ import {
   isBundledPlaceholderSrc,
   resolveContentImageSrc,
 } from "../../../../lib/imagePlaceholder";
+
+const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
 
 export const revalidate = 300;
 
@@ -43,31 +47,32 @@ export default function GuideDetailPage({
   );
 
   return (
-    <>
-      <Header />
-      <main className="min-h-dvh bg-neutral-50 pb-16 pt-[var(--header-offset)] text-neutral-900 antialiased dark:bg-[#121212] dark:text-white">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main className="min-h-dvh pb-16 antialiased" style={{ paddingTop: "8rem" }}>
         <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
           <Link
             href="/travel-guides"
-            className="inline-flex items-center text-sm font-medium text-amber-700 no-underline transition hover:text-amber-900 dark:text-amber-400/85 dark:hover:text-amber-300"
+            className="inline-flex items-center text-sm font-medium no-underline transition hover:opacity-80"
+            style={{ color: "var(--c-accent)" }}
           >
             ← Back to travel guides
           </Link>
 
-          <header className="mt-6 grid gap-6 border-b border-neutral-200 pb-8 dark:border-white/10 md:grid-cols-[1.1fr_1fr]">
+          <header className="mt-6 grid gap-6 border-b pb-8 md:grid-cols-[1.1fr_1fr]" style={{ borderColor: "var(--c-rule)" }}>
             <div>
-              <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white sm:text-5xl">
+              <h1 className="text-4xl font-medium tracking-tight sm:text-5xl" style={{ ...displayFont, color: "var(--c-ink)" }}>
                 {content.title}
               </h1>
-              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-600 dark:text-white/75">{content.intro}</p>
-              <ul className="mt-5 list-disc space-y-1 pl-5 text-sm text-neutral-600 marker:text-amber-600 dark:text-white/70 dark:marker:text-amber-400/80">
+              <p className="mt-4 max-w-2xl text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>{content.intro}</p>
+              <ul className="mt-5 list-disc space-y-1 pl-5 text-sm" style={{ color: "var(--c-muted)" }}>
                 {content.keyPoints.map((point) => (
                   <li key={point}>{point}</li>
                 ))}
               </ul>
             </div>
 
-            <div className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100 dark:border-white/10 dark:bg-neutral-950">
+            <div className="relative overflow-hidden rounded-2xl border" style={{ borderColor: "var(--c-rule)" }}>
               {category.imageUrl ? (
                 <SafeContentImage
                   src={category.imageUrl}
@@ -91,24 +96,22 @@ export default function GuideDetailPage({
 
           <section className="mt-8 grid gap-4 sm:grid-cols-2">
             {content.sections.map((section) => (
-              <article
-                key={section.title}
-                className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-neutral-950/70 dark:shadow-none"
-              >
-                <h2 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-white">{section.title}</h2>
-                <p className="mt-3 text-base leading-relaxed text-neutral-600 dark:text-white/75">{section.body}</p>
+              <article key={section.title} className="rounded-xl border p-5" style={{ borderColor: "var(--c-rule)" }}>
+                <h2 className="text-2xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>{section.title}</h2>
+                <p className="mt-3 text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>{section.body}</p>
               </article>
             ))}
           </section>
 
           <section className="mt-8">
-            <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">Explore this guide</h2>
+            <h2 className="text-xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>Explore this guide</h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {content.searchLinks.map((item) => (
                 <Link
                   key={item.query}
                   href={`/search?query=${encodeURIComponent(item.query)}`}
-                  className="rounded-full border border-neutral-300 bg-white px-3.5 py-1.5 text-sm font-medium text-neutral-800 no-underline transition hover:border-amber-500/40 hover:bg-amber-50/50 dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
+                  className="rounded-full border px-3.5 py-1.5 text-sm font-medium no-underline transition hover:opacity-80"
+                  style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                 >
                   {item.label}
                 </Link>
@@ -118,7 +121,7 @@ export default function GuideDetailPage({
 
           {featuredCards.length > 0 ? (
             <section className="mt-10">
-              <h2 className="mb-4 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">Featured reads</h2>
+              <h2 className="mb-4 text-xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>Featured reads</h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {featuredCards.map((card) => {
                   const imageSrc = resolveContentImageSrc(card.titleImageUrl);
@@ -126,7 +129,8 @@ export default function GuideDetailPage({
                     <Link
                       key={card.currentSlug}
                       href={`/articles/${card.currentSlug}`}
-                      className="group overflow-hidden rounded-xl border border-neutral-200 bg-white no-underline shadow-sm transition hover:border-amber-200 dark:border-white/10 dark:bg-neutral-950/70 dark:shadow-none"
+                      className="group overflow-hidden rounded-xl border no-underline transition"
+                      style={{ borderColor: "var(--c-rule)" }}
                     >
                       <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
                         <SafeContentImage
@@ -139,10 +143,10 @@ export default function GuideDetailPage({
                         />
                       </div>
                       <div className="p-4">
-                        <h3 className="line-clamp-2 text-lg font-semibold leading-tight text-neutral-900 dark:text-white">
+                        <h3 className="line-clamp-2 text-lg font-medium leading-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>
                           {card.title}
                         </h3>
-                        <p className="mt-2 line-clamp-2 text-sm text-neutral-600 dark:text-white/70">{card.summary}</p>
+                        <p className="mt-2 line-clamp-2 text-sm" style={{ color: "var(--c-muted)" }}>{card.summary}</p>
                       </div>
                     </Link>
                   );
@@ -152,6 +156,7 @@ export default function GuideDetailPage({
           ) : null}
         </div>
       </main>
-    </>
+      <HomeFooter />
+    </div>
   );
 }
