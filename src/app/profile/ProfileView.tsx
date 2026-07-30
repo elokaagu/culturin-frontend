@@ -25,11 +25,17 @@ import { SUPABASE_PUBLIC_MEDIA_BUCKET } from "@/lib/storageConstants";
 
 import { GoogleSignInButton } from "../components/AuthButtons";
 import { useAppAuth, useSupabaseAuth } from "../components/SupabaseAuthProvider";
+import IslandNav from "../components/IslandNav";
+import HomeFooter from "../components/HomeFooter";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import LanguageToolsPanel from "./LanguageToolsPanel";
 import ProfileSpotLists from "./ProfileSpotLists";
 import SpotifyPlaylistsPanel from "./SpotifyPlaylistsPanel";
 
 const BIO_MAX_LEN = 500;
+const pageWrapStyle = { background: EDITORIAL_BG, color: EDITORIAL_INK };
+const tabActiveStyle = { background: "var(--c-bg)", color: "var(--c-ink)", boxShadow: "0 0 0 1px var(--c-rule)" };
+const tabInactiveStyle = { color: "var(--c-muted)" };
 
 type TabId = "elements" | "collections" | "language" | "playlists";
 
@@ -203,47 +209,54 @@ export default function ProfileView() {
 
   if (status === "loading") {
     return (
-      <main className="min-h-dvh min-w-0 overflow-x-clip bg-neutral-50 pb-[max(5rem,env(safe-area-inset-bottom,0px))] pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
-        <div className="mx-auto max-w-6xl px-5 pt-10">
-          <div className="mx-auto flex max-w-md animate-pulse flex-col items-center gap-4 sm:mx-0 sm:max-w-none sm:flex-row sm:items-start">
-            <div className="h-32 w-32 shrink-0 rounded-full bg-neutral-200 dark:bg-white/10" />
-            <div className="w-full space-y-3">
-              <div className="mx-auto h-8 w-48 rounded-lg bg-neutral-200 dark:bg-white/10 sm:mx-0" />
-              <div className="mx-auto h-4 w-32 rounded bg-neutral-200 dark:bg-white/10 sm:mx-0" />
-              <div className="mx-auto h-4 w-full max-w-sm rounded bg-neutral-200 dark:bg-white/10 sm:mx-0" />
+      <div className={editorialScopeClass} style={pageWrapStyle}>
+        <IslandNav />
+        <main className="min-h-dvh min-w-0 overflow-x-clip pb-[max(5rem,env(safe-area-inset-bottom,0px))]" style={{ paddingTop: "8rem" }}>
+          <div className="mx-auto max-w-6xl px-5 pt-10">
+            <div className="mx-auto flex max-w-md animate-pulse flex-col items-center gap-4 sm:mx-0 sm:max-w-none sm:flex-row sm:items-start">
+              <div className="h-32 w-32 shrink-0 rounded-full bg-neutral-200 dark:bg-white/10" />
+              <div className="w-full space-y-3">
+                <div className="mx-auto h-8 w-48 rounded-lg bg-neutral-200 dark:bg-white/10 sm:mx-0" />
+                <div className="mx-auto h-4 w-32 rounded bg-neutral-200 dark:bg-white/10 sm:mx-0" />
+                <div className="mx-auto h-4 w-full max-w-sm rounded bg-neutral-200 dark:bg-white/10 sm:mx-0" />
+              </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+        <HomeFooter />
+      </div>
     );
   }
 
   if (status === "unauthenticated") {
     return (
-      <main className="min-h-dvh min-w-0 overflow-x-clip bg-neutral-50 pb-[max(5rem,env(safe-area-inset-bottom,0px))] pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
-        <div className="mx-auto flex max-w-md flex-col items-center gap-6 px-5 pt-16 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">Your Culturin profile</h1>
-          <p className="text-sm text-neutral-600 dark:text-white/65">
-            Sign in to save guides, curate your library, and show your world on your profile.
-          </p>
-          <GoogleSignInButton appearance="default" />
-          <Link
-            href="/"
-            className="text-sm font-medium text-amber-800 underline-offset-4 hover:underline dark:text-amber-400/90"
-          >
-            Back home
-          </Link>
-        </div>
-      </main>
+      <div className={editorialScopeClass} style={pageWrapStyle}>
+        <IslandNav />
+        <main className="min-h-dvh min-w-0 overflow-x-clip pb-[max(5rem,env(safe-area-inset-bottom,0px))]" style={{ paddingTop: "8rem" }}>
+          <div className="mx-auto flex max-w-md flex-col items-center gap-6 px-5 pt-16 text-center">
+            <h1 className="text-2xl font-medium tracking-tight" style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}>Your Culturin profile</h1>
+            <p className="text-sm" style={{ color: "var(--c-muted)" }}>
+              Sign in to save guides, curate your library, and show your world on your profile.
+            </p>
+            <GoogleSignInButton appearance="default" />
+            <Link href="/" className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: "var(--c-accent)" }}>
+              Back home
+            </Link>
+          </div>
+        </main>
+        <HomeFooter />
+      </div>
     );
   }
 
   const initials = initialsFromName(displayName, email);
 
   return (
-    <main className="min-h-dvh min-w-0 overflow-x-clip bg-neutral-50 pb-[max(6rem,env(safe-area-inset-bottom,0px))] pt-[var(--header-offset)] text-neutral-900 dark:bg-[#121212] dark:text-white">
+    <div className={editorialScopeClass} style={pageWrapStyle}>
+    <IslandNav />
+    <main className="min-h-dvh min-w-0 overflow-x-clip pb-[max(6rem,env(safe-area-inset-bottom,0px))]" style={{ paddingTop: "8rem" }}>
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
-        <header className="flex flex-col items-center gap-6 border-b border-neutral-200 pb-10 pt-8 dark:border-white/[0.08] sm:flex-row sm:items-start sm:gap-10">
+        <header className="flex flex-col items-center gap-6 border-b pb-10 pt-8 sm:flex-row sm:items-start sm:gap-10" style={{ borderColor: "var(--c-rule)" }}>
           <div className="flex flex-col items-center gap-2 sm:items-start">
             {supabase && user ? (
               <>
@@ -323,7 +336,8 @@ export default function ProfileView() {
                 type="button"
                 onClick={() => avatarInputRef.current?.click()}
                 disabled={avatarUploading}
-                className="text-xs font-medium text-neutral-500 underline-offset-2 hover:text-neutral-800 hover:underline disabled:cursor-not-allowed disabled:opacity-50 dark:text-white/62 dark:hover:text-white/80"
+                className="text-xs font-medium underline-offset-2 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+                style={{ color: "var(--c-muted)" }}
               >
                 {avatarUploading ? "Uploading…" : "Change photo"}
               </button>
@@ -331,8 +345,8 @@ export default function ProfileView() {
           </div>
 
           <div className="min-w-0 flex-1 text-center sm:pt-1 sm:text-left">
-            <h1 className="text-3xl font-semibold tracking-tight text-neutral-950 dark:text-white sm:text-4xl">{displayName}</h1>
-            <p className="mt-1.5 text-sm text-neutral-500 dark:text-white/58">{handle}</p>
+            <h1 className="text-3xl font-medium tracking-tight sm:text-4xl" style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}>{displayName}</h1>
+            <p className="mt-1.5 text-sm" style={{ color: "var(--c-muted)" }}>{handle}</p>
             {editingBio ? (
               <div className="mt-4 w-full max-w-xl sm:mx-0">
                 <textarea
@@ -340,11 +354,12 @@ export default function ProfileView() {
                   onChange={(ev) => setBioDraft(ev.target.value.slice(0, BIO_MAX_LEN))}
                   placeholder="Add a short bio…"
                   rows={4}
-                  className="w-full resize-y rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm leading-relaxed text-neutral-900 placeholder:text-neutral-400 focus:border-amber-500/50 focus:outline-none focus:ring-2 focus:ring-amber-500/25 dark:border-white/15 dark:bg-white/[0.06] dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-white/25 dark:focus:ring-violet-400/40"
+                  className="w-full resize-y rounded-xl border px-3.5 py-2.5 text-sm leading-relaxed outline-none focus:ring-2"
+                  style={{ borderColor: "var(--c-rule)", background: "var(--c-bg)", color: "var(--c-ink)" }}
                   disabled={savingBio}
                 />
                 <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-xs text-neutral-400 dark:text-white/45">
+                  <span className="text-xs" style={{ color: "var(--c-muted)" }}>
                     {bioDraft.length}/{BIO_MAX_LEN}
                   </span>
                   <div className="flex gap-2">
@@ -352,7 +367,8 @@ export default function ProfileView() {
                       type="button"
                       onClick={cancelBioEdit}
                       disabled={savingBio}
-                      className="rounded-full border border-neutral-300 bg-transparent px-4 py-1.5 text-sm font-medium text-neutral-700 transition hover:border-neutral-400 hover:text-neutral-950 disabled:opacity-50 dark:border-white/15 dark:text-white/70 dark:hover:border-white/30 dark:hover:text-white"
+                      className="rounded-full border bg-transparent px-4 py-1.5 text-sm font-medium transition hover:opacity-80 disabled:opacity-50"
+                      style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                     >
                       Cancel
                     </button>
@@ -360,7 +376,8 @@ export default function ProfileView() {
                       type="button"
                       onClick={() => void saveBio()}
                       disabled={savingBio}
-                      className="rounded-full border border-neutral-900/15 bg-neutral-900 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:bg-white/10 dark:hover:bg-white/15"
+                      className="rounded-full px-4 py-1.5 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                      style={{ background: "var(--c-accent)" }}
                     >
                       {savingBio ? "Saving…" : "Save bio"}
                     </button>
@@ -368,40 +385,43 @@ export default function ProfileView() {
                 </div>
               </div>
             ) : bio ? (
-              <p className="mt-4 max-w-xl text-sm leading-relaxed text-neutral-600 dark:text-white/70 sm:mx-0">{bio}</p>
+              <p className="mt-4 max-w-xl text-sm leading-relaxed sm:mx-0" style={{ color: "var(--c-muted)" }}>{bio}</p>
             ) : (
-              <p className="mt-4 max-w-xl text-sm text-neutral-400 dark:text-white/50 sm:mx-0">Add a bio…</p>
+              <p className="mt-4 max-w-xl text-sm sm:mx-0" style={{ color: "var(--c-muted)" }}>Add a bio…</p>
             )}
             {!editingBio && supabase && user ? (
               <p className="mt-2 max-w-xl sm:mx-0">
                 <button
                   type="button"
                   onClick={startBioEdit}
-                  className="text-sm font-medium text-amber-800 underline-offset-2 hover:underline dark:text-amber-400/90"
+                  className="text-sm font-medium underline-offset-2 hover:underline"
+                  style={{ color: "var(--c-accent)" }}
                 >
                   {bio ? "Edit bio" : "Add bio"}
                 </button>
               </p>
             ) : !editingBio && !supabase ? (
-              <p className="mt-2 max-w-xl text-xs text-neutral-500 dark:text-white/45 sm:mx-0">
+              <p className="mt-2 max-w-xl text-xs sm:mx-0" style={{ color: "var(--c-muted)" }}>
                 Profile editing isn’t available in this preview. Try again later.
               </p>
             ) : null}
             {profileMessage ? (
-              <p className="mt-2 max-w-xl text-sm text-amber-800 dark:text-amber-200/90 sm:mx-0" role="status">
+              <p className="mt-2 max-w-xl text-sm sm:mx-0" style={{ color: "var(--c-accent)" }} role="status">
                 {profileMessage}
               </p>
             ) : null}
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
               <Link
                 href="/settings"
-                className="inline-flex rounded-full border border-neutral-300 bg-white px-5 py-2 text-sm font-medium text-neutral-900 shadow-sm transition hover:border-neutral-400 hover:bg-neutral-50 dark:border-white/20 dark:bg-white/[0.04] dark:text-white dark:shadow-none dark:hover:border-white/35 dark:hover:bg-white/[0.08]"
+                className="inline-flex rounded-full border px-5 py-2 text-sm font-medium transition hover:opacity-80"
+                style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
               >
                 Edit profile
               </Link>
               <Link
                 href="/search"
-                className="inline-flex rounded-full px-5 py-2 text-sm font-medium text-neutral-600 transition hover:text-neutral-900 dark:text-white/65 dark:hover:text-white/85"
+                className="inline-flex rounded-full px-5 py-2 text-sm font-medium transition hover:opacity-80"
+                style={{ color: "var(--c-muted)" }}
               >
                 Search guides
               </Link>
@@ -418,16 +438,13 @@ export default function ProfileView() {
             role="tablist"
             aria-label="Profile content"
           >
-            <div className="inline-flex rounded-full border border-neutral-200 bg-neutral-100/90 p-1 dark:border-white/[0.1] dark:bg-white/[0.04]">
+            <div className="inline-flex rounded-full border p-1" style={{ borderColor: "var(--c-rule)" }}>
               <button
                 type="button"
                 role="tab"
                 aria-selected={tab === "elements"}
-                className={
-                  tab === "elements"
-                    ? "rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:shadow-sm dark:ring-0"
-                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/58 dark:hover:text-white/70"
-                }
+                className="rounded-full px-4 py-2 text-sm font-semibold transition"
+                style={tab === "elements" ? tabActiveStyle : tabInactiveStyle}
                 onClick={() => setTab("elements")}
               >
                 Elements ({articles.length})
@@ -436,11 +453,8 @@ export default function ProfileView() {
                 type="button"
                 role="tab"
                 aria-selected={tab === "collections"}
-                className={
-                  tab === "collections"
-                    ? "rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:shadow-sm dark:ring-0"
-                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/58 dark:hover:text-white/70"
-                }
+                className="rounded-full px-4 py-2 text-sm font-semibold transition"
+                style={tab === "collections" ? tabActiveStyle : tabInactiveStyle}
                 onClick={() => setTab("collections")}
               >
                 Trip lists ({listsCount})
@@ -449,11 +463,8 @@ export default function ProfileView() {
                 type="button"
                 role="tab"
                 aria-selected={tab === "language"}
-                className={
-                  tab === "language"
-                    ? "rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:shadow-sm dark:ring-0"
-                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/58 dark:hover:text-white/70"
-                }
+                className="rounded-full px-4 py-2 text-sm font-semibold transition"
+                style={tab === "language" ? tabActiveStyle : tabInactiveStyle}
                 onClick={() => setTab("language")}
               >
                 Language tools
@@ -462,11 +473,8 @@ export default function ProfileView() {
                 type="button"
                 role="tab"
                 aria-selected={tab === "playlists"}
-                className={
-                  tab === "playlists"
-                    ? "rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:shadow-sm dark:ring-0"
-                    : "rounded-full px-4 py-2 text-sm font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/58 dark:hover:text-white/70"
-                }
+                className="rounded-full px-4 py-2 text-sm font-semibold transition"
+                style={tab === "playlists" ? tabActiveStyle : tabInactiveStyle}
                 onClick={() => setTab("playlists")}
               >
                 Playlists ({spotifyCount})
@@ -480,17 +488,14 @@ export default function ProfileView() {
               role="group"
               aria-label="Grid density"
             >
-              <div className="inline-flex rounded-full border border-neutral-200 bg-neutral-100/90 p-1 dark:border-white/[0.1] dark:bg-white/[0.04]">
+              <div className="inline-flex rounded-full border p-1" style={{ borderColor: "var(--c-rule)" }}>
                 {([2, 3, 4] as const).map((d) => (
                   <button
                     key={d}
                     type="button"
                     onClick={setDensityCb(d)}
-                    className={
-                      density === d
-                        ? "rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-neutral-950 shadow-sm ring-1 ring-neutral-200/80 dark:bg-white/15 dark:text-white dark:shadow-none dark:ring-0"
-                        : "rounded-full px-3 py-1.5 text-xs font-medium text-neutral-500 transition hover:text-neutral-800 dark:text-white/50 dark:hover:text-white/70"
-                    }
+                    className="rounded-full px-3 py-1.5 text-xs font-semibold transition"
+                    style={density === d ? tabActiveStyle : tabInactiveStyle}
                     aria-pressed={density === d}
                     aria-label={`${d} columns`}
                   >
@@ -517,9 +522,9 @@ export default function ProfileView() {
         )}
 
         {tab === "elements" && articles.length === 0 ? (
-          <p className="mt-8 text-center text-sm text-neutral-600 dark:text-white/58">
+          <p className="mt-8 text-center text-sm" style={{ color: "var(--c-muted)" }}>
             No stories loaded yet. Open{" "}
-            <Link href="/travel-guides" className="font-medium text-amber-800 underline-offset-2 hover:underline dark:text-amber-400/90">
+            <Link href="/travel-guides" className="font-medium underline-offset-2 hover:underline" style={{ color: "var(--c-accent)" }}>
               Travel Guides
             </Link>{" "}
             to explore.
@@ -527,5 +532,7 @@ export default function ProfileView() {
         ) : null}
       </div>
     </main>
+    <HomeFooter />
+    </div>
   );
 }
