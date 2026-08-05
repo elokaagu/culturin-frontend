@@ -1,20 +1,26 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "next-view-transitions";
-import { useCallback, type ReactNode } from "react";
 
 import IslandNav from "./IslandNav";
 import HomeFooter from "./HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
-import ExploreWorldCountriesRail from "./ExploreWorldCountriesRail";
-import CuratedExperiencesRail from "./CuratedExperiencesRail";
-import TopVideosRail from "./TopVideosRail";
-import TrendingStoriesRail from "./TrendingStoriesRail";
+import WorldIndexGrid from "./WorldIndexGrid";
+import StoriesLeadList from "./StoriesLeadList";
+import WatchFilmstrip from "./WatchFilmstrip";
+import ExperiencesSpread from "./ExperiencesSpread";
+import PhilanthropySpotlight from "./PhilanthropySpotlight";
+import LanguageSpotlight from "./LanguageSpotlight";
+import SafeContentImage from "./SafeContentImage";
 import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
 import { exploreWorldCountries } from "@/lib/exploreWorldCountries";
-import { appPageContainerClass, homeSectionSeeAllClass } from "@/lib/appLayout";
-import { IMAGE_BLUR_DATA_URL } from "../../lib/imagePlaceholder";
+import { appPageContainerClass } from "@/lib/appLayout";
+import {
+  IMAGE_BLUR_DATA_URL,
+  cmsImageUnoptimized,
+  isBundledPlaceholderSrc,
+  resolveContentImageSrc,
+} from "../../lib/imagePlaceholder";
 
 type HomePageClientProps = {
   initialBlogs: simpleBlogCard[];
@@ -22,79 +28,107 @@ type HomePageClientProps = {
   initialProviders: providerHeroCard[];
 };
 
-const HERO_IMAGE =
-  "https://www.forbes.com/advisor/wp-content/uploads/2021/03/traveling-based-on-fare-deals.jpg";
-
 const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
 
 const mainClass = "min-h-dvh w-full min-w-0 overflow-x-clip pb-16 antialiased";
 
 const containerClass = appPageContainerClass;
 
-const heroShellClass = `${appPageContainerClass} sm:pb-2 sm:pt-2 md:pt-4`;
+const CONTENTS = [
+  { id: "stories", label: "Stories" },
+  { id: "explore-world", label: "Explore the world" },
+  { id: "learn-words", label: "Learn a few words" },
+  { id: "watch", label: "Watch" },
+  { id: "experiences", label: "Experiences" },
+  { id: "philanthropy", label: "Philanthropy" },
+];
 
-function EmptyRail({
-  message,
-  href,
-  linkLabel,
-}: {
-  message: string;
-  href: string;
-  linkLabel: string;
-}) {
+function currentDateline() {
+  return new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
+
+function ContentsStrip() {
   return (
-    <div className="rounded-xl border px-4 py-10 text-center sm:px-6" style={{ borderColor: "var(--c-rule)" }} role="status">
-      <p className="text-sm sm:text-base" style={{ color: "var(--c-muted)" }}>{message}</p>
-      <Link href={href} className={`mt-5 ${homeSectionSeeAllClass}`} style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}>
-        {linkLabel}
-      </Link>
-    </div>
+    <nav
+      aria-label="On this page"
+      className="flex flex-wrap gap-x-6 gap-y-2 border-y py-3 text-sm font-semibold tracking-[0.01em]"
+      style={{ borderColor: "var(--c-rule)" }}
+    >
+      {CONTENTS.map(({ id, label }) => (
+        <a key={id} href={`#${id}`} className="no-underline transition-colors hover:opacity-70" style={{ color: "var(--c-ink)" }}>
+          {label}
+        </a>
+      ))}
+    </nav>
   );
 }
 
-function HomeSection({
-  id,
-  title,
-  description,
-  viewAllHref,
-  children,
-}: {
-  id: string;
-  title: string;
-  description: string;
-  viewAllHref: string;
-  children: ReactNode;
-}) {
-  const headingId = `${id}-heading`;
-
+function IssueMasthead({ lead }: { lead: simpleBlogCard | undefined }) {
+  const leadImgSrc = lead ? resolveContentImageSrc(lead.titleImageUrl) : "";
   return (
-    <section
-      id={id}
-      className="py-8 sm:py-10"
-      aria-labelledby={headingId}
-    >
-      <div className={containerClass}>
-        <header className="mb-4 flex items-start justify-between gap-4 sm:mb-5">
-          <div className="min-w-0 flex-1 pr-2">
-            <h2
-              id={headingId}
-              className="text-xl font-medium tracking-tight sm:text-2xl"
+    <section className={`${containerClass} pb-8 pt-6 sm:pb-10 sm:pt-8`} aria-labelledby="home-hero-heading">
+      <div className="mb-5 flex flex-wrap items-baseline justify-between gap-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--c-accent)" }}>
+          The Culturin Edit
+        </p>
+        <p className="text-xs" style={{ color: "var(--c-muted)" }}>Issue — {currentDateline()}</p>
+      </div>
+
+      {lead ? (
+        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
+          <div className="min-w-0">
+            <h1
+              id="home-hero-heading"
+              className="text-balance text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl md:text-[2.75rem]"
               style={{ ...displayFont, color: "var(--c-ink)" }}
             >
-              {title}
-            </h2>
-            <p className="mt-1 max-w-2xl text-sm leading-relaxed sm:mt-1.5 sm:text-[0.95rem]" style={{ color: "var(--c-muted)" }}>
-              {description}
-            </p>
+              {lead.title}
+            </h1>
+            {lead.summary ? (
+              <p className="mt-4 max-w-xl text-pretty text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
+                {lead.summary}
+              </p>
+            ) : null}
+            <Link
+              href={`/articles/${lead.currentSlug}`}
+              className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold no-underline transition-colors hover:opacity-70"
+              style={{ color: "var(--c-accent)" }}
+            >
+              Read the story <span aria-hidden>→</span>
+            </Link>
           </div>
-          <Link href={viewAllHref} className={homeSectionSeeAllClass} style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}>
-            See all
-          </Link>
-        </header>
-        <div className="min-h-[1px]">
-          {children}
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border" style={{ borderColor: "var(--c-rule)" }}>
+            <SafeContentImage
+              src={leadImgSrc}
+              alt={lead.title}
+              blurDataURL={IMAGE_BLUR_DATA_URL}
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              unoptimized={isBundledPlaceholderSrc(leadImgSrc) || cmsImageUnoptimized(leadImgSrc)}
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="max-w-2xl">
+          <h1
+            id="home-hero-heading"
+            className="text-balance text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl md:text-5xl"
+            style={{ ...displayFont, color: "var(--c-ink)" }}
+          >
+            Travel global, live local
+          </h1>
+          <p className="mt-4 max-w-xl text-pretty text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
+            Discover a world of culture, stories, and experiences worth your time.
+          </p>
+          <Link
+            href="/destinations"
+            className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold no-underline transition-colors hover:opacity-70"
+            style={{ color: "var(--c-accent)" }}
+          >
+            Explore destinations <span aria-hidden>→</span>
+          </Link>
+        </div>
+      )}
     </section>
   );
 }
@@ -104,109 +138,35 @@ export default function HomePageClient({
   initialVideos,
   initialProviders,
 }: HomePageClientProps) {
-  const scrollToDiscover = useCallback(() => {
-    document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  const [leadStory, ...otherStories] = initialBlogs;
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
       <IslandNav />
       <main id="main-content" className={mainClass} style={{ paddingTop: "8rem" }}>
-        <section
-          className={`${heroShellClass} pb-6 pt-4 sm:pb-8 sm:pt-6`}
-          aria-labelledby="home-hero-heading"
-        >
-          <div className="grid grid-cols-1">
-            <div className="min-w-0">
-              <div
-                className="relative mx-auto aspect-[16/10] min-h-[min(48vh,26rem)] w-full overflow-hidden rounded-3xl border sm:min-h-[min(52vh,28rem)]"
-                style={{ borderColor: "var(--c-rule)" }}
-              >
-                <Image
-                  src={HERO_IMAGE}
-                  alt="Wide landscape view suggesting global travel and exploration"
-                  fill
-                  priority
-                  placeholder="blur"
-                  blurDataURL={IMAGE_BLUR_DATA_URL}
-                  sizes="(max-width: 1024px) 95vw, 1280px"
-                  className="object-cover"
-                />
-                <div
-                  className="pointer-events-none absolute inset-0 opacity-[0.28] mix-blend-overlay dark:opacity-[0.22]"
-                  style={{
-                    backgroundImage:
-                      "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.2) 1px, transparent 0)",
-                    backgroundSize: "16px 16px",
-                  }}
-                  aria-hidden
-                />
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/25"
-                  aria-hidden
-                />
-                <div className="pointer-events-none absolute inset-x-0 top-5 flex flex-wrap justify-center gap-2 px-4 sm:top-7 md:top-8">
-                  {["Travel", "Culture", "Community"].map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-white/50 bg-white/12 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-sm backdrop-blur-md sm:text-[11px]"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="absolute inset-0 flex flex-col items-center justify-end px-6 pb-10 pt-24 text-center sm:justify-center sm:pb-12 sm:pt-20 md:pt-16">
-                  <h1
-                    id="home-hero-heading"
-                    className="max-w-[22rem] text-balance text-3xl font-medium tracking-tight text-white drop-shadow-sm sm:max-w-xl sm:text-4xl sm:leading-[1.1] md:text-5xl md:leading-[1.08]"
-                    style={displayFont}
-                  >
-                    Travel global, live local
-                  </h1>
-                  <p className="mt-4 max-w-md text-pretty text-base font-medium leading-relaxed text-white/95 sm:text-lg">
-                    Discover a world of culture, stories, and experiences worth your time.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={scrollToDiscover}
-                    className="mt-8 inline-flex min-h-[44px] min-w-[8.5rem] items-center justify-center rounded-full px-8 py-3 text-sm font-semibold text-white shadow-lg transition-[transform,box-shadow,background-color] hover:opacity-90 active:translate-y-px"
-                    style={{ background: "var(--c-accent)" }}
-                  >
-                    Explore
-                  </button>
-                </div>
-              </div>
-            </div>
+        <IssueMasthead lead={leadStory} />
+
+        <div className={containerClass}>
+          <ContentsStrip />
+        </div>
+
+        <section id="stories" className="border-b py-10 sm:py-12" style={{ borderColor: "var(--c-rule)" }} aria-labelledby="stories-heading">
+          <div className={containerClass}>
+            <StoriesLeadList
+              stories={otherStories.length > 0 ? otherStories : initialBlogs}
+              title="Stories"
+              description="Editorial picks, city notes, and creator-led narratives worth saving."
+              viewAllHref="/articles"
+              headingId="stories-heading"
+            />
           </div>
         </section>
 
-        {/* Full-bleed cinematic handoff: soft gradient + masked blur between hero and Discover */}
-        <div
-          className="pointer-events-none relative left-1/2 w-[100dvw] max-w-[100dvw] -translate-x-1/2 overflow-x-clip"
-          aria-hidden
-        >
-          <div className="pointer-events-none relative h-16 w-full sm:h-24 md:h-28">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--c-bg)]" />
-            <div
-              className="absolute inset-0 supports-[backdrop-filter]:backdrop-blur-2xl"
-              style={{
-                maskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 100%)",
-                WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 100%)",
-              }}
-            />
-          </div>
-        </div>
-
-        <section
-          id="discover"
-          className="-mt-10 border-b pb-8 pt-4 sm:-mt-14 sm:pb-10 sm:pt-6"
-          style={{ borderColor: "var(--c-rule)" }}
-          aria-labelledby="explore-world-heading"
-        >
+        <section id="explore-world" className="border-b py-10 sm:py-12" style={{ borderColor: "var(--c-rule)" }} aria-labelledby="explore-world-heading">
           <div className={containerClass}>
-            <ExploreWorldCountriesRail
+            <WorldIndexGrid
               countries={exploreWorldCountries}
-              title="Explore the World"
+              title="Explore the world"
               description="Choose a country to open curated articles and guides for that place."
               viewAllHref="/destinations"
               headingId="explore-world-heading"
@@ -214,59 +174,41 @@ export default function HomePageClient({
           </div>
         </section>
 
-        <div className="pb-4 pt-2 sm:pt-3">
-          <HomeSection
-            id="trending-stories"
-            title="Trending stories"
-            description="Editorial picks, city notes, and creator-led narratives worth saving."
-            viewAllHref="/articles"
-          >
-            {initialBlogs.length > 0 ? (
-              <TrendingStoriesRail stories={initialBlogs} />
-            ) : (
-              <EmptyRail
-                message="Stories are being prepared. Open the articles library to browse what's live."
-                href="/articles"
-                linkLabel="Browse articles"
-              />
-            )}
-          </HomeSection>
+        <section id="learn-words" className="border-b py-10 sm:py-12" style={{ borderColor: "var(--c-rule)" }} aria-labelledby="learn-words-heading">
+          <div className={containerClass}>
+            <LanguageSpotlight headingId="learn-words-heading" />
+          </div>
+        </section>
 
-          <HomeSection
-            id="top-videos"
-            title="Video highlights"
-            description="Watch creator-led clips, local moments, and travel edits from around the world."
-            viewAllHref="/videos"
-          >
-            {initialVideos.length > 0 ? (
-              <TopVideosRail videos={initialVideos} />
-            ) : (
-              <EmptyRail
-                message="No videos are available yet. Browse the video library when you are ready."
-                href="/videos"
-                linkLabel="Browse videos"
-              />
-            )}
-          </HomeSection>
+        <section id="watch" className="border-b py-10 sm:py-12" style={{ borderColor: "var(--c-rule)" }} aria-labelledby="watch-heading">
+          <div className={containerClass}>
+            <WatchFilmstrip
+              videos={initialVideos}
+              title="Watch"
+              description="Creator-led clips, local moments, and travel edits from around the world."
+              viewAllHref="/videos"
+              headingId="watch-heading"
+            />
+          </div>
+        </section>
 
-          <HomeSection
-            id="curated-experiences"
-            title="Curated experiences"
-            description="Hand-picked experiences and partners you can explore next."
-            viewAllHref="/curated-experiences"
-          >
-            {initialProviders.length > 0 ? (
-              <CuratedExperiencesRail providers={initialProviders} />
-            ) : (
-              <EmptyRail
-                message="Experiences are loading into the catalog. Visit curated experiences to see the full list."
-                href="/curated-experiences"
-                linkLabel="View experiences"
-              />
-            )}
-          </HomeSection>
+        <section id="experiences" className="border-b py-10 sm:py-12" style={{ borderColor: "var(--c-rule)" }}>
+          <div className={containerClass}>
+            <ExperiencesSpread
+              providers={initialProviders}
+              title="Experiences"
+              description="Hand-picked experiences and partners you can explore next."
+              viewAllHref="/curated-experiences"
+              headingId="experiences-heading"
+            />
+          </div>
+        </section>
 
-        </div>
+        <section id="philanthropy" className="py-10 sm:py-12" aria-labelledby="philanthropy-heading">
+          <div className={containerClass}>
+            <PhilanthropySpotlight headingId="philanthropy-heading" />
+          </div>
+        </section>
       </main>
       <HomeFooter />
     </div>
