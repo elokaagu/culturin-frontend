@@ -1,25 +1,35 @@
 import { Link } from "next-view-transitions";
 
-import Header from "./components/Header";
+import IslandNav from "./components/IslandNav";
+import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK, EDITORIAL_MUTED } from "@/lib/theme/culturinTokens";
 
 export default function NotFoundPage() {
   return (
-    <>
-      <Header />
-      <main className="flex min-h-[60vh] flex-col items-center justify-center bg-neutral-50 px-5 pb-16 pt-[var(--header-offset)] text-center text-neutral-900 dark:bg-[#121212] dark:text-white">
-        <div className="flex max-w-lg flex-col items-center gap-4 rounded-2xl border border-neutral-200 bg-white/90 px-8 py-12 shadow-sm dark:border-white/10 dark:bg-neutral-950/60 dark:shadow-none">
-          <h1 className="text-3xl font-semibold sm:text-4xl">Page not found</h1>
-          <p className="text-base text-neutral-600 dark:text-white/75">
+    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
+      <IslandNav />
+      <main
+        className="flex min-h-dvh flex-col items-center justify-center px-5 pb-16 text-center"
+        style={{ paddingTop: "8rem" }}
+      >
+        <div className="flex max-w-lg flex-col items-center gap-4">
+          <h1
+            className="text-3xl font-medium sm:text-4xl"
+            style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+          >
+            Page not found
+          </h1>
+          <p className="text-base" style={{ color: EDITORIAL_MUTED }}>
             The page you are looking for does not exist or has been moved.
           </p>
           <Link
             href="/"
-            className="mt-2 inline-flex items-center justify-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-neutral-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
+            className="mt-2 inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            style={{ background: "var(--c-accent)" }}
           >
             Back to home
           </Link>
         </div>
       </main>
-    </>
+    </div>
   );
 }

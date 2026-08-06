@@ -18,6 +18,7 @@ import { useCallback, useState } from "react";
 import { useTransitionRouter } from "next-view-transitions";
 
 import { useTheme } from "../styles/ThemeContext";
+import { useStudioRole } from "./useStudioRole";
 
 function profileHref(userId: string | undefined) {
   return userId ? `/profile/${userId}` : "/profile";
@@ -71,9 +72,12 @@ export function AccountProfileDropdown({
 }: AccountProfileDropdownProps) {
   const router = useTransitionRouter();
   const { mode, setMode } = useTheme();
+  const role = useStudioRole();
   const [menuOpen, setMenuOpen] = useState(false);
   const label = sessionUser.name?.split(" ")[0] ?? "Account";
   const initials = initialsFromName(sessionUser.name || sessionUser.email);
+  const workspaceHref = role.isAdmin ? "/studio" : "/creator";
+  const workspaceLabel = role.isAdmin ? "Open Studio" : "Creator workspace";
 
   const go = useCallback(
     (href: string) => {
@@ -227,14 +231,16 @@ export function AccountProfileDropdown({
             </div>
           </div>
 
-          <div className="border-t border-neutral-200/90 px-2 py-1.5 dark:border-white/[0.08]">
-            <DropdownMenu.Item
-              className="cursor-pointer rounded-lg px-2 py-2 text-center text-xs font-semibold text-amber-800 outline-none data-[highlighted]:bg-amber-500/10 dark:text-amber-300/90 dark:data-[highlighted]:bg-amber-400/10"
-              onSelect={() => go("/studio")}
-            >
-              Open Studio
-            </DropdownMenu.Item>
-          </div>
+          {!role.loading ? (
+            <div className="border-t border-neutral-200/90 px-2 py-1.5 dark:border-white/[0.08]">
+              <DropdownMenu.Item
+                className="cursor-pointer rounded-lg px-2 py-2 text-center text-xs font-semibold text-amber-800 outline-none data-[highlighted]:bg-amber-500/10 dark:text-amber-300/90 dark:data-[highlighted]:bg-amber-400/10"
+                onSelect={() => go(workspaceHref)}
+              >
+                {workspaceLabel}
+              </DropdownMenu.Item>
+            </div>
+          ) : null}
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>

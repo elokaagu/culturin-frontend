@@ -14,7 +14,7 @@ const defaultState: StudioRoleState = {
   isAdmin: false,
 };
 
-/** Loads `/api/me/studio-role` once for Create menu + sidebar branching. */
+/** Loads `/api/me/studio-role` once for account menu Studio/Creator branching. */
 export function useStudioRole(): StudioRoleState {
   const [state, setState] = useState<StudioRoleState>(defaultState);
 
