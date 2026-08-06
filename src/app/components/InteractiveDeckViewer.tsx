@@ -1,12 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Document, Page, pdfjs } from "react-pdf";
 import { ChevronLeft, ChevronRight, Download, Maximize2, Minimize2, X } from "lucide-react";
 import { startDeckSession, trackPageView } from "@/lib/deckAnalytics";
 import { getCmsBrowserClient } from "@/lib/cms/browser";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
+
+const slideEase = [0.22, 1, 0.36, 1] as const;
 
 // Serve the worker from our own origin (avoids unpkg CDN / CSP failures that leave the viewer stuck on “Rendering…”).
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
@@ -47,6 +50,9 @@ export default function InteractiveDeckViewer({ token }: Props) {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
+  /** 1 = forward, -1 = back — drives the slide transition. */
+  const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
+  const reduceMotion = useReducedMotion();
   const [slideSize, setSlideSize] = useState<SlideSize>({ width: 800, maxHeight: 600 });
   const [pdfReady, setPdfReady] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
@@ -301,6 +307,7 @@ export default function InteractiveDeckViewer({ token }: Props) {
       maxPageReached.current = Math.max(maxPageReached.current, next);
       currentPageRef.current = next;
       pageEnteredAt.current = Date.now();
+      setSlideDirection(next > pageNumber ? 1 : -1);
       setPageNumber(next);
     },
     [flushPage, numPages, pageNumber],
@@ -654,21 +661,61 @@ export default function InteractiveDeckViewer({ token }: Props) {
           </span>
         </button>
 
-        <div className="max-h-full max-w-full overflow-hidden bg-black shadow-xl shadow-black/50">
+        <div className="relative max-h-full max-w-full overflow-hidden bg-black shadow-xl shadow-black/50">
           {useImages && currentImageUrl ? (
-            // Instant swap — no fade/exit that flashes a blank frame between slides.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={pageNumber}
-              src={currentImageUrl}
-              alt={`${deck.title} — page ${pageNumber}`}
-              width={slideSize.width}
-              className="block h-auto max-w-full select-none bg-black"
-              style={{ width: slideSize.width, maxHeight: slideSize.maxHeight, objectFit: "contain" }}
-              decoding="async"
-              fetchPriority="high"
-              draggable={false}
-            />
+            <>
+              {/* Invisible sizer so the stage keeps height while slides crossfade absolutely. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={currentImageUrl}
+                alt=""
+                aria-hidden
+                width={slideSize.width}
+                className="pointer-events-none block h-auto max-w-full select-none opacity-0"
+                style={{ width: slideSize.width, maxHeight: slideSize.maxHeight, objectFit: "contain" }}
+                decoding="async"
+                draggable={false}
+              />
+              <AnimatePresence initial={false} custom={slideDirection} mode="sync">
+                <motion.div
+                  key={pageNumber}
+                  custom={slideDirection}
+                  variants={{
+                    enter: (d: number) =>
+                      reduceMotion
+                        ? { opacity: 0 }
+                        : { opacity: 0, x: d * 56 },
+                    center: reduceMotion
+                      ? { opacity: 1 }
+                      : { opacity: 1, x: 0 },
+                    exit: (d: number) =>
+                      reduceMotion
+                        ? { opacity: 0 }
+                        : { opacity: 0, x: d * -56 },
+                  }}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: reduceMotion ? 0.12 : 0.34,
+                    ease: slideEase,
+                  }}
+                  className="absolute inset-0 flex items-center justify-center bg-black"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={currentImageUrl}
+                    alt={`${deck.title} — page ${pageNumber}`}
+                    width={slideSize.width}
+                    className="block h-auto max-w-full select-none object-contain"
+                    style={{ width: slideSize.width, maxHeight: slideSize.maxHeight }}
+                    decoding="async"
+                    fetchPriority="high"
+                    draggable={false}
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </>
           ) : (
             <Document
               file={pdfFile}
@@ -703,22 +750,37 @@ export default function InteractiveDeckViewer({ token }: Props) {
                 setPdfReady(false);
               }}
             >
-              <Page
-                pageNumber={pageNumber}
-                width={slideSize.width}
-                devicePixelRatio={devicePixelRatio}
-                renderTextLayer={false}
-                renderAnnotationLayer={false}
-                className="bg-black"
-                loading={
-                  <div
-                    className="flex items-center justify-center bg-black text-sm uppercase tracking-[0.2em] text-neutral-400"
-                    style={{ width: slideSize.width, minHeight: slideSize.width * 0.56 }}
-                  >
-                    Rendering…
-                  </div>
+              <motion.div
+                key={pageNumber}
+                initial={
+                  reduceMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, x: slideDirection * 48 }
                 }
-              />
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  duration: reduceMotion ? 0.12 : 0.32,
+                  ease: slideEase,
+                }}
+                className="bg-black"
+              >
+                <Page
+                  pageNumber={pageNumber}
+                  width={slideSize.width}
+                  devicePixelRatio={devicePixelRatio}
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                  className="bg-black"
+                  loading={
+                    <div
+                      className="flex items-center justify-center bg-black text-sm uppercase tracking-[0.2em] text-neutral-400"
+                      style={{ width: slideSize.width, minHeight: slideSize.width * 0.56 }}
+                    >
+                      Rendering…
+                    </div>
+                  }
+                />
+              </motion.div>
             </Document>
           )}
         </div>
