@@ -40,8 +40,8 @@ export default async function StudioDeckDetailPage({ params, searchParams }: Pag
   if (!deck) notFound();
 
   return (
-    <div className="p-4 sm:p-6 md:p-8">
-      <p className="text-xs font-semibold uppercase tracking-wide text-culturin-700 dark:text-culturin-300">
+    <div className="p-4 sm:p-6 md:max-w-4xl md:p-10">
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-culturin-700 dark:text-culturin-300">
         Sales decks
       </p>
       <div className="mt-4">

@@ -228,8 +228,8 @@ export default function InteractiveDeckViewer({ token }: Props) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-[#121212] flex items-center justify-center">
-        <p className="text-neutral-500 dark:text-white/60 text-sm tracking-[0.2em] uppercase animate-pulse">
+      <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white">
+        <p className="animate-pulse text-xs font-semibold uppercase tracking-[0.2em] text-culturin-300">
           Loading deck…
         </p>
       </div>
@@ -238,37 +238,35 @@ export default function InteractiveDeckViewer({ token }: Props) {
 
   if (error || !deck) {
     return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-[#121212] flex flex-col items-center justify-center px-6 text-center">
-        <p className="font-display text-2xl mb-2">Deck unavailable</p>
-        <p className="text-sm text-neutral-500 dark:text-white/60">
-          {error || "This link is no longer active."}
-        </p>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#0a0a0a] px-6 text-center text-white">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-culturin-300">Culturin</p>
+        <p className="mb-2 font-display text-2xl font-semibold">Deck unavailable</p>
+        <p className="text-sm text-white/60">{error || "This link is no longer active."}</p>
       </div>
     );
   }
 
   if (!emailPassed) {
     return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-[#121212] flex flex-col items-center justify-center px-6">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#0a0a0a] px-6 text-white">
         <div className="w-full max-w-sm text-center">
-          <p className="font-display text-3xl mb-2">{deck.title}</p>
-          <p className="text-xs tracking-[0.25em] uppercase text-neutral-500 dark:text-white/60 mb-10">
-            Enter your details to view
-          </p>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-culturin-300">Culturin</p>
+          <p className="mb-2 font-display text-3xl font-semibold tracking-tight">{deck.title}</p>
+          <p className="mb-10 text-xs uppercase tracking-[0.2em] text-white/55">Enter your details to view</p>
           <form onSubmit={handleEmailGate} className="space-y-4 text-left">
             <div>
-              <label className="block text-[10px] tracking-[0.2em] uppercase text-neutral-500 dark:text-white/60 mb-2">
+              <label className="mb-2 block text-[0.7rem] font-medium uppercase tracking-[0.12em] text-white/58">
                 Name
               </label>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-transparent border border-neutral-200 dark:border-white/10 px-4 py-3 text-sm focus:outline-none focus:border-culturin-400/50"
+                className="w-full rounded-xl border border-white/12 bg-black/60 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/35 focus-visible:border-culturin-400/55 focus-visible:ring-2 focus-visible:ring-culturin-400/20"
                 placeholder="Your name"
               />
             </div>
             <div>
-              <label className="block text-[10px] tracking-[0.2em] uppercase text-neutral-500 dark:text-white/60 mb-2">
+              <label className="mb-2 block text-[0.7rem] font-medium uppercase tracking-[0.12em] text-white/58">
                 Email
               </label>
               <input
@@ -276,13 +274,13 @@ export default function InteractiveDeckViewer({ token }: Props) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-transparent border border-neutral-200 dark:border-white/10 px-4 py-3 text-sm focus:outline-none focus:border-culturin-400/50"
+                className="w-full rounded-xl border border-white/12 bg-black/60 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/35 focus-visible:border-culturin-400/55 focus-visible:ring-2 focus-visible:ring-culturin-400/20"
                 placeholder="you@company.com"
               />
             </div>
             <button
               type="submit"
-              className="w-full mt-2 px-5 py-3 text-xs tracking-[0.2em] uppercase bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90 transition-opacity"
+              className="mt-2 w-full rounded-full border border-culturin-400/40 bg-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-culturin-100"
             >
               Continue
             </button>
@@ -294,15 +292,14 @@ export default function InteractiveDeckViewer({ token }: Props) {
 
   if (!passwordPassed) {
     return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-[#121212] flex flex-col items-center justify-center px-6">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#0a0a0a] px-6 text-white">
         <div className="w-full max-w-sm text-center">
-          <p className="font-display text-3xl mb-2">{deck.title}</p>
-          <p className="text-xs tracking-[0.25em] uppercase text-neutral-500 dark:text-white/60 mb-10">
-            Password required
-          </p>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-culturin-300">Culturin</p>
+          <p className="mb-2 font-display text-3xl font-semibold tracking-tight">{deck.title}</p>
+          <p className="mb-10 text-xs uppercase tracking-[0.2em] text-white/55">Password required</p>
           <form onSubmit={handlePasswordGate} className="space-y-4 text-left">
             <div>
-              <label className="block text-[10px] tracking-[0.2em] uppercase text-neutral-500 dark:text-white/60 mb-2">
+              <label className="mb-2 block text-[0.7rem] font-medium uppercase tracking-[0.12em] text-white/58">
                 Password
               </label>
               <input
@@ -310,18 +307,20 @@ export default function InteractiveDeckViewer({ token }: Props) {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-transparent border border-neutral-200 dark:border-white/10 px-4 py-3 text-sm focus:outline-none focus:border-culturin-400/50"
+                className="w-full rounded-xl border border-white/12 bg-black/60 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/35 focus-visible:border-culturin-400/55 focus-visible:ring-2 focus-visible:ring-culturin-400/20"
                 placeholder="Enter password"
                 autoFocus
               />
             </div>
             {passwordError && (
-              <p className="text-sm text-red-600 dark:text-red-400">{passwordError}</p>
+              <p className="rounded-lg border border-rose-400/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
+                {passwordError}
+              </p>
             )}
             <button
               type="submit"
               disabled={unlocking}
-              className="w-full mt-2 px-5 py-3 text-xs tracking-[0.2em] uppercase bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90 transition-opacity disabled:opacity-40"
+              className="mt-2 w-full rounded-full border border-culturin-400/40 bg-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-culturin-100 disabled:opacity-40"
             >
               {unlocking ? "Checking…" : "View deck"}
             </button>
@@ -333,45 +332,45 @@ export default function InteractiveDeckViewer({ token }: Props) {
 
   if (!fileUrl) {
     return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-[#121212] flex items-center justify-center">
-        <p className="text-sm text-neutral-500 dark:text-white/60">Could not load this deck.</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white">
+        <p className="text-sm text-white/60">Could not load this deck.</p>
       </div>
     );
   }
 
   return (
     <div
-      className="min-h-screen bg-neutral-50 dark:bg-[#121212] text-neutral-900 dark:text-white flex flex-col"
+      className="flex min-h-screen flex-col bg-[#0a0a0a] text-white"
       onContextMenu={deck.allow_download ? undefined : (e) => e.preventDefault()}
     >
-      <header className="flex items-center justify-between px-4 md:px-8 h-14 border-b border-neutral-200 dark:border-white/10 gap-4">
+      <header className="flex h-14 items-center justify-between gap-4 border-b border-white/10 px-4 md:px-8">
         <div className="min-w-0">
-          <p className="text-[10px] tracking-[0.25em] uppercase text-neutral-500 dark:text-white/60 mb-0.5">
+          <p className="mb-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-culturin-300">
             Culturin
             {deck.partner_label ? ` · ${deck.partner_label}` : ""}
           </p>
-          <h1 className="text-sm md:text-base truncate font-display">{deck.title}</h1>
+          <h1 className="truncate font-display text-sm font-semibold md:text-base">{deck.title}</h1>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex shrink-0 items-center gap-3">
           {deck.allow_download && (
             <a
               href={fileUrl}
               download
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs tracking-[0.15em] uppercase text-neutral-500 dark:text-white/60 hover:text-neutral-900 dark:text-white transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-white/60 transition-colors hover:text-culturin-300"
             >
-              <Download className="w-3.5 h-3.5" />
+              <Download className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Download</span>
             </a>
           )}
-          <p className="text-xs text-neutral-500 dark:text-white/60 tabular-nums">
+          <p className="tabular-nums text-xs text-white/60">
             {pdfReady ? `${pageNumber} / ${numPages}` : "…"}
           </p>
         </div>
       </header>
 
-      <div className="flex-1 flex items-center justify-center px-3 py-6 overflow-auto bg-neutral-100/80 dark:bg-white/5">
+      <div className="flex flex-1 items-center justify-center overflow-auto bg-white/[0.03] px-3 py-6">
         <AnimatePresence mode="wait">
           <motion.div
             key={pageNumber}
@@ -379,19 +378,17 @@ export default function InteractiveDeckViewer({ token }: Props) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -12 }}
             transition={{ duration: 0.25 }}
-            className="shadow-xl border border-neutral-200 dark:border-white/10 bg-white"
+            className="border border-white/10 bg-white shadow-xl shadow-black/40"
           >
             <Document
               file={fileUrl}
               loading={
-                <div className="w-[min(92vw,920px)] aspect-[4/3] flex items-center justify-center text-neutral-500 dark:text-white/60 text-sm tracking-[0.2em] uppercase">
+                <div className="flex aspect-[4/3] w-[min(92vw,920px)] items-center justify-center text-sm uppercase tracking-[0.2em] text-neutral-500">
                   Rendering…
                 </div>
               }
               error={
-                <div className="px-8 py-16 text-center text-neutral-500 dark:text-white/60 text-sm">
-                  Could not load this PDF.
-                </div>
+                <div className="px-8 py-16 text-center text-sm text-neutral-500">Could not load this PDF.</div>
               }
               onLoadSuccess={onDocumentLoad}
             >
@@ -406,24 +403,24 @@ export default function InteractiveDeckViewer({ token }: Props) {
         </AnimatePresence>
       </div>
 
-      <footer className="flex items-center justify-center gap-4 px-4 py-4 border-t border-neutral-200 dark:border-white/10">
+      <footer className="flex items-center justify-center gap-4 border-t border-white/10 px-4 py-4">
         <button
           type="button"
           onClick={() => goToPage(pageNumber - 1)}
           disabled={pageNumber <= 1}
-          className="inline-flex items-center gap-2 px-4 py-2.5 text-xs tracking-[0.15em] uppercase border border-neutral-200 dark:border-white/10 disabled:opacity-30 hover:border-neutral-900 dark:hover:border-white transition-colors"
+          className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-xs uppercase tracking-[0.15em] transition-colors hover:border-culturin-400/50 hover:text-culturin-300 disabled:opacity-30"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="h-4 w-4" />
           Prev
         </button>
-        <div className="hidden sm:flex items-center gap-1.5 max-w-md overflow-x-auto px-2">
+        <div className="hidden max-w-md items-center gap-1.5 overflow-x-auto px-2 sm:flex">
           {Array.from({ length: numPages }, (_, i) => i + 1).map((n) => (
             <button
               key={n}
               type="button"
               onClick={() => goToPage(n)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                n === pageNumber ? "bg-neutral-900 dark:bg-white" : "bg-neutral-900 dark:bg-white/20 hover:bg-neutral-900 dark:bg-white/40"
+              className={`h-2 w-2 rounded-full transition-colors ${
+                n === pageNumber ? "bg-culturin-400" : "bg-white/20 hover:bg-white/40"
               }`}
               aria-label={`Go to page ${n}`}
             />
@@ -433,10 +430,10 @@ export default function InteractiveDeckViewer({ token }: Props) {
           type="button"
           onClick={() => goToPage(pageNumber + 1)}
           disabled={!numPages || pageNumber >= numPages}
-          className="inline-flex items-center gap-2 px-4 py-2.5 text-xs tracking-[0.15em] uppercase border border-neutral-200 dark:border-white/10 disabled:opacity-30 hover:border-neutral-900 dark:hover:border-white transition-colors"
+          className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-xs uppercase tracking-[0.15em] transition-colors hover:border-culturin-400/50 hover:text-culturin-300 disabled:opacity-30"
         >
           Next
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="h-4 w-4" />
         </button>
       </footer>
     </div>

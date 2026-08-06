@@ -8,8 +8,8 @@ const InteractiveDeckViewer = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex min-h-dvh items-center justify-center bg-neutral-50 dark:bg-[#121212]">
-        <p className="animate-pulse text-sm uppercase tracking-[0.2em] text-neutral-500">
+      <div className="flex min-h-dvh items-center justify-center bg-[#0a0a0a]">
+        <p className="animate-pulse text-xs font-semibold uppercase tracking-[0.2em] text-culturin-300">
           Loading deck…
         </p>
       </div>
@@ -23,8 +23,8 @@ export default function PublicDeckPage() {
 
   if (!token) {
     return (
-      <div className="flex min-h-dvh items-center justify-center bg-neutral-50 dark:bg-[#121212]">
-        <p className="text-sm text-neutral-500">Invalid deck link.</p>
+      <div className="flex min-h-dvh items-center justify-center bg-[#0a0a0a]">
+        <p className="text-sm text-white/60">Invalid deck link.</p>
       </div>
     );
   }
