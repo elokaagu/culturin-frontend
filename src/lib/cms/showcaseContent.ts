@@ -863,7 +863,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
         "Travel photographer Alexis Doyle approaches the world with curiosity and a refined appreciation for culture and place. We speak with her about creativity, a life in motion, and finding a sense of home in unexpected places.",
       currentSlug: "pontoon-muse-alexis-doyle",
       titleImageUrl:
-        "https://images.unsplash.com/photo-1539768942893-daf53e448371?auto=format&fit=crop&w=1200&q=80",
+        "https://fvnxiabwhjposfujtloa.supabase.co/storage/v1/object/public/media/6a283c46-d8d9-48a5-8412-a7a4ac4412fd/studio/1780489560249-Alexis-Doyle.jpg",
       curatorSlug: "pontoon",
     },
     full: {
@@ -873,7 +873,7 @@ const SHOWCASE_ARTICLES: Record<string, ShowcaseArticle> = {
       summary:
         "Travel photographer Alexis Doyle approaches the world with curiosity and a refined appreciation for culture and place. We speak with her about creativity, a life in motion, and finding a sense of home in unexpected places.",
       titleImageUrl:
-        "https://images.unsplash.com/photo-1539768942893-daf53e448371?auto=format&fit=crop&w=1200&q=80",
+        "https://fvnxiabwhjposfujtloa.supabase.co/storage/v1/object/public/media/6a283c46-d8d9-48a5-8412-a7a4ac4412fd/studio/1780489560249-Alexis-Doyle.jpg",
       publishedAt: "2026-03-31T00:00:00Z",
       curatorSlug: "pontoon",
       body: [
