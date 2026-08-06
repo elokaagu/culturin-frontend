@@ -12,7 +12,6 @@ import { searchBlogs, searchProviders, searchVideos } from "../../lib/cms/querie
 import { filterPublicBlogs, filterPublicVideos } from "@/lib/cms/blockedFromSite";
 import {
   getShowcaseBlogCards,
-  getShowcaseProviderCards,
   getShowcaseVideoCards,
 } from "../../lib/cms/showcaseContent";
 import {
@@ -48,16 +47,6 @@ function filterFallbackVideos(items: videoCard[], term: string) {
   if (tokens.length === 0) return [];
   return items.filter((item) => {
     const blob = [item.title, item.uploader, item.description, item.currentSlug].filter(Boolean).join(" ");
-    return textMatchesAllTokens(blob, tokens);
-  });
-}
-
-function filterFallbackProviders(items: providerHeroCard[], term: string) {
-  if (!term) return items;
-  const tokens = tokenizeSearchQuery(term);
-  if (tokens.length === 0) return [];
-  return items.filter((item) => {
-    const blob = [item.name, item.eventName, item.slug].filter(Boolean).join(" ");
     return textMatchesAllTokens(blob, tokens);
   });
 }
@@ -131,12 +120,6 @@ function withShowcaseVideosIfEmpty(fromDb: videoCard[], term: string): videoCard
   return filterFallbackVideos(getShowcaseVideoCards(), term);
 }
 
-function withShowcaseProvidersIfEmpty(fromDb: providerHeroCard[], term: string): providerHeroCard[] {
-  if (fromDb.length > 0) return fromDb;
-  if (!term) return fromDb;
-  return filterFallbackProviders(getShowcaseProviderCards(), term);
-}
-
 function SearchSection({
   title,
   count,
@@ -208,12 +191,12 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
   } else {
     fromDbBlogs = filterFallbackBlogs(getShowcaseBlogCards(), query);
     fromDbVideos = filterFallbackVideos(getShowcaseVideoCards(), query);
-    fromDbProviders = filterFallbackProviders(getShowcaseProviderCards(), query);
+    fromDbProviders = [];
   }
 
   const articles = filterPublicBlogs(withShowcaseIfEmpty(fromDbBlogs, query, filterFallbackBlogs));
   const videos = filterPublicVideos(withShowcaseVideosIfEmpty(fromDbVideos, query));
-  const providers = withShowcaseProvidersIfEmpty(fromDbProviders, query);
+  const providers = fromDbProviders;
   const destinationHits = searchDestinations(query);
 
   const allCmsSearchesEmpty =

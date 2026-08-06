@@ -6,7 +6,6 @@ import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listProviders } from "../../lib/cms/queries";
-import { getShowcaseProviderCards } from "../../lib/cms/showcaseContent";
 import {
   IMAGE_BLUR_DATA_URL,
   isBundledPlaceholderSrc,
@@ -18,9 +17,7 @@ const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif
 
 export default async function ProvidersPage() {
   const db = getCmsDbOrNull();
-  const providersFromCms = db ? await listProviders(db) : [];
-  const providers: providerHeroCard[] =
-    providersFromCms.length > 0 ? providersFromCms : getShowcaseProviderCards();
+  const providers: providerHeroCard[] = db ? await listProviders(db) : [];
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>

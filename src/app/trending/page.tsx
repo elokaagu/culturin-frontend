@@ -10,7 +10,6 @@ import { listBlogs, listProviders, listVideos } from "../../lib/cms/queries";
 import { filterPublicBlogs, filterPublicVideos } from "../../lib/cms/blockedFromSite";
 import {
   getShowcaseBlogCards,
-  getShowcaseProviderCards,
   getShowcaseVideoCards,
 } from "../../lib/cms/showcaseContent";
 import {
@@ -61,7 +60,7 @@ export default async function TrendingPage() {
 
   const blogs = filterPublicBlogs(blogsFromCms.length > 0 ? blogsFromCms : getShowcaseBlogCards());
   const videos = filterPublicVideos(videosFromCms.length > 0 ? videosFromCms : getShowcaseVideoCards());
-  const providers = providersFromCms.length > 0 ? providersFromCms : getShowcaseProviderCards();
+  const providers = providersFromCms;
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>

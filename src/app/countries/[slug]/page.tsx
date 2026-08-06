@@ -7,7 +7,7 @@ import { ContentPageShell } from "../../components/layout/ContentPageShell";
 import { appPageContainerClass } from "@/lib/appLayout";
 import { filterPublicBlogs, filterPublicVideos } from "@/lib/cms/blockedFromSite";
 import { searchBlogs, searchProviders, searchVideos } from "@/lib/cms/queries";
-import { getShowcaseBlogCards, getShowcaseProviderCards, getShowcaseVideoCards } from "@/lib/cms/showcaseContent";
+import { getShowcaseBlogCards, getShowcaseVideoCards } from "@/lib/cms/showcaseContent";
 import { getCmsDbOrNull } from "@/lib/cms/server";
 import {
   exploreWorldCountries,
@@ -55,13 +55,9 @@ export default async function ExploreCountryPage({ params }: PageProps) {
   const fallbackVideos = getShowcaseVideoCards().filter((item) =>
     textMatchesAllTokens([item.title, item.description, item.uploader, item.currentSlug].join(" "), tokens),
   );
-  const fallbackProviders = getShowcaseProviderCards().filter((item) =>
-    textMatchesAllTokens([item.eventName, item.name, item.slug].join(" "), tokens),
-  );
-
   const matchedBlogs = filterPublicBlogs(db ? await searchBlogs(db, query) : fallbackBlogs);
   const matchedVideos = filterPublicVideos(db ? await searchVideos(db, query) : fallbackVideos);
-  const matchedProviders = db ? await searchProviders(db, query) : fallbackProviders;
+  const matchedProviders = db ? await searchProviders(db, query) : [];
 
   let appUserId: string | null = null;
   try {

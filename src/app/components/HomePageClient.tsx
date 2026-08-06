@@ -7,12 +7,10 @@ import HomeFooter from "./HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import WorldIndexGrid from "./WorldIndexGrid";
 import StoriesLeadList from "./StoriesLeadList";
-import WatchFilmstrip from "./WatchFilmstrip";
 import ExperiencesSpread from "./ExperiencesSpread";
-import PhilanthropySpotlight from "./PhilanthropySpotlight";
 import LanguageSpotlight from "./LanguageSpotlight";
 import SafeContentImage from "./SafeContentImage";
-import type { providerHeroCard, simpleBlogCard, videoCard } from "@/lib/interface";
+import type { providerHeroCard, simpleBlogCard } from "@/lib/interface";
 import { exploreWorldCountries } from "@/lib/exploreWorldCountries";
 import { appPageContainerClass } from "@/lib/appLayout";
 import {
@@ -24,7 +22,6 @@ import {
 
 type HomePageClientProps = {
   initialBlogs: simpleBlogCard[];
-  initialVideos: videoCard[];
   initialProviders: providerHeroCard[];
 };
 
@@ -38,9 +35,7 @@ const CONTENTS = [
   { id: "stories", label: "Stories" },
   { id: "explore-world", label: "Explore the world" },
   { id: "learn-words", label: "Learn a few words" },
-  { id: "watch", label: "Watch" },
   { id: "experiences", label: "Experiences" },
-  { id: "philanthropy", label: "Philanthropy" },
 ];
 
 function currentDateline() {
@@ -135,7 +130,6 @@ function IssueMasthead({ lead }: { lead: simpleBlogCard | undefined }) {
 
 export default function HomePageClient({
   initialBlogs,
-  initialVideos,
   initialProviders,
 }: HomePageClientProps) {
   const [leadStory, ...otherStories] = initialBlogs;
@@ -180,18 +174,6 @@ export default function HomePageClient({
           </div>
         </section>
 
-        <section id="watch" className="border-b py-10 sm:py-12" style={{ borderColor: "var(--c-rule)" }} aria-labelledby="watch-heading">
-          <div className={containerClass}>
-            <WatchFilmstrip
-              videos={initialVideos}
-              title="Watch"
-              description="Creator-led clips, local moments, and travel edits from around the world."
-              viewAllHref="/videos"
-              headingId="watch-heading"
-            />
-          </div>
-        </section>
-
         <section id="experiences" className="border-b py-10 sm:py-12" style={{ borderColor: "var(--c-rule)" }}>
           <div className={containerClass}>
             <ExperiencesSpread
@@ -201,12 +183,6 @@ export default function HomePageClient({
               viewAllHref="/curated-experiences"
               headingId="experiences-heading"
             />
-          </div>
-        </section>
-
-        <section id="philanthropy" className="py-10 sm:py-12" aria-labelledby="philanthropy-heading">
-          <div className={containerClass}>
-            <PhilanthropySpotlight headingId="philanthropy-heading" />
           </div>
         </section>
       </main>

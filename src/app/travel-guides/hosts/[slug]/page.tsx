@@ -8,7 +8,6 @@ import HomeFooter from "@/app/components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "@/app/components/SafeContentImage";
 import { getProviderBySlug } from "@/lib/cms/queries";
-import { getShowcaseFullProvider } from "@/lib/cms/showcaseContent";
 import { getCmsDbOrNull } from "@/lib/cms/server";
 import type { fullProvider } from "@/lib/interface";
 import {
@@ -24,11 +23,8 @@ const cardStyle = { borderColor: "var(--c-rule)" };
 
 async function getHostBySlug(slug: string): Promise<fullProvider | null> {
   const db = getCmsDbOrNull();
-  if (db) {
-    const provider = await getProviderBySlug(db, slug);
-    if (provider) return provider;
-  }
-  return getShowcaseFullProvider(slug);
+  if (!db) return null;
+  return getProviderBySlug(db, slug);
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
