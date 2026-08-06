@@ -19,7 +19,7 @@ export default async function StudioSalesDecksPage() {
     : { data: [] as SalesDeck[] };
 
   const decks = (data as SalesDeck[]) || [];
-  let viewCounts: Record<string, number> = {};
+  const viewCounts: Record<string, number> = {};
 
   if (db && decks.length > 0) {
     const { data: sessions } = await db
