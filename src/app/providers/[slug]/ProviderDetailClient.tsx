@@ -291,7 +291,7 @@ function ProviderInquiryChat({
     <div className="fixed bottom-4 right-4 z-[120] w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-white/15 bg-neutral-950 shadow-[0_14px_42px_rgba(0,0,0,0.55)]">
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
         <div>
-          <p className="m-0 text-sm font-semibold text-white">Culturin Messenger</p>
+          <p className="m-0 text-sm font-semibold text-white">Contact host</p>
           <p className="m-0 mt-0.5 text-xs text-white/55">Ask about availability, details, or custom plans</p>
         </div>
         <button
@@ -490,13 +490,6 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                 </p>
               </div>
 
-              <div className="mt-6 rounded-xl border border-white/15 bg-black px-5 py-4">
-                <p className="m-0 text-base font-semibold text-white">Guest favorite</p>
-                <p className="m-0 mt-1 text-sm text-white/65">
-                  One of the most loved curated experiences on Culturin.
-                </p>
-              </div>
-
               {data.description ? (
                 <section className="border-b border-white/10 py-6" aria-labelledby="exp-about">
                   <h3 id="exp-about" className="m-0 text-xl font-semibold text-white">
@@ -574,9 +567,6 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
             </section>
 
             <aside className="lg:sticky lg:top-[calc(var(--header-offset)+1.5rem)]">
-              <div className="mb-4 rounded-xl border border-pink-200/20 bg-pink-500/10 px-4 py-3 text-sm font-medium text-white/80">
-                Rare find! This experience is usually booked.
-              </div>
               <div className="rounded-2xl border border-white/15 bg-black p-6 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
                 <p className="m-0 text-2xl font-semibold text-white">
                   {displayPrice ?? "Contact for pricing"}
@@ -632,7 +622,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                       rel="noopener noreferrer"
                       className="inline-flex h-12 w-full items-center justify-center rounded-full bg-amber-400 px-5 text-sm font-semibold text-neutral-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     >
-                      {displayPrice ? "Reserve" : "Book on website"}
+                      {displayPrice ? "Request on host site" : "Visit host website"}
                     </a>
                   ) : null}
                   {!bookUrl && bookMailtoHref ? (
@@ -640,7 +630,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                       href={bookMailtoHref}
                       className="inline-flex h-12 w-full items-center justify-center rounded-full bg-amber-400 px-5 text-sm font-semibold text-neutral-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     >
-                      {displayPrice ? "Request to book" : "Contact to reserve"}
+                      Request to book
                     </a>
                   ) : null}
                   {!bookUrl && !bookMailtoHref && phoneTel ? (
@@ -648,7 +638,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                       href={`tel:${phoneTel}`}
                       className="inline-flex h-12 w-full items-center justify-center rounded-full bg-amber-400 px-5 text-sm font-semibold text-neutral-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     >
-                      Call to book
+                      Call host
                     </a>
                   ) : null}
                   {!bookUrl && !bookMailtoHref && !phoneTel ? (
@@ -690,8 +680,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
         title="Save experience"
         description={
           <>
-            Keep this curated experience handy. Profile saves for providers are on the way — for now, copy the link or sign in
-            so we can connect your account when the feature ships.
+            Copy the link to keep this experience handy. Profile saves for providers are not available yet.
           </>
         }
         loginHref={pathname ? `/login?next=${encodeURIComponent(pathname)}` : "/login"}

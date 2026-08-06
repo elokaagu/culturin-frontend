@@ -39,7 +39,7 @@ export default async function ProvidersPage() {
             </h1>
             <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
               Discover curated experiences hosted by trusted local partners. Open any card to view the full details and
-              booking options.
+              host contact links.
             </p>
           </div>
 

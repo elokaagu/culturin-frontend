@@ -119,8 +119,8 @@ export default function AdvisorsPage() {
               Apply to join Culturin today
             </h2>
             <p className="mt-2 max-w-2xl text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>
-              Book just $360/month in travel and you will cover your subscription fees. Everything after that is your
-              profit to keep.
+              Tell us about your work advising travelers and producing cultural access. We review every application and
+              follow up by email.
             </p>
 
             <form onSubmit={handleApply} className="mt-5 flex w-full max-w-xl flex-col gap-3">
