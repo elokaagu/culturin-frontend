@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useAppAuth } from "../components/SupabaseAuthProvider";
 
 import AccountSection from "../components/AccountSection";
@@ -8,23 +7,6 @@ import IslandNav from "../components/IslandNav";
 import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { useTheme } from "../styles/ThemeContext";
-import { type SettingsSectionId, useSettingsSection } from "./useSettingsSection";
-
-const NotificationSection = dynamic(
-  () => import("../components/NotificationSection"),
-  { loading: () => <p className="text-sm" style={{ color: "var(--c-muted)" }}>Loading…</p> }
-);
-
-const PaymentSection = dynamic(
-  () => import("../components/PaymentSection"),
-  { loading: () => <p className="text-sm" style={{ color: "var(--c-muted)" }}>Loading…</p> }
-);
-
-const NAV: { id: SettingsSectionId; label: string }[] = [
-  { id: "#account", label: "Account" },
-  { id: "#notifications", label: "Notifications" },
-  { id: "#payments", label: "Payments" },
-];
 
 const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
 
@@ -35,7 +17,6 @@ function sectionTitle(sessionName: string | null | undefined) {
 
 export default function SettingsPage() {
   const { data: session } = useAppAuth();
-  const activeSection = useSettingsSection();
   const { mode, toggleTheme } = useTheme();
   const isDark = mode === "dark";
 
@@ -48,27 +29,8 @@ export default function SettingsPage() {
             {sectionTitle(session?.user?.name)}
           </h1>
 
-          <nav aria-label="Settings sections" className="flex flex-wrap gap-6 border-b pb-3" style={{ borderColor: "var(--c-rule)" }}>
-            {NAV.map(({ id, label }) => {
-              const active = activeSection === id;
-              return (
-                <a
-                  key={id}
-                  href={id}
-                  className="text-base font-medium transition-colors underline-offset-8"
-                  style={{ color: active ? "var(--c-ink)" : "var(--c-accent)", textDecoration: active ? "underline" : "none" }}
-                  aria-current={active ? "page" : undefined}
-                >
-                  {label}
-                </a>
-              );
-            })}
-          </nav>
-
           <div className="min-h-[12rem]">
-            {activeSection === "#account" ? <AccountSection /> : null}
-            {activeSection === "#notifications" ? <NotificationSection /> : null}
-            {activeSection === "#payments" ? <PaymentSection /> : null}
+            <AccountSection />
           </div>
 
           <section aria-label="Appearance" className="mt-4 border-t pt-6" style={{ borderColor: "var(--c-rule)" }}>

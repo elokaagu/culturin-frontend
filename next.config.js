@@ -42,6 +42,15 @@ const nextConfig = {
     config.resolve.alias.canvas = false;
     return config;
   },
+  async redirects() {
+    return [
+      { source: "/spotlight", destination: "/community", permanent: true },
+      { source: "/spotlight/:path*", destination: "/community", permanent: true },
+      { source: "/nearby", destination: "/curated-experiences", permanent: true },
+      { source: "/nearby/:path*", destination: "/curated-experiences", permanent: true },
+    ];
+  },
 };
+
 
 module.exports = withBundleAnalyzer(nextConfig);

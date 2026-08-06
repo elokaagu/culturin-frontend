@@ -11,7 +11,6 @@ import Hamburger from "hamburger-react";
 import { useTheme } from "../styles/ThemeContext";
 import { GoogleSignInButton } from "./AuthButtons";
 import { HeaderCreateMenu } from "./HeaderCreateMenu";
-import NearByPanel from "./NearByPanel";
 import Sidebar from "./Sidebar";
 import CulturinWordmark from "./CulturinWordmark";
 import { destinations } from "@/lib/destinationsData";
@@ -70,9 +69,6 @@ const navLinkClass = (active: boolean) =>
 
 const iconButtonClass =
   "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-200/80 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:text-white/80 dark:hover:bg-white/10 dark:focus-visible:ring-amber-400/50";
-
-const nearbyPillClass =
-  "inline-flex h-10 shrink-0 items-center justify-center rounded-full bg-neutral-900 px-3.5 text-xs font-semibold text-white transition hover:bg-neutral-800 focus-visible:outline focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200";
 
 function SearchIcon({ className }: { className?: string }) {
   return (
@@ -171,7 +167,6 @@ export default function Header() {
   const isDark = mode === "dark";
   const [elevated, setElevated] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [nearbyOpen, setNearbyOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [recent, setRecent] = useState<string[]>([]);
@@ -185,7 +180,6 @@ export default function Header() {
 
   useEffect(() => {
     setMobileMenuOpen(false);
-    setNearbyOpen(false);
     setSearchOpen(false);
   }, [pathname]);
 
@@ -193,7 +187,6 @@ export default function Header() {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setMobileMenuOpen(false);
-        setNearbyOpen(false);
         setSearchOpen(false);
       }
     };
@@ -274,12 +267,11 @@ export default function Header() {
   }, [searchValue]);
 
   const openSearch = useCallback(() => {
-    setNearbyOpen(false);
     setSearchOpen(true);
   }, []);
 
   const triggerVisualSearch = useCallback(() => {
-    const fallbackQuery = "nearby experiences";
+    const fallbackQuery = "experiences";
     const nextQuery = searchValue.trim() || fallbackQuery;
     setSearchValue(nextQuery);
     runSearch(nextQuery);
@@ -291,11 +283,6 @@ export default function Header() {
     setSearchValue(pick);
     runSearch(pick);
   }, [runSearch]);
-
-  const toggleNearby = useCallback(() => {
-    setSearchOpen(false);
-    setNearbyOpen((o) => !o);
-  }, []);
 
   return (
     <>
@@ -374,17 +361,6 @@ export default function Header() {
               <SearchIcon />
             </button>
 
-            <button
-              type="button"
-              onClick={toggleNearby}
-              className={nearbyPillClass}
-              aria-label="Open nearby"
-              aria-haspopup="dialog"
-              aria-expanded={nearbyOpen}
-            >
-              Nearby
-            </button>
-
             <div className="hidden sm:block">
               <HeaderCreateMenu />
             </div>
@@ -421,8 +397,6 @@ export default function Header() {
       </header>
 
       {mobileMenuOpen ? <Sidebar id="mobile-navigation" onClose={closeMobile} /> : null}
-
-      <NearByPanel open={nearbyOpen} onClose={() => setNearbyOpen(false)} />
 
       {searchOpen ? (
         <div

@@ -24,7 +24,6 @@ const createSubLinkClass =
 
 export default function Sidebar({ id, onClose }: SidebarProps) {
   const [destinationsOpen, setDestinationsOpen] = useState(false);
-  const [nearbyOpen, setNearbyOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const role = useStudioRole();
 
@@ -153,36 +152,10 @@ export default function Sidebar({ id, onClose }: SidebarProps) {
             ) : null}
           </li>
 
-          <li className="relative p-1">
-            <button
-              type="button"
-              onClick={() => setNearbyOpen((o) => !o)}
-              className="flex w-full items-center gap-2 px-5 py-4 text-left text-base text-neutral-900 max-[428px]:px-2.5 max-[428px]:py-2.5 dark:text-white"
-              aria-expanded={nearbyOpen}
-              aria-controls="sidebar-nearby-menu"
-            >
-              Nearby
-              <ChevronDown size={20} className="shrink-0" aria-hidden />
-            </button>
-            {nearbyOpen ? (
-              <div
-                id="sidebar-nearby-menu"
-                className="absolute left-0 top-full z-[110] w-[min(100vw-2rem,16rem)] pt-1"
-              >
-                <ul className="m-0 animate-fade-in list-none rounded-[10px] bg-white py-1 shadow-lg">
-                  <li className={dropdownItemClass}>
-                    <Link href="/curated-experiences" onClick={onClose}>
-                      Experiences
-                    </Link>
-                  </li>
-                  <li className={dropdownItemClass}>
-                    <Link href="/search?query=cafe" onClick={onClose}>
-                      Cafes
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            ) : null}
+          <li className="p-1">
+            <Link href="/curated-experiences" className={linkClass} onClick={onClose}>
+              Experiences
+            </Link>
           </li>
 
           <li className="relative p-1">
