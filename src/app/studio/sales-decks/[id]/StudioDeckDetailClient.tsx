@@ -27,6 +27,7 @@ import {
   partnerShareUrl,
   slugify,
 } from "@/lib/deckLinks";
+import { prepareDeckPageImages } from "@/lib/salesDecks/uploadPageImages";
 import type { DeckPageEvent, DeckPartnerLink, DeckViewSession, SalesDeck } from "@/lib/salesDecks/types";
 import { cn } from "@/lib/utils";
 
@@ -359,8 +360,47 @@ function DeckSettingsPanel({
   const [saving, setSaving] = useState(false);
   const [partnerLabel, setPartnerLabel] = useState("");
   const [partnerSlug, setPartnerSlug] = useState("");
+  const [preparingPreview, setPreparingPreview] = useState(false);
+  const [prepareLabel, setPrepareLabel] = useState("Prepare fast preview");
 
   const hasPassword = !!deck.password_hash;
+  const hasFastPreview = Array.isArray(deck.page_image_urls) && deck.page_image_urls.length > 0;
+
+  const prepareFastPreview = async () => {
+    if (!supabase || preparingPreview) return;
+    const ownerId = deck.file_path.split("/")[0];
+    if (!ownerId) {
+      setMessage("Could not resolve storage path for this deck.");
+      return;
+    }
+    setPreparingPreview(true);
+    setPrepareLabel("Downloading PDF…");
+    try {
+      const res = await fetch(deck.file_url);
+      if (!res.ok) throw new Error("PDF download failed");
+      const buffer = await res.arrayBuffer();
+      await prepareDeckPageImages({
+        supabase,
+        ownerId,
+        deckId: deck.id,
+        source: buffer,
+        onProgress: ({ page, total, phase }) => {
+          setPrepareLabel(
+            phase === "render" ? `Rendering ${page}/${total}…` : `Uploading ${page}/${total}…`,
+          );
+        },
+      });
+      const { data: refreshed } = await supabase.from("sales_decks").select("*").eq("id", deck.id).single();
+      if (refreshed) onDeckUpdated(refreshed as SalesDeck);
+      setMessage("Fast preview ready — share links will open instantly.");
+    } catch (err) {
+      console.error(err);
+      setMessage("Could not prepare fast preview. Try again on a desktop browser.");
+    } finally {
+      setPreparingPreview(false);
+      setPrepareLabel("Prepare fast preview");
+    }
+  };
 
   const saveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -534,6 +574,23 @@ function DeckSettingsPanel({
           {saving ? "Saving…" : "Save settings"}
         </button>
       </form>
+
+      <section className={cn(panelClass, "max-w-xl space-y-3 p-5 sm:p-6")}>
+        <h2 className={sectionLabelClass}>Fast preview</h2>
+        <p className="m-0 text-sm text-[color:var(--c-muted)]">
+          {hasFastPreview
+            ? `Ready — ${deck.page_image_urls?.length ?? 0} page images. Viewers load instantly on mobile.`
+            : "Convert this PDF into lightweight page images so partners don’t wait on a large file download."}
+        </p>
+        <button
+          type="button"
+          disabled={preparingPreview || !supabase}
+          onClick={() => void prepareFastPreview()}
+          className={studioCreateButtonClass}
+        >
+          {preparingPreview ? prepareLabel : hasFastPreview ? "Rebuild fast preview" : "Prepare fast preview"}
+        </button>
+      </section>
 
       <section className={cn(panelClass, "p-5 sm:p-6")}>
         <h2 className={sectionLabelClass}>Partner links</h2>

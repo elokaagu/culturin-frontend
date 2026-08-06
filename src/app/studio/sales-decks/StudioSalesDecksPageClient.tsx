@@ -15,6 +15,7 @@ import {
 } from "@/app/studio/_components/StudioCulturinListKit";
 import { studioCheckboxClass } from "@/app/studio/_lib/studioTheme";
 import { deckSharePath, deckShareUrl, formatBytes, isValidSlug, slugify } from "@/lib/deckLinks";
+import { prepareDeckPageImages } from "@/lib/salesDecks/uploadPageImages";
 import type { SalesDeck } from "@/lib/salesDecks/types";
 import { SUPABASE_SALES_DECKS_BUCKET } from "@/lib/storageConstants";
 import { cn } from "@/lib/utils";
@@ -85,7 +86,11 @@ export function StudioSalesDecksPageClient({ initialDecks, viewCounts: initialCo
       destructive: true,
     });
     if (!ok) return;
-    await supabase.storage.from(SUPABASE_SALES_DECKS_BUCKET).remove([deck.file_path]);
+    const paths = [deck.file_path, ...(deck.page_image_urls || []).map((_, i) => {
+      const owner = deck.file_path.split("/")[0];
+      return `${owner}/${deck.id}/pages/${i + 1}.jpg`;
+    })];
+    await supabase.storage.from(SUPABASE_SALES_DECKS_BUCKET).remove(paths);
     const { error } = await supabase.from("sales_decks").delete().eq("id", deck.id);
     if (error) {
       setMessage("Could not delete deck.");
@@ -249,6 +254,7 @@ function DeckUploadModal({
   const [customSlug, setCustomSlug] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadLabel, setUploadLabel] = useState("Upload");
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -275,6 +281,7 @@ function DeckUploadModal({
     }
 
     setUploading(true);
+    setUploadLabel("Uploading PDF…");
     setError(null);
 
     try {
@@ -308,6 +315,7 @@ function DeckUploadModal({
         if (insertError.code === "23505") {
           setError("That custom link is already in use.");
           setUploading(false);
+          setUploadLabel("Upload");
           return;
         }
         throw insertError;
@@ -320,12 +328,33 @@ function DeckUploadModal({
         });
       }
 
+      setUploadLabel("Preparing fast preview…");
+      try {
+        await prepareDeckPageImages({
+          supabase,
+          ownerId: user.id,
+          deckId,
+          source: file,
+          onProgress: ({ page, total, phase }) => {
+            setUploadLabel(
+              phase === "render"
+                ? `Rendering page ${page}/${total}…`
+                : `Uploading preview ${page}/${total}…`,
+            );
+          },
+        });
+      } catch (previewErr) {
+        console.error(previewErr);
+        // Deck is still usable via PDF fallback if preview generation fails.
+      }
+
       onUploaded();
     } catch (err) {
       console.error(err);
-      setError("Upload failed. Has migration 038 been applied?");
+      setError("Upload failed. Has migration 038/040 been applied?");
     } finally {
       setUploading(false);
+      setUploadLabel("Upload");
     }
   };
 
@@ -419,7 +448,7 @@ function DeckUploadModal({
               Cancel
             </button>
             <button type="submit" disabled={uploading || !file} className={studioCreateButtonClass}>
-              {uploading ? "Uploading…" : "Upload"}
+              {uploading ? uploadLabel : "Upload"}
             </button>
           </div>
         </form>

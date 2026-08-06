@@ -18,6 +18,7 @@ interface PublicDeck {
   description: string | null;
   file_url: string | null;
   page_count: number | null;
+  page_image_urls: string[] | null;
   require_email: boolean;
   allow_download: boolean;
   has_password: boolean;
@@ -47,7 +48,12 @@ export default function InteractiveDeckViewer({ token }: Props) {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageWidth, setPageWidth] = useState(800);
   const [pdfReady, setPdfReady] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [pageImageUrls, setPageImageUrls] = useState<string[]>([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [devicePixelRatio, setDevicePixelRatio] = useState(1.5);
+
+  const useImages = pageImageUrls.length > 0;
 
   const sessionStartedAt = useRef<number>(Date.now());
   const pageEnteredAt = useRef<number>(Date.now());
@@ -70,11 +76,24 @@ export default function InteractiveDeckViewer({ token }: Props) {
       const fromHeight = maxH * (16 / 9);
       const capped = fullscreen ? Math.min(maxW, fromHeight) : Math.min(maxW, 920);
       setPageWidth(Math.max(280, Math.floor(capped)));
+      setDevicePixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
     };
     updateWidth();
     window.addEventListener("resize", updateWidth);
     return () => window.removeEventListener("resize", updateWidth);
   }, [isFullscreen]);
+
+  // Prefetch neighboring page images for snappy next/prev.
+  useEffect(() => {
+    if (!useImages) return;
+    [pageNumber - 1, pageNumber + 1, pageNumber + 2].forEach((n) => {
+      const url = pageImageUrls[n - 1];
+      if (!url) return;
+      const img = new window.Image();
+      img.decoding = "async";
+      img.src = url;
+    });
+  }, [useImages, pageImageUrls, pageNumber]);
 
   useEffect(() => {
     const onFullscreenChange = () => {
@@ -127,6 +146,14 @@ export default function InteractiveDeckViewer({ token }: Props) {
 
       setDeck(row);
       setFileUrl(row.file_url);
+      const images = Array.isArray(row.page_image_urls) ? row.page_image_urls.filter(Boolean) : [];
+      setPageImageUrls(images);
+      if (images.length > 0) {
+        setNumPages(images.length);
+        setPdfReady(true);
+      } else if (row.page_count) {
+        setNumPages(row.page_count);
+      }
       if (!row.require_email) setEmailPassed(true);
       if (!row.has_password) setPasswordPassed(true);
       setLoading(false);
@@ -160,10 +187,10 @@ export default function InteractiveDeckViewer({ token }: Props) {
   );
 
   useEffect(() => {
-    if (deck && gatesCleared && fileUrl && !sessionId) {
+    if (deck && gatesCleared && (fileUrl || useImages) && !sessionId) {
       beginSession(email.trim() || undefined, name.trim() || undefined);
     }
-  }, [deck, gatesCleared, fileUrl, sessionId, beginSession, email, name]);
+  }, [deck, gatesCleared, fileUrl, useImages, sessionId, beginSession, email, name]);
 
   const flushPage = useCallback(
     async (leavingPage: number, opts?: { resetTimer?: boolean }) => {
@@ -278,6 +305,12 @@ export default function InteractiveDeckViewer({ token }: Props) {
     }
 
     setFileUrl(row.file_url);
+    const images = Array.isArray(row.page_image_urls) ? row.page_image_urls.filter(Boolean) : [];
+    setPageImageUrls(images);
+    if (images.length > 0) {
+      setNumPages(images.length);
+      setPdfReady(true);
+    }
     setPasswordPassed(true);
   };
 
@@ -385,13 +418,15 @@ export default function InteractiveDeckViewer({ token }: Props) {
     );
   }
 
-  if (!fileUrl || !pdfFile) {
+  if (!useImages && (!fileUrl || !pdfFile)) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white">
         <p className="text-sm text-white/60">Could not load this deck.</p>
       </div>
     );
   }
+
+  const currentImageUrl = useImages ? pageImageUrls[pageNumber - 1] : null;
 
   return (
     <div
@@ -408,7 +443,7 @@ export default function InteractiveDeckViewer({ token }: Props) {
           <h1 className="truncate font-display text-sm font-semibold md:text-base">{deck.title}</h1>
         </div>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {deck.allow_download && (
+          {deck.allow_download && fileUrl ? (
             <a
               href={fileUrl}
               download
@@ -419,7 +454,7 @@ export default function InteractiveDeckViewer({ token }: Props) {
               <Download className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Download</span>
             </a>
-          )}
+          ) : null}
           <button
             type="button"
             onClick={() => void toggleFullscreen()}
@@ -431,7 +466,7 @@ export default function InteractiveDeckViewer({ token }: Props) {
             <span className="hidden sm:inline">{isFullscreen ? "Exit" : "Fullscreen"}</span>
           </button>
           <p className="tabular-nums text-xs text-white/60">
-            {pdfReady ? `${pageNumber} / ${numPages}` : "…"}
+            {pdfReady || useImages ? `${pageNumber} / ${numPages}` : "…"}
           </p>
         </div>
       </header>
@@ -442,51 +477,87 @@ export default function InteractiveDeckViewer({ token }: Props) {
         }`}
       >
         <div className="border border-white/10 bg-white shadow-xl shadow-black/40">
-          <Document
-            file={pdfFile}
-            loading={
-              <div className="flex aspect-[4/3] w-[min(92vw,920px)] flex-col items-center justify-center gap-2 px-6 text-center">
-                <p className="animate-pulse text-sm uppercase tracking-[0.2em] text-neutral-500">Loading PDF…</p>
-                <p className="text-xs text-neutral-400">Larger decks can take a moment.</p>
-              </div>
-            }
-            error={
-              <div className="w-[min(92vw,920px)] px-8 py-16 text-center text-sm text-neutral-600">
-                {pdfError || "Could not load this PDF."}
-              </div>
-            }
-            onLoadSuccess={onDocumentLoad}
-            onLoadError={(err) => {
-              console.error("PDF load error", err);
-              setPdfError(err?.message || "Could not load this PDF.");
-              setPdfReady(false);
-            }}
-          >
+          {useImages && currentImageUrl ? (
             <AnimatePresence mode="wait">
               <motion.div
                 key={pageNumber}
-                initial={{ opacity: 0, x: 12 }}
+                initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -12 }}
-                transition={{ duration: 0.25 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.18 }}
               >
-                <Page
-                  pageNumber={pageNumber}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={currentImageUrl}
+                  alt={`${deck.title} — page ${pageNumber}`}
                   width={pageWidth}
-                  renderTextLayer
-                  renderAnnotationLayer
-                  loading={
-                    <div
-                      className="flex items-center justify-center text-sm uppercase tracking-[0.2em] text-neutral-500"
-                      style={{ width: pageWidth, minHeight: pageWidth * 0.7 }}
-                    >
-                      Rendering…
-                    </div>
-                  }
+                  className="block h-auto max-w-full"
+                  style={{ width: pageWidth }}
+                  decoding="async"
+                  fetchPriority="high"
+                  draggable={false}
                 />
               </motion.div>
             </AnimatePresence>
-          </Document>
+          ) : (
+            <Document
+              file={pdfFile}
+              loading={
+                <div className="flex aspect-[4/3] w-[min(92vw,920px)] flex-col items-center justify-center gap-3 px-6 text-center">
+                  <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
+                    {loadProgress > 0 ? `Loading ${Math.round(loadProgress * 100)}%` : "Loading PDF…"}
+                  </p>
+                  <div className="h-1.5 w-40 overflow-hidden rounded-full bg-neutral-200">
+                    <div
+                      className="h-full rounded-full bg-culturin-400 transition-[width] duration-200"
+                      style={{ width: `${Math.round(Math.max(loadProgress, 0.08) * 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-neutral-400">Ask the owner to enable fast preview for instant opens.</p>
+                </div>
+              }
+              error={
+                <div className="w-[min(92vw,920px)] px-8 py-16 text-center text-sm text-neutral-600">
+                  {pdfError || "Could not load this PDF."}
+                </div>
+              }
+              onLoadProgress={({ loaded, total }) => {
+                if (total > 0) setLoadProgress(Math.min(1, loaded / total));
+              }}
+              onLoadSuccess={onDocumentLoad}
+              onLoadError={(err) => {
+                console.error("PDF load error", err);
+                setPdfError(err?.message || "Could not load this PDF.");
+                setPdfReady(false);
+              }}
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={pageNumber}
+                  initial={{ opacity: 0, x: 12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -12 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Page
+                    pageNumber={pageNumber}
+                    width={pageWidth}
+                    devicePixelRatio={devicePixelRatio}
+                    renderTextLayer={false}
+                    renderAnnotationLayer={false}
+                    loading={
+                      <div
+                        className="flex items-center justify-center text-sm uppercase tracking-[0.2em] text-neutral-500"
+                        style={{ width: pageWidth, minHeight: pageWidth * 0.7 }}
+                      >
+                        Rendering…
+                      </div>
+                    }
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </Document>
+          )}
         </div>
       </div>
 

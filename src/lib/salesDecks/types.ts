@@ -7,6 +7,7 @@ export type SalesDeck = {
   file_name: string;
   file_size: number | null;
   page_count: number | null;
+  page_image_urls: string[] | null;
   share_token: string;
   custom_slug: string | null;
   status: string;
