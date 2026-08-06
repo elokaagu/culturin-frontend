@@ -24,7 +24,8 @@ import AttendeeOriginMap from "./components/AttendeeOriginMap";
 import MagneticButton from "./components/motion/MagneticButton";
 import { getSiteImagesMap, resolveSiteImage, resolveEventHero, manifestDefault } from "@/lib/siteImages";
 
-export const dynamic = "force-dynamic";
+/** Site images can change in Studio; revalidatePath("/") runs on update. */
+export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: "Culturin | Where Inspiration Meets Exploration",

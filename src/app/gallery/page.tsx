@@ -16,7 +16,8 @@ import { getCmsDbOrNull } from "@/lib/cms/server";
 import GalleryGrid, { type GalleryFilter, type GalleryItem } from "./GalleryGrid";
 import IslandNav from "../components/IslandNav";
 
-export const dynamic = "force-dynamic";
+/** Gallery CMS updates call revalidatePath("/gallery"). */
+export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: "Gallery | Culturin",

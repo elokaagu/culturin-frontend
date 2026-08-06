@@ -21,7 +21,8 @@ const INK = EDITORIAL_INK;
 const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 
-export const dynamic = "force-dynamic";
+/** Event heroes can change in Studio; revalidatePath("/events") runs on update. */
+export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: "Events | Culturin",

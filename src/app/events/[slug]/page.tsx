@@ -26,7 +26,8 @@ const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
 
-export const dynamic = "force-dynamic";
+/** Event heroes can change in Studio; revalidatePath("/events/[slug]") runs on update. */
+export const revalidate = 120;
 
 type Props = { params: Promise<{ slug: string }> };
 
