@@ -14,6 +14,7 @@ import {
   LogOut,
   Mail,
   Moon,
+  Presentation,
   Sun,
   Users,
   Video,
@@ -34,6 +35,7 @@ type StudioLayoutClientProps = {
   providerCount: number;
   curatorCount: number;
   galleryCount: number;
+  salesDeckCount: number;
   subscriberCount: number;
   partnerInquiryCount: number;
   eventRsvpCount: number;
@@ -75,6 +77,7 @@ export default function StudioLayoutClient({
   providerCount,
   curatorCount,
   galleryCount,
+  salesDeckCount,
   subscriberCount,
   partnerInquiryCount,
   eventRsvpCount,
@@ -230,6 +233,22 @@ export default function StudioLayoutClient({
                   >
                     <ImageIcon className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                     <span className="min-w-0 flex-1">Site images</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/studio/sales-decks"
+                    className={navItemClass(
+                      pathname === "/studio/sales-decks" || pathname?.startsWith("/studio/sales-decks/"),
+                    )}
+                    aria-current={pathname === "/studio/sales-decks" ? "page" : undefined}
+                  >
+                    <Presentation className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                    <span className="min-w-0 flex-1">Sales decks</span>
+                    {countBadge(
+                      salesDeckCount,
+                      pathname === "/studio/sales-decks" || pathname?.startsWith("/studio/sales-decks/"),
+                    )}
                   </Link>
                 </li>
               </ul>

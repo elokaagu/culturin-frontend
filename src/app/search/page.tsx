@@ -10,10 +10,7 @@ import { destinations } from "@/lib/destinationsData";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { searchBlogs, searchProviders, searchVideos } from "../../lib/cms/queries";
 import { filterPublicBlogs, filterPublicVideos } from "@/lib/cms/blockedFromSite";
-import {
-  getShowcaseBlogCards,
-  getShowcaseVideoCards,
-} from "../../lib/cms/showcaseContent";
+import { getShowcaseVideoCards } from "../../lib/cms/showcaseContent";
 import {
   IMAGE_BLUR_DATA_URL,
   cmsImageUnoptimized,
@@ -29,16 +26,6 @@ export const revalidate = 120;
 
 function normalizeQuery(query: string | undefined): string {
   return (query || "").trim().toLowerCase();
-}
-
-function filterFallbackBlogs(items: simpleBlogCard[], term: string) {
-  if (!term) return items;
-  const tokens = tokenizeSearchQuery(term);
-  if (tokens.length === 0) return [];
-  return items.filter((item) => {
-    const blob = [item.title, item.summary, item.currentSlug].filter(Boolean).join(" ");
-    return textMatchesAllTokens(blob, tokens);
-  });
 }
 
 function filterFallbackVideos(items: videoCard[], term: string) {
@@ -98,20 +85,6 @@ function searchDestinations(term: string): DestinationHit[] {
     .sort((a, b) => b.s - a.s || a.d.name.localeCompare(b.d.name))
     .map((x) => x.d)
     .slice(0, 12);
-}
-
-/**
- * If the CMS has no matches, still offer curated + demo content from the showcase
- * (same as when Supabase is not linked) so e.g. `?country=Italy` never looks “broken” in production.
- */
-function withShowcaseIfEmpty(
-  fromDb: simpleBlogCard[],
-  term: string,
-  getFallback: (items: simpleBlogCard[], t: string) => simpleBlogCard[],
-): simpleBlogCard[] {
-  if (fromDb.length > 0) return fromDb;
-  if (!term) return fromDb;
-  return getFallback(getShowcaseBlogCards(), term);
 }
 
 function withShowcaseVideosIfEmpty(fromDb: videoCard[], term: string): videoCard[] {
@@ -189,28 +162,19 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
     fromDbVideos = await searchVideos(db, query);
     fromDbProviders = await searchProviders(db, query);
   } else {
-    fromDbBlogs = filterFallbackBlogs(getShowcaseBlogCards(), query);
+    fromDbBlogs = [];
     fromDbVideos = filterFallbackVideos(getShowcaseVideoCards(), query);
     fromDbProviders = [];
   }
 
-  const articles = filterPublicBlogs(withShowcaseIfEmpty(fromDbBlogs, query, filterFallbackBlogs));
+  const articles = filterPublicBlogs(fromDbBlogs);
   const videos = filterPublicVideos(withShowcaseVideosIfEmpty(fromDbVideos, query));
   const providers = fromDbProviders;
   const destinationHits = searchDestinations(query);
 
-  const allCmsSearchesEmpty =
-    !!db &&
-    !!query &&
-    fromDbBlogs.length === 0 &&
-    fromDbVideos.length === 0 &&
-    fromDbProviders.length === 0;
   const hasResults =
     articles.length > 0 || videos.length > 0 || providers.length > 0 || destinationHits.length > 0;
-  const showSupplementNote =
-    allCmsSearchesEmpty && hasResults
-      ? "Nothing in your live catalog matched this term, so we’re also showing picks from the editorial demo catalog. Add articles or guides with similar wording in Studio, or try different keywords."
-      : null;
+  const showSupplementNote = null;
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>

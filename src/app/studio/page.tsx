@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BookOpen, Building2, ChevronRight, ImageIcon, Video } from "lucide-react";
+import { BookOpen, Building2, ChevronRight, ImageIcon, Presentation, Video } from "lucide-react";
 import { Link } from "next-view-transitions";
 
 import { getStudioCounts } from "@/lib/studio/getStudioCounts";
@@ -34,6 +34,13 @@ export default async function StudioOverviewPage() {
       href: "/studio/providers",
       icon: Building2,
       cta: "Open Experiences",
+    },
+    {
+      title: "Upload a sales deck",
+      description: "Share interactive partner PDFs with email gates, passwords, and view analytics.",
+      href: "/studio/sales-decks",
+      icon: Presentation,
+      cta: "Open Sales decks",
     },
     {
       title: "Upload images",

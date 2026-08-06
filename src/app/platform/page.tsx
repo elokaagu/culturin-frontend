@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import HomePageClient from "../components/HomePageClient";
-import { getShowcaseBlogCards } from "../../lib/cms/showcaseContent";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { filterPublicBlogs } from "../../lib/cms/blockedFromSite";
 import { listBlogs, listProviders } from "../../lib/cms/queries";
@@ -20,7 +19,7 @@ export default async function PlatformHomePage() {
     ? await Promise.all([listBlogs(db), listProviders(db)])
     : [[], []];
 
-  const blogs = filterPublicBlogs(blogsFromCms.length > 0 ? blogsFromCms : getShowcaseBlogCards());
+  const blogs = filterPublicBlogs(blogsFromCms);
   const providers = providersFromCms;
 
   return (

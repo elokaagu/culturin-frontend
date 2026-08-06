@@ -11,7 +11,7 @@ import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
 import { getCmsDbOrNull } from "@/lib/cms/server";
 import { searchBlogs, searchProviders, searchVideos } from "@/lib/cms/queries";
 import { filterPublicBlogs, filterPublicVideos } from "@/lib/cms/blockedFromSite";
-import { getShowcaseBlogCards, getShowcaseVideoCards } from "@/lib/cms/showcaseContent";
+import { getShowcaseVideoCards } from "@/lib/cms/showcaseContent";
 import { textMatchesAllTokens, tokenizeSearchQuery } from "@/lib/searchTokenize";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/api/ensureAppUser";
@@ -49,13 +49,10 @@ export default async function DestinationDetailPage({ params }: PageProps) {
   const query = d.name.toLowerCase();
   const tokens = tokenizeSearchQuery(query);
 
-  const fallbackBlogs = getShowcaseBlogCards().filter((item) =>
-    textMatchesAllTokens([item.title, item.summary, item.currentSlug].join(" "), tokens),
-  );
   const fallbackVideos = getShowcaseVideoCards().filter((item) =>
     textMatchesAllTokens([item.title, item.description, item.uploader, item.currentSlug].join(" "), tokens),
   );
-  const matchedBlogs = filterPublicBlogs(db ? await searchBlogs(db, query) : fallbackBlogs);
+  const matchedBlogs = filterPublicBlogs(db ? await searchBlogs(db, query) : []);
   const matchedVideos = filterPublicVideos(db ? await searchVideos(db, query) : fallbackVideos);
   const matchedProviders = db ? await searchProviders(db, query) : [];
 

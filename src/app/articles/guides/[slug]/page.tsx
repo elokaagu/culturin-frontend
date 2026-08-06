@@ -7,7 +7,8 @@ import HomeFooter from "../../../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../../../components/SafeContentImage";
 import { getTravelGuideCategory, getTravelGuideContent } from "../../../../lib/travelGuideContent";
-import { getShowcaseBlogCards } from "../../../../lib/cms/showcaseContent";
+import { getCmsDbOrNull } from "../../../../lib/cms/server";
+import { listBlogs } from "../../../../lib/cms/queries";
 import { filterPublicBlogs } from "@/lib/cms/blockedFromSite";
 import {
   IMAGE_BLUR_DATA_URL,
@@ -33,7 +34,7 @@ export async function generateMetadata({
   };
 }
 
-export default function GuideDetailPage({
+export default async function GuideDetailPage({
   params,
 }: {
   params: { slug: string };
@@ -42,8 +43,10 @@ export default function GuideDetailPage({
   const category = getTravelGuideCategory(params.slug);
   if (!content || !category) notFound();
 
+  const db = getCmsDbOrNull();
+  const cmsArticles = db ? await listBlogs(db) : [];
   const featuredCards = filterPublicBlogs(
-    getShowcaseBlogCards().filter((card) => content.featuredArticleSlugs.includes(card.currentSlug)),
+    cmsArticles.filter((card) => content.featuredArticleSlugs.includes(card.currentSlug)),
   );
 
   return (

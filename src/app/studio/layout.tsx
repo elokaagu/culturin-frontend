@@ -61,6 +61,7 @@ export default async function StudioLayout({ children }: { children: ReactNode }
       providerCount={counts.providers}
       curatorCount={counts.curators}
       galleryCount={counts.galleryImages}
+      salesDeckCount={counts.salesDecks}
       subscriberCount={counts.subscribers}
       partnerInquiryCount={counts.partnerInquiries}
       eventRsvpCount={counts.eventRsvps}

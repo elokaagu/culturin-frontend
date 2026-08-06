@@ -5,7 +5,6 @@ import IslandNav from "../components/IslandNav";
 import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../components/SafeContentImage";
-import { getShowcaseBlogCards } from "../../lib/cms/showcaseContent";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listBlogs } from "../../lib/cms/queries";
 import type { simpleBlogCard } from "@/lib/interface";
@@ -91,8 +90,7 @@ function ArticleCard({
 export default async function ArticlesPage() {
   const db = getCmsDbOrNull();
   const cmsArticles = db ? await listBlogs(db) : [];
-  const rawArticles: simpleBlogCard[] = cmsArticles.length > 0 ? cmsArticles : getShowcaseBlogCards();
-  const articles = filterPublicBlogs(rawArticles.filter(hasValidArticleSlug));
+  const articles = filterPublicBlogs(cmsArticles.filter(hasValidArticleSlug));
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>

@@ -6,6 +6,7 @@ export type StudioContentCounts = {
   providers: number;
   curators: number;
   galleryImages: number;
+  salesDecks: number;
   subscribers: number;
   partnerInquiries: number;
   eventRsvps: number;
@@ -22,6 +23,7 @@ export async function getStudioCounts(): Promise<StudioContentCounts> {
       providers: 0,
       curators: 0,
       galleryImages: 0,
+      salesDecks: 0,
       subscribers: 0,
       partnerInquiries: 0,
       eventRsvps: 0,
@@ -35,6 +37,7 @@ export async function getStudioCounts(): Promise<StudioContentCounts> {
     providers,
     curators,
     galleryImages,
+    salesDecks,
     subscribers,
     partnerInquiries,
     eventRsvps,
@@ -46,6 +49,7 @@ export async function getStudioCounts(): Promise<StudioContentCounts> {
     db.from("cms_providers").select("id", { count: "exact", head: true }),
     db.from("cms_curators").select("id", { count: "exact", head: true }),
     db.from("gallery_images").select("id", { count: "exact", head: true }),
+    db.from("sales_decks").select("id", { count: "exact", head: true }),
     db.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
     db.from("partner_inquiries").select("id", { count: "exact", head: true }),
     db.from("event_rsvps").select("id", { count: "exact", head: true }),
@@ -60,6 +64,7 @@ export async function getStudioCounts(): Promise<StudioContentCounts> {
     providers: providers.count ?? 0,
     curators: curators.count ?? 0,
     galleryImages: galleryImages.count ?? 0,
+    salesDecks: salesDecks.count ?? 0,
     subscribers: subscribers.count ?? 0,
     partnerInquiries: partnerInquiries.count ?? 0,
     eventRsvps: eventRsvps.count ?? 0,
