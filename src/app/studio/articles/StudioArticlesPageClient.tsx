@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { Link } from "next-view-transitions";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
@@ -13,6 +13,7 @@ import {
   studioListRowClass,
 } from "@/app/studio/_components/StudioCulturinListKit";
 import { filterStudioList, sortStudioList, type StudioSortKey } from "@/app/studio/_lib/studioListShared";
+import { useStudioLiveList } from "@/app/studio/_lib/useStudioLiveList";
 import { deleteCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 import { useStudioConfirm } from "@/app/studio/_components/StudioConfirmDialog";
 import type { StudioBlogListItem } from "@/lib/cms/queries";
@@ -25,6 +26,7 @@ type StudioArticlesPageClientProps = {
 export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPageClientProps) {
   const router = useRouter();
   const confirm = useStudioConfirm();
+  const liveArticles = useStudioLiveList("blog", articles);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<StudioSortKey>("date-newest");
   const [removed, setRemoved] = useState<Set<string>>(() => new Set());
@@ -32,16 +34,9 @@ export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPage
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
-  // If we landed on a stale empty RSC payload, pull fresh server data once.
-  useEffect(() => {
-    if (hasDb && articles.length === 0) {
-      router.refresh();
-    }
-  }, [hasDb, articles.length, router]);
-
   const visibleArticles = useMemo(
-    () => articles.filter((a) => !removed.has(a.currentSlug)),
-    [articles, removed],
+    () => liveArticles.filter((a) => !removed.has(a.currentSlug)),
+    [liveArticles, removed],
   );
 
   const filteredSorted = useMemo(() => {

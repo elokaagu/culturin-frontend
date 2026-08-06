@@ -15,6 +15,7 @@ import {
   studioListRowClass,
 } from "@/app/studio/_components/StudioCulturinListKit";
 import { filterStudioList, sortStudioList, type StudioSortKey } from "@/app/studio/_lib/studioListShared";
+import { useStudioLiveList } from "@/app/studio/_lib/useStudioLiveList";
 import { deleteCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 import { useStudioConfirm } from "@/app/studio/_components/StudioConfirmDialog";
 import type { StudioProviderListItem } from "@/lib/cms/queries";
@@ -34,6 +35,7 @@ type StudioProvidersPageClientProps = {
 export function StudioProvidersPageClient({ providers, hasDb, editEntry }: StudioProvidersPageClientProps) {
   const router = useRouter();
   const confirm = useStudioConfirm();
+  const liveProviders = useStudioLiveList("provider", providers);
   const [createOpen, setCreateOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<StudioSortKey>("date-newest");
@@ -58,8 +60,8 @@ export function StudioProvidersPageClient({ providers, hasDb, editEntry }: Studi
   }, [isEditing]);
 
   const visibleProviders = useMemo(
-    () => providers.filter((p) => !removed.has(p.slug)),
-    [providers, removed],
+    () => liveProviders.filter((p) => !removed.has(p.slug)),
+    [liveProviders, removed],
   );
 
   const filteredSorted = useMemo(() => {

@@ -15,6 +15,7 @@ import {
   studioListRowClass,
 } from "@/app/studio/_components/StudioCulturinListKit";
 import { filterStudioList, sortStudioList, type StudioSortKey } from "@/app/studio/_lib/studioListShared";
+import { useStudioLiveList } from "@/app/studio/_lib/useStudioLiveList";
 import { deleteCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 import { useStudioConfirm } from "@/app/studio/_components/StudioConfirmDialog";
 import type { StudioCuratorListItem } from "@/lib/cms/queries";
@@ -30,6 +31,7 @@ type StudioCuratorsPageClientProps = {
 export function StudioCuratorsPageClient({ curators, hasDb, editEntry }: StudioCuratorsPageClientProps) {
   const router = useRouter();
   const confirm = useStudioConfirm();
+  const liveCurators = useStudioLiveList("curator", curators);
   const [createOpen, setCreateOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<StudioSortKey>("date-newest");
@@ -54,8 +56,8 @@ export function StudioCuratorsPageClient({ curators, hasDb, editEntry }: StudioC
   }, [isEditing]);
 
   const visibleCurators = useMemo(
-    () => curators.filter((c) => !removed.has(c.slug)),
-    [curators, removed],
+    () => liveCurators.filter((c) => !removed.has(c.slug)),
+    [liveCurators, removed],
   );
 
   const filteredSorted = useMemo(() => {

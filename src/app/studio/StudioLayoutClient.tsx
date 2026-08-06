@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils";
 
 import { StudioConfirmProvider } from "./_components/StudioConfirmDialog";
 import { studioGhostButtonClass } from "./_lib/studioTheme";
+import { useStudioLiveCounts } from "./_lib/useStudioLiveCounts";
 import { useStudioPathRefresh } from "./_lib/useStudioPathRefresh";
 
 /** Avoid prefetching Studio list routes into a stale empty client cache. */
@@ -102,6 +103,19 @@ export default function StudioLayoutClient({
   const { supabase } = useSupabaseAuth();
   const [signingOut, setSigningOut] = useState(false);
   useStudioPathRefresh();
+  const liveCounts = useStudioLiveCounts({
+    blogs: blogCount,
+    videos: videoCount,
+    providers: providerCount,
+    curators: curatorCount,
+    galleryImages: galleryCount,
+    salesDecks: salesDeckCount,
+    subscribers: subscriberCount,
+    partnerInquiries: partnerInquiryCount,
+    eventRsvps: eventRsvpCount,
+    galleryDownloads: galleryDownloadCount,
+    cardApplications: cardApplicationCount,
+  });
 
   return (
     <StudioConfirmProvider>
@@ -188,7 +202,7 @@ export default function StudioLayoutClient({
                       <BookOpen className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Articles & guides</span>
                       {countBadge(
-                        blogCount,
+                        liveCounts.blogs,
                         pathname === "/studio/articles" || pathname?.startsWith("/studio/articles/"),
                       )}
                     </Link>
@@ -201,7 +215,10 @@ export default function StudioLayoutClient({
                     >
                       <Video className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Videos</span>
-                      {countBadge(videoCount, pathname === "/studio/videos" || pathname?.startsWith("/studio/videos/"))}
+                      {countBadge(
+                        liveCounts.videos,
+                        pathname === "/studio/videos" || pathname?.startsWith("/studio/videos/"),
+                      )}
                     </Link>
                   </li>
                   <li>
@@ -215,7 +232,7 @@ export default function StudioLayoutClient({
                       <Building2 className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Experiences</span>
                       {countBadge(
-                        providerCount,
+                        liveCounts.providers,
                         pathname === "/studio/providers" || pathname?.startsWith("/studio/providers/"),
                       )}
                     </Link>
@@ -231,7 +248,7 @@ export default function StudioLayoutClient({
                       <Users className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Curators</span>
                       {countBadge(
-                        curatorCount,
+                        liveCounts.curators,
                         pathname === "/studio/curators" || pathname?.startsWith("/studio/curators/"),
                       )}
                     </Link>
@@ -245,7 +262,7 @@ export default function StudioLayoutClient({
                       <Images className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Gallery</span>
                       {countBadge(
-                        galleryCount,
+                        liveCounts.galleryImages,
                         pathname === "/studio/gallery" || pathname?.startsWith("/studio/gallery/"),
                       )}
                     </Link>
@@ -273,7 +290,7 @@ export default function StudioLayoutClient({
                       <Presentation className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Sales decks</span>
                       {countBadge(
-                        salesDeckCount,
+                        liveCounts.salesDecks,
                         pathname === "/studio/sales-decks" || pathname?.startsWith("/studio/sales-decks/"),
                       )}
                     </Link>
@@ -295,7 +312,7 @@ export default function StudioLayoutClient({
                       <Mail className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Subscribers</span>
                       {countBadge(
-                        subscriberCount,
+                        liveCounts.subscribers,
                         pathname === "/studio/subscribers" || pathname?.startsWith("/studio/subscribers/"),
                       )}
                     </Link>
@@ -312,7 +329,7 @@ export default function StudioLayoutClient({
                       <Handshake className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Partner inquiries</span>
                       {countBadge(
-                        partnerInquiryCount,
+                        liveCounts.partnerInquiries,
                         pathname === "/studio/partner-inquiries" ||
                           pathname?.startsWith("/studio/partner-inquiries/"),
                       )}
@@ -329,7 +346,7 @@ export default function StudioLayoutClient({
                       <CalendarCheck className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Event RSVPs</span>
                       {countBadge(
-                        eventRsvpCount,
+                        liveCounts.eventRsvps,
                         pathname === "/studio/event-rsvps" || pathname?.startsWith("/studio/event-rsvps/"),
                       )}
                     </Link>
@@ -346,7 +363,7 @@ export default function StudioLayoutClient({
                       <Download className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Gallery downloads</span>
                       {countBadge(
-                        galleryDownloadCount,
+                        liveCounts.galleryDownloads,
                         pathname === "/studio/gallery-downloads" ||
                           pathname?.startsWith("/studio/gallery-downloads/"),
                       )}
@@ -364,7 +381,7 @@ export default function StudioLayoutClient({
                       <CreditCard className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Card applications</span>
                       {countBadge(
-                        cardApplicationCount,
+                        liveCounts.cardApplications,
                         pathname === "/studio/card-applications" ||
                           pathname?.startsWith("/studio/card-applications/"),
                       )}

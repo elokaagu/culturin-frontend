@@ -13,6 +13,7 @@ import {
   studioListRowClass,
 } from "@/app/studio/_components/StudioCulturinListKit";
 import { filterStudioList, sortStudioList, type StudioSortKey } from "@/app/studio/_lib/studioListShared";
+import { useStudioLiveList } from "@/app/studio/_lib/useStudioLiveList";
 import { deleteCmsEntry } from "@/app/studio/_lib/postCmsEntry";
 import { useStudioConfirm } from "@/app/studio/_components/StudioConfirmDialog";
 import type { StudioVideoListItem } from "@/lib/cms/queries";
@@ -25,6 +26,7 @@ type StudioVideosPageClientProps = {
 export function StudioVideosPageClient({ videos, hasDb }: StudioVideosPageClientProps) {
   const router = useRouter();
   const confirm = useStudioConfirm();
+  const liveVideos = useStudioLiveList("video", videos);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<StudioSortKey>("date-newest");
   const [removed, setRemoved] = useState<Set<string>>(() => new Set());
@@ -33,8 +35,8 @@ export function StudioVideosPageClient({ videos, hasDb }: StudioVideosPageClient
   const [, startTransition] = useTransition();
 
   const visibleVideos = useMemo(
-    () => videos.filter((v) => !removed.has(v.currentSlug)),
-    [videos, removed],
+    () => liveVideos.filter((v) => !removed.has(v.currentSlug)),
+    [liveVideos, removed],
   );
 
   const filteredSorted = useMemo(() => {
