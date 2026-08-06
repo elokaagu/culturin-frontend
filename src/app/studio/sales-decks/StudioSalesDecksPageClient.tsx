@@ -2,7 +2,8 @@
 
 import { BarChart3, Copy, ExternalLink, Plus, Presentation, Trash2 } from "lucide-react";
 import { Link } from "next-view-transitions";
-import { useCallback, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 import { useSupabaseAuth } from "@/app/components/SupabaseAuthProvider";
 import {
@@ -37,12 +38,31 @@ type Props = {
 export function StudioSalesDecksPageClient({ initialDecks, viewCounts: initialCounts, hasDb }: Props) {
   const { supabase, user } = useSupabaseAuth();
   const confirm = useStudioConfirm();
+  const pathname = usePathname();
   const [decks, setDecks] = useState(initialDecks);
   const [viewCounts, setViewCounts] = useState(initialCounts);
   const [showUpload, setShowUpload] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
+    // Prefer the admin API (service role) so soft-nav cache / RLS quirks can't hide decks.
+    try {
+      const res = await fetch("/api/studio/sales-decks", { cache: "no-store" });
+      if (res.ok) {
+        const body = (await res.json()) as {
+          decks?: SalesDeck[];
+          viewCounts?: Record<string, number>;
+        };
+        if (Array.isArray(body.decks)) {
+          setDecks(body.decks);
+          setViewCounts(body.viewCounts ?? {});
+          return;
+        }
+      }
+    } catch (err) {
+      console.error("Studio sales-decks refresh failed", err);
+    }
+
     if (!supabase) return;
     const { data } = await supabase
       .from("sales_decks")
@@ -67,6 +87,12 @@ export function StudioSalesDecksPageClient({ initialDecks, viewCounts: initialCo
     }
     setViewCounts(counts);
   }, [supabase]);
+
+  // Always re-fetch on visit. Don't sync from initialDecks after mount — a stale
+  // empty RSC payload can otherwise wipe a successful live response.
+  useEffect(() => {
+    void refresh();
+  }, [pathname, refresh]);
 
   const copyLink = async (deck: SalesDeck) => {
     try {
