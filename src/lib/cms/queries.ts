@@ -11,6 +11,7 @@ import {
   mapVideoRowToFull,
 } from "./mappers";
 import { tokenizeSearchQuery } from "@/lib/searchTokenize";
+import { resolveEventMediaSrc } from "@/lib/eventMedia";
 
 import type { CmsDb } from "./types";
 import type { CmsBlogRow, CmsCuratorRow, CmsProviderRow, CmsVideoRow, GalleryImageRow } from "./types";
@@ -447,8 +448,8 @@ export async function listGalleryImagesPublic(db: CmsDb): Promise<GalleryImagePu
     .order("sort_order", { ascending: true });
   if (error || !data) return [];
   return (data as GalleryImageRow[]).map((row) => ({
-    src: row.src,
-    largeSrc: row.large_src,
+    src: resolveEventMediaSrc(row.src),
+    largeSrc: resolveEventMediaSrc(row.large_src || row.src),
     alt: row.alt,
     event: row.caption,
     location: row.location,

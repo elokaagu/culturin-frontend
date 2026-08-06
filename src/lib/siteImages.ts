@@ -1,4 +1,5 @@
 import { getCmsDbOrNull } from "@/lib/cms/server";
+import { resolveEventMediaSrc } from "@/lib/eventMedia";
 
 export type SiteImageSlot = {
   key: string;
@@ -97,7 +98,12 @@ export async function getSiteImagesMap(): Promise<Record<string, SiteImage>> {
   const { data, error } = await db.from("site_images").select("slot_key, src, alt");
   if (error || !data) return {};
 
-  return Object.fromEntries((data as Array<{ slot_key: string; src: string; alt: string }>).map((row) => [row.slot_key, { src: row.src, alt: row.alt }]));
+  return Object.fromEntries(
+    (data as Array<{ slot_key: string; src: string; alt: string }>).map((row) => [
+      row.slot_key,
+      { src: resolveEventMediaSrc(row.src), alt: row.alt },
+    ]),
+  );
 }
 
 /**
@@ -109,14 +115,16 @@ export async function getSiteImagesMap(): Promise<Record<string, SiteImage>> {
  */
 export function resolveSiteImage(map: Record<string, SiteImage>, slotKey: string, fallback: SiteImage): SiteImage {
   const row = map[slotKey];
-  if (!row || !row.src) return fallback;
-  return { src: row.src, alt: row.alt || fallback.alt };
+  if (!row || !row.src) {
+    return { src: resolveEventMediaSrc(fallback.src), alt: fallback.alt };
+  }
+  return { src: resolveEventMediaSrc(row.src), alt: row.alt || fallback.alt };
 }
 
 /** Manifest-only fallback, for the Studio admin UI when no DB row exists yet for a known slot. */
 export function manifestDefault(slotKey: string): SiteImage {
   const slot = SITE_IMAGE_SLOTS.find((s) => s.key === slotKey);
-  return { src: slot?.defaultSrc ?? "", alt: slot?.defaultAlt ?? "" };
+  return { src: resolveEventMediaSrc(slot?.defaultSrc ?? ""), alt: slot?.defaultAlt ?? "" };
 }
 
 /** Event hero for cards and detail pages — Studio slot, then manifest heroImage, else null. */

@@ -7,6 +7,7 @@ import BlurImage from "@/app/components/motion/BlurImage";
 import Reveal from "@/app/components/motion/Reveal";
 import IslandNav from "@/app/components/IslandNav";
 import HomeFooter from "@/app/components/HomeFooter";
+import { eventMediaUrl } from "@/lib/eventMedia";
 
 const BG = EDITORIAL_BG;
 const INK = EDITORIAL_INK;
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     "A Culturin travel guide to Nice and Cannes for business travelers: getting around, where to stay and work, and how to experience the real local culture between meetings.",
 };
 
-const HERO_SRC = "/events/cannes-lions-2026/UNIKday1-22.jpg";
+const HERO_SRC = eventMediaUrl("cannes-lions-2026/UNIKday1-22.jpg");
 
 const GETTING_AROUND = [
   {

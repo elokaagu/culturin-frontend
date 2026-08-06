@@ -18,6 +18,7 @@ import Reveal from "@/app/components/motion/Reveal";
 import CountUpStat from "@/app/components/motion/CountUpStat";
 import IslandNav from "@/app/components/IslandNav";
 import { getSiteImagesMap, resolveEventHero } from "@/lib/siteImages";
+import { resolveEventMediaSrc } from "@/lib/eventMedia";
 import RSVPForm from "./RSVPForm";
 
 const BG = EDITORIAL_BG;
@@ -130,7 +131,7 @@ export default async function EventLandingPage({ params }: Props) {
             >
               <div className="overflow-hidden shadow-xl" style={{ borderRadius: 16 }}>
                 <BlurImage
-                  src={photo.src}
+                  src={resolveEventMediaSrc(photo.src)}
                   alt={photo.alt}
                   width={400}
                   height={520}

@@ -15,6 +15,7 @@ import { listGalleryImagesPublic } from "@/lib/cms/queries";
 import { getCmsDbOrNull } from "@/lib/cms/server";
 import GalleryGrid, { type GalleryFilter, type GalleryItem } from "./GalleryGrid";
 import IslandNav from "../components/IslandNav";
+import { eventMediaUrl } from "@/lib/eventMedia";
 
 /** Gallery CMS updates call revalidatePath("/gallery"). */
 export const revalidate = 120;
@@ -30,8 +31,8 @@ const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
 
-const asset = (folder: string, file: string) => `/events/${folder}/${file}`;
-const assetLarge = (folder: string, file: string) => `/events/${folder}/large/${file}`;
+const asset = (folder: string, file: string) => eventMediaUrl(`${folder}/${file}`);
+const assetLarge = (folder: string, file: string) => eventMediaUrl(`${folder}/large/${file}`);
 
 /**
  * Static fallback shown only if the gallery_images table isn't reachable yet

@@ -56,5 +56,13 @@ export const FALLBACK_BLUR =
 
 /** Resolve a photo's blurDataURL from its `src` path (falls back to neutral). */
 export function blurForSrc(src: string): string {
-  return bySrc[src]?.blurDataURL ?? FALLBACK_BLUR;
+  if (bySrc[src]?.blurDataURL) return bySrc[src].blurDataURL;
+  // Storage URLs still match the legacy `/events/...` roster keys.
+  const marker = "/storage/v1/object/public/media/events/";
+  const idx = src.indexOf(marker);
+  if (idx >= 0) {
+    const legacy = `/events/${src.slice(idx + marker.length)}`;
+    if (bySrc[legacy]?.blurDataURL) return bySrc[legacy].blurDataURL;
+  }
+  return FALLBACK_BLUR;
 }

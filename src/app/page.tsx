@@ -23,6 +23,7 @@ import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
 import AttendeeOriginMap from "./components/AttendeeOriginMap";
 import MagneticButton from "./components/motion/MagneticButton";
 import { getSiteImagesMap, resolveSiteImage, resolveEventHero, manifestDefault } from "@/lib/siteImages";
+import { eventMediaUrl } from "@/lib/eventMedia";
 
 /** Site images can change in Studio; revalidatePath("/") runs on update. */
 export const revalidate = 120;
@@ -244,7 +245,7 @@ export default async function HomePage() {
             eyebrow="Education"
             headline={"Culture Is\nSomething You\nLearn, Not Just\nSee."}
             body="Most travel platforms show you a destination. Culturin teaches you how to actually engage with it: the history, the etiquette, and the stories beneath the surface, before you ever board a flight."
-            image="/events/cannes-lions-2026/UNIKday1-83.jpg"
+            image={eventMediaUrl("cannes-lions-2026/UNIKday1-83.jpg")}
             imageAlt="Guests filling a red-lit room beneath the disco balls in Cannes"
             imageSide="right"
             buttons={[
@@ -256,7 +257,7 @@ export default async function HomePage() {
             eyebrow="Content"
             headline={"Stories From\nThe Room."}
             body="Articles and video from artists, musicians, and entrepreneurs about travel, identity, and culture, captured from the same rooms Culturin builds."
-            image="/events/cannes-lions-2026/UNIKday2-24.jpg"
+            image={eventMediaUrl("cannes-lions-2026/UNIKday2-24.jpg")}
             imageAlt="Couple posing together at a branded photo wall in Cannes"
             imageSide="left"
             buttons={[
@@ -268,7 +269,7 @@ export default async function HomePage() {
             eyebrow="Credibility"
             headline={"Built By People\nWho've Done\nThis Before."}
             body="Our founding team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly, and built relationships with Nike, Virgin, and Microsoft along the way."
-            image="/events/cannes-lions-2026/UNIKday1-42.jpg"
+            image={eventMediaUrl("cannes-lions-2026/UNIKday1-42.jpg")}
             imageAlt="Guest at a Culturin evening in Cannes"
             imageSide="right"
             buttons={[
