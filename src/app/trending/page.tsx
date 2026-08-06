@@ -7,7 +7,6 @@ import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/cu
 import SafeContentImage from "../components/SafeContentImage";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listBlogs, listProviders, listVideos } from "../../lib/cms/queries";
-import { filterPublicBlogs, filterPublicVideos } from "../../lib/cms/blockedFromSite";
 import { getShowcaseVideoCards } from "../../lib/cms/showcaseContent";
 import {
   IMAGE_BLUR_DATA_URL,
@@ -55,8 +54,8 @@ export default async function TrendingPage() {
     ? await Promise.all([listBlogs(db), listVideos(db), listProviders(db)])
     : [[], [], []];
 
-  const blogs = filterPublicBlogs(blogsFromCms);
-  const videos = filterPublicVideos(videosFromCms.length > 0 ? videosFromCms : getShowcaseVideoCards());
+  const blogs = blogsFromCms;
+  const videos = videosFromCms.length > 0 ? videosFromCms : getShowcaseVideoCards();
   const providers = providersFromCms;
 
   return (

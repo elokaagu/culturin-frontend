@@ -9,7 +9,6 @@ import SafeContentImage from "../../../components/SafeContentImage";
 import { getTravelGuideCategory, getTravelGuideContent } from "../../../../lib/travelGuideContent";
 import { getCmsDbOrNull } from "../../../../lib/cms/server";
 import { listBlogs } from "../../../../lib/cms/queries";
-import { filterPublicBlogs } from "@/lib/cms/blockedFromSite";
 import {
   IMAGE_BLUR_DATA_URL,
   cmsImageUnoptimized,
@@ -45,8 +44,8 @@ export default async function GuideDetailPage({
 
   const db = getCmsDbOrNull();
   const cmsArticles = db ? await listBlogs(db) : [];
-  const featuredCards = filterPublicBlogs(
-    cmsArticles.filter((card) => content.featuredArticleSlugs.includes(card.currentSlug)),
+  const featuredCards = cmsArticles.filter((card) =>
+    content.featuredArticleSlugs.includes(card.currentSlug),
   );
 
   return (

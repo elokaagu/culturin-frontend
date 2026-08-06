@@ -1,10 +1,4 @@
-/** Editable account fields shown in settings (draft until persisted). */
-export type AccountProfileDraft = {
-  email: string;
-  username: string;
-};
-
-/** Minimal user fields needed to seed the account profile draft. */
+/** Minimal user fields needed for the account settings identity panel. */
 export type AccountProfileUser = {
   id: string;
   email: string;

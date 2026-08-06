@@ -5,7 +5,6 @@ import { Link } from "next-view-transitions";
 
 import { ContentPageShell } from "../../components/layout/ContentPageShell";
 import { appPageContainerClass } from "@/lib/appLayout";
-import { filterPublicBlogs, filterPublicVideos } from "@/lib/cms/blockedFromSite";
 import { searchBlogs, searchProviders, searchVideos } from "@/lib/cms/queries";
 import { getShowcaseVideoCards } from "@/lib/cms/showcaseContent";
 import { getCmsDbOrNull } from "@/lib/cms/server";
@@ -52,8 +51,8 @@ export default async function ExploreCountryPage({ params }: PageProps) {
   const fallbackVideos = getShowcaseVideoCards().filter((item) =>
     textMatchesAllTokens([item.title, item.description, item.uploader, item.currentSlug].join(" "), tokens),
   );
-  const matchedBlogs = filterPublicBlogs(db ? await searchBlogs(db, query) : []);
-  const matchedVideos = filterPublicVideos(db ? await searchVideos(db, query) : fallbackVideos);
+  const matchedBlogs = db ? await searchBlogs(db, query) : [];
+  const matchedVideos = db ? await searchVideos(db, query) : fallbackVideos;
   const matchedProviders = db ? await searchProviders(db, query) : [];
 
   let appUserId: string | null = null;

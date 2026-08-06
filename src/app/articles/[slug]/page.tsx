@@ -4,14 +4,15 @@ import { notFound } from "next/navigation";
 import { getCmsDbOrNull } from "../../../lib/cms/server";
 import { getBlogBySlug, getCuratorBySlug } from "../../../lib/cms/queries";
 import type { curatorCard, fullBlog } from "@/lib/interface";
-import { isBlogHiddenFromSite } from "@/lib/cms/blockedFromSite";
 import { normalizeSlugParam } from "../../../lib/slug";
 import ArticleClient from "./ArticleClient";
 
 async function getArticleBySlug(slug: string): Promise<fullBlog | null> {
   const db = getCmsDbOrNull();
   if (!db) return null;
-  return getBlogBySlug(db, slug);
+  const blog = await getBlogBySlug(db, slug);
+  if (!blog?.publishedAt) return null;
+  return blog;
 }
 
 async function getCuratorForArticle(curatorSlug: string | null | undefined): Promise<curatorCard | null> {
@@ -42,10 +43,6 @@ export async function generateMetadata({
     return { title: "Article" };
   }
 
-  if (isBlogHiddenFromSite({ title: article.title, currentSlug: article.currentSlug })) {
-    return { title: "Article" };
-  }
-
   return {
     title: article.title,
     description: article.summary ?? undefined,
@@ -60,10 +57,6 @@ export default async function BlogArticle({
   const data = await getArticleBySlug(normalizeSlugParam(params.slug));
 
   if (!data) {
-    notFound();
-  }
-
-  if (isBlogHiddenFromSite({ title: data.title, currentSlug: data.currentSlug })) {
     notFound();
   }
 

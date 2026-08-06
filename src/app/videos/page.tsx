@@ -8,7 +8,6 @@ import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/cu
 import TopVideosRail from "../components/TopVideosRail";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listVideos } from "../../lib/cms/queries";
-import { filterPublicVideos } from "../../lib/cms/blockedFromSite";
 import { getShowcaseVideoCards } from "../../lib/cms/showcaseContent";
 
 export const revalidate = 120;
@@ -24,7 +23,7 @@ const container = appPageContainerClass;
 export default async function VideosPage() {
   const db = getCmsDbOrNull();
   const fromCms = db ? await listVideos(db) : [];
-  const videos = filterPublicVideos(fromCms.length > 0 ? fromCms : getShowcaseVideoCards());
+  const videos = fromCms.length > 0 ? fromCms : getShowcaseVideoCards();
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>

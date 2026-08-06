@@ -10,7 +10,6 @@ import { ContentPageShell } from "../../components/layout/ContentPageShell";
 import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
 import { getCmsDbOrNull } from "@/lib/cms/server";
 import { searchBlogs, searchProviders, searchVideos } from "@/lib/cms/queries";
-import { filterPublicBlogs, filterPublicVideos } from "@/lib/cms/blockedFromSite";
 import { getShowcaseVideoCards } from "@/lib/cms/showcaseContent";
 import { textMatchesAllTokens, tokenizeSearchQuery } from "@/lib/searchTokenize";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -52,8 +51,8 @@ export default async function DestinationDetailPage({ params }: PageProps) {
   const fallbackVideos = getShowcaseVideoCards().filter((item) =>
     textMatchesAllTokens([item.title, item.description, item.uploader, item.currentSlug].join(" "), tokens),
   );
-  const matchedBlogs = filterPublicBlogs(db ? await searchBlogs(db, query) : []);
-  const matchedVideos = filterPublicVideos(db ? await searchVideos(db, query) : fallbackVideos);
+  const matchedBlogs = db ? await searchBlogs(db, query) : [];
+  const matchedVideos = db ? await searchVideos(db, query) : fallbackVideos;
   const matchedProviders = db ? await searchProviders(db, query) : [];
 
   let appUserId: string | null = null;

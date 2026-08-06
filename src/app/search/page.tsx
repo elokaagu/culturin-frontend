@@ -9,7 +9,6 @@ import { destinationContentBySlug } from "@/lib/destinationContent";
 import { destinations } from "@/lib/destinationsData";
 import { getCmsDbOrNull } from "../../lib/cms/server";
 import { searchBlogs, searchProviders, searchVideos } from "../../lib/cms/queries";
-import { filterPublicBlogs, filterPublicVideos } from "@/lib/cms/blockedFromSite";
 import { getShowcaseVideoCards } from "../../lib/cms/showcaseContent";
 import {
   IMAGE_BLUR_DATA_URL,
@@ -167,8 +166,8 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
     fromDbProviders = [];
   }
 
-  const articles = filterPublicBlogs(fromDbBlogs);
-  const videos = filterPublicVideos(withShowcaseVideosIfEmpty(fromDbVideos, query));
+  const articles = fromDbBlogs;
+  const videos = withShowcaseVideosIfEmpty(fromDbVideos, query);
   const providers = fromDbProviders;
   const destinationHits = searchDestinations(query);
 

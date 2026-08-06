@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Link from "next/link";
 import { useAppAuth } from "./SupabaseAuthProvider";
 
 import { AccountProfileForm } from "./account/AccountProfileForm";
@@ -8,8 +9,7 @@ import { SpotifyConnectionCard } from "./account/SpotifyConnectionCard";
 import type { AccountProfileUser } from "./account/types";
 
 /**
- * Account tab body for `/settings` — profile draft + placeholders only.
- * Shell, hash tabs, and theme live on the settings page / root layout.
+ * Account tab body for `/settings` — session identity + Spotify.
  */
 export default function AccountSection() {
   const { data: session, status } = useAppAuth();
@@ -34,19 +34,22 @@ export default function AccountSection() {
           {status === "loading"
             ? "Loading session…"
             : session?.user
-              ? "Update your profile details. Changes stay on this device until save is enabled."
+              ? "Signed-in account details and connected services."
               : "Sign in to manage your account."}
         </p>
       </header>
 
       {status === "loading" ? null : profileUser ? (
         <>
-          <SpotifyConnectionCard />
           <AccountProfileForm user={profileUser} />
+          <SpotifyConnectionCard />
         </>
       ) : (
         <p className="text-sm text-neutral-500 dark:text-white/60">
-          Use the sign-in option in the header to access account settings.
+          <Link href="/login?next=/settings" className="underline underline-offset-4">
+            Sign in
+          </Link>{" "}
+          to access account settings.
         </p>
       )}
     </section>

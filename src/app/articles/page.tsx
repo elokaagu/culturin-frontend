@@ -13,7 +13,6 @@ import {
   cmsImageUnoptimized,
   resolveContentImageSrc,
 } from "../../lib/imagePlaceholder";
-import { filterPublicBlogs } from "@/lib/cms/blockedFromSite";
 
 const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
 
@@ -90,7 +89,7 @@ function ArticleCard({
 export default async function ArticlesPage() {
   const db = getCmsDbOrNull();
   const cmsArticles = db ? await listBlogs(db) : [];
-  const articles = filterPublicBlogs(cmsArticles.filter(hasValidArticleSlug));
+  const articles = cmsArticles.filter(hasValidArticleSlug);
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import HomePageClient from "../components/HomePageClient";
 import { getCmsDbOrNull } from "../../lib/cms/server";
-import { filterPublicBlogs } from "../../lib/cms/blockedFromSite";
 import { listBlogs, listProviders } from "../../lib/cms/queries";
 
 export const metadata: Metadata = {
@@ -19,7 +18,7 @@ export default async function PlatformHomePage() {
     ? await Promise.all([listBlogs(db), listProviders(db)])
     : [[], []];
 
-  const blogs = filterPublicBlogs(blogsFromCms);
+  const blogs = blogsFromCms;
   const providers = providersFromCms;
 
   return (

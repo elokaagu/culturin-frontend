@@ -30,21 +30,34 @@ function ilikePattern(term: string) {
   return `%${safe}%`;
 }
 
+function isPublished(row: { published_at?: string | null }): boolean {
+  return Boolean(row.published_at);
+}
+
 function mergeBlogRows(rows: CmsBlogRow[]): simpleBlogCard[] {
   const byId = new Map<string, CmsBlogRow>();
-  for (const r of rows) byId.set(r.id, r);
+  for (const r of rows) {
+    if (!isPublished(r)) continue;
+    byId.set(r.id, r);
+  }
   return Array.from(byId.values()).map(mapBlogRowToCard);
 }
 
 function mergeVideoRows(rows: CmsVideoRow[]): videoCard[] {
   const byId = new Map<string, CmsVideoRow>();
-  for (const r of rows) byId.set(r.id, r);
+  for (const r of rows) {
+    if (!isPublished(r)) continue;
+    byId.set(r.id, r);
+  }
   return Array.from(byId.values()).map(mapVideoRowToCard);
 }
 
 function mergeProviderRows(rows: CmsProviderRow[]): providerHeroCard[] {
   const byId = new Map<string, CmsProviderRow>();
-  for (const r of rows) byId.set(r.id, r);
+  for (const r of rows) {
+    if (!isPublished(r)) continue;
+    byId.set(r.id, r);
+  }
   return Array.from(byId.values()).map(mapProviderRowToHero);
 }
 
@@ -58,8 +71,8 @@ function mergeBlogRowsToMap(rows: CmsBlogRow[]): Map<string, CmsBlogRow> {
 async function blogIdRowsForToken(db: CmsDb, token: string): Promise<Map<string, CmsBlogRow>> {
   const p = ilikePattern(token);
   const [byTitle, bySummary] = await Promise.all([
-    db.from("cms_blogs").select(blogSelect).ilike("title", p),
-    db.from("cms_blogs").select(blogSelect).ilike("summary", p),
+    db.from("cms_blogs").select(blogSelect).not("published_at", "is", null).ilike("title", p),
+    db.from("cms_blogs").select(blogSelect).not("published_at", "is", null).ilike("summary", p),
   ]);
   const rows: CmsBlogRow[] = [
     ...((byTitle.data as CmsBlogRow[] | null | undefined) ?? []),
@@ -71,9 +84,9 @@ async function blogIdRowsForToken(db: CmsDb, token: string): Promise<Map<string,
 async function videoIdRowsForToken(db: CmsDb, token: string): Promise<Map<string, CmsVideoRow>> {
   const p = ilikePattern(token);
   const [byTitle, byUploader, byDescription] = await Promise.all([
-    db.from("cms_videos").select(videoSelect).ilike("title", p),
-    db.from("cms_videos").select(videoSelect).ilike("uploader", p),
-    db.from("cms_videos").select(videoSelect).ilike("description", p),
+    db.from("cms_videos").select(videoSelect).not("published_at", "is", null).ilike("title", p),
+    db.from("cms_videos").select(videoSelect).not("published_at", "is", null).ilike("uploader", p),
+    db.from("cms_videos").select(videoSelect).not("published_at", "is", null).ilike("description", p),
   ]);
   const rows: CmsVideoRow[] = [
     ...((byTitle.data as CmsVideoRow[] | null | undefined) ?? []),
@@ -88,10 +101,10 @@ async function videoIdRowsForToken(db: CmsDb, token: string): Promise<Map<string
 async function providerIdRowsForToken(db: CmsDb, token: string): Promise<Map<string, CmsProviderRow>> {
   const p = ilikePattern(token);
   const [byEventName, byName, byLocation, byDescription] = await Promise.all([
-    db.from("cms_providers").select(providerSelect).ilike("event_name", p),
-    db.from("cms_providers").select(providerSelect).ilike("name", p),
-    db.from("cms_providers").select(providerSelect).ilike("location", p),
-    db.from("cms_providers").select(providerSelect).ilike("description", p),
+    db.from("cms_providers").select(providerSelect).not("published_at", "is", null).ilike("event_name", p),
+    db.from("cms_providers").select(providerSelect).not("published_at", "is", null).ilike("name", p),
+    db.from("cms_providers").select(providerSelect).not("published_at", "is", null).ilike("location", p),
+    db.from("cms_providers").select(providerSelect).not("published_at", "is", null).ilike("description", p),
   ]);
   const rows: CmsProviderRow[] = [
     ...((byEventName.data as CmsProviderRow[] | null | undefined) ?? []),
@@ -108,6 +121,7 @@ export async function listBlogs(db: CmsDb): Promise<simpleBlogCard[]> {
   const { data, error } = await db
     .from("cms_blogs")
     .select(blogSelect)
+    .not("published_at", "is", null)
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error || !data) return [];
@@ -155,6 +169,7 @@ export async function listVideos(db: CmsDb): Promise<videoCard[]> {
   const { data, error } = await db
     .from("cms_videos")
     .select(videoSelect)
+    .not("published_at", "is", null)
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error || !data) return [];
@@ -165,6 +180,7 @@ export async function listFullVideos(db: CmsDb): Promise<fullVideo[]> {
   const { data, error } = await db
     .from("cms_videos")
     .select(videoSelect)
+    .not("published_at", "is", null)
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error || !data) return [];
@@ -181,6 +197,7 @@ export async function listProviders(db: CmsDb): Promise<providerHeroCard[]> {
   const { data, error } = await db
     .from("cms_providers")
     .select(providerSelect)
+    .not("published_at", "is", null)
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error || !data) return [];
@@ -191,6 +208,7 @@ export async function listProvidersAsCards(db: CmsDb): Promise<providerCard[]> {
   const { data, error } = await db
     .from("cms_providers")
     .select(providerSelect)
+    .not("published_at", "is", null)
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error || !data) return [];
@@ -279,8 +297,8 @@ export async function searchBlogs(db: CmsDb, term: string): Promise<simpleBlogCa
   if (tokens.length === 1) {
     const p = ilikePattern(tokens[0]!);
     const [byTitle, bySummary] = await Promise.all([
-      db.from("cms_blogs").select(blogSelect).ilike("title", p),
-      db.from("cms_blogs").select(blogSelect).ilike("summary", p),
+      db.from("cms_blogs").select(blogSelect).not("published_at", "is", null).ilike("title", p),
+      db.from("cms_blogs").select(blogSelect).not("published_at", "is", null).ilike("summary", p),
     ]);
     const rows = [
       ...((byTitle.data as CmsBlogRow[] | null | undefined) ?? []),
@@ -303,9 +321,9 @@ export async function searchVideos(db: CmsDb, term: string): Promise<videoCard[]
   if (tokens.length === 1) {
     const p = ilikePattern(tokens[0]!);
     const [byTitle, byUploader, byDescription] = await Promise.all([
-      db.from("cms_videos").select(videoSelect).ilike("title", p),
-      db.from("cms_videos").select(videoSelect).ilike("uploader", p),
-      db.from("cms_videos").select(videoSelect).ilike("description", p),
+      db.from("cms_videos").select(videoSelect).not("published_at", "is", null).ilike("title", p),
+      db.from("cms_videos").select(videoSelect).not("published_at", "is", null).ilike("uploader", p),
+      db.from("cms_videos").select(videoSelect).not("published_at", "is", null).ilike("description", p),
     ]);
     const rows = [
       ...((byTitle.data as CmsVideoRow[] | null | undefined) ?? []),
@@ -325,6 +343,7 @@ export async function listCurators(db: CmsDb): Promise<curatorCard[]> {
   const { data, error } = await db
     .from("cms_curators")
     .select(curatorSelect)
+    .not("published_at", "is", null)
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error || !data) return [];
@@ -346,6 +365,7 @@ export async function listBlogsByCurator(db: CmsDb, curatorSlug: string): Promis
     .from("cms_blogs")
     .select(blogSelect)
     .eq("curator_slug", curatorSlug)
+    .not("published_at", "is", null)
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error || !data) return [];
@@ -387,10 +407,10 @@ export async function searchProviders(db: CmsDb, term: string): Promise<provider
   if (tokens.length === 1) {
     const p = ilikePattern(tokens[0]!);
     const [byEventName, byName, byLocation, byDescription] = await Promise.all([
-      db.from("cms_providers").select(providerSelect).ilike("event_name", p),
-      db.from("cms_providers").select(providerSelect).ilike("name", p),
-      db.from("cms_providers").select(providerSelect).ilike("location", p),
-      db.from("cms_providers").select(providerSelect).ilike("description", p),
+      db.from("cms_providers").select(providerSelect).not("published_at", "is", null).ilike("event_name", p),
+      db.from("cms_providers").select(providerSelect).not("published_at", "is", null).ilike("name", p),
+      db.from("cms_providers").select(providerSelect).not("published_at", "is", null).ilike("location", p),
+      db.from("cms_providers").select(providerSelect).not("published_at", "is", null).ilike("description", p),
     ]);
     const rows = [
       ...((byEventName.data as CmsProviderRow[] | null | undefined) ?? []),
