@@ -20,8 +20,8 @@ import {
   Video,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { Link, useTransitionRouter } from "next-view-transitions";
-import { useState, type ReactNode } from "react";
+import { Link as TransitionLink, useTransitionRouter } from "next-view-transitions";
+import { useState, type ComponentProps, type ReactNode } from "react";
 
 import { useTheme } from "@/app/styles/ThemeContext";
 import { useSupabaseAuth } from "@/app/components/SupabaseAuthProvider";
@@ -30,6 +30,12 @@ import { cn } from "@/lib/utils";
 
 import { StudioConfirmProvider } from "./_components/StudioConfirmDialog";
 import { studioGhostButtonClass } from "./_lib/studioTheme";
+import { useStudioPathRefresh } from "./_lib/useStudioPathRefresh";
+
+/** Avoid prefetching Studio list routes into a stale empty client cache. */
+function Link({ prefetch = false, ...props }: ComponentProps<typeof TransitionLink>) {
+  return <TransitionLink prefetch={prefetch} {...props} />;
+}
 
 type StudioLayoutClientProps = {
   children: ReactNode;
@@ -95,6 +101,7 @@ export default function StudioLayoutClient({
   const { mode, toggleTheme } = useTheme();
   const { supabase } = useSupabaseAuth();
   const [signingOut, setSigningOut] = useState(false);
+  useStudioPathRefresh();
 
   return (
     <StudioConfirmProvider>

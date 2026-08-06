@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { Link } from "next-view-transitions";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
@@ -31,6 +31,13 @@ export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPage
   const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [, startTransition] = useTransition();
+
+  // If we landed on a stale empty RSC payload, pull fresh server data once.
+  useEffect(() => {
+    if (hasDb && articles.length === 0) {
+      router.refresh();
+    }
+  }, [hasDb, articles.length, router]);
 
   const visibleArticles = useMemo(
     () => articles.filter((a) => !removed.has(a.currentSlug)),

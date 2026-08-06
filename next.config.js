@@ -20,6 +20,14 @@ const nextConfig = {
     NEXT_PUBLIC_SUPABASE_ANON_KEY: publicAnonKey,
     NEXT_PUBLIC_VIDEO_PLAYER_ORIGIN: publicVideoPlayerOrigin,
   },
+  // Studio (and other soft navigations) must not reuse a stale dynamic RSC payload —
+  // e.g. articles list showing "0 items" while the sidebar count already says 1.
+  experimental: {
+    staleTimes: {
+      dynamic: 0,
+      static: 180,
+    },
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "www.forbes.com" },

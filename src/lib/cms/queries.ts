@@ -129,7 +129,11 @@ export async function listBlogsForStudio(db: CmsDb): Promise<StudioBlogListItem[
     .select("slug,title,summary,published_at,created_at")
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
-  if (error || !data) return [];
+  if (error) {
+    console.error("listBlogsForStudio failed", error);
+    return [];
+  }
+  if (!data) return [];
   return (data as Pick<CmsBlogRow, "slug" | "title" | "summary" | "published_at" | "created_at">[]).map(
     (row) => ({
       currentSlug: row.slug,
