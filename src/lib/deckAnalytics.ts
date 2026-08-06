@@ -25,22 +25,19 @@ export async function startDeckSession(
   },
 ) {
   const visitorId = getOrCreateVisitorId();
-  const { data, error } = await db
-    .from("deck_view_sessions")
-    .insert({
-      deck_id: params.deckId,
-      visitor_id: visitorId,
-      viewer_email: params.viewerEmail || null,
-      viewer_name: params.viewerName || null,
-      partner_link_id: params.partnerLinkId || null,
-      user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
-      referrer: typeof document !== "undefined" ? document.referrer || null : null,
-    })
-    .select("id")
-    .single();
+  const { data, error } = await db.rpc("start_deck_view_session", {
+    p_deck_id: params.deckId,
+    p_visitor_id: visitorId,
+    p_viewer_email: params.viewerEmail || null,
+    p_viewer_name: params.viewerName || null,
+    p_partner_link_id: params.partnerLinkId || null,
+    p_user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
+    p_referrer: typeof document !== "undefined" ? document.referrer || null : null,
+  });
 
   if (error) throw error;
-  return data.id as string;
+  if (!data) throw new Error("Failed to start deck session");
+  return data as string;
 }
 
 export async function trackPageView(
@@ -56,22 +53,16 @@ export async function trackPageView(
     durationSeconds: number;
   },
 ) {
-  await Promise.all([
-    db.from("deck_page_events").insert({
-      session_id: params.sessionId,
-      deck_id: params.deckId,
-      page_number: params.pageNumber,
-      time_spent_ms: Math.max(0, Math.round(params.timeSpentMs)),
-    }),
-    db
-      .from("deck_view_sessions")
-      .update({
-        last_active_at: new Date().toISOString(),
-        duration_seconds: params.durationSeconds,
-        max_page_reached: params.maxPageReached,
-        pages_viewed: params.pagesViewed,
-        completed: params.completed,
-      })
-      .eq("id", params.sessionId),
-  ]);
+  const { error } = await db.rpc("track_deck_page_view", {
+    p_session_id: params.sessionId,
+    p_deck_id: params.deckId,
+    p_page_number: params.pageNumber,
+    p_time_spent_ms: Math.max(0, Math.round(params.timeSpentMs)),
+    p_max_page_reached: params.maxPageReached,
+    p_pages_viewed: params.pagesViewed,
+    p_completed: params.completed,
+    p_duration_seconds: params.durationSeconds,
+  });
+
+  if (error) throw error;
 }

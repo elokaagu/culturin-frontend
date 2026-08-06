@@ -41,7 +41,7 @@ export default async function StudioDeckDetailPage({ params, searchParams }: Pag
 
   return (
     <div className="p-4 sm:p-6 md:max-w-4xl md:p-10">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-culturin-700 dark:text-culturin-300">
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--c-accent)]">
         Sales decks
       </p>
       <div className="mt-4">

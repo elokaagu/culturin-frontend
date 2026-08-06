@@ -68,13 +68,13 @@ export function StudioImageUploadButton({ onUploaded, buttonLabel = "Upload imag
         type="button"
         disabled={disabled}
         onClick={() => inputRef.current?.click()}
-        className="inline-flex h-8 items-center rounded-full border border-neutral-300 bg-white px-3 text-xs font-medium text-neutral-800 transition hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/20 dark:bg-white/[0.06] dark:text-white dark:hover:bg-white/10"
+        className="inline-flex h-8 items-center rounded-full border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-3 text-xs font-medium text-[color:var(--c-ink)] transition hover:border-[color:var(--c-accent)] hover:bg-[color:color-mix(in_srgb,var(--c-accent)_12%,transparent)] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white/[0.04]"
       >
         {uploading ? "Uploading..." : buttonLabel}
       </button>
-      {message ? <p className="m-0 text-[11px] text-neutral-500 dark:text-white/65">{message}</p> : null}
+      {message ? <p className="m-0 text-[11px] text-[color:var(--c-muted)]">{message}</p> : null}
       {!supabase ? (
-        <p className="m-0 text-[11px] text-neutral-500 dark:text-white/65">Uploads aren’t available in this preview.</p>
+        <p className="m-0 text-[11px] text-[color:var(--c-muted)]">Uploads aren’t available in this preview.</p>
       ) : null}
     </div>
   );

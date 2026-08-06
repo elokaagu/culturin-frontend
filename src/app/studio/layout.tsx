@@ -17,21 +17,27 @@ export const metadata: Metadata = {
 
 function AccessDenied() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center bg-neutral-50 px-4 py-12 text-neutral-900 dark:bg-[#121212] dark:text-white">
-      <div className="w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-neutral-950/90">
-        <p className="text-sm font-semibold uppercase tracking-wide text-culturin-700 dark:text-culturin-300">Culturin Studio</p>
-        <h1 className="mt-2 text-2xl font-semibold">Access denied</h1>
-        <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
+    <main
+      className="culturin-editorial flex min-h-dvh flex-col items-center justify-center px-4 py-12 font-sans antialiased"
+      style={{ background: "var(--c-bg)", color: "var(--c-ink)" }}
+    >
+      <div className="w-full max-w-md rounded-2xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_55%,white)] p-6 shadow-sm dark:bg-[#1c1a17]/90">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--c-accent)]">Culturin Studio</p>
+        <h1 className="mt-2 font-display text-2xl font-semibold">Access denied</h1>
+        <p className="mt-2 text-sm text-[color:var(--c-muted)]">
           Your account is signed in, but it does not have admin access to Studio yet.
         </p>
         <p className="mt-6 flex flex-col gap-3 text-sm">
           <Link
             href="/creator"
-            className="font-medium text-culturin-800 underline-offset-2 hover:underline dark:text-culturin-400/90"
+            className="font-medium text-[color:var(--c-accent)] underline-offset-2 hover:underline"
           >
             Open Creator workspace (drafts &amp; submissions)
           </Link>
-          <Link href="/" className="font-medium text-neutral-600 underline-offset-2 hover:underline dark:text-white/65">
+          <Link
+            href="/"
+            className="font-medium text-[color:var(--c-muted)] underline-offset-2 hover:underline"
+          >
             ← Back to Culturin
           </Link>
         </p>

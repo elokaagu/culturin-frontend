@@ -80,18 +80,19 @@ export function StudioConfirmProvider({ children }: { children: ReactNode }) {
             aria-modal="true"
             aria-labelledby="studio-confirm-title"
             aria-describedby={pending.description ? "studio-confirm-description" : undefined}
-            className="relative w-full max-w-sm rounded-2xl border border-neutral-200 bg-white p-5 shadow-xl dark:border-white/12 dark:bg-[#181818] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]"
+            className="culturin-editorial relative w-full max-w-sm rounded-2xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_55%,white)] p-5 shadow-xl dark:bg-[#1c1a17] dark:shadow-[inset_0_1px_0_0_rgba(241,233,220,0.05)]"
+            style={{ color: "var(--c-ink)" }}
           >
             <p
               id="studio-confirm-title"
-              className="m-0 font-display text-lg font-semibold tracking-tight text-neutral-900 dark:text-white"
+              className="m-0 font-display text-lg font-semibold tracking-tight text-[color:var(--c-ink)]"
             >
               {pending.title}
             </p>
             {pending.description ? (
               <p
                 id="studio-confirm-description"
-                className="m-0 mt-2 text-sm leading-relaxed text-neutral-600 dark:text-white/65"
+                className="m-0 mt-2 text-sm leading-relaxed text-[color:var(--c-muted)]"
               >
                 {pending.description}
               </p>
@@ -100,7 +101,7 @@ export function StudioConfirmProvider({ children }: { children: ReactNode }) {
               <button
                 type="button"
                 onClick={() => settle(false)}
-                className="inline-flex h-9 items-center rounded-full border border-neutral-300 px-4 text-sm font-medium text-neutral-700 transition hover:bg-neutral-100 dark:border-white/20 dark:text-white/85 dark:hover:bg-white/10"
+                className="inline-flex h-9 items-center rounded-full border border-[color:var(--c-rule)] px-4 text-sm font-medium text-[color:var(--c-ink)] transition hover:bg-[color:color-mix(in_srgb,var(--c-accent)_10%,transparent)]"
               >
                 {pending.cancelLabel ?? "Cancel"}
               </button>
@@ -110,8 +111,8 @@ export function StudioConfirmProvider({ children }: { children: ReactNode }) {
                 onClick={() => settle(true)}
                 className={
                   pending.destructive === false
-                    ? "inline-flex h-9 items-center rounded-full border border-culturin-700/25 bg-white px-4 text-sm font-semibold text-neutral-900 shadow-sm transition hover:border-culturin-600/40 hover:bg-culturin-50 dark:border-culturin-400/40 dark:bg-white dark:text-black dark:hover:bg-culturin-100"
-                    : "inline-flex h-9 items-center rounded-full bg-rose-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-700 dark:bg-rose-600 dark:hover:bg-rose-500"
+                    ? "inline-flex h-9 items-center rounded-full border border-[color:color-mix(in_srgb,var(--c-accent)_40%,transparent)] bg-[color:var(--c-ink)] px-4 text-sm font-semibold text-[color:var(--c-bg)] shadow-sm transition hover:opacity-90"
+                    : "inline-flex h-9 items-center rounded-full bg-rose-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-700"
                 }
               >
                 {pending.confirmLabel ?? "Delete"}

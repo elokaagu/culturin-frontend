@@ -36,14 +36,12 @@ function toIsoLocal(date: Date, timeHHmm: string): string {
 }
 
 const triggerClass = cn(
-  "flex w-full items-center justify-between gap-2 rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-left text-sm text-neutral-900 outline-none ring-offset-2 transition",
-  "hover:border-neutral-400 focus-visible:border-culturin-500/60 focus-visible:ring-2 focus-visible:ring-culturin-400/25",
-  "dark:border-white/15 dark:bg-[#121212] dark:text-white dark:hover:border-white/25 dark:focus-visible:border-culturin-400/45 dark:focus-visible:ring-culturin-400/20",
+  "flex w-full items-center justify-between gap-2 rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-3 py-2.5 text-left text-sm text-[color:var(--c-ink)] outline-none transition dark:bg-black/35",
+  "hover:border-[color:var(--c-accent)] focus-visible:border-[color:var(--c-accent)] focus-visible:ring-2 focus-visible:ring-[color:color-mix(in_srgb,var(--c-accent)_35%,transparent)]",
 );
 
 const popoverSurfaceClass = cn(
-  "z-[1300] w-[min(calc(100vw-2rem),20rem)] rounded-2xl border border-neutral-200 bg-white p-3 shadow-xl shadow-neutral-900/10 outline-none",
-  "dark:border-white/12 dark:bg-neutral-950 dark:shadow-black/50",
+  "culturin-editorial z-[1300] w-[min(calc(100vw-2rem),20rem)] rounded-2xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_55%,white)] p-3 shadow-xl outline-none dark:bg-[#1c1a17]",
 );
 
 type StudioPublishDateFieldProps = {
@@ -126,8 +124,8 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
                 )}
               />
             </div>
-            <div className="mt-3 flex flex-col gap-2 border-t border-neutral-200 pt-3 dark:border-white/10">
-              <label className="flex items-center gap-2 text-xs font-medium text-neutral-600 dark:text-white/65">
+            <div className="mt-3 flex flex-col gap-2 border-t border-[color:var(--c-rule)] pt-3">
+              <label className="flex items-center gap-2 text-xs font-medium text-[color:var(--c-muted)]">
                 <span className="shrink-0">Time</span>
                 <input
                   type="time"
@@ -135,7 +133,7 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
                   onChange={(e) => setTime(e.target.value)}
                   disabled={!selected}
                   className={cn(
-                    "min-w-0 flex-1 rounded-lg border border-neutral-300 bg-white px-2 py-1.5 text-sm text-neutral-900 dark:border-white/15 dark:bg-[#121212] dark:text-white",
+                    "min-w-0 flex-1 rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-2 py-1.5 text-sm text-[color:var(--c-ink)] dark:bg-black/35",
                     !selected && "cursor-not-allowed opacity-50",
                   )}
                 />
@@ -143,7 +141,7 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
-                  className="rounded-lg px-3 py-1.5 text-xs font-medium text-neutral-600 transition hover:bg-neutral-100 dark:text-white/65 dark:hover:bg-white/10"
+                  className="rounded-full px-3 py-1.5 text-xs font-medium text-[color:var(--c-muted)] transition hover:bg-[color:color-mix(in_srgb,var(--c-accent)_10%,transparent)]"
                   onClick={() => {
                     setSelected(undefined);
                     setTime("09:00");
@@ -153,7 +151,7 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
                 </button>
                 <button
                   type="button"
-                  className="rounded-lg bg-culturin-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-culturin-700 dark:bg-culturin-500 dark:hover:bg-culturin-600"
+                  className="rounded-full bg-[color:var(--c-ink)] px-3 py-1.5 text-xs font-semibold text-[color:var(--c-bg)] transition hover:opacity-90"
                   onClick={() => setOpen(false)}
                 >
                   Done

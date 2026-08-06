@@ -1,15 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download, Maximize2, Minimize2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { startDeckSession, trackPageView } from "@/lib/deckAnalytics";
 import { getCmsBrowserClient } from "@/lib/cms/browser";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// Serve the worker from our own origin (avoids unpkg CDN / CSP failures that leave the viewer stuck on “Rendering…”).
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
 interface PublicDeck {
   id: string;
@@ -32,6 +33,7 @@ export default function InteractiveDeckViewer({ token }: Props) {
   const [deck, setDeck] = useState<PublicDeck | null>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [pdfError, setPdfError] = useState("");
   const [loading, setLoading] = useState(true);
   const [emailPassed, setEmailPassed] = useState(false);
   const [passwordPassed, setPasswordPassed] = useState(false);
@@ -45,21 +47,55 @@ export default function InteractiveDeckViewer({ token }: Props) {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageWidth, setPageWidth] = useState(800);
   const [pdfReady, setPdfReady] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const sessionStartedAt = useRef<number>(Date.now());
   const pageEnteredAt = useRef<number>(Date.now());
   const maxPageReached = useRef(1);
   const pagesSeen = useRef(new Set<number>([1]));
   const currentPageRef = useRef(1);
+  const viewerRef = useRef<HTMLDivElement>(null);
+
+  const pdfFile = useMemo(() => (fileUrl ? { url: fileUrl } : null), [fileUrl]);
 
   useEffect(() => {
     const updateWidth = () => {
-      const w = Math.min(window.innerWidth - 48, 920);
-      setPageWidth(Math.max(280, w));
+      const fullscreen = Boolean(document.fullscreenElement);
+      const chrome = 56 + 72; // header + footer
+      const padX = fullscreen ? 32 : 48;
+      const padY = fullscreen ? 24 : 48;
+      const maxW = window.innerWidth - padX;
+      const maxH = window.innerHeight - chrome - padY;
+      // Fit landscape slides; fall back to width-capped layout when not fullscreen.
+      const fromHeight = maxH * (16 / 9);
+      const capped = fullscreen ? Math.min(maxW, fromHeight) : Math.min(maxW, 920);
+      setPageWidth(Math.max(280, Math.floor(capped)));
     };
     updateWidth();
     window.addEventListener("resize", updateWidth);
     return () => window.removeEventListener("resize", updateWidth);
+  }, [isFullscreen]);
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = useCallback(async () => {
+    const el = viewerRef.current;
+    if (!el) return;
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else {
+        await el.requestFullscreen();
+      }
+    } catch (err) {
+      console.error("Fullscreen failed", err);
+    }
   }, []);
 
   useEffect(() => {
@@ -120,7 +156,7 @@ export default function InteractiveDeckViewer({ token }: Props) {
         console.error(err);
       }
     },
-    [deck]
+    [deck],
   );
 
   useEffect(() => {
@@ -130,7 +166,7 @@ export default function InteractiveDeckViewer({ token }: Props) {
   }, [deck, gatesCleared, fileUrl, sessionId, beginSession, email, name]);
 
   const flushPage = useCallback(
-    async (leavingPage: number) => {
+    async (leavingPage: number, opts?: { resetTimer?: boolean }) => {
       if (!sessionId || !deck) return;
       const spent = Date.now() - pageEnteredAt.current;
       const durationSeconds = Math.round((Date.now() - sessionStartedAt.current) / 1000);
@@ -149,11 +185,14 @@ export default function InteractiveDeckViewer({ token }: Props) {
           completed,
           durationSeconds,
         });
+        if (opts?.resetTimer) {
+          pageEnteredAt.current = Date.now();
+        }
       } catch (err) {
-        console.error(err);
+        console.error("Deck analytics track failed", err);
       }
     },
-    [sessionId, deck, numPages]
+    [sessionId, deck, numPages],
   );
 
   const goToPage = async (next: number) => {
@@ -166,13 +205,29 @@ export default function InteractiveDeckViewer({ token }: Props) {
     setPageNumber(next);
   };
 
+  // Persist engagement while viewing (page 1 used to only flush on leave/nav).
   useEffect(() => {
+    if (!sessionId) return;
+    const tick = () => {
+      void flushPage(currentPageRef.current, { resetTimer: true });
+    };
+    const interval = window.setInterval(tick, 15000);
+    const onHide = () => {
+      if (document.visibilityState === "hidden") tick();
+    };
+    const onPageHide = () => tick();
+    document.addEventListener("visibilitychange", onHide);
+    window.addEventListener("pagehide", onPageHide);
     return () => {
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", onHide);
+      window.removeEventListener("pagehide", onPageHide);
       void flushPage(currentPageRef.current);
     };
-  }, [flushPage]);
+  }, [sessionId, flushPage]);
 
   const onDocumentLoad = async ({ numPages: pages }: { numPages: number }) => {
+    setPdfError("");
     setNumPages(pages);
     setPdfReady(true);
     if (deck && (!deck.page_count || deck.page_count !== pages)) {
@@ -330,7 +385,7 @@ export default function InteractiveDeckViewer({ token }: Props) {
     );
   }
 
-  if (!fileUrl) {
+  if (!fileUrl || !pdfFile) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white">
         <p className="text-sm text-white/60">Could not load this deck.</p>
@@ -340,10 +395,11 @@ export default function InteractiveDeckViewer({ token }: Props) {
 
   return (
     <div
+      ref={viewerRef}
       className="flex min-h-screen flex-col bg-[#0a0a0a] text-white"
       onContextMenu={deck.allow_download ? undefined : (e) => e.preventDefault()}
     >
-      <header className="flex h-14 items-center justify-between gap-4 border-b border-white/10 px-4 md:px-8">
+      <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-white/10 px-4 md:px-8">
         <div className="min-w-0">
           <p className="mb-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-culturin-300">
             Culturin
@@ -351,7 +407,7 @@ export default function InteractiveDeckViewer({ token }: Props) {
           </p>
           <h1 className="truncate font-display text-sm font-semibold md:text-base">{deck.title}</h1>
         </div>
-        <div className="flex shrink-0 items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {deck.allow_download && (
             <a
               href={fileUrl}
@@ -364,46 +420,77 @@ export default function InteractiveDeckViewer({ token }: Props) {
               <span className="hidden sm:inline">Download</span>
             </a>
           )}
+          <button
+            type="button"
+            onClick={() => void toggleFullscreen()}
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 text-xs uppercase tracking-[0.15em] text-white/70 transition-colors hover:border-culturin-400/50 hover:text-culturin-300"
+            aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+            title={isFullscreen ? "Exit fullscreen (Esc)" : "Fullscreen"}
+          >
+            {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" aria-hidden /> : <Maximize2 className="h-3.5 w-3.5" aria-hidden />}
+            <span className="hidden sm:inline">{isFullscreen ? "Exit" : "Fullscreen"}</span>
+          </button>
           <p className="tabular-nums text-xs text-white/60">
             {pdfReady ? `${pageNumber} / ${numPages}` : "…"}
           </p>
         </div>
       </header>
 
-      <div className="flex flex-1 items-center justify-center overflow-auto bg-white/[0.03] px-3 py-6">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={pageNumber}
-            initial={{ opacity: 0, x: 12 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -12 }}
-            transition={{ duration: 0.25 }}
-            className="border border-white/10 bg-white shadow-xl shadow-black/40"
+      <div
+        className={`flex min-h-0 flex-1 items-center justify-center overflow-auto bg-white/[0.03] ${
+          isFullscreen ? "px-2 py-3" : "px-3 py-6"
+        }`}
+      >
+        <div className="border border-white/10 bg-white shadow-xl shadow-black/40">
+          <Document
+            file={pdfFile}
+            loading={
+              <div className="flex aspect-[4/3] w-[min(92vw,920px)] flex-col items-center justify-center gap-2 px-6 text-center">
+                <p className="animate-pulse text-sm uppercase tracking-[0.2em] text-neutral-500">Loading PDF…</p>
+                <p className="text-xs text-neutral-400">Larger decks can take a moment.</p>
+              </div>
+            }
+            error={
+              <div className="w-[min(92vw,920px)] px-8 py-16 text-center text-sm text-neutral-600">
+                {pdfError || "Could not load this PDF."}
+              </div>
+            }
+            onLoadSuccess={onDocumentLoad}
+            onLoadError={(err) => {
+              console.error("PDF load error", err);
+              setPdfError(err?.message || "Could not load this PDF.");
+              setPdfReady(false);
+            }}
           >
-            <Document
-              file={fileUrl}
-              loading={
-                <div className="flex aspect-[4/3] w-[min(92vw,920px)] items-center justify-center text-sm uppercase tracking-[0.2em] text-neutral-500">
-                  Rendering…
-                </div>
-              }
-              error={
-                <div className="px-8 py-16 text-center text-sm text-neutral-500">Could not load this PDF.</div>
-              }
-              onLoadSuccess={onDocumentLoad}
-            >
-              <Page
-                pageNumber={pageNumber}
-                width={pageWidth}
-                renderTextLayer
-                renderAnnotationLayer
-              />
-            </Document>
-          </motion.div>
-        </AnimatePresence>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={pageNumber}
+                initial={{ opacity: 0, x: 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -12 }}
+                transition={{ duration: 0.25 }}
+              >
+                <Page
+                  pageNumber={pageNumber}
+                  width={pageWidth}
+                  renderTextLayer
+                  renderAnnotationLayer
+                  loading={
+                    <div
+                      className="flex items-center justify-center text-sm uppercase tracking-[0.2em] text-neutral-500"
+                      style={{ width: pageWidth, minHeight: pageWidth * 0.7 }}
+                    >
+                      Rendering…
+                    </div>
+                  }
+                />
+              </motion.div>
+            </AnimatePresence>
+          </Document>
+        </div>
       </div>
 
-      <footer className="flex items-center justify-center gap-4 border-t border-white/10 px-4 py-4">
+      <footer className="flex shrink-0 items-center justify-center gap-4 border-t border-white/10 px-4 py-4">
         <button
           type="button"
           onClick={() => goToPage(pageNumber - 1)}

@@ -117,7 +117,7 @@ export function StudioVideoEditorPage({ mode, initial, workspace = "studio" }: S
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={5}
-            className="resize-y rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-culturin-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
+            className="resize-y rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-3.5 py-2.5 text-sm text-[color:var(--c-ink)] shadow-inner outline-none transition placeholder:text-[color:var(--c-muted)] focus-visible:border-[color:var(--c-accent)] focus-visible:ring-2 focus-visible:ring-[color:color-mix(in_srgb,var(--c-accent)_35%,transparent)] dark:bg-black/35"
             placeholder="Short summary shown in listings and cards"
           />
         </label>
@@ -127,7 +127,7 @@ export function StudioVideoEditorPage({ mode, initial, workspace = "studio" }: S
             name="thumbnail_url"
             value={thumbnailUrl}
             onChange={(event) => setThumbnailUrl(event.target.value)}
-            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-culturin-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
+            className="rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-3.5 py-2.5 text-sm text-[color:var(--c-ink)] shadow-inner outline-none transition placeholder:text-[color:var(--c-muted)] focus-visible:border-[color:var(--c-accent)] focus-visible:ring-2 focus-visible:ring-[color:color-mix(in_srgb,var(--c-accent)_35%,transparent)] dark:bg-black/35"
             placeholder="Image URL for cards and rails"
           />
           <StudioImageUploadButton onUploaded={setThumbnailUrl} buttonLabel="Upload thumbnail" />

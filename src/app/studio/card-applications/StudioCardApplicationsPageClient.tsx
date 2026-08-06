@@ -20,7 +20,7 @@ function sourceLabel(app: StudioCardApplication): string {
 
 const statusBadgeClass: Record<StudioCardApplication["status"], string> = {
   pending: "bg-neutral-200 text-neutral-700 dark:bg-white/10 dark:text-white/70",
-  invited: "bg-amber-100 text-amber-800 dark:bg-amber-400/15 dark:text-amber-300",
+  invited: "bg-culturin-100 text-culturin-900 dark:bg-culturin-500/15 dark:text-culturin-200",
   active: "bg-emerald-100 text-emerald-800 dark:bg-emerald-400/15 dark:text-emerald-300",
   declined: "bg-rose-100 text-rose-800 dark:bg-rose-400/15 dark:text-rose-300",
 };
@@ -82,7 +82,7 @@ export function StudioCardApplicationsPageClient({
   }
 
   return (
-    <section className="mt-10 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#121212] sm:p-6">
+    <section className="mt-10 rounded-2xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_55%,white)] p-5 shadow-sm sm:p-6 dark:bg-[#1c1a17]/90 dark:shadow-[inset_0_1px_0_0_rgba(241,233,220,0.05)]">
       <div className="flex flex-wrap items-end justify-between gap-3 gap-y-2">
         <h2 className="m-0 font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
           All applications

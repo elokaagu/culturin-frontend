@@ -18,9 +18,9 @@ export default async function StudioVideosPage() {
 
   return (
     <div className="p-4 sm:p-6 md:p-8">
-      <p className="text-xs font-semibold uppercase tracking-wide text-culturin-700 dark:text-culturin-300">Content</p>
-      <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl dark:text-white">Videos</h1>
-      <p className="mt-2 text-sm text-neutral-600 dark:text-white/65">
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--c-accent)]">Content</p>
+      <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-[color:var(--c-ink)] sm:text-3xl">Videos</h1>
+      <p className="mt-2 text-sm text-[color:var(--c-muted)]">
         Videos with a valid player ID from your host can appear on Videos, stream pages, and featured rails.
       </p>
 

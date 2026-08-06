@@ -13,6 +13,7 @@ import {
   studioListEditLinkClass,
   studioListRowClass,
 } from "@/app/studio/_components/StudioCulturinListKit";
+import { studioCheckboxClass } from "@/app/studio/_lib/studioTheme";
 import { deckSharePath, deckShareUrl, formatBytes, isValidSlug, slugify } from "@/lib/deckLinks";
 import type { SalesDeck } from "@/lib/salesDecks/types";
 import { SUPABASE_SALES_DECKS_BUCKET } from "@/lib/storageConstants";
@@ -366,21 +367,21 @@ function DeckUploadModal({
               onChange={(e) => setFile(e.target.files?.[0] || null)}
             />
           </label>
-          <label className="flex items-start gap-3 text-sm text-neutral-800 dark:text-white/85">
+          <label className="flex cursor-pointer items-start gap-3 text-sm text-[color:var(--c-ink)]">
             <input
               type="checkbox"
               checked={requireEmail}
               onChange={(e) => setRequireEmail(e.target.checked)}
-              className="mt-1 accent-culturin-500"
+              className={studioCheckboxClass}
             />
             Require viewer email
           </label>
-          <label className="flex items-start gap-3 text-sm text-neutral-800 dark:text-white/85">
+          <label className="flex cursor-pointer items-start gap-3 text-sm text-[color:var(--c-ink)]">
             <input
               type="checkbox"
               checked={allowDownload}
               onChange={(e) => setAllowDownload(e.target.checked)}
-              className="mt-1 accent-culturin-500"
+              className={studioCheckboxClass}
             />
             Allow download
           </label>

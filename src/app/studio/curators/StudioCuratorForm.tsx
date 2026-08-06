@@ -93,7 +93,7 @@ export function StudioCuratorForm({
             name="avatar_url"
             value={avatarUrl}
             onChange={(event) => setAvatarUrl(event.target.value)}
-            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-culturin-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
+            className="rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-3.5 py-2.5 text-sm text-[color:var(--c-ink)] shadow-inner outline-none transition placeholder:text-[color:var(--c-muted)] focus-visible:border-[color:var(--c-accent)] focus-visible:ring-2 focus-visible:ring-[color:color-mix(in_srgb,var(--c-accent)_35%,transparent)] dark:bg-black/35"
           />
           <StudioImageUploadButton onUploaded={setAvatarUrl} buttonLabel="Upload avatar image" />
         </label>
@@ -103,7 +103,7 @@ export function StudioCuratorForm({
             name="banner_url"
             value={bannerUrl}
             onChange={(event) => setBannerUrl(event.target.value)}
-            className="rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-culturin-400 dark:border-white/15 dark:bg-[#121212] dark:text-white"
+            className="rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-3.5 py-2.5 text-sm text-[color:var(--c-ink)] shadow-inner outline-none transition placeholder:text-[color:var(--c-muted)] focus-visible:border-[color:var(--c-accent)] focus-visible:ring-2 focus-visible:ring-[color:color-mix(in_srgb,var(--c-accent)_35%,transparent)] dark:bg-black/35"
           />
           <StudioImageUploadButton onUploaded={setBannerUrl} buttonLabel="Upload banner image" />
         </label>

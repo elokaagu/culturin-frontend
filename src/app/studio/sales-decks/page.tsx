@@ -36,10 +36,10 @@ export default async function StudioSalesDecksPage() {
 
   return (
     <div className="p-4 sm:p-6 md:max-w-4xl md:p-10">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-culturin-700 dark:text-culturin-300">
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--c-accent)]">
         Sales
       </p>
-      <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl dark:text-white">
+      <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight text-[color:var(--c-ink)] sm:text-4xl">
         Sales decks
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-600 dark:text-white/65">

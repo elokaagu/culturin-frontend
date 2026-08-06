@@ -127,7 +127,7 @@ export function StudioSubscribersPageClient({
   }, [visible, search]);
 
   return (
-    <section className="mt-10 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#121212] sm:p-6">
+    <section className="mt-10 rounded-2xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_55%,white)] p-5 shadow-sm sm:p-6 dark:bg-[#1c1a17]/90 dark:shadow-[inset_0_1px_0_0_rgba(241,233,220,0.05)]">
       <div className="flex flex-wrap items-end justify-between gap-3 gap-y-2">
         <h2 className="m-0 font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
           All subscribers
@@ -226,7 +226,7 @@ export function StudioSubscribersPageClient({
           <div className="overflow-x-auto rounded-xl border border-neutral-200 dark:border-white/12">
             <table className="w-full min-w-[640px] border-collapse text-left text-sm">
               <thead>
-                <tr className="border-b border-neutral-200 bg-neutral-50 dark:border-white/10 dark:bg-white/[0.03]">
+                <tr className="border-b border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-accent)_6%,transparent)]">
                   <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">First name</th>
                   <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">Last name</th>
                   <th className="px-4 py-2.5 font-medium text-neutral-600 dark:text-white/65">Email</th>
@@ -247,7 +247,7 @@ export function StudioSubscribersPageClient({
                     onClick={() => setSelected(s)}
                     className={[
                       "cursor-pointer transition hover:bg-culturin-50 dark:hover:bg-white/[0.05]",
-                      i % 2 === 1 ? "bg-neutral-50/60 dark:bg-white/[0.015]" : "",
+                      i % 2 === 1 ? "bg-[color:color-mix(in_srgb,var(--c-accent)_4%,transparent)]" : "",
                     ].join(" ")}
                   >
                     <td className="px-4 py-2.5 text-neutral-900 dark:text-white">{s.firstName || "—"}</td>

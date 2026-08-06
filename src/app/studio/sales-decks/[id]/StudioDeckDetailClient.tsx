@@ -19,6 +19,7 @@ import {
   studioListEditLinkClass,
   studioListRowClass,
 } from "@/app/studio/_components/StudioCulturinListKit";
+import { studioCheckboxClass } from "@/app/studio/_lib/studioTheme";
 import {
   deckShareUrl,
   formatDuration,
@@ -40,7 +41,7 @@ const fieldInputClass =
   "mt-1.5 w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-inner shadow-neutral-900/5 outline-none transition placeholder:text-neutral-400 focus-visible:border-culturin-500/60 focus-visible:ring-2 focus-visible:ring-culturin-400/25 dark:border-white/12 dark:bg-black/60 dark:text-white dark:shadow-black/40 dark:placeholder:text-white/35 dark:focus-visible:border-culturin-400/55 dark:focus-visible:ring-culturin-400/20";
 
 const panelClass =
-  "rounded-2xl border border-neutral-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#121212] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]";
+  "rounded-2xl border border-neutral-200 bg-white shadow-sm dark:border-[color:var(--c-rule)] dark:bg-[#1c1a17]/90 dark:shadow-[inset_0_1px_0_0_rgba(241,233,220,0.05)]";
 
 const sectionLabelClass =
   "text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90";
@@ -86,19 +87,21 @@ export function StudioDeckDetailClient({
   }, [sessions]);
 
   const pageEngagement = useMemo(() => {
-    const byPage: Record<number, { totalMs: number; count: number }> = {};
+    // Sum dwell across heartbeat chunks, then average per session that saw the page.
+    const byPage: Record<number, { totalMs: number; sessions: Set<string> }> = {};
     for (const e of events) {
-      if (!byPage[e.page_number]) byPage[e.page_number] = { totalMs: 0, count: 0 };
+      if (!byPage[e.page_number]) byPage[e.page_number] = { totalMs: 0, sessions: new Set() };
       byPage[e.page_number].totalMs += e.time_spent_ms;
-      byPage[e.page_number].count += 1;
+      byPage[e.page_number].sessions.add(e.session_id);
     }
     const maxPage = Math.max(deck.page_count || 0, ...Object.keys(byPage).map(Number), 0);
     return Array.from({ length: maxPage }, (_, i) => {
       const page = i + 1;
       const data = byPage[page];
+      const sessionCount = data?.sessions.size ?? 0;
       return {
         page: `P${page}`,
-        avgSeconds: data ? Math.round(data.totalMs / data.count / 1000) : 0,
+        avgSeconds: data && sessionCount > 0 ? Math.round(data.totalMs / sessionCount / 1000) : 0,
       };
     });
   }, [events, deck.page_count]);
@@ -136,7 +139,7 @@ export function StudioDeckDetailClient({
 
       <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl dark:text-white">
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-[color:var(--c-ink)] sm:text-3xl">
             {deck.title}
           </h1>
           {deck.description ? (
@@ -464,21 +467,21 @@ function DeckSettingsPanel({
             className={cn(fieldInputClass, "resize-none")}
           />
         </label>
-        <label className="flex items-start gap-3 text-sm text-neutral-800 dark:text-white/85">
+        <label className="flex cursor-pointer items-start gap-3 text-sm text-[color:var(--c-ink)]">
           <input
             type="checkbox"
             checked={requireEmail}
             onChange={(e) => setRequireEmail(e.target.checked)}
-            className="mt-1 accent-culturin-500"
+            className={studioCheckboxClass}
           />
           Require viewer email
         </label>
-        <label className="flex items-start gap-3 text-sm text-neutral-800 dark:text-white/85">
+        <label className="flex cursor-pointer items-start gap-3 text-sm text-[color:var(--c-ink)]">
           <input
             type="checkbox"
             checked={allowDownload}
             onChange={(e) => setAllowDownload(e.target.checked)}
-            className="mt-1 accent-culturin-500"
+            className={studioCheckboxClass}
           />
           Allow download
         </label>
@@ -499,7 +502,7 @@ function DeckSettingsPanel({
             placeholder={hasPassword ? "New password" : "Set a password"}
           />
           {hasPassword ? (
-            <label className="mt-2 flex items-center gap-2 text-sm text-neutral-800 dark:text-white/85">
+            <label className="mt-2 flex cursor-pointer items-center gap-2 text-sm text-[color:var(--c-ink)]">
               <input
                 type="checkbox"
                 checked={clearPassword}
@@ -507,7 +510,7 @@ function DeckSettingsPanel({
                   setClearPassword(e.target.checked);
                   if (e.target.checked) setPassword("");
                 }}
-                className="accent-culturin-500"
+                className={cn(studioCheckboxClass, "mt-0")}
               />
               Remove password
             </label>
