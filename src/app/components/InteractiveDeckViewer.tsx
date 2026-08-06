@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { ChevronLeft, ChevronRight, Download, Maximize2, Minimize2, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { startDeckSession, trackPageView } from "@/lib/deckAnalytics";
 import { getCmsBrowserClient } from "@/lib/cms/browser";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -657,33 +656,25 @@ export default function InteractiveDeckViewer({ token }: Props) {
 
         <div className="max-h-full max-w-full overflow-hidden bg-black shadow-xl shadow-black/50">
           {useImages && currentImageUrl ? (
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={pageNumber}
-                initial={{ opacity: 0.35, x: 12 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -12 }}
-                transition={{ duration: 0.16 }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={currentImageUrl}
-                  alt={`${deck.title} — page ${pageNumber}`}
-                  width={slideSize.width}
-                  className="block h-auto max-w-full select-none"
-                  style={{ width: slideSize.width, maxHeight: slideSize.maxHeight, objectFit: "contain" }}
-                  decoding="async"
-                  fetchPriority="high"
-                  draggable={false}
-                />
-              </motion.div>
-            </AnimatePresence>
+            // Instant swap — no fade/exit that flashes a blank frame between slides.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={pageNumber}
+              src={currentImageUrl}
+              alt={`${deck.title} — page ${pageNumber}`}
+              width={slideSize.width}
+              className="block h-auto max-w-full select-none bg-black"
+              style={{ width: slideSize.width, maxHeight: slideSize.maxHeight, objectFit: "contain" }}
+              decoding="async"
+              fetchPriority="high"
+              draggable={false}
+            />
           ) : (
             <Document
               file={pdfFile}
               loading={
                 <div
-                  className="flex flex-col items-center justify-center gap-3 px-6 text-center"
+                  className="flex flex-col items-center justify-center gap-3 bg-black px-6 text-center"
                   style={{ width: slideSize.width, height: slideSize.width * 0.56 }}
                 >
                   <p className="text-sm uppercase tracking-[0.2em] text-neutral-400">
@@ -698,7 +689,7 @@ export default function InteractiveDeckViewer({ token }: Props) {
                 </div>
               }
               error={
-                <div className="px-8 py-16 text-center text-sm text-neutral-400">
+                <div className="bg-black px-8 py-16 text-center text-sm text-neutral-400">
                   {pdfError || "Could not load this PDF."}
                 </div>
               }
@@ -712,31 +703,22 @@ export default function InteractiveDeckViewer({ token }: Props) {
                 setPdfReady(false);
               }}
             >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={pageNumber}
-                  initial={{ opacity: 0.35, x: 12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -12 }}
-                  transition={{ duration: 0.16 }}
-                >
-                  <Page
-                    pageNumber={pageNumber}
-                    width={slideSize.width}
-                    devicePixelRatio={devicePixelRatio}
-                    renderTextLayer={false}
-                    renderAnnotationLayer={false}
-                    loading={
-                      <div
-                        className="flex items-center justify-center text-sm uppercase tracking-[0.2em] text-neutral-400"
-                        style={{ width: slideSize.width, minHeight: slideSize.width * 0.56 }}
-                      >
-                        Rendering…
-                      </div>
-                    }
-                  />
-                </motion.div>
-              </AnimatePresence>
+              <Page
+                pageNumber={pageNumber}
+                width={slideSize.width}
+                devicePixelRatio={devicePixelRatio}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+                className="bg-black"
+                loading={
+                  <div
+                    className="flex items-center justify-center bg-black text-sm uppercase tracking-[0.2em] text-neutral-400"
+                    style={{ width: slideSize.width, minHeight: slideSize.width * 0.56 }}
+                  >
+                    Rendering…
+                  </div>
+                }
+              />
             </Document>
           )}
         </div>
