@@ -12,7 +12,7 @@ const HERO_SRC =
 const pillars: ReadonlyArray<{ title: string; text: string; href?: string }> = [
   {
     title: "Advertising campaigns",
-    text: "Brand and destination work rooted in real places — creative that respects local nuance and lands with audiences who care about culture, not just captions.",
+    text: "Brand work rooted in the rooms we build — creative that lands with audiences who care about culture, not just captions.",
   },
   {
     title: "Events",
@@ -43,11 +43,11 @@ const scope = [
 export const metadata: Metadata = {
   title: "Agency | Culturin",
   description:
-    "Culturin Agency — advertising campaigns, events, and experiences that promote local cultures around the world.",
+    "Culturin Agency — campaigns, events, and experiences for the rooms we build.",
   openGraph: {
     title: "Culturin Agency",
     description:
-      "Campaigns, events, and experiences that celebrate local culture — built for brands and places with a global audience.",
+      "Campaigns, events, and experiences built for the Culturin house.",
   },
 };
 
@@ -92,11 +92,11 @@ export default function AgencyPage() {
                 className="m-0 mt-3 max-w-3xl text-balance text-3xl font-medium leading-tight tracking-tight text-white sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                Campaigns, events, and experiences that promote local cultures — globally
+                Campaigns, events, and experiences for the house
               </h1>
               <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg">
-                We partner with brands, destinations, and cultural institutions to tell place-based stories with depth:
-                from integrated advertising to live programming guests actually remember.
+                We partner with brands and cultural institutions to build work inside the rooms Culturin already holds:
+                from integrated campaigns to live programming guests actually remember.
               </p>
             </div>
           </div>
@@ -105,9 +105,8 @@ export default function AgencyPage() {
         <section className="mt-10 rounded-3xl border p-5 sm:p-8" style={{ borderColor: "var(--c-rule)", background: "rgba(28,26,23,0.03)" }}>
           <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--c-muted)" }}>What we do</p>
           <p className="m-0 mt-3 max-w-4xl text-lg leading-relaxed" style={{ color: "var(--c-ink)" }}>
-            Culturin Agency is the creative and experiential arm of Culturin. We design work that travels — without flattening
-            the places it comes from. That means strategy and craft that honor local context, then find the thread that connects
-            with audiences everywhere.
+            Culturin Agency is the creative arm of the house. We design work for the rooms we already build — strategy
+            and craft that honor the people in them, then find the thread that connects with audiences everywhere.
           </p>
         </section>
 
@@ -164,16 +163,15 @@ export default function AgencyPage() {
             Work with us
           </h2>
           <p className="m-0 mt-2 max-w-2xl" style={{ color: "var(--c-muted)" }}>
-            Tell us about your market, timeline, and what “local” should feel like for your audience. We will match you with the
-            right producers, creatives, and on-the-ground partners.
+            Tell us if you need to launch in a new territory, or connect with cultural intelligence. We&apos;ll set up a call.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
-              href="/join-us/advisors"
+              href="/partner"
               className="inline-flex min-h-[42px] items-center rounded-full px-5 text-xs font-semibold uppercase tracking-[0.16em] text-white no-underline transition hover:opacity-90"
               style={{ background: "var(--c-accent)" }}
             >
-              Partner with Culturin
+              Book a call
             </Link>
             <Link
               href="/about"

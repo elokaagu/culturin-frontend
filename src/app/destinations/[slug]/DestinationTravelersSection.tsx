@@ -21,7 +21,7 @@ export default function DestinationTravelersSection({ travelers, currentUserId }
   return (
     <section className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">Travelers to follow</h2>
+        <h2 className="m-0 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">People to follow</h2>
       </div>
       <ul className="m-0 list-none space-y-3 p-0">
         {travelers.map((traveler) => {
@@ -54,7 +54,7 @@ export default function DestinationTravelersSection({ travelers, currentUserId }
                 )}
               </div>
               <p className="m-0 mt-2 text-sm text-neutral-700 dark:text-white/80">
-                <span className="font-semibold">Itinerary:</span> {traveler.itinerary}
+                <span className="font-semibold">In the city:</span> {traveler.itinerary}
               </p>
               <p className="m-0 mt-1 text-sm text-neutral-600 dark:text-white/70">
                 <span className="font-semibold">Recommendation:</span> {traveler.recommendation}
@@ -65,7 +65,7 @@ export default function DestinationTravelersSection({ travelers, currentUserId }
         })}
       </ul>
       {!currentUserId ? (
-        <p className="m-0 mt-3 text-xs text-neutral-500 dark:text-white/65">Sign in to follow travelers.</p>
+        <p className="m-0 mt-3 text-xs text-neutral-500 dark:text-white/65">Sign in to follow members.</p>
       ) : null}
     </section>
   );

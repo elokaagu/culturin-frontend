@@ -16,9 +16,9 @@ const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
 
 export const metadata: Metadata = {
-  title: "Nice & Cannes for Business Travelers | Culturin",
+  title: "Cannes, for the house | Culturin",
   description:
-    "A Culturin travel guide to Nice and Cannes for business travelers: getting around, where to stay and work, and how to experience the real local culture between meetings.",
+    "Notes for people gathering with Culturin at Cannes Lions — getting around, where to stay, and the culture around the rooms.",
 };
 
 const HERO_SRC = eventMediaUrl("cannes-lions-2026/UNIKday1-22.jpg");
@@ -79,7 +79,7 @@ const PRACTICAL_TIPS = [
   "French business meetings often start with a few minutes of small talk before getting to business; skipping it can read as brusque.",
   "Lunch is a real break in this region, often 90 minutes or more. Don't schedule a meeting through it.",
   "Restaurants fill fast during Cannes Lions and festival weeks. Book your evenings before you land.",
-  "Beaches along this coast are pebble, not sand. Pack accordingly if you're extending the trip.",
+  "Beaches along this coast are pebble, not sand. Pack accordingly if you stay on.",
   "A smart-casual layer goes further than a full suit once you're off the conference floor.",
 ];
 
@@ -106,16 +106,16 @@ export default function NiceAndCannesGuidePage() {
         />
         <Reveal className="relative z-10 mx-auto flex max-w-2xl flex-col items-center" y={28}>
           <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.32em] text-white/70">
-            Business Travel Guide
+            Notes for Cannes
           </p>
           <h1
             className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
             style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
           >
-            Nice &amp; Cannes, Done Right.
+            Nice &amp; Cannes, for the house.
           </h1>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-white/75">
-            For travelers coming for the meetings, the panels, or Cannes Lions itself, here is how to get the most out of the French Riviera without wasting the trip on logistics.
+            For founders, operators, and cultural leaders gathering with Culturin at Lions — here is how to move through the coast so the rooms, not the logistics, take the week.
           </p>
         </Reveal>
       </section>
@@ -194,7 +194,7 @@ export default function NiceAndCannesGuidePage() {
               className="m-0 max-w-2xl text-3xl font-medium leading-[1.15] sm:text-4xl"
               style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
             >
-              The culture that makes the trip worth extending.
+              The culture around the rooms.
             </h2>
           </Reveal>
           <div className="mt-14 grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4" style={{ background: RULE }}>
@@ -259,7 +259,7 @@ export default function NiceAndCannesGuidePage() {
               className="m-0 text-3xl font-medium leading-[1.15] sm:text-4xl"
               style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
             >
-              Small things that make the trip smoother.
+              Small things that make the week smoother.
             </h2>
           </Reveal>
           <ul className="mt-10 flex list-none flex-col gap-5 p-0">

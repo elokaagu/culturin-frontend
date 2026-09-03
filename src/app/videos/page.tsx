@@ -15,7 +15,7 @@ export const revalidate = 120;
 export const metadata: Metadata = {
   title: "Top videos | Culturin",
   description:
-    "Watch travel highlights, culture stories, and creator-led journeys from the Culturin video library.",
+    "Video from Culturin rooms — culture stories and conversations from the house.",
 };
 
 const container = appPageContainerClass;

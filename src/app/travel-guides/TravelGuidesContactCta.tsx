@@ -15,10 +15,10 @@ export default function TravelGuidesContactCta({ supportEmail }: TravelGuidesCon
   const mailtoHref = useMemo(() => {
     if (status !== "authenticated" || !session?.user?.email) return null;
     const p = new URLSearchParams();
-    p.set("subject", "Question about a travel guide");
+    p.set("subject", "A note for the house");
     p.set(
       "body",
-      `Hi Culturin team,\n\nI would like to get in touch about a travel guide in your marketplace.\n\n— ${session.user.name} (${session.user.email})\n`,
+      `Hi Culturin team,\n\nI would like to get in touch about a note, a collaboration, or a room.\n\n— ${session.user.name} (${session.user.email})\n`,
     );
     return `mailto:${supportEmail}?${p.toString()}`;
   }, [session, status, supportEmail]);
@@ -44,8 +44,7 @@ export default function TravelGuidesContactCta({ supportEmail }: TravelGuidesCon
       <div className="rounded-2xl border p-5 sm:p-6" style={{ borderColor: "#e08a5b", background: "rgba(224,138,91,0.08)" }}>
         <h2 className="m-0 text-lg font-medium tracking-tight" style={headingStyle}>Talk to our curators</h2>
         <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
-          You are signed in. Send a message about a specific guide, a collaboration, or a destination you would like
-          covered.
+          You are signed in. Send a message about a note, a collaboration, or a room you would like to build with us.
         </p>
         <a
           href={mailtoHref}
@@ -62,7 +61,7 @@ export default function TravelGuidesContactCta({ supportEmail }: TravelGuidesCon
     <div className="rounded-2xl border p-5 sm:p-6" style={{ borderColor: "var(--c-rule)" }}>
       <h2 className="m-0 text-lg font-medium tracking-tight" style={headingStyle}>Talk to our curators</h2>
       <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
-        Sign in with your account to message the team about a guide, partnership, or a trip you are planning.
+        Sign in with your account to message the house about a note, a partnership, or a room.
       </p>
       <div className="mt-4">
         <GoogleSignInButton appearance="default" />

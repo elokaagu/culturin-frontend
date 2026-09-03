@@ -145,13 +145,13 @@ export async function loadGalleryTiles(): Promise<GalleryTile[]> {
   for (const raw of pinRows) {
     const imageUrl = trimUrl(raw.image_url);
     if (!imageUrl) continue;
-    const author = nameByUserId.get(raw.user_id)?.trim() || "Traveler";
+    const author = nameByUserId.get(raw.user_id)?.trim() || "Member";
     tiles.push({
       id: `travel-${raw.id}`,
       kind: "travel",
       imageUrl,
       href: `/community#travel-${raw.id}`,
-      title: raw.title?.trim() || "Travel moment",
+      title: raw.title?.trim() || "From the house",
       subtitle: author,
       sortAt: raw.created_at,
     });

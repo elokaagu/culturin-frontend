@@ -28,7 +28,7 @@ export async function generateMetadata({
   const content = getTravelGuideContent(params.slug);
   if (!content) return { title: "Guide" };
   return {
-    title: `${content.title} | Travel Guides | Culturin`,
+    title: `${content.title} | Notes | Culturin`,
     description: content.intro,
   };
 }
@@ -58,7 +58,7 @@ export default async function GuideDetailPage({
             className="inline-flex items-center text-sm font-medium no-underline transition hover:opacity-80"
             style={{ color: "var(--c-accent)" }}
           >
-            ← Back to travel guides
+            ← Back to notes
           </Link>
 
           <header className="mt-6 grid gap-6 border-b pb-8 md:grid-cols-[1.1fr_1fr]" style={{ borderColor: "var(--c-rule)" }}>

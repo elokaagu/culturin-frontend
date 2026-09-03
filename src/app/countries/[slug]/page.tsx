@@ -94,7 +94,7 @@ export default async function ExploreCountryPage({ params }: PageProps) {
             /
           </span>
           <Link href="/destinations" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
-            Destinations
+            Cities
           </Link>
           <span style={{ color: "var(--c-muted)" }} aria-hidden>
             /
@@ -111,8 +111,8 @@ export default async function ExploreCountryPage({ params }: PageProps) {
             </p>
             <h1 className="m-0 text-4xl font-medium leading-tight sm:text-5xl" style={{ ...displayFont, color: "var(--c-ink)" }}>{country.name}</h1>
             <p className="m-0 max-w-3xl text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
-              Stories, guides, and experiences connected to {country.name}. Browse highlights below or open the full
-              search for every match.
+              Stories and rooms connected to {country.name}. Browse highlights below or open the full search for every
+              match.
             </p>
             <p className="m-0">
               <Link
@@ -212,14 +212,14 @@ export default async function ExploreCountryPage({ params }: PageProps) {
               Explore further
             </p>
             <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
-              City guides live on the destinations index. Regional overviews are under Countries in the menu.
+              Cities where the house gathers. Regional overviews live here.
             </p>
             <Link
               href="/destinations"
               className="mt-3 inline-flex items-center text-sm font-medium no-underline transition hover:opacity-80"
               style={{ color: "var(--c-accent)" }}
             >
-              Browse destinations
+              Browse cities
             </Link>
           </div>
         </aside>

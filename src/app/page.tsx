@@ -29,9 +29,9 @@ import { eventMediaUrl } from "@/lib/eventMedia";
 export const revalidate = 120;
 
 export const metadata: Metadata = {
-  title: "Culturin | Where Inspiration Meets Exploration",
+  title: "Culturin | A House",
   description:
-    "Culturin is a curated travel & culture company, with stories, curated events, and cultural education for people who want to experience the world with more depth.",
+    "Culturin is a house of founders, operators, artists, and cultural leaders. Brands come to us for cultural marketing — launching in new territories, and connecting with cultural intelligence.",
 };
 
 const BG = EDITORIAL_BG;
@@ -46,7 +46,7 @@ const PRESS_MENTIONS = [
     publication: "Digiday",
     headline: "Meet the man behind Cannes Lions' most exclusive parties",
     description:
-      "On Culturin, the media and travel company founded in 2024 that blends brand storytelling, cultural insight, and local knowledge across campaigns, content, and activations.",
+      "On Culturin, the house founded in 2024 that blends brand storytelling, cultural insight, and local knowledge across campaigns, content, and activations.",
     href: "https://digiday.com/marketing/meet-the-man-behind-cannes-lions-most-exclusive-parties/",
   },
   {
@@ -82,19 +82,19 @@ const GALLERY_PREVIEW_SLOTS = [
 
 const PILLARS = [
   {
-    label: "Content & culture",
-    body: "Articles, video, and live conversations with artists, musicians, and cultural leaders about travel and identity.",
+    label: "The rooms",
+    body: "Dinners, festivals, and gatherings at the year's cultural moments — Cannes, New York, London, and the nights in between.",
   },
   {
-    label: "Curated events",
-    body: "Dinners, festivals, and gatherings distributed across global locales, from Cannes to New York and beyond.",
+    label: "The stories",
+    body: "Articles, video, and conversations with artists, musicians, founders, and operators, captured from the same rooms we build.",
   },
   {
-    label: "Education",
-    body: "Cultural literacy programming that goes beyond the trip, helping travelers understand, not just visit, the places they explore.",
+    label: "Cultural marketing",
+    body: "Brands come to the house to launch in new territories and connect with cultural intelligence. Write to us — we'll set up a call.",
   },
   {
-    label: "Brand credibility",
+    label: "The record",
     body: "Built by a team with production history at the Super Bowl, the Oscars, Davos, Cannes, and the UN Assembly.",
   },
 ];
@@ -158,16 +158,25 @@ export default async function HomePage() {
           className="absolute inset-x-0 bottom-0 hidden h-[14dvh] dark:block"
           style={{ background: `linear-gradient(180deg, transparent 0%, ${BG} 100%)` }}
         />
-        <Reveal className="relative z-10 mx-auto flex max-w-2xl flex-col items-center" y={32}>
+        <Reveal className="relative z-10 mx-auto flex max-w-3xl flex-col items-center" y={32}>
           <h1
             className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
             style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
           >
-            Where inspiration meets exploration.
+            Culturin is a house.
           </h1>
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-white/75">
-            Culturin is a curated travel &amp; culture company, with stories, curated events, and cultural education for people who want to experience the world with more depth.
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75">
+            Founders, operators, artists, and cultural leaders who come together at significant cultural moments throughout the year. Brands come to the house for cultural marketing — launching in new territories, and connecting with cultural intelligence.
           </p>
+          <MagneticButton strength={0.35} className="mt-8 w-fit">
+            <Link
+              href="/partner"
+              className="inline-flex items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+              style={{ background: ACCENT, color: SURFACE_DARK }}
+            >
+              Book a call
+            </Link>
+          </MagneticButton>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/55">
             <span>Cannes</span>
             <span>New York</span>
@@ -203,7 +212,7 @@ export default async function HomePage() {
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Culturin is a curated travel &amp; education company. Our goal is to help people learn and embody the art of culture, through stories, curated events, and experiences that go beyond the postcard version of a place.
+                Culturin is a house. We put the right people in the same room — and we help brands enter new territories with cultural intelligence, through the rooms, the stories, and the marketing that holds them.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
                 Our team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly. We bring that same care to every room we build, for our community, and for the partners who build alongside us.
@@ -242,27 +251,27 @@ export default async function HomePage() {
       <section className="px-8 sm:px-14" style={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
         <div className="mx-auto flex max-w-6xl flex-col gap-28">
           <EditorialStatement
-            eyebrow="Education"
-            headline={"Culture Is\nSomething You\nLearn, Not Just\nSee."}
-            body="Most travel platforms show you a destination. Culturin teaches you how to actually engage with it: the history, the etiquette, and the stories beneath the surface, before you ever board a flight."
+            eyebrow="Cultural marketing"
+            headline={"Launch In A\nNew Territory\nWith The Room\nAlready Built."}
+            body="Brands come to the house for cultural marketing — how to launch in a new territory, and how to connect with cultural intelligence. Write to us. We'll set up a call."
             image={eventMediaUrl("cannes-lions-2026/UNIKday1-83.jpg")}
             imageAlt="Guests filling a red-lit room beneath the disco balls in Cannes"
             imageSide="right"
             buttons={[
-              { label: "Explore travel guides", href: "/travel-guides/nice-and-cannes", variant: "solid" },
-              { label: "Partner with us", href: "/partner", variant: "text" },
+              { label: "Book a call", href: "/partner", variant: "solid" },
+              { label: "See upcoming events", href: "/events", variant: "text" },
             ]}
           />
           <EditorialStatement
-            eyebrow="Content"
+            eyebrow="Stories"
             headline={"Stories From\nThe Room."}
-            body="Articles and video from artists, musicians, and entrepreneurs about travel, identity, and culture, captured from the same rooms Culturin builds."
+            body="Articles and video from artists, musicians, and founders, captured from the same rooms Culturin builds."
             image={eventMediaUrl("cannes-lions-2026/UNIKday2-24.jpg")}
             imageAlt="Couple posing together at a branded photo wall in Cannes"
             imageSide="left"
             buttons={[
               { label: "See upcoming events", href: "/events", variant: "solid" },
-              { label: "Partner with us", href: "/partner", variant: "text" },
+              { label: "Book a call", href: "/partner", variant: "text" },
             ]}
           />
           <EditorialStatement
@@ -273,7 +282,7 @@ export default async function HomePage() {
             imageAlt="Guest at a Culturin evening in Cannes"
             imageSide="right"
             buttons={[
-              { label: "Partner with us", href: "/partner", variant: "solid" },
+              { label: "Book a call", href: "/partner", variant: "solid" },
               { label: "See upcoming events", href: "/events", variant: "text" },
             ]}
           />
@@ -440,13 +449,13 @@ export default async function HomePage() {
                   See the gallery →
                 </Link>
               </div>
-              <Link
-                href="/travel-guides/nice-and-cannes"
-                className="mt-6 inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
-                style={{ color: INK_MUTED }}
-              >
-                Business travel guide to Nice &amp; Cannes →
-              </Link>
+                <Link
+                  href="/travel-guides/nice-and-cannes"
+                  className="mt-6 inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
+                  style={{ color: INK_MUTED }}
+                >
+                  Notes for Cannes →
+                </Link>
             </Reveal>
           </div>
         </div>
@@ -516,21 +525,21 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
             <Reveal as="div">
               <p className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "rgba(232,227,218,0.6)" }}>
-                For partners
+                Cultural marketing
               </p>
               <h2
                 className="m-0 text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                Let&apos;s build something that matters.
+                Launch with cultural intelligence.
               </h2>
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
-                We partner with the world&apos;s leading consumer and lifestyle brands on cultural programming built around marquee moments, Cannes Lions, the US Open, the UN General Assembly, and beyond. Every room we build delivers a curated, high-caliber audience: high-net-worth individuals, senior executives, and cultural tastemakers who actually show up.
+                Brands come to the house when they need to launch in a new territory, or to connect with the people who already shape culture there. That is cultural marketing: intelligence, rooms, and introductions — not a campaign bolted onto a place.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
-                If you want your brand in the room where the real conversations happen, not just a name on a step-and-repeat, we should talk.
+                Write to us. We&apos;ll set up a call.
               </p>
               <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <MagneticButton strength={0.35} className="w-fit">
@@ -539,7 +548,7 @@ export default async function HomePage() {
                     className="inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
                     style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
                   >
-                    Become a partner
+                    Book a call
                   </Link>
                 </MagneticButton>
                 <Link
@@ -569,7 +578,7 @@ export default async function HomePage() {
               className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl"
               style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
             >
-              People travel for the rooms we build.
+              They come from everywhere for the rooms we build.
             </h2>
           </Reveal>
           <Reveal delay={120}>
@@ -598,7 +607,7 @@ export default async function HomePage() {
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                We launched with real conversations, artists, musicians, and entrepreneurs talking about travel and culture. Since then we&apos;ve been building out curated events, a growing content library, and the beginning of a real marketplace.
+                We launched with real conversations — artists, musicians, and founders in the same room. Since then we&apos;ve been building curated events, a growing library of stories, and the house that holds them.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
                 Next: certified cultural training programs, a first Culturin festival, and a production company built for cultural programming at the scale our team already knows, the Super Bowl, the Oscars, the UN Assembly.

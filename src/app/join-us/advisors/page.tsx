@@ -71,14 +71,12 @@ export default function AdvisorsPage() {
               Become a Culturin advisor
             </h1>
             <p className="mt-4 text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
-              Culturin is designed for the innovative and entrepreneurial travel advisor of tomorrow. Our core mission
-              is to empower those with a deep-rooted passion for exploration and travel to generate a flexible income by
-              curating and booking unforgettable journeys.
+              Advisors help host the house: operators, connectors, and cultural producers who already move rooms —
+              and want to help build the next ones.
             </p>
             <p className="mt-3 text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
-              Whether you are just starting out or looking to elevate your existing travel advisory business, Culturin
-              offers the tools, resources, and community support needed to thrive in the dynamic world of travel
-              planning.
+              Whether you are just beginning or already in the work, Culturin offers the rooms, the introductions, and
+              the community to do it inside the house.
             </p>
             <button
               type="button"
@@ -105,7 +103,7 @@ export default function AdvisorsPage() {
                 "Live networking events across the country",
                 "Community app for collaboration and support",
                 "Weekly online community and partner events",
-                "Mentorship, FAM trips and site visits",
+                "Mentorship, gatherings, and site visits",
               ].map((item) => (
                 <article key={item} className="rounded-2xl border p-5" style={cardStyle}>
                   <p className="text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>{item}</p>
@@ -119,7 +117,7 @@ export default function AdvisorsPage() {
               Apply to join Culturin today
             </h2>
             <p className="mt-2 max-w-2xl text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>
-              Tell us about your work advising travelers and producing cultural access. We review every application and
+              Tell us about your work hosting rooms and producing cultural access. We review every application and
               follow up by email.
             </p>
 

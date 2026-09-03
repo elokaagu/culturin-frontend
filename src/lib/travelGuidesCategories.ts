@@ -1,5 +1,5 @@
 /**
- * Travel Guides hub — large category cards (image + color overlay) linking into search.
+ * Notes hub — large category cards (image + color overlay) linking into stories.
  * Swap for CMS counts or tags when your catalog supports it.
  */
 export type TravelGuideCategory = {
@@ -16,7 +16,7 @@ export type TravelGuideCategory = {
 export const travelGuideCategories: TravelGuideCategory[] = [
   {
     slug: "conscious-travel",
-    title: "Conscious travel: places, people and planet",
+    title: "Places, people, and planet",
     articleCount: 7,
     imageUrl:
       "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80",
@@ -27,7 +27,7 @@ export const travelGuideCategories: TravelGuideCategory[] = [
   },
   {
     slug: "black-travel",
-    title: "Black travel",
+    title: "Black voices",
     articleCount: 12,
     imageUrl:
       "https://images.unsplash.com/photo-1470246973918-29a93221c455?auto=format&fit=crop&w=1400&q=80",
@@ -37,7 +37,7 @@ export const travelGuideCategories: TravelGuideCategory[] = [
   },
   {
     slug: "south-asian-travel",
-    title: "South Asian travel",
+    title: "South Asia",
     articleCount: 5,
     imageAlt: "Deep blue abstract gradient background",
     href: "/articles/guides/south-asian-travel",
@@ -45,11 +45,11 @@ export const travelGuideCategories: TravelGuideCategory[] = [
   },
   {
     slug: "solo-women-travel",
-    title: "Solo women travel",
+    title: "Solo women",
     articleCount: 9,
     imageUrl:
       "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1400&q=80",
-    imageAlt: "Woman traveler walking through a city street",
+    imageAlt: "Woman walking through a city street",
     href: "/articles/guides/solo-women-travel",
     overlayClass: "bg-fuchsia-900/65 mix-blend-multiply",
   },
@@ -65,7 +65,7 @@ export const travelGuideCategories: TravelGuideCategory[] = [
   },
   {
     slug: "art-design-city-breaks",
-    title: "Art and design city breaks",
+    title: "Art and design",
     articleCount: 8,
     imageUrl:
       "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80",

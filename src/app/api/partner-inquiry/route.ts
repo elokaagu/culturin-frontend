@@ -4,7 +4,15 @@ import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
-const VALID_INTERESTS = new Set(["sponsorship", "activation", "attend", "other"]);
+const VALID_INTERESTS = new Set([
+  "cultural-marketing",
+  "new-territory",
+  "cultural-intelligence",
+  "sponsorship",
+  "activation",
+  "attend",
+  "other",
+]);
 
 export async function POST(req: Request) {
   let body: unknown;

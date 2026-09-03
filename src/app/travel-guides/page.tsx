@@ -20,9 +20,9 @@ const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Travel guides | Culturin",
+    title: "Notes | Culturin",
     description:
-      "A curated marketplace of travel guides by theme. Sign in to contact our team about guides and collaborations.",
+      "Field notes from the rooms Culturin builds. Sign in to write to the house about a collaboration.",
   };
 }
 
@@ -43,18 +43,17 @@ export default async function TravelGuidesMarketplacePage() {
               <span className="px-1.5" style={{ color: "var(--c-muted)" }} aria-hidden>
                 /
               </span>
-              <span style={{ color: "var(--c-muted)" }}>Travel guides</span>
+              <span style={{ color: "var(--c-muted)" }}>Notes</span>
             </nav>
 
             <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: "var(--c-muted)" }}>
-              Marketplace
+              Notes
             </p>
             <h1 className="m-0 mt-3 max-w-4xl text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl md:text-6xl" style={{ ...displayFont, color: "var(--c-ink)" }}>
-              Curated travel guides
+              Notes from the rooms
             </h1>
             <p className="m-0 mt-4 max-w-2xl text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
-              Explore themed collections from the Culturin team—deep dives you can use to plan, dream, and go. Sign in to
-              reach our curators with questions or ideas.
+              Field notes from gatherings — Cannes, New York, London, and the nights in between. Sign in to write to the house.
             </p>
 
             <div className="mt-8 flex max-w-3xl flex-col gap-4 sm:mt-10 sm:flex-row sm:items-stretch sm:gap-5">

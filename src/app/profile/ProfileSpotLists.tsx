@@ -17,6 +17,12 @@ function sanitizeFileName(name: string): string {
   return name.replace(/[^\w.+-]+/g, "-").replace(/^-+|-+$/g, "") || "upload.bin";
 }
 
+const LIST_TYPE_LABEL = {
+  itinerary: "list",
+  collection: "collection",
+  highlights: "highlights",
+} as const;
+
 type Props = {
   onCountChange?: (count: number) => void;
 };
@@ -119,9 +125,9 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
   return (
     <div className="mt-8 sm:mt-10">
       <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-white/[0.1] dark:bg-white/[0.03] sm:p-6">
-        <h2 className="text-base font-semibold text-neutral-900 dark:text-white">Trip lists</h2>
+        <h2 className="text-base font-semibold text-neutral-900 dark:text-white">Lists</h2>
         <p className="mt-1 text-sm text-neutral-500 dark:text-white/58">
-          Create itineraries, collections, and highlights, then publish what you want others to discover.
+          Create lists, collections, and highlights, then publish what you want others to discover.
         </p>
 
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-end">
@@ -178,7 +184,7 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
                   }
                   aria-pressed={newType === kind}
                 >
-                  {kind}
+                  {LIST_TYPE_LABEL[kind]}
                 </button>
               ))}
             </div>
@@ -215,7 +221,7 @@ export default function ProfileSpotLists({ onCountChange }: Props) {
 
       {lists.length === 0 ? (
         <p className="mt-8 text-center text-sm text-neutral-500 dark:text-white/50">
-          No lists yet. Name a trip or city above and add spots as you go.
+          No lists yet. Name a city or a room above and add spots as you go.
         </p>
       ) : (
         <ul className="mt-8 space-y-4 p-0">
@@ -462,7 +468,7 @@ function SpotListCard({
                         : "rounded-full border border-neutral-300 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-neutral-600 dark:border-white/20 dark:text-white/65"
                     }
                   >
-                    {kind}
+                    {LIST_TYPE_LABEL[kind]}
                   </button>
                 ))}
                 <button

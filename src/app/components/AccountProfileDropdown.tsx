@@ -212,7 +212,7 @@ export function AccountProfileDropdown({
               <button
                 type="button"
                 className={segmentBtnClass}
-                aria-label="Destinations"
+                aria-label="Cities"
                 onClick={() => go("/destinations")}
               >
                 <MapPin className="h-4 w-4" strokeWidth={2} />

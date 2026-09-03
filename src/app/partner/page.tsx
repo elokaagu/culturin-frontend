@@ -12,8 +12,9 @@ const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 
 export const metadata: Metadata = {
-  title: "Partner With Culturin",
-  description: "Partner with Culturin on event sponsorship, brand activations, or attend an upcoming Culturin night.",
+  title: "Book a Call | Culturin",
+  description:
+    "Cultural marketing for brands launching in new territories or connecting with cultural intelligence. Write to Culturin — we'll set up a call.",
 };
 
 export default function PartnerPage() {
@@ -23,18 +24,17 @@ export default function PartnerPage() {
 
       <div className="mx-auto max-w-5xl px-8 pb-24 sm:px-14" style={{ paddingTop: "8rem" }}>
         <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-          For partners
+          Cultural marketing
         </p>
         <h1
           className="m-0 max-w-2xl text-5xl font-medium leading-[1.08] sm:text-6xl"
           style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
         >
-          Let&apos;s build something that matters.
+          Book a call with the house.
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          We partner with the world&apos;s leading consumer and lifestyle brands on cultural programming built
-          around marquee moments, and we host a small number of guests directly. Tell us which you&apos;re here
-          for, and our team will follow up personally.
+          For brands with questions about cultural marketing — how to launch in a new territory, or how to
+          connect with cultural intelligence. Tell us what you need. We&apos;ll set up a call.
         </p>
 
         <div
@@ -44,20 +44,19 @@ export default function PartnerPage() {
           <div className="flex flex-col gap-8">
             <div>
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: INK_MUTED }}>
-                Sponsorship &amp; activations
+                New territories
               </p>
               <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                Every room we build delivers a curated, high-caliber audience: high-net-worth individuals, senior
-                executives, and cultural tastemakers who actually show up.
+                Enter a market with the room already built — Cannes, New York, London, and the nights in between —
+                and the people who already shape culture there.
               </p>
             </div>
             <div>
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: INK_MUTED }}>
-                Attending an event
+                Cultural intelligence
               </p>
               <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                Culturin nights are invite-only. Tell us a bit about yourself below and we&apos;ll follow up about
-                the guest list for our next event.
+                Briefs, introductions, and programming rooted in the house, not a campaign bolted onto a place.
               </p>
             </div>
             <div>

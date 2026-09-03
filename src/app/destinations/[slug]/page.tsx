@@ -31,7 +31,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const d = getDestinationBySlug(params.slug);
-  if (!d) return { title: "Destination" };
+  if (!d) return { title: "City" };
   return {
     title: `${d.name} | Culturin`,
     description: d.country
@@ -97,7 +97,7 @@ export default async function DestinationDetailPage({ params }: PageProps) {
             /
           </span>
           <Link href="/destinations" className="no-underline transition hover:opacity-80" style={{ color: "var(--c-accent)" }}>
-            Destinations
+            Cities
           </Link>
           <span style={{ color: "var(--c-muted)" }} aria-hidden>
             /
@@ -110,7 +110,7 @@ export default async function DestinationDetailPage({ params }: PageProps) {
         <div className="space-y-7">
           <header className="space-y-3">
             <p className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
-              Destination guide
+              City
             </p>
             <h1 className="m-0 text-4xl font-medium leading-tight sm:text-5xl" style={{ ...displayFont, color: "var(--c-ink)" }}>
               {d.name}
@@ -118,7 +118,7 @@ export default async function DestinationDetailPage({ params }: PageProps) {
             <p className="m-0 text-base" style={{ color: "var(--c-muted)" }}>{d.country ?? "Worldwide"}</p>
             <p className="m-0 max-w-3xl text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
               {content?.intro ??
-                `${d.name} is a destination worth exploring through neighborhood culture, food, and local stories.`}
+                `${d.name} is one of the cities where the house gathers — rooms, stories, and the people already there.`}
             </p>
           </header>
 
@@ -131,7 +131,7 @@ export default async function DestinationDetailPage({ params }: PageProps) {
             </div>
             <div>
               <p className={eyebrowClass} style={{ color: "var(--c-muted)" }}>
-                Best time to visit
+                When we gather
               </p>
               <p className="m-0 mt-2 text-base" style={{ color: "var(--c-ink)" }}>
                 {content?.bestTime ?? "Year-round, with peak season in mild weather months."}
@@ -258,14 +258,14 @@ export default async function DestinationDetailPage({ params }: PageProps) {
           <div className={cardClass} style={cardStyle}>
             <p className={eyebrowClass} style={{ color: "var(--c-muted)" }}>Next steps</p>
             <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
-              Discover more places on the destinations index, then pair this city with travel guides and curated experiences.
+              More cities in the house — and the stories coming out of them.
             </p>
             <Link
               href="/destinations"
               className="mt-3 inline-flex items-center text-sm font-medium no-underline transition hover:opacity-80"
               style={{ color: "var(--c-accent)" }}
             >
-              Browse all destinations
+              Browse all cities
             </Link>
           </div>
         </aside>

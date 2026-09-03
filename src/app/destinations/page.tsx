@@ -9,8 +9,8 @@ import DestinationsClient from "./DestinationsClient";
 const destinationsCount = destinations.length;
 
 export const metadata: Metadata = {
-  title: "Destinations | Culturin",
-  description: "Explore destinations around the world with custom local insight from Culturin.",
+  title: "Cities | Culturin",
+  description: "Cities where the Culturin house gathers — and the stories that come out of those rooms.",
 };
 
 export default function DestinationsPage() {
@@ -27,7 +27,7 @@ export default function DestinationsPage() {
           <span className="px-1" style={{ color: "var(--c-muted)" }} aria-hidden>
             /
           </span>
-          <span className="text-sm" style={{ color: "var(--c-muted)" }}>Destinations</span>
+          <span className="text-sm" style={{ color: "var(--c-muted)" }}>Cities</span>
         </nav>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
@@ -38,10 +38,10 @@ export default function DestinationsPage() {
               className="m-0 mt-3 text-3xl font-medium tracking-tight sm:text-5xl"
               style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
             >
-              Destinations
+              Cities
             </h1>
             <p className="m-0 mt-3 text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
-              Browse cities, discover local context, and open detailed destination pages with tailored recommendations.
+              Where the house gathers. Open a city for stories, rooms, and the people already there.
             </p>
           </div>
           <p className="m-0 text-sm" style={{ color: "var(--c-muted)" }}>

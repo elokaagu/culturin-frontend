@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Articles | Culturin",
     description:
-      "Editorial travel stories, city guides, and cultural perspectives from Culturin — read every article in one place.",
+      "Stories and cultural perspectives from the Culturin house — read every article in one place.",
   };
 }
 
@@ -115,7 +115,7 @@ export default async function ArticlesPage() {
               Articles
             </h1>
             <p className="m-0 mt-4 max-w-2xl text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
-              Long-form stories, place-based guides, and cultural reporting — updated as we publish.
+              Long-form stories and conversations from inside the house — updated as we publish.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -131,7 +131,7 @@ export default async function ArticlesPage() {
                 className="inline-flex min-h-[40px] items-center rounded-full px-5 text-sm font-semibold text-white no-underline transition hover:opacity-90"
                 style={{ background: "var(--c-accent)" }}
               >
-                Travel guides
+                Notes
               </Link>
             </div>
           </div>

@@ -20,7 +20,7 @@ export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: "Trending | Culturin",
-  description: "What is trending now across travel stories, curated experiences, and videos.",
+  description: "What is moving now across stories, rooms, and video in the Culturin house.",
 };
 
 function TrendingSection({

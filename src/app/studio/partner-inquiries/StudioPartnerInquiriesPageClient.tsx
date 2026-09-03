@@ -6,6 +6,9 @@ import { useEffect, useMemo, useState } from "react";
 import type { StudioPartnerInquiry } from "@/lib/studio/partnerInquiries";
 
 const INTEREST_LABELS: Record<string, string> = {
+  "cultural-marketing": "Cultural marketing",
+  "new-territory": "Launching in a new territory",
+  "cultural-intelligence": "Cultural intelligence",
   sponsorship: "Event sponsorship",
   activation: "Brand activation",
   attend: "Attending an event",

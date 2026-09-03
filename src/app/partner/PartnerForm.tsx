@@ -19,9 +19,9 @@ const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
 
 const INTERESTS = [
-  { value: "sponsorship", label: "Event sponsorship" },
-  { value: "activation", label: "Brand activation" },
-  { value: "attend", label: "Attending an upcoming event" },
+  { value: "cultural-marketing", label: "Cultural marketing" },
+  { value: "new-territory", label: "Launching in a new territory" },
+  { value: "cultural-intelligence", label: "Cultural intelligence" },
   { value: "other", label: "Something else" },
 ];
 
@@ -117,7 +117,7 @@ export function PartnerForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
-  const [interest, setInterest] = useState("sponsorship");
+  const [interest, setInterest] = useState("cultural-marketing");
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
   const [status, setStatus] = useState<"idle" | "ok" | "error">("idle");
@@ -156,11 +156,11 @@ export function PartnerForm() {
         return;
       }
       setStatus("ok");
-      setFeedback("Thanks, we've got it. Our team will follow up directly.");
+      setFeedback("Thanks. We'll be in touch to set up a call.");
       setName("");
       setEmail("");
       setCompany("");
-      setInterest("sponsorship");
+      setInterest("cultural-marketing");
       setMessage("");
     } catch {
       setStatus("error");
@@ -270,7 +270,7 @@ export function PartnerForm() {
         className="mt-2 inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] transition-opacity hover:opacity-85 disabled:opacity-60"
         style={{ background: ACCENT, color: SURFACE_DARK }}
       >
-        {pending ? "Sending…" : "Send inquiry"}
+        {pending ? "Sending…" : "Request a call"}
       </button>
     </form>
   );

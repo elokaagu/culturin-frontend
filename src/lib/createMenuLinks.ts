@@ -26,7 +26,7 @@ export function getCreateMenuLinks(isAdmin: boolean): CreateMenuLinkItem[] {
   return [
     {
       title: "Article",
-      description: "Guides and stories for destinations, trending rails, and search.",
+      description: "Stories for the house, trending rails, and search.",
       href: `${cmsRoot}/articles`,
       icon: BookOpen,
     },
@@ -38,19 +38,19 @@ export function getCreateMenuLinks(isAdmin: boolean): CreateMenuLinkItem[] {
     },
     {
       title: "Experience",
-      description: "Provider cards, curated experiences, and travel-guide hosts.",
+      description: "Provider cards, curated experiences, and hosts.",
       href: `${cmsRoot}/providers`,
       icon: Building2,
     },
     {
       title: "Spot list",
-      description: "Itineraries and saved places on your profile to plan and share.",
+      description: "Lists and saved places on your profile.",
       href: "/profile#spot-lists",
       icon: ListTree,
     },
     {
       title: "Advisor application",
-      description: "Partner with Culturin as a travel and culture advisor.",
+      description: "Partner with Culturin as an advisor to the house.",
       href: "/join-us/advisors",
       icon: Handshake,
     },

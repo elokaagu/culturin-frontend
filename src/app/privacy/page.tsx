@@ -121,7 +121,7 @@ export default function PrivacyPage() {
           <H2>How we use your information</H2>
           <div className={cardClass} style={cardStyle}>
             <List>
-              <li>Provide and maintain core product features across articles, videos, destinations, and providers.</li>
+              <li>Provide and maintain core product features across articles, videos, cities, and providers.</li>
               <li>Personalize recommendations, nearby suggestions, and saved content experiences.</li>
               <li>Secure accounts, prevent abuse, and investigate suspicious activity.</li>
               <li>Send service messages and, where consent is provided, optional product updates.</li>

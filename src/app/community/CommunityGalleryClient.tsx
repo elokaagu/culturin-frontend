@@ -110,10 +110,10 @@ export default function CommunityGalleryClient({ initialTiles }: { initialTiles:
           className="m-0 text-lg font-medium tracking-tight"
           style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
         >
-          Share your travels
+          Share a night
         </h2>
         <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>
-          Upload a photo from your trip. It appears in this gallery for everyone alongside Culturin stories and videos.
+          Upload a photo from a Culturin room, or from a gathering that belongs in the house. It appears here alongside stories and video.
         </p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
           <label className="flex min-w-0 flex-1 flex-col gap-1.5">
@@ -163,7 +163,7 @@ export default function CommunityGalleryClient({ initialTiles }: { initialTiles:
         <p className="rounded-xl border border-dashed px-6 py-16 text-center text-sm" style={{ borderColor: "var(--c-rule)", color: "var(--c-muted)" }}>
           No images yet. Check back soon for new stories and videos, or{" "}
           <button type="button" onClick={scrollToUpload} className="font-medium underline-offset-2 hover:underline" style={{ color: "var(--c-accent)" }}>
-            share a travel photo
+            share a photo
           </button>
           .
         </p>

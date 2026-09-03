@@ -96,7 +96,7 @@ export default function IslandNav() {
               href="/partner"
               className="block rounded-full bg-[#b5502e] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
             >
-              Contact
+              Book a call
             </Link>
           </MagneticButton>
         </div>
@@ -165,7 +165,7 @@ export default function IslandNav() {
               onClick={() => setMobileOpen(false)}
               className="w-full rounded-full bg-[#b5502e] px-5 py-2.5 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-[#17130f] no-underline transition hover:opacity-90 dark:bg-[#e08a5b]"
             >
-              Contact
+              Book a call
             </Link>
           </div>
         </div>

@@ -39,7 +39,7 @@ const BENEFITS = [
   },
   {
     label: "A curated network",
-    body: "Stay close to hosts, advisors, and partners who share Culturin’s standard for intentional travel and culture.",
+    body: "Stay close to hosts, advisors, and partners who share Culturin’s standard for the rooms we build.",
   },
 ] as const;
 
@@ -73,7 +73,7 @@ export default function CulturinCardPage() {
                 className="inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
                 style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
               >
-                Partner with us
+                Book a call
               </Link>
               <Link
                 href="/events"

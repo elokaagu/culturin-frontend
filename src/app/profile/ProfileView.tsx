@@ -456,7 +456,7 @@ export default function ProfileView() {
                 style={tab === "collections" ? tabActiveStyle : tabInactiveStyle}
                 onClick={() => setTab("collections")}
               >
-                Trip lists ({listsCount})
+                Lists ({listsCount})
               </button>
               <button
                 type="button"
@@ -523,10 +523,10 @@ export default function ProfileView() {
         {tab === "elements" && articles.length === 0 ? (
           <p className="mt-8 text-center text-sm" style={{ color: "var(--c-muted)" }}>
             No stories loaded yet. Open{" "}
-            <Link href="/travel-guides" className="font-medium underline-offset-2 hover:underline" style={{ color: "var(--c-accent)" }}>
-              Travel Guides
+            <Link href="/articles" className="font-medium underline-offset-2 hover:underline" style={{ color: "var(--c-accent)" }}>
+              Articles
             </Link>{" "}
-            to explore.
+            to read the house.
           </p>
         ) : null}
       </div>

@@ -143,7 +143,7 @@ export async function listTravelerCardsForDestination(input: {
         id: user.id,
         name: displayNameFromUser(user),
         handle: handleFromUser(user),
-        itinerary: leadList ? toItineraryText(leadList) : "Saved destination picks",
+        itinerary: leadList ? toItineraryText(leadList) : "Saved picks",
         recommendation: toRecommendationText(leadItems),
         listsCount: userLists.length,
         isFollowing: followedSet.has(user.id),

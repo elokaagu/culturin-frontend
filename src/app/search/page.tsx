@@ -138,7 +138,7 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
   if (!raw) {
     return {
       title: "Search | Culturin",
-      description: "Search travel stories, videos, and experiences on Culturin.",
+      description: "Search stories, video, and rooms in the Culturin house.",
     };
   }
   return {
@@ -201,7 +201,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
               ? `Places, stories, and media related to ${rawQuery}.`
               : query
                 ? `Results for “${rawQuery}”.`
-                : "Search articles, videos, and experiences — or pick a place from the home page."}
+                : "Search articles, videos, and rooms — or pick a city from the house."}
           </p>
 
           {showSupplementNote ? (
@@ -222,14 +222,14 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
                   className="inline-flex min-h-10 items-center justify-center rounded-full border px-5 text-sm font-semibold no-underline transition hover:opacity-80"
                   style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                 >
-                  Browse travel guides
+                  Browse notes
                 </Link>
                 <Link
                   href="/destinations"
                   className="inline-flex min-h-10 items-center justify-center rounded-full border px-5 text-sm font-semibold no-underline transition hover:opacity-80"
                   style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
                 >
-                  Destinations
+                  Cities
                 </Link>
                 <Link
                   href="/videos"
@@ -341,7 +341,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
           ) : null}
 
           {destinationHits.length > 0 ? (
-            <SearchSection title="Destinations" count={destinationHits.length}>
+            <SearchSection title="Cities" count={destinationHits.length}>
               <ul className="m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3" role="list">
                 {destinationHits.map((destination) => {
                   const imageSrc = resolveContentImageSrc(destination.imageUrl);

@@ -160,7 +160,7 @@ export default function DestinationsClient() {
             <p className="mt-2 text-sm" style={{ color: "var(--c-muted)" }}>
               {hoveredSlug
                 ? `View ${preview.name} details`
-                : "Hover a destination to preview it, then open the full guide"}
+                : "Hover a city to preview it"}
             </p>
           </div>
         )}

@@ -224,7 +224,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
 
               <header className="flex flex-col gap-4">
                 <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: "var(--c-accent)" }}>
-                  Travel guide
+                  Story
                 </p>
                 <h1
                   className="m-0 text-[2rem] font-medium leading-[1.04] tracking-tight sm:text-[2.7rem]"

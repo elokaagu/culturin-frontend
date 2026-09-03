@@ -21,7 +21,7 @@ export default async function StudioPartnerInquiriesPage() {
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--c-accent)]">Audience</p>
       <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-[color:var(--c-ink)] sm:text-3xl">Partner inquiries</h1>
       <p className="mt-2 text-sm text-[color:var(--c-muted)]">
-        Everyone who has submitted the /partner form: sponsorship, activations, and event attendance requests.
+        Everyone who has submitted the /partner form: cultural marketing, new territories, and cultural intelligence.
       </p>
 
       <StudioPartnerInquiriesPageClient inquiries={inquiries} hasDb={hasDb} />

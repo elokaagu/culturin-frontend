@@ -33,7 +33,7 @@ const containerClass = appPageContainerClass;
 
 const CONTENTS = [
   { id: "stories", label: "Stories" },
-  { id: "explore-world", label: "Explore the world" },
+  { id: "explore-world", label: "Cities" },
   { id: "learn-words", label: "Learn a few words" },
   { id: "experiences", label: "Experiences" },
 ];
@@ -110,17 +110,17 @@ function IssueMasthead({ lead }: { lead: simpleBlogCard | undefined }) {
             className="text-balance text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl md:text-5xl"
             style={{ ...displayFont, color: "var(--c-ink)" }}
           >
-            Travel global, live local
+            Stories from the house
           </h1>
           <p className="mt-4 max-w-xl text-pretty text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
-            Discover a world of culture, stories, and experiences worth your time.
+            Articles, video, and conversations captured from the rooms Culturin builds.
           </p>
           <Link
-            href="/destinations"
+            href="/events"
             className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold no-underline transition-colors hover:opacity-70"
             style={{ color: "var(--c-accent)" }}
           >
-            Explore destinations <span aria-hidden>→</span>
+            See upcoming events <span aria-hidden>→</span>
           </Link>
         </div>
       )}
@@ -149,7 +149,7 @@ export default function HomePageClient({
             <StoriesLeadList
               stories={otherStories.length > 0 ? otherStories : initialBlogs}
               title="Stories"
-              description="Editorial picks, city notes, and creator-led narratives worth saving."
+              description="Editorial picks and conversations from inside the house."
               viewAllHref="/articles"
               headingId="stories-heading"
             />
@@ -160,8 +160,8 @@ export default function HomePageClient({
           <div className={containerClass}>
             <WorldIndexGrid
               countries={exploreWorldCountries}
-              title="Explore the world"
-              description="Choose a country to open curated articles and guides for that place."
+              title="Where the house gathers"
+              description="Cities and countries where Culturin builds rooms — and the stories that come out of them."
               viewAllHref="/destinations"
               headingId="explore-world-heading"
             />
@@ -179,7 +179,7 @@ export default function HomePageClient({
             <ExperiencesSpread
               providers={initialProviders}
               title="Experiences"
-              description="Hand-picked experiences and partners you can explore next."
+              description="Partners and formats from the rooms we build."
               viewAllHref="/curated-experiences"
               headingId="experiences-heading"
             />

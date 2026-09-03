@@ -65,7 +65,7 @@ export default async function LocalHostProfilePage({ params }: { params: { slug:
               /
             </span>
             <Link href="/travel-guides" className="font-medium no-underline hover:underline" style={{ color: "var(--c-accent)" }}>
-              Travel guides
+              Notes
             </Link>
             <span className="px-1.5" style={{ color: "var(--c-muted)" }} aria-hidden>
               /

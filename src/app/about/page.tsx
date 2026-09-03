@@ -10,40 +10,41 @@ const HERO_SRC =
 
 const principles = [
   {
-    title: "Context first",
-    text: "We prioritize meaning over noise so you understand a place before you visit it.",
+    title: "The room is the product",
+    text: "We put founders, operators, artists, and cultural leaders in the same room — and give those rooms a culture worth returning to.",
   },
   {
-    title: "People-powered travel",
-    text: "Local creators, advisors, and providers are central to how experiences are surfaced on Culturin.",
+    title: "Stories from the house",
+    text: "Articles, video, and conversations captured from the nights we build.",
   },
   {
-    title: "Designed for clarity",
-    text: "Readable pages, clear navigation, and practical discovery tools help you move from ideas to plans.",
+    title: "Partners, not props",
+    text: "Brands and institutions enter as collaborators in the room, not names on a step-and-repeat.",
   },
 ] as const;
 
 const roadmap = [
   {
-    label: "Editorial quality",
-    text: "Deep guides and stories that combine local perspective with practical planning notes.",
+    label: "The rooms",
+    text: "More gatherings at the year's cultural moments — Cannes, New York, London, and the nights in between.",
   },
   {
-    label: "Smarter discovery",
-    text: "Better search, nearby surfaces, and recommendation logic that reflects your actual intent.",
+    label: "The library",
+    text: "A growing body of stories and conversations from inside the house.",
   },
   {
-    label: "Creator ecosystem",
-    text: "More provider tools and partner workflows so trusted experts can publish and host through Culturin.",
+    label: "The festival",
+    text: "Certified cultural programming, a first Culturin festival, and production at the scale our team already knows.",
   },
 ] as const;
 
 export const metadata: Metadata = {
   title: "About | Culturin",
-  description: "Learn what Culturin is building for culture-first travel discovery.",
+  description:
+    "Culturin is a house of founders, operators, artists, and cultural leaders who gather at significant cultural moments throughout the year.",
   openGraph: {
     title: "About Culturin",
-    description: "A culture-first platform for stories, destinations, and curated local experiences.",
+    description: "A house for the people who shape culture.",
   },
 };
 
@@ -69,7 +70,7 @@ export default function AboutPage() {
           <div className="relative min-h-[18rem] sm:min-h-[24rem]">
             <Image
               src={HERO_SRC}
-              alt="Map and travel planning essentials"
+              alt="A gathering at dusk"
               fill
               className="object-cover"
               priority
@@ -84,10 +85,10 @@ export default function AboutPage() {
                 className="m-0 mt-3 max-w-3xl text-3xl font-medium leading-tight tracking-tight text-white sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                Travel deeper with culture, context, and local perspective
+                Culturin is a house.
               </h1>
               <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
-                Culturin helps curious travelers discover places through stories, trusted local providers, and practical planning tools.
+                Founders, operators, artists, and cultural leaders who come together at significant cultural moments throughout the year.
               </p>
             </div>
           </div>
@@ -108,10 +109,10 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-10 rounded-3xl border p-5 sm:p-8" style={{ borderColor: "var(--c-rule)", background: "rgba(28,26,23,0.03)" }}>
-          <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--c-muted)" }}>Our focus</p>
+          <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--c-muted)" }}>The house</p>
           <p className="m-0 mt-3 max-w-4xl text-lg leading-relaxed" style={{ color: "var(--c-ink)" }}>
-            We build for people who want more than highlights. That means thoughtful destination pages, richer travel guides,
-            useful nearby discovery, and curated experiences that connect travelers to the culture of a place.
+            We are united in building the rooms, stories, and partnerships that shape culture. The cities we gather in —
+            Cannes, New York, London — are occasions, not a product.
           </p>
         </section>
 
@@ -137,32 +138,32 @@ export default function AboutPage() {
             className="m-0 text-xl font-medium"
             style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
           >
-            Explore Culturin
+            Enter the house
           </h2>
           <p className="m-0 mt-2 max-w-2xl" style={{ color: "var(--c-muted)" }}>
-            Start with destinations, dive into travel guides, or browse curated experiences.
+            Start with the rooms, the gallery, or the stories coming out of them.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
-              href="/destinations"
+              href="/events"
               className="inline-flex min-h-[42px] items-center rounded-full border px-5 text-xs font-semibold uppercase tracking-[0.16em] no-underline transition hover:opacity-80"
               style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
             >
-              Destinations
+              Events
             </Link>
             <Link
-              href="/travel-guides"
+              href="/gallery"
               className="inline-flex min-h-[42px] items-center rounded-full border px-5 text-xs font-semibold uppercase tracking-[0.16em] no-underline transition hover:opacity-80"
               style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
             >
-              Travel guides
+              Gallery
             </Link>
             <Link
-              href="/providers"
+              href="/platform"
               className="inline-flex min-h-[42px] items-center rounded-full border px-5 text-xs font-semibold uppercase tracking-[0.16em] no-underline transition hover:opacity-80"
               style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
             >
-              Providers
+              Stories
             </Link>
           </div>
         </section>

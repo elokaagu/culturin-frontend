@@ -54,7 +54,7 @@ export default async function StudioProvidersPage({ searchParams }: StudioProvid
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--c-accent)]">Content</p>
       <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-[color:var(--c-ink)] sm:text-3xl">Experiences</h1>
       <p className="mt-2 text-sm text-[color:var(--c-muted)]">
-        Listings can appear on Providers, experience rails, and destination pages.
+        Listings can appear on Providers, experience rails, and city pages.
       </p>
 
       <StudioProvidersPageClient providers={providers} hasDb={Boolean(db)} editEntry={editEntry} />

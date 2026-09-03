@@ -17,16 +17,16 @@ export const metadata: Metadata = {
 
 const PILLARS = [
   {
-    label: "Depth over highlights",
-    body: "We help people learn and embody the art of culture — through stories, curated events, and experiences that go beyond the postcard version of a place.",
+    label: "The room is the product",
+    body: "We put founders, operators, artists, and cultural leaders in the same room — and give those rooms a culture worth returning to.",
   },
   {
-    label: "Rooms that matter",
-    body: "We build cultural programming around marquee moments — Cannes Lions, the US Open, the UN General Assembly, and beyond — where the real conversations happen, not just a name on a step-and-repeat.",
+    label: "Moments that matter",
+    body: "We gather at significant cultural moments throughout the year — Cannes Lions, the US Open, the UN General Assembly, and the nights in between.",
   },
   {
-    label: "An audience that shows up",
-    body: "Every room we build delivers a curated, high-caliber audience: high-net-worth individuals, senior executives, and cultural tastemakers who actually show up.",
+    label: "People who show up",
+    body: "Every room we build is a curated house: operators, executives, artists, and tastemakers who actually arrive.",
   },
 ] as const;
 
@@ -46,9 +46,9 @@ export default function OurMissionPage() {
           Culture is not just a state of being. It&apos;s an action.
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          Culturin is a curated travel &amp; culture company built by a team with production history at the Super
-          Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly. We bring that same care to every
-          room we build — for our community, and for the partners who build alongside us.
+          Culturin is a house of founders, operators, artists, and cultural leaders, built by a team with production
+          history at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly. We bring that
+          same care to every room we build — for the house, and for the partners who build alongside us.
         </p>
 
         <div className="mt-16 grid grid-cols-1 gap-10 border-t pt-16 sm:grid-cols-3" style={{ borderColor: RULE }}>
@@ -72,11 +72,10 @@ export default function OurMissionPage() {
             From real conversations to a global festival.
           </h2>
           <p className="mt-6 max-w-xl text-base leading-relaxed" style={{ color: INK_MUTED }}>
-            We launched with real conversations — artists, musicians, and entrepreneurs talking about travel and
-            culture. Since then we&apos;ve been building out curated events, a growing content library, and the
-            beginning of a real marketplace. Next: certified cultural training programs, a first Culturin
-            festival, and a production company built for cultural programming at the scale our team already
-            knows.
+            We launched with real conversations — artists, musicians, and founders in the same room. Since then
+            we&apos;ve been building curated events, a growing library of stories, and the house that holds them.
+            Next: certified cultural programming, a first Culturin festival, and production at the scale our team
+            already knows.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
             <Link
@@ -91,7 +90,7 @@ export default function OurMissionPage() {
               className="inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
               style={{ color: INK }}
             >
-              Partner with us →
+              Book a call →
             </Link>
           </div>
         </div>

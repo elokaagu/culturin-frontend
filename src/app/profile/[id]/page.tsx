@@ -82,10 +82,10 @@ export default async function ProfileByIdPage({ params }: PageProps) {
 
               <section className="mt-6">
                 <h2 className="m-0 text-xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>
-                  Saved itineraries &amp; recommendations
+                  Saved lists
                 </h2>
                 <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>
-                  Browse lists this traveler has saved for places they have explored.
+                  Lists this member has saved for cities and rooms in the house.
                 </p>
                 {profile.lists.length === 0 ? (
                   <p className="m-0 mt-6 rounded-xl border px-4 py-4 text-sm" style={{ borderColor: "var(--c-rule)", color: "var(--c-muted)" }}>
