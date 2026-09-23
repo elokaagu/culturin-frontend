@@ -193,10 +193,10 @@ export default async function HomePage() {
             className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
             style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
           >
-            Culturin is a house.
+            We connect the world through Culture.
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75">
-            Founders, operators, artists, and cultural leaders who come together at significant cultural moments throughout the year. Brands come to the house for cultural marketing — launching in new territories, and connecting with cultural intelligence.
+            Culturin brings leaders of industry together to create culturally significant experiences, and equip brands with the intelligence to win.
           </p>
           <MagneticButton strength={0.35} className="mt-8 w-fit">
             <Link
