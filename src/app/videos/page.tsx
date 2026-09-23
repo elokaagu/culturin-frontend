@@ -15,7 +15,7 @@ export const revalidate = 120;
 export const metadata: Metadata = {
   title: "Top videos | Culturin",
   description:
-    "Video from Culturin rooms — culture stories and conversations from the house.",
+    "Video from Culturin rooms: culture stories and conversations.",
 };
 
 const container = appPageContainerClass;
@@ -39,7 +39,7 @@ export default async function VideosPage() {
             </h1>
             <p className="mt-2 text-lg sm:text-xl" style={{ color: "var(--c-muted)" }}>Only on Culturin</p>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed sm:text-[0.95rem]" style={{ color: "var(--c-muted)" }}>
-              A single horizontal row of everything in the library—swipe or scroll, then play in full view.{" "}
+              A single horizontal row of everything in the library: swipe or scroll, then play in full view.{" "}
               {videos.length > 0 ? (
                 <span className="whitespace-nowrap" style={{ color: "var(--c-muted)" }}>
                   {videos.length} {videos.length === 1 ? "title" : "titles"} right now.

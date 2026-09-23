@@ -11,10 +11,10 @@ const HERO_SRC =
 const principles = [
   {
     title: "The room is the product",
-    text: "We put founders, operators, artists, and cultural leaders in the same room — and give those rooms a culture worth returning to.",
+    text: "We put founders, operators, artists, and cultural leaders in the same room, and give those rooms a culture worth returning to.",
   },
   {
-    title: "Stories from the house",
+    title: "Stories from the rooms",
     text: "Articles, video, and conversations captured from the nights we build.",
   },
   {
@@ -26,11 +26,11 @@ const principles = [
 const roadmap = [
   {
     label: "The rooms",
-    text: "More gatherings at the year's cultural moments — Cannes, New York, London, and the nights in between.",
+    text: "More gatherings at the year's cultural moments: Cannes, New York, London, and the nights in between.",
   },
   {
     label: "The library",
-    text: "A growing body of stories and conversations from inside the house.",
+    text: "A growing body of stories and conversations from inside Culturin.",
   },
   {
     label: "The festival",
@@ -41,10 +41,10 @@ const roadmap = [
 export const metadata: Metadata = {
   title: "About | Culturin",
   description:
-    "Culturin is a house of founders, operators, artists, and cultural leaders who gather at significant cultural moments throughout the year.",
+    "Culturin is a network of founders, operators, artists, and cultural leaders who gather at significant cultural moments throughout the year.",
   openGraph: {
     title: "About Culturin",
-    description: "A house for the people who shape culture.",
+    description: "A network for the people who shape culture.",
   },
 };
 
@@ -85,7 +85,7 @@ export default function AboutPage() {
                 className="m-0 mt-3 max-w-3xl text-3xl font-medium leading-tight tracking-tight text-white sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                Culturin is a house.
+                We connect the world through Culture.
               </h1>
               <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
                 Founders, operators, artists, and cultural leaders who come together at significant cultural moments throughout the year.
@@ -109,10 +109,10 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-10 rounded-3xl border p-5 sm:p-8" style={{ borderColor: "var(--c-rule)", background: "rgba(28,26,23,0.03)" }}>
-          <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--c-muted)" }}>The house</p>
+          <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--c-muted)" }}>Who we are</p>
           <p className="m-0 mt-3 max-w-4xl text-lg leading-relaxed" style={{ color: "var(--c-ink)" }}>
-            We are united in building the rooms, stories, and partnerships that shape culture. The cities we gather in —
-            Cannes, New York, London — are occasions, not a product.
+            We are united in building the rooms, stories, and partnerships that shape culture. The cities we gather in,
+            Cannes, New York, London, are occasions, not a product.
           </p>
         </section>
 
@@ -138,7 +138,7 @@ export default function AboutPage() {
             className="m-0 text-xl font-medium"
             style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}
           >
-            Enter the house
+            Where to start
           </h2>
           <p className="m-0 mt-2 max-w-2xl" style={{ color: "var(--c-muted)" }}>
             Start with the rooms, the gallery, or the stories coming out of them.

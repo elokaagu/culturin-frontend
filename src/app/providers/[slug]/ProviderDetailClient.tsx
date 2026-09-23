@@ -168,7 +168,7 @@ function dateContextLines(checkIn: string, checkOut: string, forAsk: boolean) {
       ? `Preferred check-in: ${checkIn} (checkout to be confirmed)`
       : `Preferred check-in: ${checkIn} (checkout to be agreed)`;
   }
-  return forAsk ? "Dates: flexible — happy to hear what you suggest" : "Preferred dates: flexible (please suggest options)";
+  return forAsk ? "Dates: flexible, happy to hear what you suggest" : "Preferred dates: flexible (please suggest options)";
 }
 
 function buildMailtoInquiry(email: string, opts: InquiryOpts) {
@@ -178,7 +178,7 @@ function buildMailtoInquiry(email: string, opts: InquiryOpts) {
   if (opts.kind === "ask") {
     const dateLine = dateContextLines(opts.checkIn, opts.checkOut, true);
     const lines = [
-      `Hi — I have a question about «${opts.title}».`,
+      `Hi, I have a question about «${opts.title}».`,
       "",
       ...(listingLine ? [listingLine, ""] : []),
       `Guests: ${opts.guests} ${opts.guests === 1 ? "guest" : "guests"}`,
@@ -657,7 +657,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
                     Ask a question
                   </button>
                 </div>
-                <p className="m-0 mt-3 text-center text-xs text-white/55">You won&apos;t be charged here — requests go to the host.</p>
+                <p className="m-0 mt-3 text-center text-xs text-white/55">You won&apos;t be charged here. Requests go to the host.</p>
               </div>
             </aside>
           </div>

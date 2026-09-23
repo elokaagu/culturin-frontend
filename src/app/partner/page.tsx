@@ -14,7 +14,7 @@ const RULE = EDITORIAL_RULE;
 export const metadata: Metadata = {
   title: "Book a Call | Culturin",
   description:
-    "Cultural marketing for brands launching in new territories or connecting with cultural intelligence. Write to Culturin — we'll set up a call.",
+    "Cultural marketing for brands launching in new territories or connecting with cultural intelligence. Write to Culturin and we'll set up a call.",
 };
 
 export default function PartnerPage() {
@@ -30,10 +30,10 @@ export default function PartnerPage() {
           className="m-0 max-w-2xl text-5xl font-medium leading-[1.08] sm:text-6xl"
           style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
         >
-          Book a call with the house.
+          Book a call with Culturin.
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          For brands with questions about cultural marketing — how to launch in a new territory, or how to
+          For brands with questions about cultural marketing: how to launch in a new territory, or how to
           connect with cultural intelligence. Tell us what you need. We&apos;ll set up a call.
         </p>
 
@@ -47,7 +47,7 @@ export default function PartnerPage() {
                 New territories
               </p>
               <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                Enter a market with the room already built — Cannes, New York, London, and the nights in between —
+                Enter a market with the room already built: Cannes, New York, London, and the nights in between,
                 and the people who already shape culture there.
               </p>
             </div>
@@ -56,7 +56,7 @@ export default function PartnerPage() {
                 Cultural intelligence
               </p>
               <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                Briefs, introductions, and programming rooted in the house, not a campaign bolted onto a place.
+                Briefs, introductions, and programming rooted in Culturin&apos;s network, not a campaign bolted onto a place.
               </p>
             </div>
             <div>

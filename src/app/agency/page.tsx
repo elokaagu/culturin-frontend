@@ -12,7 +12,7 @@ const HERO_SRC =
 const pillars: ReadonlyArray<{ title: string; text: string; href?: string }> = [
   {
     title: "Advertising campaigns",
-    text: "Brand work rooted in the rooms we build — creative that lands with audiences who care about culture, not just captions.",
+    text: "Brand work rooted in the rooms we build: creative that lands with audiences who care about culture, not just captions.",
   },
   {
     title: "Events",
@@ -21,7 +21,7 @@ const pillars: ReadonlyArray<{ title: string; text: string; href?: string }> = [
   },
   {
     title: "Experiences",
-    text: "Immersive formats — walks, tastings, performances, and partner activations — that put local voices first and leave guests with a story worth retelling.",
+    text: "Immersive formats: walks, tastings, performances, and partner activations that put local voices first and leave guests with a story worth retelling.",
   },
 ];
 
@@ -32,7 +32,7 @@ const scope = [
   },
   {
     title: "Culture as the brief",
-    text: "Whether you represent a city, a festival, or a global brand, we treat culture as the strategy — not a bolt-on. Research, creative, and production align to that bar.",
+    text: "Whether you represent a city, a festival, or a global brand, we treat culture as the strategy, not a bolt-on. Research, creative, and production align to that bar.",
   },
   {
     title: "Partners, not props",
@@ -43,11 +43,11 @@ const scope = [
 export const metadata: Metadata = {
   title: "Agency | Culturin",
   description:
-    "Culturin Agency — campaigns, events, and experiences for the rooms we build.",
+    "Culturin Agency: campaigns, events, and experiences for the rooms we build.",
   openGraph: {
     title: "Culturin Agency",
     description:
-      "Campaigns, events, and experiences built for the Culturin house.",
+      "Campaigns, events, and experiences built for Culturin.",
   },
 };
 
@@ -92,7 +92,7 @@ export default function AgencyPage() {
                 className="m-0 mt-3 max-w-3xl text-balance text-3xl font-medium leading-tight tracking-tight text-white sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                Campaigns, events, and experiences for the house
+                Campaigns, events, and experiences for the rooms we build
               </h1>
               <p className="m-0 mt-3 max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg">
                 We partner with brands and cultural institutions to build work inside the rooms Culturin already holds:
@@ -105,7 +105,7 @@ export default function AgencyPage() {
         <section className="mt-10 rounded-3xl border p-5 sm:p-8" style={{ borderColor: "var(--c-rule)", background: "rgba(28,26,23,0.03)" }}>
           <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--c-muted)" }}>What we do</p>
           <p className="m-0 mt-3 max-w-4xl text-lg leading-relaxed" style={{ color: "var(--c-ink)" }}>
-            Culturin Agency is the creative arm of the house. We design work for the rooms we already build — strategy
+            Culturin Agency is the creative arm of Culturin. We design work for the rooms we already build: strategy
             and craft that honor the people in them, then find the thread that connects with audiences everywhere.
           </p>
         </section>

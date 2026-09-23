@@ -66,7 +66,7 @@ function IssueMasthead({ lead }: { lead: simpleBlogCard | undefined }) {
         <p className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--c-accent)" }}>
           The Culturin Edit
         </p>
-        <p className="text-xs" style={{ color: "var(--c-muted)" }}>Issue — {currentDateline()}</p>
+        <p className="text-xs" style={{ color: "var(--c-muted)" }}>Issue: {currentDateline()}</p>
       </div>
 
       {lead ? (
@@ -110,7 +110,7 @@ function IssueMasthead({ lead }: { lead: simpleBlogCard | undefined }) {
             className="text-balance text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl md:text-5xl"
             style={{ ...displayFont, color: "var(--c-ink)" }}
           >
-            Stories from the house
+            Stories from the rooms
           </h1>
           <p className="mt-4 max-w-xl text-pretty text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
             Articles, video, and conversations captured from the rooms Culturin builds.
@@ -149,7 +149,7 @@ export default function HomePageClient({
             <StoriesLeadList
               stories={otherStories.length > 0 ? otherStories : initialBlogs}
               title="Stories"
-              description="Editorial picks and conversations from inside the house."
+              description="Editorial picks and conversations from inside Culturin."
               viewAllHref="/articles"
               headingId="stories-heading"
             />
@@ -160,8 +160,8 @@ export default function HomePageClient({
           <div className={containerClass}>
             <WorldIndexGrid
               countries={exploreWorldCountries}
-              title="Where the house gathers"
-              description="Cities and countries where Culturin builds rooms — and the stories that come out of them."
+              title="Where Culturin gathers"
+              description="Cities and countries where Culturin builds rooms, and the stories that come out of them."
               viewAllHref="/destinations"
               headingId="explore-world-heading"
             />

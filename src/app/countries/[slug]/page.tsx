@@ -212,7 +212,7 @@ export default async function ExploreCountryPage({ params }: PageProps) {
               Explore further
             </p>
             <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
-              Cities where the house gathers. Regional overviews live here.
+              Cities where Culturin gathers. Regional overviews live here.
             </p>
             <Link
               href="/destinations"

@@ -139,7 +139,7 @@ export default function AgencyEventsPage() {
             Events &amp; experiences gallery
           </h1>
           <p className="m-0 mt-4 max-w-3xl text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>
-            A Pinterest-style look at Culturin moments we have produced, hosted, and activated — with the Amafrobeat
+            A Pinterest-style look at Culturin moments we have produced, hosted, and activated, with the Amafrobeat
             Experience as the flagship format.
           </p>
         </section>

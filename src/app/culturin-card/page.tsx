@@ -25,13 +25,13 @@ const RULE = EDITORIAL_RULE;
 export const metadata: Metadata = {
   title: "Culturin Card | Culturin",
   description:
-    "Invite-only Culturin Card membership — early access to rooms, events, and curated cultural programming.",
+    "Invite-only Culturin Card membership: early access to rooms, events, and curated cultural programming.",
 };
 
 const BENEFITS = [
   {
     label: "Invite-only access",
-    body: "Membership is issued by Culturin. Claim links come from Studio after an invitation or nomination — not a public signup form.",
+    body: "Membership is issued by Culturin. Claim links come from Studio after an invitation or nomination, not a public signup form.",
   },
   {
     label: "Rooms and events first",
@@ -64,7 +64,7 @@ export default function CulturinCardPage() {
               Culturin Card.
             </h1>
             <p className="mt-6 max-w-md text-base leading-relaxed" style={{ color: ON_DARK_MUTED }}>
-              A membership flag for people already in the Culturin orbit — early access to rooms we build, not a
+              A membership flag for people already in the Culturin orbit: early access to rooms we build, not a
               points program or public waitlist storefront.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
@@ -151,7 +151,7 @@ export default function CulturinCardPage() {
               className="m-0 max-w-xl text-3xl font-medium leading-[1.15] sm:text-4xl"
               style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
             >
-              A membership mark — not a rewards ledger.
+              A membership mark, not a rewards ledger.
             </h2>
           </Reveal>
 

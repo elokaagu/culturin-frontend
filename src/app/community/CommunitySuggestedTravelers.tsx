@@ -31,7 +31,7 @@ export default function CommunitySuggestedTravelers({ travelers, currentUserId }
           People you can follow
         </h2>
         <p className="m-0 text-xs" style={{ color: "var(--c-muted)" }}>
-          Members with public lists and profiles in the house.
+          Members with public lists and profiles across Culturin.
         </p>
       </div>
       <div className="-mx-1 flex gap-3 overflow-x-auto pb-2 pt-0.5 [-webkit-overflow-scrolling:touch] [scrollbar-width:thin] sm:gap-4">

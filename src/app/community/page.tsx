@@ -12,7 +12,7 @@ import CommunitySuggestedTravelers from "./CommunitySuggestedTravelers";
 
 export const metadata = {
   title: "Community | Culturin",
-  description: "Images from Culturin rooms — stories, video, and nights shared by the house.",
+  description: "Images from Culturin rooms: stories, video, and nights shared by the community.",
 };
 
 export default async function CommunityPage() {
@@ -50,7 +50,7 @@ export default async function CommunityPage() {
           Community
         </h1>
         <p className="m-0 mt-2 text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>
-          A visual feed of stories, video, and nights from across the house.
+          A visual feed of stories, video, and nights from across Culturin.
         </p>
       </header>
 

@@ -30,7 +30,7 @@ export default async function CuratedExperiencesPage() {
             Curated experiences
           </h1>
           <p className="mt-2 text-sm sm:text-base" style={{ color: "var(--c-muted)" }}>
-            Handpicked by the Culturin team — browse by country and city.
+            Handpicked by the Culturin team. Browse by country and city.
           </p>
         </header>
 

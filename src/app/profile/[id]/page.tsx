@@ -85,7 +85,7 @@ export default async function ProfileByIdPage({ params }: PageProps) {
                   Saved lists
                 </h2>
                 <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>
-                  Lists this member has saved for cities and rooms in the house.
+                  Lists this member has saved for cities and rooms across Culturin.
                 </p>
                 {profile.lists.length === 0 ? (
                   <p className="m-0 mt-6 rounded-xl border px-4 py-4 text-sm" style={{ borderColor: "var(--c-rule)", color: "var(--c-muted)" }}>
@@ -110,7 +110,7 @@ export default async function ProfileByIdPage({ params }: PageProps) {
                             {list.items.map((item) => (
                               <li key={item.id} className="list-none rounded-lg px-3 py-2 text-sm" style={{ background: "rgba(28,26,23,0.04)", color: "var(--c-ink)" }}>
                                 <span className="font-medium">{item.title}</span>
-                                {item.notes ? <span style={{ color: "var(--c-muted)" }}> — {item.notes}</span> : null}
+                                {item.notes ? <span style={{ color: "var(--c-muted)" }}> · {item.notes}</span> : null}
                               </li>
                             ))}
                           </ul>

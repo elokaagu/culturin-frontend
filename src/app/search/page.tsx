@@ -138,7 +138,7 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
   if (!raw) {
     return {
       title: "Search | Culturin",
-      description: "Search stories, video, and rooms in the Culturin house.",
+      description: "Search stories, video, and rooms across Culturin.",
     };
   }
   return {
@@ -201,7 +201,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
               ? `Places, stories, and media related to ${rawQuery}.`
               : query
                 ? `Results for “${rawQuery}”.`
-                : "Search articles, videos, and rooms — or pick a city from the house."}
+                : "Search articles, videos, and rooms, or pick a city."}
           </p>
 
           {showSupplementNote ? (

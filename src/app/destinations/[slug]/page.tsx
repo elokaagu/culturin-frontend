@@ -118,7 +118,7 @@ export default async function DestinationDetailPage({ params }: PageProps) {
             <p className="m-0 text-base" style={{ color: "var(--c-muted)" }}>{d.country ?? "Worldwide"}</p>
             <p className="m-0 max-w-3xl text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
               {content?.intro ??
-                `${d.name} is one of the cities where the house gathers — rooms, stories, and the people already there.`}
+                `${d.name} is one of the cities where Culturin gathers: rooms, stories, and the people already there.`}
             </p>
           </header>
 
@@ -258,7 +258,7 @@ export default async function DestinationDetailPage({ params }: PageProps) {
           <div className={cardClass} style={cardStyle}>
             <p className={eyebrowClass} style={{ color: "var(--c-muted)" }}>Next steps</p>
             <p className="m-0 mt-2 text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
-              More cities in the house — and the stories coming out of them.
+              More cities across Culturin, and the stories coming out of them.
             </p>
             <Link
               href="/destinations"

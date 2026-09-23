@@ -38,9 +38,9 @@ const recoleta = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Culturin | A House",
+  title: "Culturin | Cultural Marketing",
   description:
-    "Culturin is a house of founders, operators, artists, and cultural leaders. Brands come to us for cultural marketing — launching in new territories, and connecting with cultural intelligence.",
+    "Culturin is a network of founders, operators, artists, and cultural leaders. Brands come to us for cultural marketing: launching in new territories, and connecting with cultural intelligence.",
   icons: {
     icon: [{ url: "/culturin_icon_black.png", type: "image/png" }],
     shortcut: "/culturin_icon_black.png",

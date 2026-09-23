@@ -10,7 +10,7 @@ const destinationsCount = destinations.length;
 
 export const metadata: Metadata = {
   title: "Cities | Culturin",
-  description: "Cities where the Culturin house gathers — and the stories that come out of those rooms.",
+  description: "Cities where Culturin gathers, and the stories that come out of those rooms.",
 };
 
 export default function DestinationsPage() {
@@ -41,7 +41,7 @@ export default function DestinationsPage() {
               Cities
             </h1>
             <p className="m-0 mt-3 text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
-              Where the house gathers. Open a city for stories, rooms, and the people already there.
+              Where Culturin gathers. Open a city for stories, rooms, and the people already there.
             </p>
           </div>
           <p className="m-0 text-sm" style={{ color: "var(--c-muted)" }}>

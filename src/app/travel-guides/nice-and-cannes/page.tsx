@@ -16,9 +16,9 @@ const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
 
 export const metadata: Metadata = {
-  title: "Cannes, for the house | Culturin",
+  title: "Cannes, the Culturin way | Culturin",
   description:
-    "Notes for people gathering with Culturin at Cannes Lions — getting around, where to stay, and the culture around the rooms.",
+    "Notes for people gathering with Culturin at Cannes Lions: getting around, where to stay, and the culture around the rooms.",
 };
 
 const HERO_SRC = eventMediaUrl("cannes-lions-2026/UNIKday1-22.jpg");
@@ -112,10 +112,10 @@ export default function NiceAndCannesGuidePage() {
             className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
             style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
           >
-            Nice &amp; Cannes, for the house.
+            Nice &amp; Cannes, the Culturin way.
           </h1>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-white/75">
-            For founders, operators, and cultural leaders gathering with Culturin at Lions — here is how to move through the coast so the rooms, not the logistics, take the week.
+            For founders, operators, and cultural leaders gathering with Culturin at Lions: here is how to move through the coast so the rooms, not the logistics, take the week.
           </p>
         </Reveal>
       </section>
@@ -297,7 +297,7 @@ export default function NiceAndCannesGuidePage() {
           </h2>
           <p className="mt-5 text-base leading-relaxed" style={{ color: "rgba(232,227,218,0.82)" }}>
             Culturin partners with brands and companies on cultural programming, hospitality, and activations during
-            marquee moments like Cannes Lions — curated guest lists, the room, the nights. If you&apos;re building
+            marquee moments like Cannes Lions: curated guest lists, the room, the nights. If you&apos;re building
             something here and want a team that&apos;s actually been in those rooms, we should talk.
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">

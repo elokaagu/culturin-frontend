@@ -113,7 +113,7 @@ export default function CommunityGalleryClient({ initialTiles }: { initialTiles:
           Share a night
         </h2>
         <p className="m-0 mt-1 text-sm" style={{ color: "var(--c-muted)" }}>
-          Upload a photo from a Culturin room, or from a gathering that belongs in the house. It appears here alongside stories and video.
+          Upload a photo from a Culturin room, or from a gathering that belongs here. It appears here alongside stories and video.
         </p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
           <label className="flex min-w-0 flex-1 flex-col gap-1.5">

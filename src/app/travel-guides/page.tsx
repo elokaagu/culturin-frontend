@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Notes | Culturin",
     description:
-      "Field notes from the rooms Culturin builds. Sign in to write to the house about a collaboration.",
+      "Field notes from the rooms Culturin builds. Sign in to write to Culturin about a collaboration.",
   };
 }
 
@@ -53,7 +53,7 @@ export default async function TravelGuidesMarketplacePage() {
               Notes from the rooms
             </h1>
             <p className="m-0 mt-4 max-w-2xl text-base leading-relaxed sm:text-lg" style={{ color: "var(--c-muted)" }}>
-              Field notes from gatherings — Cannes, New York, London, and the nights in between. Sign in to write to the house.
+              Field notes from gatherings: Cannes, New York, London, and the nights in between. Sign in to write to Culturin.
             </p>
 
             <div className="mt-8 flex max-w-3xl flex-col gap-4 sm:mt-10 sm:flex-row sm:items-stretch sm:gap-5">
@@ -79,7 +79,7 @@ export default async function TravelGuidesMarketplacePage() {
               Guides by theme
             </h2>
             <p className="m-0 mt-2 text-sm" style={{ color: "var(--c-muted)" }}>
-              Pick a collection—each one opens a dedicated hub of ideas and related reads.
+              Pick a collection: each one opens a dedicated hub of ideas and related reads.
             </p>
           </header>
 

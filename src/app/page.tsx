@@ -29,9 +29,9 @@ import { eventMediaUrl } from "@/lib/eventMedia";
 export const revalidate = 120;
 
 export const metadata: Metadata = {
-  title: "Culturin | A House",
+  title: "Culturin | Cultural Marketing",
   description:
-    "Culturin is a house of founders, operators, artists, and cultural leaders. Brands come to us for cultural marketing — launching in new territories, and connecting with cultural intelligence.",
+    "Culturin is a network of founders, operators, artists, and cultural leaders. Brands come to us for cultural marketing: launching in new territories, and connecting with cultural intelligence.",
 };
 
 const BG = EDITORIAL_BG;
@@ -46,7 +46,7 @@ const PRESS_MENTIONS = [
     publication: "Digiday",
     headline: "Meet the man behind Cannes Lions' most exclusive parties",
     description:
-      "On Culturin, the house founded in 2024 that blends brand storytelling, cultural insight, and local knowledge across campaigns, content, and activations.",
+      "On Culturin, the cultural marketing company founded in 2024 that blends brand storytelling, cultural insight, and local knowledge across campaigns, content, and activations.",
     href: "https://digiday.com/marketing/meet-the-man-behind-cannes-lions-most-exclusive-parties/",
   },
   {
@@ -83,7 +83,7 @@ const GALLERY_PREVIEW_SLOTS = [
 const PILLARS = [
   {
     label: "The rooms",
-    body: "Dinners, festivals, and gatherings at the year's cultural moments — Cannes, New York, London, and the nights in between.",
+    body: "Dinners, festivals, and gatherings at the year's cultural moments: Cannes, New York, London, and the nights in between.",
   },
   {
     label: "The stories",
@@ -91,7 +91,7 @@ const PILLARS = [
   },
   {
     label: "Cultural marketing",
-    body: "Brands come to the house to launch in new territories and connect with cultural intelligence. Write to us — we'll set up a call.",
+    body: "Brands come to Culturin to launch in new territories and connect with cultural intelligence. Write to us and we'll set up a call.",
   },
   {
     label: "The record",
@@ -113,26 +113,26 @@ const METHODOLOGY = [
   { step: "02", label: "Design", body: "Cultural territory, cities, moments, and the right format for the room." },
   { step: "03", label: "Curate", body: "Talent, artists, chefs, hosts, and collaborators who make the room work." },
   { step: "04", label: "Convene", body: "Bring the right people together. Who was in the room matters more than how many." },
-  { step: "05", label: "Amplify", body: "Turn the room into wider cultural reach — photography, film, and story." },
+  { step: "05", label: "Amplify", body: "Turn the room into wider cultural reach: photography, film, and story." },
   { step: "06", label: "Learn", body: "Feed what resonated back into the next room, and into Cultural Intelligence." },
 ] as const;
 
 const SERVICES = [
   {
     label: "Intelligence",
-    body: "An ongoing read on what's moving in culture, and what it means for your brand — monthly reports, competitor monitoring, and quarterly strategy sessions.",
+    body: "An ongoing read on what's moving in culture, and what it means for your brand: monthly reports, competitor monitoring, and quarterly strategy sessions.",
     price: "From £3,000 / month",
     cta: "Talk to us about Intelligence",
   },
   {
     label: "Programming",
-    body: "Culturin becomes your external cultural programming partner for the year — strategy, curation, and a season of rooms built around your brand.",
+    body: "Culturin becomes your external cultural programming partner for the year: strategy, curation, and a season of rooms built around your brand.",
     price: "£50,000–£150,000+ / year",
     cta: "Talk to us about Programming",
   },
   {
     label: "Moments",
-    body: "Sponsor a room already built — Cannes, Frieze, Basel, and the nights in between — with your brand woven in with intention.",
+    body: "Sponsor a room already built: Cannes, Frieze, Basel, and the nights in between, with your brand woven in with intention.",
     price: "From £20,000",
     cta: "Talk to us about Moments",
   },
@@ -233,16 +233,16 @@ export default async function HomePage() {
                 className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                Culture is not just a state of being. It&apos;s{" "}
+                Culture isn&apos;t a campaign. It&apos;s{" "}
                 <span className="rounded-sm px-1.5 py-0.5" style={{ backgroundColor: "#e08a5b" }}>
-                  an action
+                  a room
                 </span>
                 .
               </h2>
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Culturin is a house. We put the right people in the same room — and we help brands enter new territories with cultural intelligence, through the rooms, the stories, and the marketing that holds them.
+                We put the right people in the same room, and help brands enter new territories with cultural intelligence, through the rooms, the stories, and the marketing that holds them.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
                 Our team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly. We bring that same care to every room we build, for our community, and for the partners who build alongside us.
@@ -340,7 +340,7 @@ export default async function HomePage() {
           <EditorialStatement
             eyebrow="Cultural marketing"
             headline={"Launch In A\nNew Territory\nWith The Room\nAlready Built."}
-            body="Brands come to the house for cultural marketing — how to launch in a new territory, and how to connect with cultural intelligence. Write to us. We'll set up a call."
+            body="Brands come to Culturin for cultural marketing: how to launch in a new territory, and how to connect with cultural intelligence. Write to us. We'll set up a call."
             image={eventMediaUrl("cannes-lions-2026/UNIKday1-83.jpg")}
             imageAlt="Guests filling a red-lit room beneath the disco balls in Cannes"
             imageSide="right"
@@ -394,7 +394,7 @@ export default async function HomePage() {
               A system, not a Rolodex.
             </h2>
             <p className="m-0 mt-6 text-base leading-relaxed" style={{ color: INK_MUTED }}>
-              Every Culturin room follows the same six steps — bespoke in feel, repeatable in practice.
+              Every Culturin room follows the same six steps, bespoke in feel and repeatable in practice.
             </p>
           </Reveal>
 
@@ -720,7 +720,7 @@ export default async function HomePage() {
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
-                Brands come to the house when they need to launch in a new territory, or to connect with the people who already shape culture there. That is cultural marketing: intelligence, rooms, and introductions — not a campaign bolted onto a place.
+                Brands come to Culturin when they need to launch in a new territory, or to connect with the people who already shape culture there. That is cultural marketing: intelligence, rooms, and introductions, not a campaign bolted onto a place.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
                 Write to us. We&apos;ll set up a call.
@@ -791,7 +791,7 @@ export default async function HomePage() {
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                We launched with real conversations — artists, musicians, and founders in the same room. Since then we&apos;ve been building curated events, a growing library of stories, and the house that holds them.
+                We launched with real conversations: artists, musicians, and founders in the same room. Since then we&apos;ve been building curated events, a growing library of stories, and the network that holds them.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
                 Next: certified cultural training programs, a first Culturin festival, and a production company built for cultural programming at the scale our team already knows, the Super Bowl, the Oscars, the UN Assembly.
@@ -839,7 +839,7 @@ export default async function HomePage() {
               <div>
                 <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
                   Pontoon is an editorial community built around women who move through the world on their own
-                  terms — photographers, writers, explorers, and makers who find meaning in motion. Culturin is
+                  terms: photographers, writers, explorers, and makers who find meaning in motion. Culturin is
                   proud to feature Pontoon&apos;s work as part of our curated editorial program.
                 </p>
                 <span

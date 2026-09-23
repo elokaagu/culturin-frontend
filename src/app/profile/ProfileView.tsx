@@ -145,7 +145,7 @@ export default function ProfileView() {
       const contentType = resolveProfileImageContentType(file);
       if (!contentType) {
         setProfileMessage(
-          "Please choose a JPEG, PNG, WebP, or GIF. HEIC from iPhone is supported when your workspace allows it—try converting to JPEG if upload fails.",
+          "Please choose a JPEG, PNG, WebP, or GIF. HEIC from iPhone is supported when your workspace allows it. Try converting to JPEG if upload fails.",
         );
         return;
       }
@@ -526,7 +526,7 @@ export default function ProfileView() {
             <Link href="/articles" className="font-medium underline-offset-2 hover:underline" style={{ color: "var(--c-accent)" }}>
               Articles
             </Link>{" "}
-            to read the house.
+            to start reading.
           </p>
         ) : null}
       </div>

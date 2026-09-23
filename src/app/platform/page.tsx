@@ -7,7 +7,7 @@ import { listBlogs, listProviders } from "../../lib/cms/queries";
 export const metadata: Metadata = {
   title: "Platform | Culturin",
   description:
-    "Stories, video, and rooms from the Culturin house.",
+    "Stories, video, and rooms from Culturin.",
 };
 
 export const revalidate = 120;

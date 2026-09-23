@@ -135,7 +135,7 @@ export default async function GalleryPage() {
           Life inside the rooms.
         </h1>
         <p className="mt-6 max-w-lg text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          From Cannes Lions to Notting Hill Carnival, New York Fashion Week, and Muertos Dios in Miami — real rooms Culturin was actually in.
+          From Cannes Lions to Notting Hill Carnival, New York Fashion Week, and Muertos Dios in Miami: real rooms Culturin was actually in.
         </p>
       </div>
 

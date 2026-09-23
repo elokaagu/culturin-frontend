@@ -195,7 +195,7 @@ export default function HomeFooter() {
           <div>
             <CulturinWordmark isDark className="text-xl font-semibold tracking-tight" />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/55">
-              Culturin is a house.
+              We connect the world through Culture.
             </p>
             <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
               {socialLinks.map((s) => (

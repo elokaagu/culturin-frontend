@@ -71,12 +71,12 @@ export default function AdvisorsPage() {
               Become a Culturin advisor
             </h1>
             <p className="mt-4 text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
-              Advisors help host the house: operators, connectors, and cultural producers who already move rooms —
+              Advisors help build Culturin: operators, connectors, and cultural producers who already move rooms
               and want to help build the next ones.
             </p>
             <p className="mt-3 text-lg leading-relaxed" style={{ color: "var(--c-muted)" }}>
               Whether you are just beginning or already in the work, Culturin offers the rooms, the introductions, and
-              the community to do it inside the house.
+              the community to do it alongside us.
             </p>
             <button
               type="button"
