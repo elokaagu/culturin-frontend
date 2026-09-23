@@ -2,7 +2,7 @@
 
 import { Link } from "next-view-transitions";
 import type { fullCurator, simpleBlogCard } from "@/lib/interface";
-import IslandNav from "../../components/IslandNav";
+import SiteHeader from "../../components/SiteHeader";
 import HomeFooter from "../../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../../components/SafeContentImage";
@@ -28,7 +28,7 @@ export default function CuratorClient({
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh">
 
         {/* ── Hero ─────────────────────────────────────────────────── */}

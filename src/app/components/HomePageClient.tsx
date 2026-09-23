@@ -2,7 +2,7 @@
 
 import { Link } from "next-view-transitions";
 
-import IslandNav from "./IslandNav";
+import SiteHeader from "./SiteHeader";
 import HomeFooter from "./HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import WorldIndexGrid from "./WorldIndexGrid";
@@ -136,7 +136,7 @@ export default function HomePageClient({
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main id="main-content" className={mainClass} style={{ paddingTop: "8rem" }}>
         <IssueMasthead lead={leadStory} />
 

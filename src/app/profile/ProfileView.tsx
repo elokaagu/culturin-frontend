@@ -24,7 +24,7 @@ import { SUPABASE_PUBLIC_MEDIA_BUCKET } from "@/lib/storageConstants";
 
 import { GoogleSignInButton } from "../components/AuthButtons";
 import { useAppAuth, useSupabaseAuth } from "../components/SupabaseAuthProvider";
-import IslandNav from "../components/IslandNav";
+import SiteHeader from "../components/SiteHeader";
 import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import LanguageToolsPanel from "./LanguageToolsPanel";
@@ -209,7 +209,7 @@ export default function ProfileView() {
   if (status === "loading") {
     return (
       <div className={editorialScopeClass} style={pageWrapStyle}>
-        <IslandNav />
+        <SiteHeader />
         <main className="min-h-dvh min-w-0 overflow-x-clip pb-[max(5rem,env(safe-area-inset-bottom,0px))]" style={{ paddingTop: "8rem" }}>
           <div className="mx-auto max-w-6xl px-5 pt-10">
             <div className="mx-auto flex max-w-md animate-pulse flex-col items-center gap-4 sm:mx-0 sm:max-w-none sm:flex-row sm:items-start">
@@ -230,7 +230,7 @@ export default function ProfileView() {
   if (status === "unauthenticated") {
     return (
       <div className={editorialScopeClass} style={pageWrapStyle}>
-        <IslandNav />
+        <SiteHeader />
         <main className="min-h-dvh min-w-0 overflow-x-clip pb-[max(5rem,env(safe-area-inset-bottom,0px))]" style={{ paddingTop: "8rem" }}>
           <div className="mx-auto flex max-w-md flex-col items-center gap-6 px-5 pt-16 text-center">
             <h1 className="text-2xl font-medium tracking-tight" style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: "var(--c-ink)" }}>Your Culturin profile</h1>
@@ -252,7 +252,7 @@ export default function ProfileView() {
 
   return (
     <div className={editorialScopeClass} style={pageWrapStyle}>
-    <IslandNav />
+    <SiteHeader />
     <main className="min-h-dvh min-w-0 overflow-x-clip pb-[max(6rem,env(safe-area-inset-bottom,0px))]" style={{ paddingTop: "8rem" }}>
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <header className="flex flex-col items-center gap-6 border-b pb-10 pt-8 sm:flex-row sm:items-start sm:gap-10" style={{ borderColor: "var(--c-rule)" }}>

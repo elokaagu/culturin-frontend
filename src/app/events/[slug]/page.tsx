@@ -16,7 +16,7 @@ import {
 import BlurImage from "@/app/components/motion/BlurImage";
 import Reveal from "@/app/components/motion/Reveal";
 import CountUpStat from "@/app/components/motion/CountUpStat";
-import IslandNav from "@/app/components/IslandNav";
+import SiteHeader from "@/app/components/SiteHeader";
 import { getSiteImagesMap, resolveEventHero } from "@/lib/siteImages";
 import { resolveEventMediaSrc } from "@/lib/eventMedia";
 import RSVPForm from "./RSVPForm";
@@ -59,7 +59,7 @@ export default async function EventLandingPage({ params }: Props) {
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} min-h-dvh font-sans antialiased`}>
 
       {/* ── Dynamic island nav (global brand nav) ───────────────── */}
-      <IslandNav />
+      <SiteHeader />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section

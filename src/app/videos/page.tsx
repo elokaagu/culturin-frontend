@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 
 import { appPageContainerClass } from "@/lib/appLayout";
-import IslandNav from "../components/IslandNav";
+import SiteHeader from "../components/SiteHeader";
 import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import TopVideosRail from "../components/TopVideosRail";
@@ -27,7 +27,7 @@ export default async function VideosPage() {
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh w-full pb-20 antialiased" style={{ paddingTop: "8rem" }} id="main-content">
         <div className={`${container} pt-6 sm:pt-10`}>
           <header className="mb-2 max-w-3xl">

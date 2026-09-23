@@ -1,7 +1,7 @@
 import { Link } from "next-view-transitions";
 
 import type { providerHeroCard } from "@/lib/interface";
-import IslandNav from "../components/IslandNav";
+import SiteHeader from "../components/SiteHeader";
 import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { getCmsDbOrNull } from "../../lib/cms/server";
@@ -21,7 +21,7 @@ export default async function ProvidersPage() {
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh pb-16" style={{ paddingTop: "8rem" }}>
         <section className="mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="mb-8 border-b pb-6 pt-6" style={{ borderColor: "var(--c-rule)" }}>

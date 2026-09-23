@@ -9,7 +9,7 @@ import { Bookmark, Share2, Clock } from "lucide-react";
 import { SaveFavoriteModal } from "../../components/detail/SaveFavoriteModal";
 import { ShareLinkModal } from "../../components/detail/ShareLinkModal";
 import { useAppAuth } from "../../components/SupabaseAuthProvider";
-import IslandNav from "../../components/IslandNav";
+import SiteHeader from "../../components/SiteHeader";
 import HomeFooter from "../../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../../components/SafeContentImage";
@@ -206,7 +206,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh antialiased">
         <article itemScope itemType="https://schema.org/Article">
           <div className={appPageContainerClass}>

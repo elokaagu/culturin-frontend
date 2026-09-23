@@ -1,12 +1,12 @@
 import { Link } from "next-view-transitions";
 
-import IslandNav from "./components/IslandNav";
+import SiteHeader from "./components/SiteHeader";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK, EDITORIAL_MUTED } from "@/lib/theme/culturinTokens";
 
 export default function NotFoundPage() {
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main
         className="flex min-h-dvh flex-col items-center justify-center px-5 pb-16 text-center"
         style={{ paddingTop: "8rem" }}

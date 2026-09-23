@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 
-import IslandNav from "../../components/IslandNav";
+import SiteHeader from "../../components/SiteHeader";
 import HomeFooter from "../../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { useSupabaseAuth } from "../../components/SupabaseAuthProvider";
@@ -55,7 +55,7 @@ export default function UploadPage() {
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="flex min-h-dvh flex-col px-4 pb-16 sm:px-6" style={{ paddingTop: "8rem" }}>
         <div className="mx-auto w-full max-w-md">
           <header className="mb-8">

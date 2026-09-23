@@ -5,7 +5,7 @@ import { blurForSrc } from "@/lib/culturinImages";
 import { EDITORIAL_BG, EDITORIAL_INK, EDITORIAL_MUTED, EDITORIAL_RULE, EDITORIAL_ACCENT, SURFACE_DARK, editorialScopeClass } from "@/lib/theme/culturinTokens";
 import BlurImage from "@/app/components/motion/BlurImage";
 import Reveal from "@/app/components/motion/Reveal";
-import IslandNav from "@/app/components/IslandNav";
+import SiteHeader from "@/app/components/SiteHeader";
 import HomeFooter from "@/app/components/HomeFooter";
 import { eventMediaUrl } from "@/lib/eventMedia";
 
@@ -86,7 +86,7 @@ const PRACTICAL_TIPS = [
 export default function NiceAndCannesGuidePage() {
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
-      <IslandNav />
+      <SiteHeader />
 
       {/* ── Hero ───────────────────────────────────────────────── */}
       <section className="relative flex min-h-[70dvh] flex-col items-center justify-center overflow-hidden px-8 pt-24 text-center sm:px-14">

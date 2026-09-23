@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { EDITORIAL_BG, EDITORIAL_INK, EDITORIAL_MUTED, EDITORIAL_RULE, editorialScopeClass } from "@/lib/theme/culturinTokens";
-import IslandNav from "@/app/components/IslandNav";
+import SiteHeader from "@/app/components/SiteHeader";
 import HomeFooter from "@/app/components/HomeFooter";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { PartnerForm } from "./PartnerForm";
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 export default function PartnerPage() {
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
-      <IslandNav />
+      <SiteHeader />
 
       <div className="mx-auto max-w-5xl px-8 pb-24 sm:px-14" style={{ paddingTop: "8rem" }}>
         <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>

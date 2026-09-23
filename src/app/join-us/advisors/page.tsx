@@ -3,7 +3,7 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
 
-import IslandNav from "../../components/IslandNav";
+import SiteHeader from "../../components/SiteHeader";
 import HomeFooter from "../../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 
@@ -63,7 +63,7 @@ export default function AdvisorsPage() {
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh pb-20" style={{ paddingTop: "8rem" }}>
         <div className="mx-auto w-full max-w-[52rem] px-4 pt-8 sm:px-6 sm:pt-10">
           <header className="max-w-[40rem]">

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Link } from "next-view-transitions";
 
-import IslandNav from "@/app/components/IslandNav";
+import SiteHeader from "@/app/components/SiteHeader";
 import HomeFooter from "@/app/components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "@/app/components/SafeContentImage";
@@ -54,7 +54,7 @@ export default async function LocalHostProfilePage({ params }: { params: { slug:
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh pb-16" style={{ paddingTop: "8rem" }}>
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
           <nav className="mb-6 text-sm" aria-label="Breadcrumb">

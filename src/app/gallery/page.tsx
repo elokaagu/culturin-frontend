@@ -14,7 +14,7 @@ import {
 import { listGalleryImagesPublic } from "@/lib/cms/queries";
 import { getCmsDbOrNull } from "@/lib/cms/server";
 import GalleryGrid, { type GalleryFilter, type GalleryItem } from "./GalleryGrid";
-import IslandNav from "../components/IslandNav";
+import SiteHeader from "../components/SiteHeader";
 import { eventMediaUrl } from "@/lib/eventMedia";
 
 /** Gallery CMS updates call revalidatePath("/gallery"). */
@@ -115,7 +115,7 @@ export default async function GalleryPage() {
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
 
       {/* ── Dynamic island nav ─────────────────────────────────── */}
-      <IslandNav />
+      <SiteHeader />
 
       {/* ── Page header ──────────────────────────────────────────── */}
       <div

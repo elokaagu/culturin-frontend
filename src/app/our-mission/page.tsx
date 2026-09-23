@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { EDITORIAL_BG, EDITORIAL_INK, EDITORIAL_MUTED, EDITORIAL_RULE, editorialScopeClass } from "@/lib/theme/culturinTokens";
-import IslandNav from "@/app/components/IslandNav";
+import SiteHeader from "@/app/components/SiteHeader";
 import HomeFooter from "@/app/components/HomeFooter";
 
 const BG = EDITORIAL_BG;
@@ -33,7 +33,7 @@ const PILLARS = [
 export default function OurMissionPage() {
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
-      <IslandNav />
+      <SiteHeader />
 
       <div className="mx-auto max-w-4xl px-8 pb-24 sm:px-14" style={{ paddingTop: "8rem" }}>
         <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>

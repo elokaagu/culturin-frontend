@@ -1,11 +1,11 @@
 import { appPageContainerClass } from "@/lib/appLayout";
-import IslandNav from "../../components/IslandNav";
+import SiteHeader from "../../components/SiteHeader";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 
 export default function ArticleDetailLoading() {
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh antialiased">
         <div className={appPageContainerClass}>
           <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-8 pb-10 sm:gap-10 sm:pb-12" style={{ paddingTop: "8rem" }}>

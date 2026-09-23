@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 
-import IslandNav from "../components/IslandNav";
+import SiteHeader from "../components/SiteHeader";
 import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { groupCuratedProvidersByCountry } from "@/lib/curatedExperiencesIndex";
@@ -23,7 +23,7 @@ export default async function CuratedExperiencesPage() {
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="flex min-h-dvh flex-col px-4 pb-16 sm:px-6 lg:px-10" style={{ paddingTop: "8rem" }}>
         <header className="mx-auto mb-8 w-full max-w-6xl">
           <h1 className="text-3xl font-medium tracking-tight sm:text-4xl" style={{ ...displayFont, color: "var(--c-ink)" }}>

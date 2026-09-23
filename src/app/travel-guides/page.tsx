@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 
-import IslandNav from "../components/IslandNav";
+import SiteHeader from "../components/SiteHeader";
 import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { getCmsDbOrNull } from "@/lib/cms/server";
@@ -32,7 +32,7 @@ export default async function TravelGuidesMarketplacePage() {
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh antialiased">
         <div className="border-b" style={{ borderColor: "var(--c-rule)" }}>
           <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-32 sm:px-6 sm:pb-12">

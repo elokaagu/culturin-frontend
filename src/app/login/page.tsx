@@ -6,7 +6,7 @@ import { useTransitionRouter } from "next-view-transitions";
 import { Suspense, useMemo, useState } from "react";
 
 import { GoogleSignInButton } from "../components/AuthButtons";
-import IslandNav from "../components/IslandNav";
+import SiteHeader from "../components/SiteHeader";
 import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { useSupabaseAuth } from "../components/SupabaseAuthProvider";
@@ -109,7 +109,7 @@ function LoginPageContent() {
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh px-4 pb-16 sm:px-6" style={{ paddingTop: "8rem" }}>
         <div className="mx-auto mt-8 w-full max-w-md rounded-2xl border p-6 sm:mt-12 sm:p-7" style={{ borderColor: "var(--c-rule)" }}>
           <div className="mb-6 flex rounded-full p-1" style={{ background: "rgba(28,26,23,0.06)" }}>

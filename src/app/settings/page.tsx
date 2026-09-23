@@ -3,7 +3,7 @@
 import { useAppAuth } from "../components/SupabaseAuthProvider";
 
 import AccountSection from "../components/AccountSection";
-import IslandNav from "../components/IslandNav";
+import SiteHeader from "../components/SiteHeader";
 import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { useTheme } from "../styles/ThemeContext";
@@ -22,7 +22,7 @@ export default function SettingsPage() {
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh px-5 pb-16" style={{ paddingTop: "8rem" }}>
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
           <h1 className="text-2xl font-medium sm:text-3xl" style={{ ...displayFont, color: "var(--c-ink)" }}>

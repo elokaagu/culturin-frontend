@@ -12,7 +12,7 @@ import {
   ACCENT_ON_DARK,
   editorialScopeClass,
 } from "@/lib/theme/culturinTokens";
-import IslandNav from "@/app/components/IslandNav";
+import SiteHeader from "@/app/components/SiteHeader";
 import HomeFooter from "@/app/components/HomeFooter";
 import Reveal from "@/app/components/motion/Reveal";
 import { ShineBorder } from "@/components/ui/shine-border";
@@ -46,7 +46,7 @@ const BENEFITS = [
 export default function CulturinCardPage() {
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
-      <IslandNav />
+      <SiteHeader />
 
       <section
         className="relative overflow-hidden border-b px-8 sm:px-14"

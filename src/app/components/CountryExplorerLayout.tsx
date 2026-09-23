@@ -8,7 +8,7 @@ import {
   type CountryExplorerContinent,
 } from "../../lib/majorWorldCities";
 
-import IslandNav from "./IslandNav";
+import SiteHeader from "./SiteHeader";
 import HomeFooter from "./HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 
@@ -42,7 +42,7 @@ export default function CountryExplorerLayout({
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <div className="flex min-h-dvh flex-col gap-6 px-5 pb-12 lg:flex-row lg:items-stretch lg:gap-8 lg:px-10" style={{ paddingTop: "8rem" }}>
         <aside className="flex w-full max-w-md shrink-0 flex-col rounded-2xl border-2 transition-colors lg:max-w-xs" style={{ borderColor: "var(--c-rule)" }}>
           <div className="flex flex-col gap-1 px-5 pb-2 pt-6">

@@ -14,7 +14,7 @@ import {
 } from "@/lib/theme/culturinTokens";
 import BlurImage from "../components/motion/BlurImage";
 import Reveal from "../components/motion/Reveal";
-import IslandNav from "../components/IslandNav";
+import SiteHeader from "../components/SiteHeader";
 
 const BG = EDITORIAL_BG;
 const INK = EDITORIAL_INK;
@@ -37,7 +37,7 @@ export default async function EventsPage() {
     <div style={{ background: BG, color: INK, minHeight: "100dvh" }} className={`${editorialScopeClass} font-sans antialiased`}>
 
       {/* ── Dynamic island nav ─────────────────────────────────── */}
-      <IslandNav />
+      <SiteHeader />
 
       {/* ── Page header ─────────────────────────────────────────── */}
       <Reveal

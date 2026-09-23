@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Link } from "next-view-transitions";
 
-import IslandNav from "../../components/IslandNav";
+import SiteHeader from "../../components/SiteHeader";
 import HomeFooter from "../../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import FollowTravelerButton from "../../components/FollowTravelerButton";
@@ -41,7 +41,7 @@ export default async function ProfileByIdPage({ params }: PageProps) {
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh pb-20" style={{ paddingTop: "8rem" }}>
         <div className="mx-auto w-full max-w-6xl px-5 pt-8 sm:px-6">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">

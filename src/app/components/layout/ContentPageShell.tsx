@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import IslandNav from "../IslandNav";
+import SiteHeader from "../SiteHeader";
 import HomeFooter from "../HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 
@@ -19,7 +19,7 @@ const defaultInnerClassName = "flex w-full max-w-3xl flex-col gap-6";
 /**
  * Shared app shell for former-platform pages: editorial nav + footer,
  * matching the marketing site's look. `paddingTop: "8rem"` clears the
- * floating IslandNav pill (it isn't a full-width bar, so there's no
+ * floating SiteHeader pill (it isn't a full-width bar, so there's no
  * `--header-offset` to lean on here).
  */
 export function ContentPageShell({
@@ -29,7 +29,7 @@ export function ContentPageShell({
 }: ContentPageShellProps) {
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className={mainClassName} style={{ paddingTop: "8rem" }}>
         <div className={innerClassName}>{children}</div>
       </main>

@@ -5,7 +5,7 @@ import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
 
-import IslandNav from "../../components/IslandNav";
+import SiteHeader from "../../components/SiteHeader";
 import HomeFooter from "../../components/HomeFooter";
 import { SURFACE_DARK, ON_DARK_TEXT } from "@/lib/theme/culturinTokens";
 import { CulturinBookingDateField } from "../../components/detail/CulturinBookingDateField";
@@ -389,7 +389,7 @@ export default function ProviderDetailClient({ data }: { data: fullProvider }) {
 
   return (
     <>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh pb-16" style={{ background: SURFACE_DARK, color: ON_DARK_TEXT, paddingTop: "8rem" }}>
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           <nav className="mb-6 pt-4" aria-label="Breadcrumb">

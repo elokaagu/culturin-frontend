@@ -16,7 +16,7 @@ import {
   resolveContentImageSrc,
   resolveVideoThumbnailSrc,
 } from "../../lib/imagePlaceholder";
-import IslandNav from "../components/IslandNav";
+import SiteHeader from "../components/SiteHeader";
 import HomeFooter from "../components/HomeFooter";
 import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import SafeContentImage from "../components/SafeContentImage";
@@ -177,7 +177,7 @@ export default async function SearchResultsPage({ searchParams }: SearchPageProp
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <IslandNav />
+      <SiteHeader />
       <main className="min-h-dvh pb-20 antialiased" id="main-content" style={{ paddingTop: "8rem" }}>
         <div className={appPageContainerClass}>
           <nav className="mb-6 text-sm" aria-label="Breadcrumb">
