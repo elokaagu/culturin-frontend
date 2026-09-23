@@ -18,7 +18,7 @@ import Reveal from "./components/motion/Reveal";
 import ParallaxReveal from "./components/motion/ParallaxReveal";
 import EditorialStatement from "./components/EditorialStatement";
 import HomeFooter from "./components/HomeFooter";
-import IslandNav from "./components/IslandNav";
+import SiteHeader from "./components/SiteHeader";
 import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
 import AttendeeOriginMap from "./components/AttendeeOriginMap";
 import MagneticButton from "./components/motion/MagneticButton";
@@ -160,7 +160,7 @@ export default async function HomePage() {
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
 
       {/* ── Dynamic island nav ─────────────────────────────────── */}
-      <IslandNav />
+      <SiteHeader />
 
       {/* ── Hero ───────────────────────────────────────────────── */}
       <section
@@ -682,12 +682,9 @@ export default async function HomePage() {
                   <p className="m-0 mt-4 flex-1 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
                     {s.body}
                   </p>
-                  <p className="m-0 mt-6 text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
-                    {s.price}
-                  </p>
                   <Link
                     href="/partner"
-                    className="mt-4 inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] no-underline transition-opacity hover:opacity-60"
+                    className="mt-6 inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] no-underline transition-opacity hover:opacity-60"
                     style={{ color: INK }}
                   >
                     {s.cta} →
