@@ -108,6 +108,36 @@ const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Microsoft", logoSrc: "/partners/microsoft.webp" },
 ];
 
+const METHODOLOGY = [
+  { step: "01", label: "Diagnose", body: "Brand identity, audience, existing cultural position, and the real bottleneck." },
+  { step: "02", label: "Design", body: "Cultural territory, cities, moments, and the right format for the room." },
+  { step: "03", label: "Curate", body: "Talent, artists, chefs, hosts, and collaborators who make the room work." },
+  { step: "04", label: "Convene", body: "Bring the right people together. Who was in the room matters more than how many." },
+  { step: "05", label: "Amplify", body: "Turn the room into wider cultural reach — photography, film, and story." },
+  { step: "06", label: "Learn", body: "Feed what resonated back into the next room, and into Cultural Intelligence." },
+] as const;
+
+const SERVICES = [
+  {
+    label: "Intelligence",
+    body: "An ongoing read on what's moving in culture, and what it means for your brand — monthly reports, competitor monitoring, and quarterly strategy sessions.",
+    price: "From £3,000 / month",
+    cta: "Talk to us about Intelligence",
+  },
+  {
+    label: "Programming",
+    body: "Culturin becomes your external cultural programming partner for the year — strategy, curation, and a season of rooms built around your brand.",
+    price: "£50,000–£150,000+ / year",
+    cta: "Talk to us about Programming",
+  },
+  {
+    label: "Moments",
+    body: "Sponsor a room already built — Cannes, Frieze, Basel, and the nights in between — with your brand woven in with intention.",
+    price: "From £20,000",
+    cta: "Talk to us about Moments",
+  },
+] as const;
+
 const featuredEvents = events.filter((e) => !e.isPast).slice(0, 3);
 const cannesRecapEvent = events.find((e) => e.slug === "cannes-lions-2026");
 
@@ -247,6 +277,63 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── Press ──────────────────────────────────────────────── */}
+      <section
+        id="press"
+        className="border-b px-8 sm:px-14"
+        style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
+      >
+        <div className="mx-auto max-w-6xl">
+          <Reveal className="mb-12">
+            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+              In the press
+            </p>
+            <h2
+              className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+            >
+              What people are saying.
+            </h2>
+          </Reveal>
+
+          <div className="grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2">
+            {PRESS_MENTIONS.map((item, i) => (
+              <Reveal key={item.href} delay={(i % 2) * 90}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block border-t pt-6 no-underline"
+                  style={{ borderColor: RULE }}
+                >
+                  <p
+                    className="m-0 text-[10px] font-semibold uppercase tracking-[0.2em] transition-opacity group-hover:opacity-70"
+                    style={{ color: ACCENT }}
+                  >
+                    {item.publication}
+                  </p>
+                  <h3
+                    className="m-0 mt-3 text-xl font-medium leading-snug sm:text-2xl"
+                    style={{ color: INK, fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+                  >
+                    {item.headline}
+                  </h3>
+                  <p className="m-0 mt-3 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
+                    {item.description}
+                  </p>
+                  <span
+                    className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] transition-opacity group-hover:opacity-60"
+                    style={{ color: INK }}
+                  >
+                    Read the piece →
+                  </span>
+                </a>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Editorial statements (OPUS-style alternating narrative) ── */}
       <section className="px-8 sm:px-14" style={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
         <div className="mx-auto flex max-w-6xl flex-col gap-28">
@@ -286,6 +373,51 @@ export default async function HomePage() {
               { label: "See upcoming events", href: "/events", variant: "text" },
             ]}
           />
+        </div>
+      </section>
+
+      {/* ── Methodology ────────────────────────────────────────── */}
+      <section
+        id="methodology"
+        className="border-b px-8 sm:px-14"
+        style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
+      >
+        <div className="mx-auto max-w-6xl">
+          <Reveal className="mb-16 max-w-2xl">
+            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+              How we work
+            </p>
+            <h2
+              className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+            >
+              A system, not a Rolodex.
+            </h2>
+            <p className="m-0 mt-6 text-base leading-relaxed" style={{ color: INK_MUTED }}>
+              Every Culturin room follows the same six steps — bespoke in feel, repeatable in practice.
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-2 gap-px sm:grid-cols-3 lg:grid-cols-6" style={{ background: RULE }}>
+            {METHODOLOGY.map((m, i) => (
+              <Reveal key={m.step} as="div" delay={i * 80}>
+                <div className="h-full px-6 py-8" style={{ background: BG }}>
+                  <p className="m-0 text-[10px] font-semibold tracking-[0.2em]" style={{ color: ACCENT }}>
+                    {m.step}
+                  </p>
+                  <p
+                    className="m-0 mt-3 text-lg font-medium"
+                    style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
+                  >
+                    {m.label}
+                  </p>
+                  <p className="m-0 mt-2 text-xs leading-relaxed" style={{ color: INK_MUTED }}>
+                    {m.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -515,10 +647,62 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── Services (three ways to work with us) ─────────────── */}
+      <section
+        id="services"
+        className="border-b px-8 sm:px-14"
+        style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
+      >
+        <div className="mx-auto max-w-6xl">
+          <Reveal className="mb-16 max-w-2xl">
+            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+              How brands work with us
+            </p>
+            <h2
+              className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+            >
+              Intelligence. Programming. Moments.
+            </h2>
+            <p className="m-0 mt-6 text-base leading-relaxed" style={{ color: INK_MUTED }}>
+              Not every brand needs all three. Most start with one.
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-1 gap-px sm:grid-cols-3" style={{ background: RULE }}>
+            {SERVICES.map((s, i) => (
+              <Reveal key={s.label} as="div" delay={i * 120}>
+                <div className="flex h-full flex-col px-8 py-10" style={{ background: BG }}>
+                  <p
+                    className="m-0 text-2xl font-medium"
+                    style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
+                  >
+                    {s.label}
+                  </p>
+                  <p className="m-0 mt-4 flex-1 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
+                    {s.body}
+                  </p>
+                  <p className="m-0 mt-6 text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
+                    {s.price}
+                  </p>
+                  <Link
+                    href="/partner"
+                    className="mt-4 inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] no-underline transition-opacity hover:opacity-60"
+                    style={{ color: INK }}
+                  >
+                    {s.cta} →
+                  </Link>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Partners ───────────────────────────────────────────── */}
       <section
         id="partners"
-        className="relative overflow-hidden border-t px-8 sm:px-14"
+        className="relative overflow-hidden px-8 sm:px-14"
         style={{ paddingTop: "9rem", paddingBottom: "9rem", borderColor: RULE, background: SURFACE_DARK }}
       >
         <div className="relative z-10 mx-auto max-w-6xl">
@@ -667,63 +851,6 @@ export default async function HomePage() {
               </div>
             </a>
           </Reveal>
-        </div>
-      </section>
-
-      {/* ── Press ──────────────────────────────────────────────── */}
-      <section
-        id="press"
-        className="border-t px-8 sm:px-14"
-        style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
-      >
-        <div className="mx-auto max-w-6xl">
-          <Reveal className="mb-12">
-            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-              In the press
-            </p>
-            <h2
-              className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
-              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-            >
-              What people are saying.
-            </h2>
-          </Reveal>
-
-          <div className="grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2">
-            {PRESS_MENTIONS.map((item, i) => (
-              <Reveal key={item.href} delay={(i % 2) * 90}>
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block border-t pt-6 no-underline"
-                  style={{ borderColor: RULE }}
-                >
-                  <p
-                    className="m-0 text-[10px] font-semibold uppercase tracking-[0.2em] transition-opacity group-hover:opacity-70"
-                    style={{ color: ACCENT }}
-                  >
-                    {item.publication}
-                  </p>
-                  <h3
-                    className="m-0 mt-3 text-xl font-medium leading-snug sm:text-2xl"
-                    style={{ color: INK, fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-                  >
-                    {item.headline}
-                  </h3>
-                  <p className="m-0 mt-3 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                    {item.description}
-                  </p>
-                  <span
-                    className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] transition-opacity group-hover:opacity-60"
-                    style={{ color: INK }}
-                  >
-                    Read the piece →
-                  </span>
-                </a>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
