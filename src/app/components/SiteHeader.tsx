@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Hamburger from "hamburger-react";
 import { useEffect, useState } from "react";
 
@@ -17,16 +18,28 @@ const NAV = [
 
 const gutterX = "pl-[var(--gutter-l)] pr-[var(--gutter-r)]";
 
+function isPhotoHeroPath(pathname: string): boolean {
+  if (pathname === "/") return true;
+  if (pathname === "/travel-guides/nice-and-cannes") return true;
+  if (/^\/events\/[^/]+$/.test(pathname)) return true;
+  return false;
+}
+
 /**
- * Primary nav: a flush, full-width editorial masthead, not a floating pill.
- * Translucent + blurred at rest so it stays legible over any hero, and settles
- * into a solid bar with a hairline rule once the page scrolls.
+ * Primary nav: a flush, full-width editorial masthead.
+ * Over a photo hero it stays transparent with white type until the page
+ * scrolls, then settles into a solid bar. Everywhere else it is the
+ * translucent masthead with a hairline once you move.
  */
 export default function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { mode } = useTheme();
   const isDark = mode === "dark";
+  const pathname = usePathname();
+  const overHero = isPhotoHeroPath(pathname);
+  const clearOverHero = overHero && !scrolled && !mobileOpen;
+  const ink = clearOverHero ? "#ffffff" : "var(--c-ink)";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -48,10 +61,16 @@ export default function SiteHeader() {
     <>
       <nav
         aria-label="Primary"
-        className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b py-3.5 backdrop-blur-xl transition-[background-color,border-color,padding] duration-300 ease-out sm:py-4 ${gutterX}`}
+        className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b py-3.5 transition-[background-color,border-color,padding] duration-300 ease-out sm:py-4 ${gutterX} ${
+          clearOverHero ? "" : "backdrop-blur-xl"
+        }`}
         style={{
-          background: scrolled ? "color-mix(in srgb, var(--c-bg) 92%, transparent)" : "color-mix(in srgb, var(--c-bg) 68%, transparent)",
-          borderColor: scrolled ? "var(--c-rule)" : "transparent",
+          background: clearOverHero
+            ? "transparent"
+            : scrolled
+              ? "color-mix(in srgb, var(--c-bg) 92%, transparent)"
+              : "color-mix(in srgb, var(--c-bg) 68%, transparent)",
+          borderColor: scrolled || mobileOpen ? "var(--c-rule)" : "transparent",
         }}
       >
         <Link
@@ -61,7 +80,7 @@ export default function SiteHeader() {
           className="flex shrink-0 items-center gap-2 no-underline"
         >
           <Image
-            src={isDark ? "/culturin_icon_yellow.png" : "/culturin_icon_black.png"}
+            src={clearOverHero || isDark ? "/culturin_icon_yellow.png" : "/culturin_icon_black.png"}
             alt=""
             width={20}
             height={20}
@@ -69,7 +88,11 @@ export default function SiteHeader() {
             unoptimized
             priority
           />
-          <CulturinWordmark isDark={isDark} className="text-base font-semibold tracking-tight sm:text-lg" />
+          <CulturinWordmark
+            isDark={clearOverHero || isDark}
+            className="text-base font-semibold tracking-tight sm:text-lg"
+            style={clearOverHero ? { color: "#ffffff" } : undefined}
+          />
         </Link>
 
         {/* Desktop: links + CTA inline */}
@@ -79,7 +102,7 @@ export default function SiteHeader() {
               key={item.label}
               href={item.href}
               className="rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] no-underline transition hover:opacity-70"
-              style={{ color: "var(--c-ink)" }}
+              style={{ color: ink }}
             >
               {item.label}
             </Link>
@@ -94,7 +117,7 @@ export default function SiteHeader() {
         </div>
 
         {/* Mobile: hamburger */}
-        <div className="sm:hidden" style={{ color: "var(--c-ink)" }}>
+        <div className="sm:hidden" style={{ color: ink }}>
           <Hamburger
             toggled={mobileOpen}
             toggle={() => setMobileOpen((o) => !o)}
