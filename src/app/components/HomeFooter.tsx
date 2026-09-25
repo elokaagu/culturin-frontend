@@ -171,10 +171,10 @@ function FooterSubscribe() {
 }
 
 const footerLinks = [
-  { label: "Platform", href: "/platform" },
+  { label: "Reports", href: "/platform" },
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Partners", href: "#partners" },
+  { label: "Partners", href: "/partner" },
   { label: "Our Mission", href: "/our-mission" },
 ];
 

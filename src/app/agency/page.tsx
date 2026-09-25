@@ -171,7 +171,7 @@ export default function AgencyPage() {
               className="inline-flex min-h-[42px] items-center rounded-full px-5 text-xs font-semibold uppercase tracking-[0.16em] text-white no-underline transition hover:opacity-90"
               style={{ background: "var(--c-accent)" }}
             >
-              Book a call
+              Create an experience
             </Link>
             <Link
               href="/about"

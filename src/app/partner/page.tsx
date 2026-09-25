@@ -12,7 +12,7 @@ const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 
 export const metadata: Metadata = {
-  title: "Book a Call | Culturin",
+  title: "Create an Experience | Culturin",
   description:
     "Cultural marketing for brands launching in new territories or connecting with cultural intelligence. Write to Culturin and we'll set up a call.",
 };
@@ -30,7 +30,7 @@ export default function PartnerPage() {
           className="m-0 max-w-2xl text-5xl font-medium leading-[1.08] sm:text-6xl"
           style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
         >
-          Book a call with Culturin.
+          Create an experience with Culturin.
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed" style={{ color: INK_MUTED }}>
           For brands with questions about cultural marketing: how to launch in a new territory, or how to

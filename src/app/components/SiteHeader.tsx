@@ -10,16 +10,15 @@ import { useTheme } from "../styles/ThemeContext";
 import CulturinWordmark from "./CulturinWordmark";
 
 const NAV = [
-  { label: "Platform", href: "/platform" },
+  { label: "Reports", href: "/platform" },
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Partners", href: "/#partners" },
+  { label: "Partners", href: "/partner" },
 ] as const;
 
 const gutterX = "pl-[var(--gutter-l)] pr-[var(--gutter-r)]";
 
 function isPhotoHeroPath(pathname: string): boolean {
-  if (pathname === "/") return true;
   if (pathname === "/travel-guides/nice-and-cannes") return true;
   if (/^\/events\/[^/]+$/.test(pathname)) return true;
   return false;
@@ -112,7 +111,7 @@ export default function SiteHeader() {
             className="ml-2 rounded-full px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] no-underline transition hover:opacity-90"
             style={{ background: "var(--c-accent)", color: "#1c1a17" }}
           >
-            Book a call
+            Create an experience
           </Link>
         </div>
 
@@ -158,7 +157,7 @@ export default function SiteHeader() {
               className="w-full rounded-full px-5 py-2.5 text-center text-[11px] font-semibold uppercase tracking-[0.16em] no-underline transition hover:opacity-90"
               style={{ background: "var(--c-accent)", color: "#1c1a17" }}
             >
-              Book a call
+              Create an experience
             </Link>
           </div>
         </div>

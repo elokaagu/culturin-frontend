@@ -32,7 +32,7 @@ export default function DestinationsPage() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
             <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: "var(--c-muted)" }}>
-              Platform
+              Reports
             </p>
             <h1
               className="m-0 mt-3 text-3xl font-medium tracking-tight sm:text-5xl"

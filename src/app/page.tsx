@@ -10,7 +10,6 @@ import {
   EDITORIAL_RULE,
   EDITORIAL_ACCENT,
   SURFACE_DARK,
-  ACCENT_ON_DARK,
   editorialScopeClass,
 } from "@/lib/theme/culturinTokens";
 import BlurImage from "./components/motion/BlurImage";
@@ -39,38 +38,6 @@ const INK = EDITORIAL_INK;
 const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
-
-
-const PRESS_MENTIONS = [
-  {
-    publication: "Digiday",
-    headline: "Meet the man behind Cannes Lions' most exclusive parties",
-    description:
-      "On Culturin, the cultural marketing company founded in 2024 that blends brand storytelling, cultural insight, and local knowledge across campaigns, content, and activations.",
-    href: "https://digiday.com/marketing/meet-the-man-behind-cannes-lions-most-exclusive-parties/",
-  },
-  {
-    publication: "CNBC Africa",
-    headline: "Resolving Africa's geopolitics to unlock global opportunities",
-    description:
-      "Culturin founder Unik Ernest on diplomatic engagement, corruption, and unlocking economic opportunity across the continent.",
-    href: "https://www.cnbcafrica.com/media/7756747595504/resolving-africas-geopolitics-to-unlock-global-opportunities-",
-  },
-  {
-    publication: "CEO Weekly",
-    headline: "Unik Ernest's Culturin Afterparty Series Celebrates Culture, Community, and Philanthropy",
-    description:
-      "“The world needs more beautiful stories,” Ernest said of the series, which showcased diverse entertainment experiences across five nights in Cannes.",
-    href: "https://ceoweekly.com/unik-ernests-culturin-afterparty-series/",
-  },
-  {
-    publication: "News Diary",
-    headline: "Cannes Lions: Unik Ernest to host Culturin afterparty",
-    description:
-      "Business strategist and cultural architect Unik Ernest hosted the Culturin Afterparty Series during the Cannes Lions International Festival of Creativity.",
-    href: "https://newsdiaryonline.com/cannes-lions-unik-ernest-to-host-culturin-afterparty-5-all-star-events/",
-  },
-] as const;
 
 const GALLERY_PREVIEW_SLOTS = [
   { key: "homepage-preview-1", span: "row-span-2" },
@@ -107,15 +74,6 @@ const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Virgin", logoSrc: "/partners/virgin-logo.webp" },
   { name: "Microsoft", logoSrc: "/partners/microsoft.webp" },
 ];
-
-const METHODOLOGY = [
-  { step: "01", label: "Diagnose", body: "Brand identity, audience, existing cultural position, and the real bottleneck." },
-  { step: "02", label: "Design", body: "Cultural territory, cities, moments, and the right format for the room." },
-  { step: "03", label: "Curate", body: "Talent, artists, chefs, hosts, and collaborators who make the room work." },
-  { step: "04", label: "Convene", body: "Bring the right people together. Who was in the room matters more than how many." },
-  { step: "05", label: "Amplify", body: "Turn the room into wider cultural reach: photography, film, and story." },
-  { step: "06", label: "Learn", body: "Feed what resonated back into the next room, and into Cultural Intelligence." },
-] as const;
 
 const SERVICES = [
   {
@@ -163,56 +121,56 @@ export default async function HomePage() {
       <SiteHeader />
 
       {/* ── Hero ───────────────────────────────────────────────── */}
-      <section
-        className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-8 text-center sm:px-14"
-      >
-        <BlurImage
-          src={hero.src}
-          alt={hero.alt}
-          fill
-          priority
-          className="object-cover"
-          placeholder="blur"
-          blurDataURL={blurForSrc(hero.src)}
-          sizes="100vw"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.6) 100%)",
-          }}
-        />
-        {/* Fade to the page background so the hero blends into the next section instead of cutting off hard. Light mode's bg is a pale cream, which turned this into a washed-out haze over the photo, so it's dark-mode only. */}
-        <div
-          className="absolute inset-x-0 bottom-0 hidden h-[14dvh] dark:block"
-          style={{ background: `linear-gradient(180deg, transparent 0%, ${BG} 100%)` }}
-        />
-        <Reveal className="relative z-10 mx-auto flex max-w-3xl flex-col items-center" y={32}>
-          <h1
-            className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
-            style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-          >
-            We connect the world through Culture.
-          </h1>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75">
-            Culturin brings leaders of industry together to create culturally significant experiences, and equip brands with the intelligence to win.
-          </p>
-          <MagneticButton strength={0.35} className="mt-8 w-fit">
-            <Link
-              href="/partner"
-              className="inline-flex items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
-              style={{ background: ACCENT, color: SURFACE_DARK }}
+      <section className="px-3 pb-3 pt-[4.75rem] sm:px-4 sm:pb-4 sm:pt-20">
+        <div className="relative flex min-h-[calc(100dvh-5.5rem)] flex-col items-center justify-center overflow-hidden rounded-3xl px-8 text-center sm:min-h-[calc(100dvh-6.5rem)] sm:rounded-[2rem] sm:px-14">
+          <BlurImage
+            src={hero.src}
+            alt={hero.alt}
+            fill
+            priority
+            className="object-cover"
+            placeholder="blur"
+            blurDataURL={blurForSrc(hero.src)}
+            sizes="100vw"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.6) 100%)",
+            }}
+          />
+          <Reveal className="relative z-10 mx-auto flex max-w-3xl flex-col items-center" y={32}>
+            <h1
+              className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
             >
-              Book a call
-            </Link>
-          </MagneticButton>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/55">
-            <span>Cannes</span>
-            <span>New York</span>
-            <span>London</span>
-          </div>
-        </Reveal>
+              We connect the world through Culture.
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75">
+              Culturin brings leaders of industry together to create culturally significant experiences, and equip brands with the intelligence to win.
+            </p>
+            <MagneticButton strength={0.35} className="mt-8 w-fit">
+              <Link
+                href="/partner"
+                className="inline-flex items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+                style={{ background: ACCENT, color: SURFACE_DARK }}
+              >
+                Create an experience
+              </Link>
+            </MagneticButton>
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/55">
+              <span>Cannes</span>
+              <span>New York</span>
+              <span>London</span>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── Client logos ───────────────────────────────────────── */}
+      <section className="px-8 py-8 sm:px-14 sm:py-10" aria-label="Production history">
+        <LogoTicker items={PRODUCTION_HISTORY} ink={INK_MUTED} />
       </section>
 
       {/* ── Mission ────────────────────────────────────────────── */}
@@ -233,11 +191,7 @@ export default async function HomePage() {
                 className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                Culture isn&apos;t a campaign. It&apos;s{" "}
-                <span className="rounded-sm px-1.5 py-0.5" style={{ backgroundColor: "#e08a5b" }}>
-                  a room
-                </span>
-                .
+                We create iconic moments at the pinnacle of culture.
               </h2>
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col gap-6">
@@ -264,73 +218,6 @@ export default async function HomePage() {
               </Reveal>
             ))}
           </div>
-
-          {/* Production history: team credentials, not claimed active sponsorships */}
-          <div className="mt-16 border-t pt-10" style={{ borderColor: RULE }}>
-            <Reveal delay={200}>
-              <p className="mb-10 text-center text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-                Our team&apos;s production history includes
-              </p>
-              <LogoTicker items={PRODUCTION_HISTORY} ink={INK_MUTED} />
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Press ──────────────────────────────────────────────── */}
-      <section
-        id="press"
-        className="border-b px-8 sm:px-14"
-        style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
-      >
-        <div className="mx-auto max-w-6xl">
-          <Reveal className="mb-12">
-            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-              In the press
-            </p>
-            <h2
-              className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
-              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-            >
-              What people are saying.
-            </h2>
-          </Reveal>
-
-          <div className="grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2">
-            {PRESS_MENTIONS.map((item, i) => (
-              <Reveal key={item.href} delay={(i % 2) * 90}>
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block border-t pt-6 no-underline"
-                  style={{ borderColor: RULE }}
-                >
-                  <p
-                    className="m-0 text-[10px] font-semibold uppercase tracking-[0.2em] transition-opacity group-hover:opacity-70"
-                    style={{ color: ACCENT }}
-                  >
-                    {item.publication}
-                  </p>
-                  <h3
-                    className="m-0 mt-3 text-xl font-medium leading-snug sm:text-2xl"
-                    style={{ color: INK, fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-                  >
-                    {item.headline}
-                  </h3>
-                  <p className="m-0 mt-3 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                    {item.description}
-                  </p>
-                  <span
-                    className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] transition-opacity group-hover:opacity-60"
-                    style={{ color: INK }}
-                  >
-                    Read the piece →
-                  </span>
-                </a>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -345,7 +232,7 @@ export default async function HomePage() {
             imageAlt="Guests filling a red-lit room beneath the disco balls in Cannes"
             imageSide="right"
             buttons={[
-              { label: "Book a call", href: "/partner", variant: "solid" },
+              { label: "Create an experience", href: "/partner", variant: "solid" },
               { label: "See upcoming events", href: "/events", variant: "text" },
             ]}
           />
@@ -358,7 +245,7 @@ export default async function HomePage() {
             imageSide="left"
             buttons={[
               { label: "See upcoming events", href: "/events", variant: "solid" },
-              { label: "Book a call", href: "/partner", variant: "text" },
+              { label: "Create an experience", href: "/partner", variant: "text" },
             ]}
           />
           <EditorialStatement
@@ -369,55 +256,10 @@ export default async function HomePage() {
             imageAlt="Guest at a Culturin evening in Cannes"
             imageSide="right"
             buttons={[
-              { label: "Book a call", href: "/partner", variant: "solid" },
+              { label: "Create an experience", href: "/partner", variant: "solid" },
               { label: "See upcoming events", href: "/events", variant: "text" },
             ]}
           />
-        </div>
-      </section>
-
-      {/* ── Methodology ────────────────────────────────────────── */}
-      <section
-        id="methodology"
-        className="border-b px-8 sm:px-14"
-        style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
-      >
-        <div className="mx-auto max-w-6xl">
-          <Reveal className="mb-16 max-w-2xl">
-            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-              How we work
-            </p>
-            <h2
-              className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
-              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-            >
-              A system, not a Rolodex.
-            </h2>
-            <p className="m-0 mt-6 text-base leading-relaxed" style={{ color: INK_MUTED }}>
-              Every Culturin room follows the same six steps, bespoke in feel and repeatable in practice.
-            </p>
-          </Reveal>
-
-          <div className="grid grid-cols-2 gap-px sm:grid-cols-3 lg:grid-cols-6" style={{ background: RULE }}>
-            {METHODOLOGY.map((m, i) => (
-              <Reveal key={m.step} as="div" delay={i * 80}>
-                <div className="h-full px-6 py-8" style={{ background: BG }}>
-                  <p className="m-0 text-[10px] font-semibold tracking-[0.2em]" style={{ color: ACCENT }}>
-                    {m.step}
-                  </p>
-                  <p
-                    className="m-0 mt-3 text-lg font-medium"
-                    style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
-                  >
-                    {m.label}
-                  </p>
-                  <p className="m-0 mt-2 text-xs leading-relaxed" style={{ color: INK_MUTED }}>
-                    {m.body}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -696,55 +538,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── Partners ───────────────────────────────────────────── */}
-      <section
-        id="partners"
-        className="relative overflow-hidden px-8 sm:px-14"
-        style={{ paddingTop: "9rem", paddingBottom: "9rem", borderColor: RULE, background: SURFACE_DARK }}
-      >
-        <div className="relative z-10 mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
-            <Reveal as="div">
-              <p className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "rgba(232,227,218,0.6)" }}>
-                Cultural marketing
-              </p>
-              <h2
-                className="m-0 text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl"
-                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-              >
-                Launch with cultural intelligence.
-              </h2>
-            </Reveal>
-            <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
-              <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
-                Brands come to Culturin when they need to launch in a new territory, or to connect with the people who already shape culture there. That is cultural marketing: intelligence, rooms, and introductions, not a campaign bolted onto a place.
-              </p>
-              <p className="m-0 text-base leading-loose" style={{ color: "rgba(232,227,218,0.82)" }}>
-                Write to us. We&apos;ll set up a call.
-              </p>
-              <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-                <MagneticButton strength={0.35} className="w-fit">
-                  <Link
-                    href="/partner"
-                    className="inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
-                    style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
-                  >
-                    Book a call
-                  </Link>
-                </MagneticButton>
-                <Link
-                  href="/events"
-                  className="text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-70"
-                  style={{ color: "rgba(232,227,218,0.85)" }}
-                >
-                  See our events →
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
       {/* ── Where our community comes from ────────────────────── */}
       <section
         className="border-t px-8 sm:px-14"
@@ -764,89 +557,6 @@ export default async function HomePage() {
           </Reveal>
           <Reveal delay={120}>
             <AttendeeOriginMap />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── What we're building ────────────────────────────────── */}
-      <section
-        className="border-t px-8 sm:px-14"
-        style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
-      >
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
-            <Reveal as="div">
-              <p className="mb-6 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-                What&apos;s next
-              </p>
-              <h2
-                className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
-                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-              >
-                From real conversations to a global festival.
-              </h2>
-            </Reveal>
-            <Reveal as="div" delay={120} className="flex flex-col justify-center gap-6">
-              <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                We launched with real conversations: artists, musicians, and founders in the same room. Since then we&apos;ve been building curated events, a growing library of stories, and the network that holds them.
-              </p>
-              <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Next: certified cultural training programs, a first Culturin festival, and a production company built for cultural programming at the scale our team already knows, the Super Bowl, the Oscars, the UN Assembly.
-              </p>
-              <Link
-                href="/events"
-                className="mt-2 inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
-                style={{ color: INK }}
-              >
-                Explore upcoming events →
-              </Link>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Collaborators ──────────────────────────────────────── */}
-      <section className="border-t px-8 sm:px-14" style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}>
-        <div className="mx-auto max-w-6xl">
-          <Reveal className="mb-12">
-            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-              Collaborators
-            </p>
-            <h2
-              className="m-0 max-w-2xl text-4xl font-medium leading-[1.08] sm:text-5xl"
-              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-            >
-              Editorial voices we&apos;re proud to feature.
-            </h2>
-          </Reveal>
-          <Reveal delay={120}>
-            <a
-              href="https://www.instagram.com/pontoon_co/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group grid grid-cols-1 gap-8 rounded-2xl border p-8 no-underline transition-colors sm:grid-cols-[auto_1fr] sm:items-center sm:p-10"
-              style={{ borderColor: RULE }}
-            >
-              <p
-                className="m-0 text-3xl font-medium sm:text-4xl"
-                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
-              >
-                Pontoon
-              </p>
-              <div>
-                <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                  Pontoon is an editorial community built around women who move through the world on their own
-                  terms: photographers, writers, explorers, and makers who find meaning in motion. Culturin is
-                  proud to feature Pontoon&apos;s work as part of our curated editorial program.
-                </p>
-                <span
-                  className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] transition-opacity group-hover:opacity-60"
-                  style={{ color: INK }}
-                >
-                  @pontoon_co on Instagram →
-                </span>
-              </div>
-            </a>
           </Reveal>
         </div>
       </section>

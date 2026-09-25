@@ -90,7 +90,7 @@ export default function OurMissionPage() {
               className="inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
               style={{ color: INK }}
             >
-              Book a call →
+              Create an experience →
             </Link>
           </div>
         </div>

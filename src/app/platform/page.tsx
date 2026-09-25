@@ -5,7 +5,7 @@ import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listBlogs, listProviders } from "../../lib/cms/queries";
 
 export const metadata: Metadata = {
-  title: "Platform | Culturin",
+  title: "Reports | Culturin",
   description:
     "Stories, video, and rooms from Culturin.",
 };

@@ -73,7 +73,7 @@ export default function CulturinCardPage() {
                 className="inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
                 style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
               >
-                Book a call
+                Create an experience
               </Link>
               <Link
                 href="/events"
