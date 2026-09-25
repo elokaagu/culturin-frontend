@@ -15,10 +15,3 @@ export const appPageFullBleedClass =
 
 export const appPageRailScrollPadClass =
   "scroll-pl-[var(--gutter-l)] pl-[var(--gutter-l)] pr-1 sm:pr-2";
-
-/**
- * "See all" CTA in home section headers — must not shrink in flex row or the label can clip.
- * Use with `header` that is `flex items-start justify-between gap-4`.
- */
-export const homeSectionSeeAllClass =
-  "shrink-0 self-center inline-flex min-h-[38px] min-w-[4.5rem] items-center justify-center rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] no-underline transition-colors";

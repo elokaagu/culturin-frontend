@@ -32,10 +32,6 @@ export function resolveProfileImageContentType(file: File): string | null {
   return null;
 }
 
-export function isProfileImageFileAccepted(file: File): boolean {
-  return resolveProfileImageContentType(file) !== null;
-}
-
 export function profileAvatarStoragePath(userId: string, fileName: string): string {
   const safe = fileName.replace(/[^\w.+-]+/g, "-").replace(/^-+|-+$/g, "") || "upload.bin";
   return `${userId}/avatar/${Date.now()}-${safe}`;

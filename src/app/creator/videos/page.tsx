@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { fetchMyCreatorSubmissions } from "@/app/creator/creatorSubmissions.server";
-import { studioCreateButtonClass, studioListRowClass } from "@/app/studio/_components/StudioCulturinListKit";
+import { studioCreateButtonClass, studioListRowClass } from "@/app/admin/_components/StudioCulturinListKit";
 
 export const metadata: Metadata = {
   title: "Videos",

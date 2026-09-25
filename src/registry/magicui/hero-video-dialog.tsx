@@ -1,5 +1,4 @@
 export {
-  HeroVideoDialog,
   HeroVideoModalShell,
   type HeroVideoAnimationStyle,
   type HeroVideoModalShellProps,

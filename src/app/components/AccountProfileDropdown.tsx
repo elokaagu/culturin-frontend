@@ -76,8 +76,8 @@ export function AccountProfileDropdown({
   const [menuOpen, setMenuOpen] = useState(false);
   const label = sessionUser.name?.split(" ")[0] ?? "Account";
   const initials = initialsFromName(sessionUser.name || sessionUser.email);
-  const workspaceHref = role.isAdmin ? "/studio" : "/creator";
-  const workspaceLabel = role.isAdmin ? "Open Studio" : "Creator workspace";
+  const workspaceHref = role.isAdmin ? "/admin" : "/creator";
+  const workspaceLabel = role.isAdmin ? "Open Admin" : "Creator workspace";
 
   const go = useCallback(
     (href: string) => {

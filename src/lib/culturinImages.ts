@@ -41,10 +41,6 @@ export const culturinImages = {
 
 export type CulturinImageKey = keyof typeof culturinImages;
 
-export function cimg(key: CulturinImageKey): CulturinImage {
-  return culturinImages[key];
-}
-
 /** All entries keyed by their public `src` path, for lookups from stored URLs. */
 const bySrc: Record<string, CulturinImage> = Object.fromEntries(
   Object.values(culturinImages).map((v) => [v.src, v]),

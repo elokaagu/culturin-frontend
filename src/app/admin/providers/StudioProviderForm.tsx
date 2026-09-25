@@ -1,0 +1,161 @@
+"use client";
+
+import { useEffect, useState, type FormEvent } from "react";
+import { Link } from "next-view-transitions";
+
+import { Field } from "@/app/admin/_components/Field";
+import { StudioPublishDateField } from "@/app/admin/_components/StudioPublishDateField";
+import { StudioImageUploadButton } from "@/app/admin/_components/StudioImageUploadButton";
+import { postCreatorSubmission } from "@/app/creator/_lib/postCreatorSubmission";
+import { postCmsEntry } from "@/app/admin/_lib/postCmsEntry";
+
+export type ProviderFormInitial = {
+  slug: string;
+  name: string;
+  event_name: string;
+  description: string;
+  location: string;
+  avatar_image_url: string;
+  languages: string;
+  specialties: string;
+  contact_email: string;
+  contact_phone: string;
+  contact_website: string;
+  banner_image_url: string;
+  published_at: string;
+};
+
+export function StudioProviderForm({
+  initial,
+  onSaved,
+  workspace = "studio",
+}: {
+  initial?: ProviderFormInitial | null;
+  onSaved?: () => void;
+  workspace?: "studio" | "creator";
+}) {
+  const [pending, setPending] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [avatarImageUrl, setAvatarImageUrl] = useState(initial?.avatar_image_url ?? "");
+  const [bannerImageUrl, setBannerImageUrl] = useState(initial?.banner_image_url ?? "");
+  const isEditing = Boolean(initial?.slug);
+  const isCreator = workspace === "creator";
+  const listHref = isCreator ? "/creator/providers" : "/admin";
+
+  useEffect(() => {
+    setAvatarImageUrl(initial?.avatar_image_url ?? "");
+    setBannerImageUrl(initial?.banner_image_url ?? "");
+  }, [initial?.slug, initial?.avatar_image_url, initial?.banner_image_url]);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const entry = Object.fromEntries(formData.entries()) as Record<string, unknown>;
+    setPending(true);
+    setMessage(null);
+
+    if (isCreator) {
+      const result = await postCreatorSubmission("provider", entry);
+      setPending(false);
+      if (!result.ok) {
+        setMessage(result.message);
+        return;
+      }
+      setMessage(
+        result.data.message ??
+          "Thanks — your experience was submitted for review. Nothing goes live until the team approves it.",
+      );
+      if (!isEditing) {
+        event.currentTarget.reset();
+        setAvatarImageUrl("");
+        setBannerImageUrl("");
+      }
+      onSaved?.();
+      return;
+    }
+
+    const result = await postCmsEntry("provider", entry);
+    setPending(false);
+    if (!result.ok) {
+      setMessage(result.message);
+      return;
+    }
+    setMessage(`${result.data.message ?? "Saved"} (${result.data.slug ?? "no-slug"})`);
+    if (!isEditing) event.currentTarget.reset();
+    onSaved?.();
+  }
+
+  return (
+    <section id="provider-form">
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <h2 className="m-0 text-base font-semibold text-neutral-900 dark:text-white">
+          {isEditing
+            ? "Edit experience"
+            : isCreator
+              ? "Submit an experience"
+              : "Create experience"}
+        </h2>
+        {isEditing ? (
+          <Link
+            href={listHref}
+            className="inline-flex h-7 items-center rounded-full border border-neutral-300 px-3 text-xs font-medium text-neutral-700 no-underline transition hover:bg-neutral-100 dark:border-white/20 dark:text-white/75 dark:hover:bg-white/10"
+          >
+            Cancel edit
+          </Link>
+        ) : null}
+      </div>
+      {message ? (
+        <p className="mt-4 max-w-3xl rounded-lg border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm dark:border-white/15 dark:bg-white/5">
+          {message}
+        </p>
+      ) : null}
+      <form className="mt-5 grid max-w-3xl gap-4 sm:grid-cols-2" onSubmit={handleSubmit}>
+        {isEditing ? <input type="hidden" name="original_slug" value={initial?.slug ?? ""} /> : null}
+        <Field name="slug" label="Slug (optional)" defaultValue={initial?.slug ?? ""} />
+        <Field name="name" label="Business name" defaultValue={initial?.name ?? ""} />
+        <Field name="event_name" label="Event / experience name" required defaultValue={initial?.event_name ?? ""} />
+        <Field name="description" label="Description" defaultValue={initial?.description ?? ""} />
+        <Field name="location" label="Location" defaultValue={initial?.location ?? ""} />
+        <label className="flex flex-col gap-1.5 text-sm">
+          <span className="font-medium text-neutral-700 dark:text-white/80">Avatar image URL</span>
+          <input
+            name="avatar_image_url"
+            value={avatarImageUrl}
+            onChange={(event) => setAvatarImageUrl(event.target.value)}
+            className="rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-3.5 py-2.5 text-sm text-[color:var(--c-ink)] shadow-inner outline-none transition placeholder:text-[color:var(--c-muted)] focus-visible:border-[color:var(--c-accent)] focus-visible:ring-2 focus-visible:ring-[color:color-mix(in_srgb,var(--c-accent)_35%,transparent)] dark:bg-black/35"
+          />
+          <StudioImageUploadButton onUploaded={setAvatarImageUrl} buttonLabel="Upload avatar image" />
+        </label>
+        <Field name="languages" label="Languages (comma-separated)" defaultValue={initial?.languages ?? ""} />
+        <Field name="specialties" label="Specialties (comma-separated)" defaultValue={initial?.specialties ?? ""} />
+        <Field name="contact_email" label="Contact email" type="email" defaultValue={initial?.contact_email ?? ""} />
+        <Field name="contact_phone" label="Contact phone" defaultValue={initial?.contact_phone ?? ""} />
+        <Field name="contact_website" label="Contact website" defaultValue={initial?.contact_website ?? ""} />
+        <label className="flex flex-col gap-1.5 text-sm">
+          <span className="font-medium text-neutral-700 dark:text-white/80">Banner image URL</span>
+          <input
+            name="banner_image_url"
+            value={bannerImageUrl}
+            onChange={(event) => setBannerImageUrl(event.target.value)}
+            className="rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-3.5 py-2.5 text-sm text-[color:var(--c-ink)] shadow-inner outline-none transition placeholder:text-[color:var(--c-muted)] focus-visible:border-[color:var(--c-accent)] focus-visible:ring-2 focus-visible:ring-[color:color-mix(in_srgb,var(--c-accent)_35%,transparent)] dark:bg-black/35"
+          />
+          <StudioImageUploadButton onUploaded={setBannerImageUrl} buttonLabel="Upload banner image" />
+        </label>
+        <StudioPublishDateField name="published_at" label="Publish date (optional)" defaultValue={initial?.published_at ?? ""} />
+        <button
+          type="submit"
+          disabled={pending}
+          className="mt-1 rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+        >
+          {pending
+            ? "Saving…"
+            : isEditing
+              ? "Save changes"
+              : isCreator
+                ? "Submit for review"
+                : "Save entry"}
+        </button>
+      </form>
+    </section>
+  );
+}

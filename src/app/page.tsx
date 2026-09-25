@@ -24,7 +24,7 @@ import MagneticButton from "./components/motion/MagneticButton";
 import { getSiteImagesMap, resolveSiteImage, resolveEventHero, manifestDefault } from "@/lib/siteImages";
 import { eventMediaUrl } from "@/lib/eventMedia";
 
-/** Site images can change in Studio; revalidatePath("/") runs on update. */
+/** Site images can change in Admin; revalidatePath("/") runs on update. */
 export const revalidate = 120;
 
 export const metadata: Metadata = {

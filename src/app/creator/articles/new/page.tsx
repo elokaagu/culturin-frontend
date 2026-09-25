@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { StudioArticleEditorPage } from "@/app/studio/articles/_components/StudioArticleEditorPage";
+import { StudioArticleEditorPage } from "@/app/admin/articles/_components/StudioArticleEditorPage";
 
 export const metadata: Metadata = {
   title: "New article",

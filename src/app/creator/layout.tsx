@@ -21,7 +21,7 @@ export default async function CreatorLayout({ children }: { children: ReactNode 
   }
 
   if (state.isAdmin) {
-    redirect("/studio");
+    redirect("/admin");
   }
 
   return <CreatorLayoutClient email={state.email}>{children}</CreatorLayoutClient>;

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { StudioVideoEditorPage } from "@/app/studio/videos/_components/StudioVideoEditorPage";
+import { StudioVideoEditorPage } from "@/app/admin/videos/_components/StudioVideoEditorPage";
 
 export const metadata: Metadata = {
   title: "New video",

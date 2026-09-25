@@ -20,7 +20,7 @@ const nextConfig = {
     NEXT_PUBLIC_SUPABASE_ANON_KEY: publicAnonKey,
     NEXT_PUBLIC_VIDEO_PLAYER_ORIGIN: publicVideoPlayerOrigin,
   },
-  // Studio (and other soft navigations) must not reuse a stale dynamic RSC payload —
+  // Admin (and other soft navigations) must not reuse a stale dynamic RSC payload —
   // e.g. articles list showing "0 items" while the sidebar count already says 1.
   experimental: {
     staleTimes: {
@@ -44,6 +44,8 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      { source: "/studio", destination: "/admin", permanent: true },
+      { source: "/studio/:path*", destination: "/admin/:path*", permanent: true },
       { source: "/spotlight", destination: "/community", permanent: true },
       { source: "/spotlight/:path*", destination: "/community", permanent: true },
       { source: "/nearby", destination: "/curated-experiences", permanent: true },

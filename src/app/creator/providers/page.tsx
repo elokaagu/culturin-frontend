@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 import { fetchMyCreatorSubmissions } from "@/app/creator/creatorSubmissions.server";
-import { StudioProviderForm } from "@/app/studio/providers/StudioProviderForm";
-import { studioListRowClass } from "@/app/studio/_components/StudioCulturinListKit";
+import { StudioProviderForm } from "@/app/admin/providers/StudioProviderForm";
+import { studioListRowClass } from "@/app/admin/_components/StudioCulturinListKit";
 
 export const metadata: Metadata = {
   title: "Experiences",
