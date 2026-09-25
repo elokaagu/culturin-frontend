@@ -19,6 +19,7 @@ import EditorialStatement from "./components/EditorialStatement";
 import HomeFooter from "./components/HomeFooter";
 import SiteHeader from "./components/SiteHeader";
 import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
+import HeroSlideshow, { type HeroSlide } from "./components/HeroSlideshow";
 import AttendeeOriginMap from "./components/AttendeeOriginMap";
 import MagneticButton from "./components/motion/MagneticButton";
 import { getSiteImagesMap, resolveSiteImage, resolveEventHero, manifestDefault } from "@/lib/siteImages";
@@ -38,6 +39,8 @@ const INK = EDITORIAL_INK;
 const INK_MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
+
+const HERO_SLIDE_SLOTS = ["homepage-hero", "homepage-hero-2", "homepage-hero-3", "homepage-hero-4"] as const;
 
 const GALLERY_PREVIEW_SLOTS = [
   { key: "homepage-preview-1", span: "row-span-2" },
@@ -68,11 +71,11 @@ const PILLARS = [
 
 const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Super Bowl", logoSrc: "/partners/super-bowl.webp" },
-  { name: "Davos", logoSrc: "/partners/davos-logo.svg" },
+  { name: "Davos", logoSrc: "/partners/davos-logo.svg", heightClass: "h-14" },
   { name: "UN Assembly", logoSrc: "/partners/unga-logo.png" },
-  { name: "Nike", logoSrc: "/partners/nike-logo.svg" },
+  { name: "Nike", logoSrc: "/partners/nike-logo.svg", heightClass: "h-6" },
   { name: "Virgin", logoSrc: "/partners/virgin-logo.webp" },
-  { name: "Microsoft", logoSrc: "/partners/microsoft.webp" },
+  { name: "Microsoft", logoSrc: "/partners/microsoft.webp", heightClass: "h-14" },
 ];
 
 const SERVICES = [
@@ -106,9 +109,16 @@ function cityTag(location: string): string {
 
 export default async function HomePage() {
   const siteImages = await getSiteImagesMap();
-  const hero = resolveSiteImage(siteImages, "homepage-hero", manifestDefault("homepage-hero"));
+  const heroSlides: HeroSlide[] = HERO_SLIDE_SLOTS.map((key) => {
+    const image = resolveSiteImage(siteImages, key, manifestDefault(key));
+    return { ...image, caption: image.alt, blurDataURL: blurForSrc(image.src) };
+  }).filter((slide) => slide.src);
   const cannesSection = resolveSiteImage(siteImages, "homepage-cannes-section", manifestDefault("homepage-cannes-section"));
   const parallax = resolveSiteImage(siteImages, "homepage-parallax", manifestDefault("homepage-parallax"));
+  const pillars = PILLARS.map((p, i) => ({
+    ...p,
+    image: resolveSiteImage(siteImages, `homepage-pillar-${i + 1}`, manifestDefault(`homepage-pillar-${i + 1}`)),
+  }));
   const galleryPreview = GALLERY_PREVIEW_SLOTS.map((slot) => ({
     ...resolveSiteImage(siteImages, slot.key, manifestDefault(slot.key)),
     span: slot.span,
@@ -122,50 +132,40 @@ export default async function HomePage() {
 
       {/* ── Hero ───────────────────────────────────────────────── */}
       <section className="px-3 pb-3 pt-[4.75rem] sm:px-4 sm:pb-4 sm:pt-20">
-        <div className="relative flex min-h-[calc(100dvh-5.5rem)] flex-col items-center justify-center overflow-hidden rounded-3xl px-8 text-center sm:min-h-[calc(100dvh-6.5rem)] sm:rounded-[2rem] sm:px-14">
-          <BlurImage
-            src={hero.src}
-            alt={hero.alt}
-            fill
-            priority
-            className="object-cover"
-            placeholder="blur"
-            blurDataURL={blurForSrc(hero.src)}
-            sizes="100vw"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.6) 100%)",
-            }}
-          />
-          <Reveal className="relative z-10 mx-auto flex max-w-3xl flex-col items-center" y={32}>
-            <h1
-              className="m-0 text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
-              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-            >
-              We connect the world through Culture.
-            </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75">
-              Culturin brings leaders of industry together to create culturally significant experiences, and equip brands with the intelligence to win.
-            </p>
-            <MagneticButton strength={0.35} className="mt-8 w-fit">
-              <Link
-                href="/partner"
-                className="inline-flex items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
-                style={{ background: ACCENT, color: SURFACE_DARK }}
+        <HeroSlideshow
+          slides={heroSlides}
+          left={
+            <Reveal y={32}>
+              <h1
+                className="m-0 max-w-2xl text-4xl font-medium leading-[1.05] text-white sm:text-5xl lg:text-6xl"
+                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                Create an experience
-              </Link>
-            </MagneticButton>
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/55">
-              <span>Cannes</span>
-              <span>New York</span>
-              <span>London</span>
-            </div>
-          </Reveal>
-        </div>
+                We connect the world through Culture.
+              </h1>
+            </Reveal>
+          }
+          right={
+            <Reveal y={24} delay={120} className="flex flex-col items-start md:items-end">
+              <p className="m-0 max-w-sm text-sm leading-relaxed text-white/80 sm:text-base">
+                Culturin brings leaders of industry together to create culturally significant experiences, and equip brands with the intelligence to win.
+              </p>
+              <MagneticButton strength={0.35} className="mt-6 w-fit">
+                <Link
+                  href="/partner"
+                  className="inline-flex items-center rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+                  style={{ background: ACCENT, color: SURFACE_DARK }}
+                >
+                  Create an experience
+                </Link>
+              </MagneticButton>
+              <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[10px] font-semibold uppercase tracking-[0.25em] text-white/55">
+                <span>Cannes</span>
+                <span>New York</span>
+                <span>London</span>
+              </div>
+            </Reveal>
+          }
+        />
       </section>
 
       {/* ── Client logos ───────────────────────────────────────── */}
@@ -191,7 +191,11 @@ export default async function HomePage() {
                 className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                We create iconic moments at the pinnacle of culture.
+                We create{" "}
+                <em className="italic" style={{ color: ACCENT }}>
+                  iconic moments
+                </em>{" "}
+                at the pinnacle of culture.
               </h2>
             </Reveal>
             <Reveal as="div" delay={120} className="flex flex-col gap-6">
@@ -204,17 +208,41 @@ export default async function HomePage() {
             </Reveal>
           </div>
 
-          <div className="mt-20 grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4" style={{ background: RULE }}>
-            {PILLARS.map((p, i) => (
-              <Reveal key={p.label} as="div" delay={i * 120}>
-                <div className="h-full px-8 py-10" style={{ background: BG }}>
-                  <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: INK_MUTED }}>
-                    {p.label}
-                  </p>
-                  <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                    {p.body}
-                  </p>
-                </div>
+          <div className="mt-20 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {pillars.map((p, i) => (
+              <Reveal key={p.label} as="div" delay={i * 140} y={48} className="h-full">
+                <article
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border transition-[transform,border-color,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.55)]"
+                  style={{ borderColor: RULE, background: `color-mix(in srgb, ${INK} 4%, ${BG})` }}
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <BlurImage
+                      src={p.image.src}
+                      alt={p.image.alt}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-[1200ms] ease-out group-hover:!scale-[1.06]"
+                      placeholder="blur"
+                      blurDataURL={blurForSrc(p.image.src)}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                    <span className="absolute left-4 top-4 text-[10px] font-semibold tracking-[0.25em] text-white/85">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div className="flex flex-1 flex-col px-6 pb-7 pt-6">
+                    <span
+                      className="mb-4 block h-px w-8 origin-left transition-transform duration-500 ease-out group-hover:scale-x-[2.5]"
+                      style={{ background: ACCENT }}
+                    />
+                    <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: INK }}>
+                      {p.label}
+                    </p>
+                    <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
+                      {p.body}
+                    </p>
+                  </div>
+                </article>
               </Reveal>
             ))}
           </div>

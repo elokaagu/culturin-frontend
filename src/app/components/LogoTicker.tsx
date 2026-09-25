@@ -10,6 +10,8 @@ export type LogoTickerItem = {
    * to switch that entry over, no other changes needed.
    */
   logoSrc?: string;
+  /** Tailwind height override for logos whose artwork is unusually tight or padded. */
+  heightClass?: string;
 };
 
 export default function LogoTicker({
@@ -25,16 +27,16 @@ export default function LogoTicker({
       className="overflow-hidden"
       style={{ maskImage: "linear-gradient(90deg, transparent, black 8%, black 92%, transparent)" }}
     >
-      <Marquee className="[--duration:28s] [--gap:4rem] py-2">
+      <Marquee className="[--duration:28s] [--gap:4.5rem] py-2">
         {items.map((item, i) => (
-          <div key={`${item.name}-${i}`} className="flex shrink-0 items-center justify-center" style={{ height: 80 }}>
+          <div key={`${item.name}-${i}`} className="flex shrink-0 items-center justify-center" style={{ height: 56 }}>
             {item.logoSrc ? (
               <Image
                 src={item.logoSrc}
                 alt={item.name}
-                width={300}
-                height={80}
-                className="h-20 w-auto object-contain opacity-80 grayscale"
+                width={180}
+                height={56}
+                className={`${item.heightClass ?? "h-10"} w-auto max-w-[120px] object-contain opacity-80 brightness-0 dark:opacity-90 dark:invert`}
                 unoptimized
               />
             ) : (
