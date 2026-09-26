@@ -2,6 +2,7 @@
 -- Each event is stored as a JSON document (the CulturinEvent shape used by the public
 -- /events pages). Until this table has rows, the site falls back to the built-in events
 -- in src/lib/eventsData.ts, so running this migration changes nothing on its own.
+
 -- Use "Import built-in events" in Admin > Events to copy them in and start editing.
 
 create table if not exists public.cms_events (
