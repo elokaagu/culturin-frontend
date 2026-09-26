@@ -14,6 +14,7 @@ import {
 } from "@/lib/theme/culturinTokens";
 import BlurImage from "./components/motion/BlurImage";
 import Reveal from "./components/motion/Reveal";
+import WordReveal from "./components/motion/WordReveal";
 import HomeFooter from "./components/HomeFooter";
 import SiteHeader from "./components/SiteHeader";
 import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
@@ -197,26 +198,28 @@ export default async function HomePage() {
             </p>
           </Reveal>
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
-            <Reveal as="div">
-              <h2
-                className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
-                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-              >
-                We create{" "}
-                <em className="italic" style={{ color: ACCENT }}>
-                  iconic moments
-                </em>{" "}
-                at the pinnacle of culture.
-              </h2>
-            </Reveal>
-            <Reveal as="div" delay={120} className="flex flex-col gap-6">
-              <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                We put the right people in the same room, and help brands enter new territories with cultural intelligence, through the rooms, the stories, and the marketing that holds them.
-              </p>
-              <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Our team has produced cultural moments at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly. We bring that same care to every room we build, for our community, and for the partners who build alongside us.
-              </p>
-            </Reveal>
+            <WordReveal
+              className="m-0 text-4xl font-medium leading-[1.1] sm:text-5xl"
+              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+              accent={ACCENT}
+              segments={[
+                { text: "We create" },
+                { text: "iconic moments", highlight: true },
+                { text: "at the pinnacle of culture." },
+              ]}
+            />
+            <div className="flex flex-col gap-6">
+              <Reveal delay={450} y={32}>
+                <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
+                  We put the right people in the same room, and help brands enter new territories with cultural intelligence, through the rooms, the stories, and the marketing that holds them.
+                </p>
+              </Reveal>
+              <Reveal delay={650} y={32}>
+                <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
+                  Our team has produced cultural moments at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly. We bring that same care to every room we build, for our community, and for the partners who build alongside us.
+                </p>
+              </Reveal>
+            </div>
           </div>
         </div>
       </section>
