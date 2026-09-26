@@ -26,6 +26,8 @@ export type CulturinEvent = {
   shortDescription: string;
   /** Display date string, e.g. "August 25 to September 7, 2026" */
   date: string;
+  /** Last day of the event as YYYY-MM-DD (omit for a single-day event). Used to build `date` in Admin. */
+  endsOn?: string;
   /** City / venue display string */
   location: string;
   /** Category tag shown on the index card */

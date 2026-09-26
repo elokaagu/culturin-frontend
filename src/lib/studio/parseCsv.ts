@@ -67,9 +67,14 @@ export type ParsedSubscriberRow = {
 };
 
 /** Parses a CSV file's text into subscriber rows, matching common Mailchimp-style header names. */
-export function parseSubscriberCsv(text: string): { rows: ParsedSubscriberRow[]; unmappedColumns: string[] } {
+export function parseSubscriberCsv(text: string): {
+  rows: ParsedSubscriberRow[];
+  unmappedColumns: string[];
+  /** Rows left out because the file marks them unsubscribed, cleaned, pending, etc. */
+  skippedNotSubscribed: number;
+} {
   const table = parseCsv(text);
-  if (table.length === 0) return { rows: [], unmappedColumns: [] };
+  if (table.length === 0) return { rows: [], unmappedColumns: [], skippedNotSubscribed: 0 };
 
   const [headerRow, ...dataRows] = table;
   const normalizedHeaders = headerRow.map(normalizeHeader);
@@ -87,7 +92,18 @@ export function parseSubscriberCsv(text: string): { rows: ParsedSubscriberRow[];
 
   const unmappedColumns = headerRow.filter((_, i) => !mappedIdx.has(i));
 
-  const rows: ParsedSubscriberRow[] = dataRows.map((cells) => {
+  // Mailchimp exports include a status column when you export all contacts. Only "subscribed" people
+  // may be emailed, so anything else (unsubscribed, cleaned, non-subscribed, archived, pending) is skipped.
+  const statusIdx = normalizedHeaders.findIndex((h) => ["status", "emailmarketingstatus", "marketingstatus"].includes(h));
+  let skippedNotSubscribed = 0;
+
+  const rows: ParsedSubscriberRow[] = dataRows.filter((cells) => {
+    if (statusIdx === -1) return true;
+    const status = (cells[statusIdx] ?? "").trim().toLowerCase();
+    if (status === "" || status === "subscribed") return true;
+    skippedNotSubscribed += 1;
+    return false;
+  }).map((cells) => {
     const raw: Record<string, string> = {};
     headerRow.forEach((header, i) => {
       const label = header.trim();
@@ -103,5 +119,5 @@ export function parseSubscriberCsv(text: string): { rows: ParsedSubscriberRow[];
     };
   });
 
-  return { rows, unmappedColumns };
+  return { rows, unmappedColumns, skippedNotSubscribed };
 }

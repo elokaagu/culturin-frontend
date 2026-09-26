@@ -17,7 +17,7 @@ import { loadAudience, removeAudience, useAdminCollection } from "@/app/admin/_l
 import { parseSubscriberCsv } from "@/lib/studio/parseCsv";
 import { formatSubscriberSource, type StudioSubscriber } from "@/lib/studio/subscribers";
 
-type ImportTotals = { inserted: number; skippedExisting: number; duplicateInFile: number; invalid: number };
+type ImportTotals = { inserted: number; skippedExisting: number; duplicateInFile: number; invalid: number; notSubscribed: number };
 
 const IMPORT_BATCH_SIZE = 500;
 
@@ -95,14 +95,14 @@ export function StudioSubscribersPageClient({
     setImportTotals(null);
     setImporting("Reading file…");
 
-    const { rows } = parseSubscriberCsv(await file.text());
+    const { rows, skippedNotSubscribed } = parseSubscriberCsv(await file.text());
     if (rows.length === 0) {
       setImporting(null);
       setImportError("Couldn't find any rows in that file. Make sure it has an Email column.");
       return;
     }
 
-    const totals: ImportTotals = { inserted: 0, skippedExisting: 0, duplicateInFile: 0, invalid: 0 };
+    const totals: ImportTotals = { inserted: 0, skippedExisting: 0, duplicateInFile: 0, invalid: 0, notSubscribed: skippedNotSubscribed };
     for (let i = 0; i < rows.length; i += IMPORT_BATCH_SIZE) {
       setImporting(`Importing ${Math.min(i + IMPORT_BATCH_SIZE, rows.length)} of ${rows.length}…`);
       const res = await fetch("/api/admin/subscribers-import", {
@@ -186,6 +186,7 @@ export function StudioSubscribersPageClient({
           Imported {importTotals.inserted}
           {importTotals.skippedExisting > 0 ? `, skipped ${importTotals.skippedExisting} already subscribed` : ""}
           {importTotals.duplicateInFile > 0 ? `, ${importTotals.duplicateInFile} duplicate rows in the file` : ""}
+          {importTotals.notSubscribed > 0 ? `, left out ${importTotals.notSubscribed} who are unsubscribed, cleaned or pending` : ""}
           {importTotals.invalid > 0 ? `, ${importTotals.invalid} rows had no valid email` : ""}.
         </Notice>
       ) : null}

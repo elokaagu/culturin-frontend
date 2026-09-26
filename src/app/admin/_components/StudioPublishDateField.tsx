@@ -158,6 +158,7 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
                   ["--rdp-accent-background-color" as string]: "rgba(205, 107, 63, 0.18)",
                   ["--rdp-day_button-border-radius" as string]: "0.5rem",
                   ["--rdp-today-color" as string]: "#cd6b3f",
+                  ["--rdp-selected-border" as string]: "2px solid #cd6b3f",
                 } as CSSProperties
               }
             >
@@ -174,6 +175,8 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
                   "[&_.rdp-disabled]:opacity-40",
                   "[&_.rdp-nav_button]:!text-[color:var(--c-accent)] [&_.rdp-chevron]:!fill-[color:var(--c-accent)]",
                   "[&_.rdp-day_button:hover]:!bg-[color:color-mix(in_srgb,var(--c-accent)_14%,transparent)]",
+                  "[&_.rdp-selected_.rdp-day_button]:!border-[color:var(--c-accent)] [&_.rdp-selected_.rdp-day_button]:!bg-[color:var(--c-accent)] [&_.rdp-selected_.rdp-day_button]:!text-[#1c1a17]",
+                  "[&_.rdp-day_button:focus-visible]:!outline-[color:var(--c-accent)]",
                 )}
               />
             </div>

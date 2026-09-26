@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { events as builtinEvents } from "@/lib/eventsData";
-import { BUILTIN_START_DATES, getAdminEvents, normalizeEvent } from "@/lib/events/eventsStore";
+import { BUILTIN_END_DATES, BUILTIN_START_DATES, getAdminEvents, normalizeEvent } from "@/lib/events/eventsStore";
 import { getCurrentAdminState } from "@/lib/studio/admin";
 import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
   if (body.action === "import-builtin") {
     const rows = builtinEvents.map((event) => ({
       slug: event.slug,
-      data: event,
+      data: { ...event, endsOn: BUILTIN_END_DATES[event.slug] },
       starts_on: BUILTIN_START_DATES[event.slug] ?? null,
     }));
     const { error } = await db.from("cms_events").upsert(rows, { onConflict: "slug", ignoreDuplicates: true });

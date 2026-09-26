@@ -1,5 +1,6 @@
 import { getCmsDbFreshOrNull, getCmsDbOrNull } from "@/lib/cms/server";
 import { events as builtinEvents, type CulturinEvent, type EventSection } from "@/lib/eventsData";
+import { formatEventDateRange, isYmd } from "@/lib/events/dateRange";
 
 type DbRow = { slug: string; data: unknown; starts_on: string | null };
 
@@ -8,6 +9,13 @@ export const BUILTIN_START_DATES: Record<string, string> = {
   "cannes-lions-2026": "2026-06-22",
   "us-open-2026": "2026-08-25",
   "unga-2026": "2026-09-16",
+};
+
+/** End dates for the built-in events, used when they're imported. */
+export const BUILTIN_END_DATES: Record<string, string> = {
+  "cannes-lions-2026": "2026-06-26",
+  "us-open-2026": "2026-09-07",
+  "unga-2026": "2026-09-26",
 };
 
 const PHOTO_POSITIONS = [
@@ -80,7 +88,12 @@ export function normalizeEvent(
     })
     .filter((st) => st.value || st.label);
 
-  const start = typeof startsOn === "string" && /^\d{4}-\d{2}-\d{2}$/.test(startsOn) ? startsOn : null;
+  const start = isYmd(startsOn) ? startsOn : null;
+  const rawEnd = isYmd(o.endsOn) ? o.endsOn : null;
+  if (start && rawEnd && rawEnd < start) return { ok: false, message: "The end date can't be before the start date." };
+  const endsOn = start && rawEnd && rawEnd !== start ? rawEnd : undefined;
+  // With a start date, the displayed date is always generated from it, so it can't drift out of sync.
+  const generatedDate = start ? formatEventDateRange(start, endsOn) : "";
 
   const event: CulturinEvent = {
     slug,
@@ -89,7 +102,8 @@ export function normalizeEvent(
     tagline: str(o.tagline, LIMITS.long),
     subtagline: str(o.subtagline, LIMITS.long),
     shortDescription: str(o.shortDescription, LIMITS.long),
-    date: str(o.date, LIMITS.short),
+    date: generatedDate || str(o.date, LIMITS.short),
+    endsOn,
     location: str(o.location, LIMITS.short),
     category: str(o.category, LIMITS.short),
     heroImage: str(o.heroImage, 1000),

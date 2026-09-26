@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent, type ReactNode } from "react";
 
 import { Notice } from "@/app/admin/_components/AdminListParts";
+import { StudioDateField } from "@/app/admin/_components/StudioDateField";
 import { StudioImageUploadButton } from "@/app/admin/_components/StudioImageUploadButton";
 import { studioCancelButtonClass, studioCreateButtonClass } from "@/app/admin/_components/StudioCulturinListKit";
 import { studioCheckboxClass, studioFieldInputClass, studioMutedClass, studioPanelClass } from "@/app/admin/_lib/studioTheme";
 import type { CulturinEvent } from "@/lib/eventsData";
+import { formatEventDateRange } from "@/lib/events/dateRange";
 import { cn } from "@/lib/utils";
 
 type FormSection = { id: string; label: string; headline: string; body: string; photos: { src: string; alt: string; position: string }[] };
@@ -18,6 +20,7 @@ type FormState = {
   name: string;
   slug: string;
   startsOn: string;
+  endsOn: string;
   navLabel: string;
   tagline: string;
   subtagline: string;
@@ -52,6 +55,7 @@ function initialState(event: CulturinEvent | null, startsOn: string | null): For
     name: event?.name ?? "",
     slug: event?.slug ?? "",
     startsOn: startsOn ?? "",
+    endsOn: event?.endsOn ?? "",
     navLabel: event?.navLabel ?? "",
     tagline: event?.tagline ?? "",
     subtagline: event?.subtagline ?? "",
@@ -126,6 +130,11 @@ export function StudioEventForm({
     }
     setPending(true);
     try {
+      if (f.startsOn && f.endsOn && f.endsOn < f.startsOn) {
+        setError("The end date can't be before the start date.");
+        setPending(false);
+        return;
+      }
       const { startsOn: start, ...eventFields } = f;
       const res = await fetch("/api/admin/events", {
         method: "POST",
@@ -178,12 +187,28 @@ export function StudioEventForm({
               placeholder="art-basel-2026"
             />
           </Label>
-          <Label text="Display date" hint='Shown as written, e.g. "December 4 to 7, 2026".'>
-            <input className={inputClass} value={f.date} onChange={(e) => set("date", e.target.value)} />
+          <Label text="Start date" hint="Also used to order events, earliest first.">
+            <StudioDateField
+              value={f.startsOn}
+              onChange={(v) => setF((p) => ({ ...p, startsOn: v, endsOn: p.endsOn && p.endsOn < v ? "" : p.endsOn }))}
+              ariaLabel="Start date"
+            />
           </Label>
-          <Label text="Start date" hint="Used to order events, earliest first.">
-            <input type="date" className={inputClass} value={f.startsOn} onChange={(e) => set("startsOn", e.target.value)} />
+          <Label text="End date" hint="Leave empty for a one-day event.">
+            <StudioDateField
+              value={f.endsOn}
+              onChange={(v) => set("endsOn", v)}
+              ariaLabel="End date"
+              placeholder="Choose an end date"
+              minDate={f.startsOn || undefined}
+            />
           </Label>
+          <p className={cn("m-0 text-xs sm:col-span-2", studioMutedClass)}>
+            Shown on the site as:{" "}
+            <span className="font-medium text-[color:var(--c-ink)]">
+              {formatEventDateRange(f.startsOn, f.endsOn) || f.date || "Choose a start date"}
+            </span>
+          </p>
           <Label text="Location">
             <input className={inputClass} value={f.location} onChange={(e) => set("location", e.target.value)} placeholder="Miami, Florida" />
           </Label>
