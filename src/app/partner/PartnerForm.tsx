@@ -24,6 +24,31 @@ const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 const fieldClass =
   "w-full border-0 border-b bg-transparent px-0 py-2.5 text-base outline-none transition placeholder:opacity-50 focus:border-[color:var(--c-accent)] disabled:opacity-60";
 
+/** One photo in the stack: lazy-loaded, blur placeholder, then blur-to-sharp once decoded. */
+function PanelImage({ img, active }: { img: PartnerImage; active: boolean }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div
+      className={`absolute inset-0 transition-opacity duration-700 ease-out motion-reduce:transition-none ${active ? "opacity-100" : "opacity-0"}`}
+      aria-hidden={!active}
+    >
+      <Image
+        src={img.src}
+        alt={active ? img.alt : ""}
+        fill
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        placeholder="blur"
+        blurDataURL={img.blur}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+        className={`object-cover transition-[filter,transform] duration-1000 ease-out motion-reduce:transition-none ${
+          loaded ? "scale-100 blur-0" : "scale-105 blur-xl"
+        }`}
+      />
+    </div>
+  );
+}
+
 export function PartnerExperience({
   initialInterest,
   images,
@@ -90,23 +115,9 @@ export function PartnerExperience({
         className="relative flex min-h-[20rem] flex-col justify-end overflow-hidden rounded-3xl sm:min-h-[26rem]"
         style={{ background: SURFACE_DARK }}
       >
-        {CHOICES.filter((c) => visited.has(c.value) && images[c.value]).map((c) => {
-          const img = images[c.value];
-          return (
-            <Image
-              key={c.value}
-              src={img.src}
-              alt={c.value === interest ? img.alt : ""}
-              aria-hidden={c.value !== interest}
-              fill
-              priority={c.value === (initialInterest && CHOICES.some((x) => x.value === initialInterest) ? initialInterest : "cultural-marketing")}
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              placeholder="blur"
-              blurDataURL={img.blur}
-              className={`object-cover transition-opacity duration-700 ease-out motion-reduce:transition-none ${c.value === interest ? "opacity-100" : "opacity-0"}`}
-            />
-          );
-        })}
+        {CHOICES.filter((c) => visited.has(c.value) && images[c.value]).map((c) => (
+          <PanelImage key={c.value} img={images[c.value]} active={c.value === interest} />
+        ))}
         <div
           className="absolute inset-0"
           style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.7) 78%, rgba(0,0,0,0.88) 100%)" }}
