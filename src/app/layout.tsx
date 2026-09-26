@@ -5,7 +5,6 @@ import { Analytics } from "@vercel/analytics/react";
 import "./styles/globals.css";
 import { Metadata, type Viewport } from "next";
 
-import { createSupabaseServerClient } from "../lib/supabase/server";
 import SupabaseAuthProvider from "./components/SupabaseAuthProvider";
 import ViewTransitionsRoot from "./components/ViewTransitionsRoot";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -19,10 +18,10 @@ const twkEverett = localFont({
   variable: "--font-sans",
   display: "swap",
   src: [
-    { path: "../../public/fonts/TWKEverett-Light copy.ttf", weight: "300", style: "normal" },
-    { path: "../../public/fonts/TWKEverett-Book copy.ttf", weight: "400", style: "normal" },
-    { path: "../../public/fonts/TWKEverett-Medium copy.ttf", weight: "500", style: "normal" },
-    { path: "../../public/fonts/TWKEverett-Bold copy.ttf", weight: "700", style: "normal" },
+    { path: "../../public/fonts/TWKEverett-Light.woff2", weight: "300", style: "normal" },
+    { path: "../../public/fonts/TWKEverett-Book.woff2", weight: "400", style: "normal" },
+    { path: "../../public/fonts/TWKEverett-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../../public/fonts/TWKEverett-Bold.woff2", weight: "700", style: "normal" },
   ],
 });
 
@@ -30,10 +29,10 @@ const recoleta = localFont({
   variable: "--font-display",
   display: "swap",
   src: [
-    { path: "../../public/fonts/Recoleta Regular copy.otf", weight: "400", style: "normal" },
-    { path: "../../public/fonts/Recoleta Medium copy.otf", weight: "500", style: "normal" },
-    { path: "../../public/fonts/Recoleta SemiBold copy.otf", weight: "600", style: "normal" },
-    { path: "../../public/fonts/Recoleta Bold copy.otf", weight: "700", style: "normal" },
+    { path: "../../public/fonts/Recoleta-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../../public/fonts/Recoleta-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../../public/fonts/Recoleta-SemiBold.woff2", weight: "600", style: "normal" },
+    { path: "../../public/fonts/Recoleta-Bold.woff2", weight: "700", style: "normal" },
   ],
 });
 
@@ -60,25 +59,11 @@ export const viewport: Viewport = {
   ],
 };
 
-async function getInitialAuthUser() {
-  try {
-    const supabase = await createSupabaseServerClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    return user;
-  } catch {
-    return null;
-  }
-}
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const initialUser = await getInitialAuthUser();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -100,7 +85,7 @@ export default async function RootLayout({
           `}
         </Script>
         <ThemeProvider>
-          <SupabaseAuthProvider initialUser={initialUser}>
+          <SupabaseAuthProvider>
             <ViewTransitionsRoot>
               {children}
               <Analytics />

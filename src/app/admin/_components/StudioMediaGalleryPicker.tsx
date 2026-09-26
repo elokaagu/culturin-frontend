@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import LazyImg from "@/app/components/LazyImg";
 
 type GalleryPickerImage = {
   id: string;
@@ -112,8 +113,7 @@ export function StudioMediaGalleryPicker({
                     }}
                     className="group block w-full overflow-hidden rounded-xl border border-[color:var(--c-rule)] text-left transition hover:border-[color:var(--c-accent)] focus-visible:border-[color:var(--c-accent)] focus-visible:outline-none"
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.src} alt={img.alt} loading="lazy" className="aspect-square w-full object-cover" />
+                    <LazyImg src={img.src} alt={img.alt} loading="lazy" className="aspect-square w-full object-cover" />
                     <span className="block truncate px-2 py-1.5 text-[11px] text-[color:var(--c-muted)]">
                       {img.eventLabel}
                     </span>

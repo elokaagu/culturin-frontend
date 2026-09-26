@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { StudioImageUploadButton } from "@/app/admin/_components/StudioImageUploadButton";
+import LazyImg from "@/app/components/LazyImg";
 
 export type StudioSiteImageSlot = {
   key: string;
@@ -52,8 +53,7 @@ function SlotCard({ slot, onSaved }: { slot: StudioSiteImageSlot; onSaved: () =>
 
       <div className="mt-4 flex flex-col gap-4 sm:flex-row">
         {src ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <LazyImg
             src={src}
             alt=""
             className="h-32 w-full shrink-0 rounded-xl border border-neutral-200 object-cover dark:border-white/10 sm:w-48"

@@ -24,13 +24,11 @@ function createBrowserClientSafe(): SupabaseClient | null {
 
 export default function SupabaseAuthProvider({
   children,
-  initialUser,
 }: {
   children: React.ReactNode;
-  initialUser: User | null;
 }) {
   const [supabase] = useState(createBrowserClientSafe);
-  const [user, setUser] = useState<User | null>(initialUser);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,7 +42,7 @@ export default function SupabaseAuthProvider({
 
     void supabase.auth.getSession().then(({ data: { session } }) => {
       if (cancelled) return;
-      setUser(session?.user ?? initialUser);
+      setUser(session?.user ?? null);
       setLoading(false);
     });
 
@@ -59,7 +57,7 @@ export default function SupabaseAuthProvider({
       cancelled = true;
       subscription.unsubscribe();
     };
-  }, [supabase, initialUser]);
+  }, [supabase]);
 
   const value = useMemo(
     () => ({

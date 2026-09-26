@@ -8,6 +8,7 @@ import FollowTravelerButton from "../../components/FollowTravelerButton";
 import { ensureAppUser } from "@/lib/api/ensureAppUser";
 import { getTravelerProfile, listSuggestedTravelers } from "@/lib/repositories/followRepository";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import LazyImg from "@/app/components/LazyImg";
 
 type PageProps = {
   params: { id: string };
@@ -139,8 +140,7 @@ export default async function ProfileByIdPage({ params }: PageProps) {
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex min-w-0 items-center gap-3">
                             {playlist.image_url ? (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img src={playlist.image_url} alt={playlist.name} className="h-14 w-14 rounded-md object-cover" />
+                              <LazyImg src={playlist.image_url} alt={playlist.name} className="h-14 w-14 rounded-md object-cover" />
                             ) : (
                               <div className="h-14 w-14 rounded-md" style={{ background: "rgba(28,26,23,0.06)" }} />
                             )}

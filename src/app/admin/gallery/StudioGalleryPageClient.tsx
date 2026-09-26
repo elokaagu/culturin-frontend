@@ -13,6 +13,7 @@ import { useStudioConfirm } from "@/app/admin/_components/StudioConfirmDialog";
 import type { StudioGalleryListItem } from "@/lib/cms/queries";
 
 import { StudioGalleryForm } from "./StudioGalleryForm";
+import LazyImg from "@/app/components/LazyImg";
 
 export function StudioGalleryPageClient({
   images,
@@ -139,8 +140,7 @@ export function StudioGalleryPageClient({
                       key={image.id}
                       className="group relative aspect-square overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-white/12 dark:bg-white/[0.04]"
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={image.src} alt={image.alt} className="h-full w-full object-cover" />
+                      <LazyImg src={image.src} alt={image.alt} className="h-full w-full object-cover" />
                       <div className="absolute right-1.5 top-1.5 flex gap-1 opacity-0 transition focus-within:opacity-100 group-hover:opacity-100">
                         <button
                           type="button"

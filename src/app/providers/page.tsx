@@ -13,6 +13,8 @@ import {
 } from "../../lib/imagePlaceholder";
 import SafeContentImage from "../components/SafeContentImage";
 
+export const revalidate = 120;
+
 const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
 
 export default async function ProvidersPage() {

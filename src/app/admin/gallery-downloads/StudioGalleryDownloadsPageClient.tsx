@@ -15,6 +15,7 @@ import { useStudioConfirm } from "@/app/admin/_components/StudioConfirmDialog";
 import { StudioCulturinListSection, studioListRowClass } from "@/app/admin/_components/StudioCulturinListKit";
 import { loadAudience, removeAudience, useAdminCollection } from "@/app/admin/_lib/useAdminCollection";
 import type { StudioGalleryDownload } from "@/lib/studio/galleryDownloads";
+import LazyImg from "@/app/components/LazyImg";
 
 export function StudioGalleryDownloadsPageClient({
   downloads,
@@ -88,8 +89,7 @@ export function StudioGalleryDownloadsPageClient({
                   label={`Select download by ${d.email}`}
                 />
                 {d.imageSrc && !brokenImages.has(d.id) ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <LazyImg
                     src={d.imageSrc}
                     alt={d.imageAlt || ""}
                     onError={() => setBrokenImages((prev) => new Set(prev).add(d.id))}

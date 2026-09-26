@@ -14,6 +14,8 @@ import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listProvidersAsCards } from "../../lib/cms/queries";
 import type { providerCard } from "@/lib/interface";
 
+export const revalidate = 120;
+
 const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
 
 export default async function CuratedExperiencesPage() {

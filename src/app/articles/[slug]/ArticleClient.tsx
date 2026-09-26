@@ -21,6 +21,7 @@ import {
   resolveContentImageSrc,
 } from "../../../lib/imagePlaceholder";
 import type { curatorCard, fullBlog } from "@/lib/interface";
+import LazyImg from "@/app/components/LazyImg";
 
 type ToastState =
   | { open: false }
@@ -282,7 +283,7 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
                   </p>
                   <div className="flex items-start gap-4">
                     {curator.avatarUrl ? (
-                      <img
+                      <LazyImg
                         src={curator.avatarUrl}
                         alt={curator.name}
                         className="h-12 w-12 shrink-0 rounded-full object-cover"

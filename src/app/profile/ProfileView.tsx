@@ -30,6 +30,7 @@ import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/cu
 import LanguageToolsPanel from "./LanguageToolsPanel";
 import ProfileSpotLists from "./ProfileSpotLists";
 import SpotifyPlaylistsPanel from "./SpotifyPlaylistsPanel";
+import LazyImg from "@/app/components/LazyImg";
 
 const BIO_MAX_LEN = 500;
 const pageWrapStyle = { background: EDITORIAL_BG, color: EDITORIAL_INK };
@@ -281,8 +282,7 @@ export default function ProfileView() {
                     <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-neutral-100 dark:bg-[#121212]">
                       {avatarUrl ? (
                         // OAuth avatars often use hosts outside `next/image` remotePatterns.
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <LazyImg
                           src={avatarUrl}
                           alt={`${displayName} profile photo`}
                           className="h-full w-full object-cover"
@@ -315,8 +315,7 @@ export default function ProfileView() {
               <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 via-indigo-500 to-sky-400 p-[2px] shadow-lg shadow-violet-500/25 dark:shadow-violet-900/40 sm:h-36 sm:w-36">
                 <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-neutral-100 dark:bg-[#121212]">
                   {avatarUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <LazyImg
                       src={avatarUrl}
                       alt={`${displayName} profile photo`}
                       className="h-full w-full object-cover"

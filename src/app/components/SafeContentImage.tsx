@@ -12,6 +12,8 @@ type Props = {
   sizes: string;
   blurDataURL: string;
   unoptimized?: boolean;
+  /** Above-the-fold images: load immediately instead of lazily. */
+  priority?: boolean;
 };
 
 /**
@@ -24,6 +26,7 @@ export default function SafeContentImage({
   sizes,
   blurDataURL,
   unoptimized,
+  priority = false,
 }: Props) {
   const [currentSrc, setCurrentSrc] = useState(src);
   const [loaded, setLoaded] = useState(false);
@@ -46,7 +49,8 @@ export default function SafeContentImage({
         .filter(Boolean)
         .join(" ")}
       sizes={sizes}
-      loading="lazy"
+      loading={priority ? undefined : "lazy"}
+      priority={priority}
       placeholder="blur"
       blurDataURL={blurDataURL}
       unoptimized={unoptimized || currentSrc === FALLBACK_SRC}

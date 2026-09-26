@@ -1,9 +1,45 @@
 "use client";
 
+import { useState } from "react";
 import { Link } from "next-view-transitions";
 
 import type { ExploreWorldCountry } from "@/lib/exploreWorldCountries";
 import { resolveContentImageSrc } from "../../lib/imagePlaceholder";
+
+/** Small thumbnail that only downloads once the row is hovered or focused. */
+function HoverThumb({ src, armed }: { src: string; armed: boolean }) {
+  const small = src.replace(/([?&])w=\d+/, "$1w=160");
+  return (
+    <span
+      aria-hidden
+      className="relative h-7 w-7 shrink-0 overflow-hidden rounded-md opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+      style={armed ? { backgroundImage: `url(${small})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}
+    />
+  );
+}
+
+function CountryRow({ id, name, src }: { id: string; name: string; src: string }) {
+  const [armed, setArmed] = useState(false);
+  return (
+    <li className="border-b" style={{ borderColor: "var(--c-rule)" }}>
+      <Link
+        href={`/countries/${id}`}
+        onMouseEnter={() => setArmed(true)}
+        onFocus={() => setArmed(true)}
+        onTouchStart={() => setArmed(true)}
+        className="group flex items-center justify-between gap-2 py-3 no-underline outline-none"
+      >
+        <span
+          className="truncate text-base font-medium tracking-tight transition-colors group-hover:opacity-70 sm:text-lg"
+          style={{ ...displayFont, color: "var(--c-ink)" }}
+        >
+          {name}
+        </span>
+        <HoverThumb src={src} armed={armed} />
+      </Link>
+    </li>
+  );
+}
 
 const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
 
@@ -52,26 +88,7 @@ export default function WorldIndexGrid({
         <ul className="m-0 grid list-none grid-cols-2 gap-x-6 p-0 sm:grid-cols-3 md:grid-cols-4">
           {countries.map((c) => {
             const src = resolveContentImageSrc(c.imageUrl);
-            return (
-              <li key={c.id} className="border-b" style={{ borderColor: "var(--c-rule)" }}>
-                <Link
-                  href={`/countries/${c.id}`}
-                  className="group flex items-center justify-between gap-2 py-3 no-underline outline-none"
-                >
-                  <span
-                    className="truncate text-base font-medium tracking-tight transition-colors group-hover:opacity-70 sm:text-lg"
-                    style={{ ...displayFont, color: "var(--c-ink)" }}
-                  >
-                    {c.name}
-                  </span>
-                  <span
-                    aria-hidden
-                    className="relative h-7 w-7 shrink-0 overflow-hidden rounded-md bg-cover bg-center opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                    style={{ backgroundImage: `url(${src})` }}
-                  />
-                </Link>
-              </li>
-            );
+            return <CountryRow key={c.id} id={c.id} name={c.name} src={src} />;
           })}
         </ul>
       )}

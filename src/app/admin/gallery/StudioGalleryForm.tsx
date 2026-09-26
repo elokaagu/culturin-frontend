@@ -5,6 +5,7 @@ import { useState, type FormEvent } from "react";
 import { Field } from "@/app/admin/_components/Field";
 import { StudioImageUploadButton } from "@/app/admin/_components/StudioImageUploadButton";
 import type { StudioGalleryListItem } from "@/lib/cms/queries";
+import LazyImg from "@/app/components/LazyImg";
 
 export type GalleryFormInitial = Pick<
   StudioGalleryListItem,
@@ -103,8 +104,7 @@ export function StudioGalleryForm({
               buttonLabel={imageUrl ? "Replace photo" : "Upload photo"} />
           ) : null}
           {imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={imageUrl} alt="" className="mt-2 h-32 w-auto rounded-lg border border-neutral-200 object-cover dark:border-white/10" />
+            <LazyImg src={imageUrl} alt="" className="mt-2 h-32 w-auto rounded-lg border border-neutral-200 object-cover dark:border-white/10" />
           ) : null}
         </label>
         <Field name="event_label" label="Event name" required defaultValue={initial?.eventLabel ?? ""} />

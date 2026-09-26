@@ -8,6 +8,9 @@ import { getCmsDbOrNull } from "../../lib/cms/server";
 import { listCurators } from "../../lib/cms/queries";
 import { getShowcaseCuratorCards } from "../../lib/cms/showcaseContent";
 import type { curatorCard } from "@/lib/interface";
+import LazyImg from "@/app/components/LazyImg";
+
+export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: "Curators",
@@ -57,7 +60,7 @@ export default async function CuratorsPage() {
                   >
                     <div className="flex items-center gap-3">
                       {curator.avatarUrl ? (
-                        <img
+                        <LazyImg
                           src={curator.avatarUrl}
                           alt={curator.name}
                           className="h-14 w-14 shrink-0 rounded-full object-cover"

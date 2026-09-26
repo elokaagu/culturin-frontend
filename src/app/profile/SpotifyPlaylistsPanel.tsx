@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import LazyImg from "@/app/components/LazyImg";
 
 type SpotifyPlaylist = {
   id: string;
@@ -141,8 +142,7 @@ export default function SpotifyPlaylistsPanel({ onCountChange }: { onCountChange
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex min-w-0 items-center gap-3">
                   {playlist.image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={playlist.image_url} alt={playlist.name} className="h-14 w-14 rounded-md object-cover" />
+                    <LazyImg src={playlist.image_url} alt={playlist.name} className="h-14 w-14 rounded-md object-cover" />
                   ) : (
                     <div className="h-14 w-14 rounded-md bg-neutral-200 dark:bg-white/10" />
                   )}

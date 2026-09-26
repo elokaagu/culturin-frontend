@@ -55,10 +55,10 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
   if (submitted) {
     return (
       <div className="mt-10 max-w-md">
-        <p className="text-lg font-medium" style={{ color: "#1c1a17" }}>
+        <p className="text-lg font-medium" style={{ color: "var(--c-ink)" }}>
           You&rsquo;re on the list.
         </p>
-        <p className="mt-2 text-sm" style={{ color: "#6b6456" }}>
+        <p className="mt-2 text-sm" style={{ color: "var(--c-muted)" }}>
           We&rsquo;ll be in touch with details, tickets, and everything you need to know before the night.
         </p>
       </div>
@@ -66,7 +66,7 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
   }
 
   const fieldClass =
-    "w-full rounded-none border-b-2 bg-transparent px-0 py-3 text-base outline-none transition placeholder:text-[#9e9080] focus:border-[#1c1a17] disabled:opacity-60";
+    "w-full rounded-none border-b-2 bg-transparent px-0 py-3 text-base outline-none transition placeholder:opacity-60 placeholder:text-[color:var(--c-muted)] focus:border-[color:var(--c-ink)] disabled:opacity-60";
 
   return (
     <form onSubmit={handleSubmit} className="mt-10 flex max-w-lg flex-col gap-5">
@@ -80,7 +80,7 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
           onChange={(e) => setFirstName(e.target.value)}
           disabled={loading}
           className={fieldClass}
-          style={{ borderColor: "#9e9080", color: "#1c1a17" }}
+          style={{ borderColor: "var(--c-muted)", color: "var(--c-ink)" }}
         />
         <input
           type="text"
@@ -91,7 +91,7 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
           onChange={(e) => setLastName(e.target.value)}
           disabled={loading}
           className={fieldClass}
-          style={{ borderColor: "#9e9080", color: "#1c1a17" }}
+          style={{ borderColor: "var(--c-muted)", color: "var(--c-ink)" }}
         />
       </div>
       <input
@@ -103,7 +103,7 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
         onChange={(e) => setEmail(e.target.value)}
         disabled={loading}
         className={fieldClass}
-        style={{ borderColor: "#9e9080", color: "#1c1a17" }}
+        style={{ borderColor: "var(--c-muted)", color: "var(--c-ink)" }}
       />
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <input
@@ -114,7 +114,7 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
           onChange={(e) => setCompany(e.target.value)}
           disabled={loading}
           className={fieldClass}
-          style={{ borderColor: "#9e9080", color: "#1c1a17" }}
+          style={{ borderColor: "var(--c-muted)", color: "var(--c-ink)" }}
         />
         <input
           type="text"
@@ -124,7 +124,7 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
           onChange={(e) => setTitle(e.target.value)}
           disabled={loading}
           className={fieldClass}
-          style={{ borderColor: "#9e9080", color: "#1c1a17" }}
+          style={{ borderColor: "var(--c-muted)", color: "var(--c-ink)" }}
         />
       </div>
       <input
@@ -134,7 +134,7 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
         onChange={(e) => setLinkedin(e.target.value)}
         disabled={loading}
         className={fieldClass}
-        style={{ borderColor: "#9e9080", color: "#1c1a17" }}
+        style={{ borderColor: "var(--c-muted)", color: "var(--c-ink)" }}
       />
 
       {error ? (
@@ -147,7 +147,7 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
         type="submit"
         disabled={loading}
         className="mt-2 w-fit shrink-0 rounded-none px-8 py-3 text-sm font-semibold uppercase tracking-[0.18em] transition-opacity disabled:opacity-60"
-        style={{ background: "#1c1a17", color: "#e8e3da" }}
+        style={{ background: "var(--c-ink)", color: "var(--c-bg)" }}
       >
         {loading ? "Sending…" : "Request Access"}
       </button>

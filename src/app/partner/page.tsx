@@ -3,83 +3,77 @@ import type { Metadata } from "next";
 import { EDITORIAL_BG, EDITORIAL_INK, EDITORIAL_MUTED, EDITORIAL_RULE, editorialScopeClass } from "@/lib/theme/culturinTokens";
 import SiteHeader from "@/app/components/SiteHeader";
 import HomeFooter from "@/app/components/HomeFooter";
-import { ShineBorder } from "@/components/ui/shine-border";
 import { PartnerForm } from "./PartnerForm";
 
 const BG = EDITORIAL_BG;
 const INK = EDITORIAL_INK;
-const INK_MUTED = EDITORIAL_MUTED;
+const MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
+const DISPLAY = "var(--font-display), 'Times New Roman', serif";
 
 export const metadata: Metadata = {
   title: "Create an Experience | Culturin",
   description:
-    "Cultural marketing for brands launching in new territories or connecting with cultural intelligence. Write to Culturin and we'll set up a call.",
+    "Tell us what you want to create. Culturin builds cultural programming and intelligence for brands launching in new territories.",
 };
+
+const STEPS = [
+  { title: "Tell us the goal", body: "Choose what you're after and share a little context. A few lines is plenty." },
+  { title: "We set up a call", body: "We read every note ourselves and reply to find a time that works." },
+  { title: "We shape the room", body: "You get a proposal built around your brand, not a template." },
+];
 
 export default function PartnerPage({ searchParams }: { searchParams: { service?: string | string[] } }) {
   const service = typeof searchParams.service === "string" ? searchParams.service : undefined;
+
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
       <SiteHeader />
 
-      <div className="mx-auto max-w-5xl px-8 pb-24 sm:px-14" style={{ paddingTop: "8rem" }}>
-        <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-          Cultural marketing
-        </p>
-        <h1
-          className="m-0 max-w-2xl text-5xl font-medium leading-[1.08] sm:text-6xl"
-          style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
-        >
-          Create an experience with Culturin.
-        </h1>
-        <p className="mt-6 max-w-xl text-base leading-relaxed" style={{ color: INK_MUTED }}>
-          For brands with questions about cultural marketing: how to launch in a new territory, or how to
-          connect with cultural intelligence. Tell us what you need. We&apos;ll set up a call.
-        </p>
+      <main className="px-8 pb-28 pt-32 sm:px-14 sm:pt-36">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+          <div className="lg:sticky lg:top-32 lg:self-start">
+            <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: MUTED }}>
+              Create an experience
+            </p>
+            <h1 className="m-0 text-5xl font-medium leading-[1.05] sm:text-6xl" style={{ fontFamily: DISPLAY }}>
+              Let&apos;s build the room together.
+            </h1>
+            <p className="mt-6 max-w-md text-base leading-relaxed" style={{ color: MUTED }}>
+              Launching in a new territory, or looking for cultural intelligence? Tell us what you have in mind.
+            </p>
 
-        <div
-          className="mt-14 grid grid-cols-1 gap-14 border-t pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]"
-          style={{ borderColor: RULE }}
-        >
-          <div className="flex flex-col gap-8">
-            <div>
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: INK_MUTED }}>
-                New territories
-              </p>
-              <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                Enter a market with the room already built: Cannes, New York, London, and the nights in between,
-                and the people who already shape culture there.
-              </p>
-            </div>
-            <div>
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: INK_MUTED }}>
-                Cultural intelligence
-              </p>
-              <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                Briefs, introductions, and programming rooted in Culturin&apos;s network, not a campaign bolted onto a place.
-              </p>
-            </div>
-            <div>
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: INK_MUTED }}>
-                Prefer email?
-              </p>
-              <a
-                href="mailto:unik@culturin.com"
-                className="m-0 text-sm font-semibold no-underline transition-opacity hover:opacity-70"
-                style={{ color: INK }}
-              >
+            <ol className="m-0 mt-12 flex list-none flex-col gap-6 p-0">
+              {STEPS.map((step, i) => (
+                <li key={step.title} className="flex gap-5 border-t pt-5" style={{ borderColor: RULE }}>
+                  <span className="text-sm font-medium tabular-nums" style={{ color: MUTED }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <p className="m-0 text-base font-medium" style={{ fontFamily: DISPLAY }}>
+                      {step.title}
+                    </p>
+                    <p className="m-0 mt-1 text-sm leading-relaxed" style={{ color: MUTED }}>
+                      {step.body}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <p className="mt-10 text-sm" style={{ color: MUTED }}>
+              Prefer email?{" "}
+              <a href="mailto:unik@culturin.com" className="font-semibold no-underline hover:underline" style={{ color: INK }}>
                 unik@culturin.com
               </a>
-            </div>
+            </p>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl border p-8" style={{ borderColor: RULE }}>
-            <ShineBorder shineColor={["#b5502e", "#e08a5b", "#f0ab85"]} />
+          <div className="rounded-3xl border p-6 sm:p-10" style={{ borderColor: RULE }}>
             <PartnerForm initialInterest={service} />
           </div>
         </div>
-      </div>
+      </main>
 
       <HomeFooter />
     </div>

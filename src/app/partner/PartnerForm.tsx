@@ -1,147 +1,51 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { useId, useState, type FormEvent } from "react";
+import { Check } from "lucide-react";
 
-import {
-  EDITORIAL_BG,
-  EDITORIAL_INK,
-  EDITORIAL_MUTED,
-  EDITORIAL_RULE,
-  EDITORIAL_ACCENT,
-  SURFACE_DARK,
-} from "@/lib/theme/culturinTokens";
+import { EDITORIAL_ACCENT, EDITORIAL_BG, EDITORIAL_INK, EDITORIAL_MUTED, EDITORIAL_RULE, SURFACE_DARK } from "@/lib/theme/culturinTokens";
 
 const BG = EDITORIAL_BG;
 const INK = EDITORIAL_INK;
-const INK_MUTED = EDITORIAL_MUTED;
+const MUTED = EDITORIAL_MUTED;
 const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
+const DISPLAY = "var(--font-display), 'Times New Roman', serif";
 
-const INTERESTS = [
-  { value: "intelligence", label: "Intelligence: ongoing cultural reports" },
-  { value: "programming", label: "Programming: a year of rooms" },
-  { value: "moments", label: "Moments: sponsor a room" },
-  { value: "cultural-marketing", label: "Cultural marketing" },
-  { value: "new-territory", label: "Launching in a new territory" },
-  { value: "cultural-intelligence", label: "Cultural intelligence" },
-  { value: "other", label: "Something else" },
-];
+const CHOICES = [
+  { value: "intelligence", label: "Intelligence", hint: "An ongoing read on culture and what it means for your brand" },
+  { value: "programming", label: "Programming", hint: "A year of rooms, built around your brand" },
+  { value: "moments", label: "Moments", hint: "Sponsor a room we've already built" },
+  { value: "cultural-marketing", label: "Not sure yet", hint: "Tell us the goal and we'll point you in the right direction" },
+] as const;
 
-function InterestSelect({
-  value,
-  onChange,
-  disabled,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  disabled?: boolean;
-}) {
-  const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
-  const selected = INTERESTS.find((opt) => opt.value === value) ?? INTERESTS[0];
-
-  useEffect(() => {
-    if (!open) return;
-    function onPointerDown(e: PointerEvent) {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
-    }
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
-    }
-    document.addEventListener("pointerdown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [open]);
-
-  return (
-    <div ref={rootRef} className="relative">
-      <button
-        type="button"
-        disabled={disabled}
-        onClick={() => setOpen((o) => !o)}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        className="flex w-full items-center justify-between rounded-xl border bg-transparent px-4 py-3 text-left text-sm outline-none transition disabled:opacity-60"
-        style={{ color: INK, borderColor: RULE }}
-      >
-        <span>{selected.label}</span>
-        <ChevronDown
-          className="h-4 w-4 shrink-0 transition-transform"
-          style={{ color: INK_MUTED, transform: open ? "rotate(180deg)" : undefined }}
-          aria-hidden
-        />
-      </button>
-
-      {open ? (
-        <ul
-          role="listbox"
-          className="absolute z-10 mt-2 w-full overflow-hidden rounded-xl border p-1 shadow-lg"
-          style={{ background: BG, borderColor: RULE }}
-        >
-          {INTERESTS.map((opt) => {
-            const isSelected = opt.value === value;
-            return (
-              <li key={opt.value} role="option" aria-selected={isSelected}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onChange(opt.value);
-                    setOpen(false);
-                  }}
-                  className="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition-colors"
-                  style={{
-                    color: INK,
-                    background: isSelected ? "rgba(181,80,46,0.12)" : "transparent",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isSelected) e.currentTarget.style.background = "rgba(181,80,46,0.08)";
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isSelected) e.currentTarget.style.background = "transparent";
-                  }}
-                >
-                  {opt.label}
-                  {isSelected ? <Check className="h-4 w-4 shrink-0" style={{ color: ACCENT }} aria-hidden /> : null}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      ) : null}
-    </div>
-  );
-}
+type Field = "name" | "email";
+const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
 export function PartnerForm({ initialInterest }: { initialInterest?: string }) {
+  const uid = useId();
+  const [interest, setInterest] = useState<string>(
+    CHOICES.some((c) => c.value === initialInterest) ? (initialInterest as string) : "cultural-marketing",
+  );
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
-  const [interest, setInterest] = useState(
-    INTERESTS.some((opt) => opt.value === initialInterest) ? initialInterest! : "cultural-marketing",
-  );
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
+  const [formError, setFormError] = useState("");
   const [pending, setPending] = useState(false);
-  const [status, setStatus] = useState<"idle" | "ok" | "error">("idle");
-  const [feedback, setFeedback] = useState("");
+  const [done, setDone] = useState(false);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!name.trim()) {
-      setStatus("error");
-      setFeedback("Enter your name.");
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setStatus("error");
-      setFeedback("Enter a valid email address.");
-      return;
-    }
+    const next: Partial<Record<Field, string>> = {};
+    if (!name.trim()) next.name = "Enter your name.";
+    if (!emailOk(email.trim())) next.email = "Enter a valid email address.";
+    setErrors(next);
+    setFormError("");
+    if (Object.keys(next).length > 0) return;
+
     setPending(true);
-    setStatus("idle");
     try {
       const res = await fetch("/api/partner-inquiry", {
         method: "POST",
@@ -156,123 +60,171 @@ export function PartnerForm({ initialInterest }: { initialInterest?: string }) {
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
-        setStatus("error");
-        setFeedback(data.error ?? "Something went wrong. Try again.");
+        setFormError(data.error ?? "Something went wrong. Please try again, or email unik@culturin.com.");
         return;
       }
-      setStatus("ok");
-      setFeedback("Thanks. We'll be in touch to set up a call.");
-      setName("");
-      setEmail("");
-      setCompany("");
-      setInterest("cultural-marketing");
-      setMessage("");
+      setDone(true);
     } catch {
-      setStatus("error");
-      setFeedback("Network error. Check your connection and try again.");
+      setFormError("Network error. Check your connection and try again.");
     } finally {
       setPending(false);
     }
   }
 
-  const fieldClass =
-    "w-full rounded-xl border bg-transparent px-4 py-3 text-sm outline-none transition placeholder:opacity-70 disabled:opacity-60";
-
-  if (status === "ok") {
+  if (done) {
     return (
-      <div
-        className="rounded-2xl border px-6 py-10 text-center"
-        style={{ borderColor: RULE }}
-      >
-        <p className="m-0 text-lg font-medium" style={{ color: INK }}>
-          {feedback}
+      <div role="status" className="flex flex-col items-start gap-4 py-6">
+        <span
+          className="flex h-11 w-11 items-center justify-center rounded-full"
+          style={{ background: ACCENT, color: SURFACE_DARK }}
+          aria-hidden
+        >
+          <Check className="h-5 w-5" />
+        </span>
+        <h2 className="m-0 text-3xl font-medium leading-tight" style={{ fontFamily: DISPLAY, color: INK }}>
+          Thank you. We&apos;ll be in touch.
+        </h2>
+        <p className="m-0 max-w-sm text-sm leading-relaxed" style={{ color: MUTED }}>
+          We read every note ourselves and will reply to set up a call.
         </p>
       </div>
     );
   }
 
+  const inputClass =
+    "w-full rounded-xl border bg-transparent px-4 py-3 text-sm outline-none transition placeholder:opacity-60 focus-visible:border-[#e08a5b] disabled:opacity-60";
+
   return (
-    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
+    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-7">
+      <fieldset className="m-0 border-0 p-0" disabled={pending}>
+        <legend className="mb-3 p-0 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: MUTED }}>
+          What are you looking for?
+        </legend>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2" role="radiogroup" aria-label="What are you looking for?">
+          {CHOICES.map((c) => {
+            const selected = interest === c.value;
+            return (
+              <label
+                key={c.value}
+                className="relative flex cursor-pointer flex-col gap-1 rounded-xl border p-4 transition"
+                style={{
+                  borderColor: selected ? ACCENT : RULE,
+                  background: selected ? "color-mix(in srgb, var(--c-accent) 10%, transparent)" : "transparent",
+                }}
+              >
+                <input
+                  type="radio"
+                  name={`${uid}-interest`}
+                  value={c.value}
+                  checked={selected}
+                  onChange={() => setInterest(c.value)}
+                  className="sr-only"
+                />
+                <span className="text-base font-medium" style={{ fontFamily: DISPLAY, color: INK }}>
+                  {c.label}
+                </span>
+                <span className="text-xs leading-relaxed" style={{ color: MUTED }}>
+                  {c.hint}
+                </span>
+                {selected ? (
+                  <Check className="absolute right-3 top-3 h-4 w-4" style={{ color: ACCENT }} aria-hidden />
+                ) : null}
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
+
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <label className="flex flex-col gap-2 text-sm">
-          <span className="font-medium" style={{ color: INK_MUTED }}>
+        <div className="flex flex-col gap-2">
+          <label htmlFor={`${uid}-name`} className="text-sm font-medium" style={{ color: MUTED }}>
             Name
-          </span>
+          </label>
           <input
+            id={`${uid}-name`}
             type="text"
             autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={pending}
-            className={fieldClass}
-            style={{ color: INK, borderColor: RULE }}
+            aria-invalid={Boolean(errors.name)}
+            aria-describedby={errors.name ? `${uid}-name-err` : undefined}
+            className={inputClass}
+            style={{ color: INK, borderColor: errors.name ? "#dc4444" : RULE }}
           />
-        </label>
-        <label className="flex flex-col gap-2 text-sm">
-          <span className="font-medium" style={{ color: INK_MUTED }}>
+          {errors.name ? (
+            <p id={`${uid}-name-err`} className="m-0 text-xs font-medium" style={{ color: "#dc4444" }}>
+              {errors.name}
+            </p>
+          ) : null}
+        </div>
+        <div className="flex flex-col gap-2">
+          <label htmlFor={`${uid}-email`} className="text-sm font-medium" style={{ color: MUTED }}>
             Work email
-          </span>
+          </label>
           <input
+            id={`${uid}-email`}
             type="email"
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={pending}
-            className={fieldClass}
-            style={{ color: INK, borderColor: RULE }}
+            aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? `${uid}-email-err` : undefined}
+            className={inputClass}
+            style={{ color: INK, borderColor: errors.email ? "#dc4444" : RULE }}
           />
-        </label>
+          {errors.email ? (
+            <p id={`${uid}-email-err`} className="m-0 text-xs font-medium" style={{ color: "#dc4444" }}>
+              {errors.email}
+            </p>
+          ) : null}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <label className="flex flex-col gap-2 text-sm">
-          <span className="font-medium" style={{ color: INK_MUTED }}>
-            Company
-          </span>
-          <input
-            type="text"
-            autoComplete="organization"
-            placeholder="Optional"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
-            disabled={pending}
-            className={fieldClass}
-            style={{ color: INK, borderColor: RULE }}
-          />
+      <div className="flex flex-col gap-2">
+        <label htmlFor={`${uid}-company`} className="text-sm font-medium" style={{ color: MUTED }}>
+          Company <span className="font-normal opacity-70">(optional)</span>
         </label>
-        <label className="flex flex-col gap-2 text-sm">
-          <span className="font-medium" style={{ color: INK_MUTED }}>
-            What are you interested in?
-          </span>
-          <InterestSelect value={interest} onChange={setInterest} disabled={pending} />
-        </label>
+        <input
+          id={`${uid}-company`}
+          type="text"
+          autoComplete="organization"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+          disabled={pending}
+          className={inputClass}
+          style={{ color: INK, borderColor: RULE }}
+        />
       </div>
 
-      <label className="flex flex-col gap-2 text-sm">
-        <span className="font-medium" style={{ color: INK_MUTED }}>
-          Tell us a bit more
-        </span>
+      <div className="flex flex-col gap-2">
+        <label htmlFor={`${uid}-message`} className="text-sm font-medium" style={{ color: MUTED }}>
+          Tell us a bit more <span className="font-normal opacity-70">(optional)</span>
+        </label>
         <textarea
+          id={`${uid}-message`}
           rows={4}
-          placeholder="Optional"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           disabled={pending}
-          className={fieldClass}
-          style={{ color: INK, borderColor: RULE, resize: "vertical" }}
+          className={inputClass}
+          style={{ color: INK, borderColor: RULE, resize: "vertical", background: BG }}
         />
-      </label>
+      </div>
 
-      {status === "error" ? (
-        <p className="m-0 text-sm font-medium" style={{ color: "#dc4444" }}>
-          {feedback}
-        </p>
-      ) : null}
+      <div aria-live="polite">
+        {formError ? (
+          <p className="m-0 text-sm font-medium" style={{ color: "#dc4444" }}>
+            {formError}
+          </p>
+        ) : null}
+      </div>
 
       <button
         type="submit"
         disabled={pending}
-        className="mt-2 inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] transition-opacity hover:opacity-85 disabled:opacity-60"
+        className="inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] transition-opacity hover:opacity-85 disabled:opacity-60"
         style={{ background: ACCENT, color: SURFACE_DARK }}
       >
         {pending ? "Sending…" : "Request a call"}
