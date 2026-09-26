@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "next-view-transitions";
 
-import { events } from "@/lib/eventsData";
+import { getAdminEvents } from "@/lib/events/eventsStore";
 import { listEventRsvpsForStudio } from "@/lib/studio/eventRsvps";
 import { getStudioCounts } from "@/lib/studio/getStudioCounts";
 import { listPartnerInquiriesForStudio } from "@/lib/studio/partnerInquiries";
@@ -116,7 +116,7 @@ export default async function AdminDashboardPage() {
     listPartnerInquiriesForStudio(),
     listEventRsvpsForStudio(),
   ]);
-  const eventNames = Object.fromEntries(events.map((e) => [e.slug, e.name]));
+  const eventNames = Object.fromEntries((await getAdminEvents()).events.map((e) => [e.slug, e.name]));
 
   const content: CountLink[] = [
     { href: "/admin/articles", label: "Articles", value: counts.blogs, note: "Guides & stories" },

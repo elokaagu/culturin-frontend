@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { events } from "@/lib/eventsData";
+import { getEvents } from "@/lib/events/eventsStore";
 import { blurForSrc } from "@/lib/culturinImages";
 import { getSiteImagesMap, resolveEventHero } from "@/lib/siteImages";
 import {
@@ -31,6 +31,7 @@ export const metadata: Metadata = {
 };
 
 export default async function EventsPage() {
+  const events = await getEvents();
   const siteImages = await getSiteImagesMap();
 
   return (

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { events } from "@/lib/eventsData";
+import { getAdminEvents } from "@/lib/events/eventsStore";
 import { listEventRsvpsForStudio } from "@/lib/studio/eventRsvps";
 import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default async function StudioEventRsvpsPage() {
   const hasDb = Boolean(getSupabaseAdminFreshOrNull());
   const rsvps = hasDb ? await listEventRsvpsForStudio() : [];
-  const eventLabels = Object.fromEntries(events.map((e) => [e.slug, e.name]));
+  const eventLabels = Object.fromEntries((await getAdminEvents()).events.map((e) => [e.slug, e.name]));
 
   return (
     <div className="p-4 sm:p-6 md:p-8">

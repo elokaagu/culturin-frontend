@@ -1,8 +1,10 @@
 "use client";
 
 import {
+  BarChart3,
   BookOpen,
   CalendarCheck,
+  CalendarDays,
   Download,
   ExternalLink,
   Handshake,
@@ -207,6 +209,16 @@ export default function StudioLayoutClient({
                   </li>
                   <li>
                     <Link
+                      href="/admin/events"
+                      className={navItemClass(pathname === "/admin/events" || pathname?.startsWith("/admin/events/"))}
+                      aria-current={pathname === "/admin/events" ? "page" : undefined}
+                    >
+                      <CalendarDays className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                      <span className="min-w-0 flex-1">Events</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
                       href="/admin/site-images"
                       className={navItemClass(
                         pathname === "/admin/site-images" || pathname?.startsWith("/admin/site-images/"),
@@ -305,6 +317,16 @@ export default function StudioLayoutClient({
                         pathname === "/admin/gallery-downloads" ||
                           pathname?.startsWith("/admin/gallery-downloads/"),
                       )}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/admin/analytics"
+                      className={navItemClass(pathname === "/admin/analytics" || pathname?.startsWith("/admin/analytics/"))}
+                      aria-current={pathname === "/admin/analytics" ? "page" : undefined}
+                    >
+                      <BarChart3 className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                      <span className="min-w-0 flex-1">Analytics</span>
                     </Link>
                   </li>
                 </ul>

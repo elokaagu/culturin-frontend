@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { events, galleryHrefForEvent } from "@/lib/eventsData";
+import { galleryHrefForEvent } from "@/lib/eventsData";
+import { getEvents } from "@/lib/events/eventsStore";
 import { blurForSrc } from "@/lib/culturinImages";
 import {
   EDITORIAL_BG,
@@ -48,13 +49,11 @@ const HERO_SLIDE_SLOTS = ["homepage-hero", "homepage-hero-2", "homepage-hero-3",
 
 const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Super Bowl", logoSrc: "/partners/super-bowl.webp" },
-  { name: "Davos", logoSrc: "/partners/davos-logo.svg", heightClass: "h-14" },
   { name: "UN Assembly", logoSrc: "/partners/unga-logo.png" },
   { name: "Nike", logoSrc: "/partners/nike-logo.svg", heightClass: "h-6" },
   { name: "Virgin", logoSrc: "/partners/virgin-logo.webp" },
   { name: "Microsoft", logoSrc: "/partners/microsoft.webp", heightClass: "h-14" },
   { name: "Aman", logoSrc: "/partners/aman-logo.png", heightClass: "h-5" },
-  { name: "World Economic Forum", logoSrc: "/partners/world-economic-forum-logo.png", heightClass: "h-11" },
 ];
 
 const PROOF_STATS = [
@@ -64,9 +63,7 @@ const PROOF_STATS = [
   { value: "Super Bowl · Oscars · Davos · UNGA", label: "Where our team has produced cultural moments", small: true },
 ] as const;
 
-const featuredEvents = events.filter((e) => !e.isPast).slice(0, 3);
 const EVENT_GRID_COLS: Record<number, string> = { 1: "sm:grid-cols-1", 2: "sm:grid-cols-2", 3: "sm:grid-cols-3" };
-const cannesRecapEvent = events.find((e) => e.slug === "cannes-lions-2026");
 
 /** Short city label pulled from a full location string, for Trippin-style tag chips. */
 function cityTag(location: string): string {
@@ -74,6 +71,9 @@ function cityTag(location: string): string {
 }
 
 export default async function HomePage() {
+  const events = await getEvents();
+  const featuredEvents = events.filter((e) => !e.isPast).slice(0, 3);
+  const cannesRecapEvent = events.find((e) => e.slug === "cannes-lions-2026");
   const siteImages = await getSiteImagesMap();
   const heroSlides: HeroSlide[] = HERO_SLIDE_SLOTS.map((key) => {
     const image = resolveSiteImage(siteImages, key, manifestDefault(key));

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getEventBySlug, events, galleryHrefForEvent } from "@/lib/eventsData";
+import { galleryHrefForEvent } from "@/lib/eventsData";
+import { getEventBySlug, getEvents } from "@/lib/events/eventsStore";
 import { blurForSrc } from "@/lib/culturinImages";
 import {
   EDITORIAL_BG,
@@ -33,12 +34,12 @@ export const revalidate = 120;
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
-  return events.map((e) => ({ slug: e.slug }));
+  return (await getEvents()).map((e) => ({ slug: e.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
   if (!event) return {};
   return {
     title: `${event.name} | Culturin`,
@@ -48,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function EventLandingPage({ params }: Props) {
   const { slug } = await params;
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
   if (!event) notFound();
 
   const isPast = event.isPast === true;
