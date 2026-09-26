@@ -240,7 +240,7 @@ export default async function HomePage() {
                 className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
                 style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
               >
-                Upcoming events
+                Upcoming experiences
               </h2>
             </div>
             <Link

@@ -13,6 +13,8 @@ export type HeroSlide = {
 };
 
 const SLIDE_MS = 6500;
+const TRANSITION_MS = 1100;
+const TRANSITION_EASE = "cubic-bezier(0.65, 0, 0.35, 1)";
 
 export default function HeroSlideshow({
   slides,
@@ -29,7 +31,41 @@ export default function HeroSlideshow({
   const [failed, setFailed] = useState<Set<number>>(() => new Set());
   const progressRef = useRef<HTMLSpanElement>(null);
   const animationRef = useRef<Animation | null>(null);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const previousRef = useRef(0);
+  const directionRef = useRef<1 | -1>(1);
   const count = slides.length;
+
+  function goTo(index: number, direction: 1 | -1) {
+    directionRef.current = direction;
+    setActive(index);
+  }
+
+  useEffect(() => {
+    const from = previousRef.current;
+    previousRef.current = active;
+    if (from === active || reducedMotion) return;
+    const incoming = slideRefs.current[active];
+    const outgoing = slideRefs.current[from];
+    const dir = directionRef.current;
+    const timing: KeyframeAnimationOptions = { duration: TRANSITION_MS, easing: TRANSITION_EASE };
+    const inAnim = incoming?.animate(
+      [{ transform: `translateX(${dir * 100}%)` }, { transform: "translateX(0)" }],
+      timing,
+    );
+    // The outgoing slide is hidden at rest, so keep it visible for the length of its exit.
+    const outAnim = outgoing?.animate(
+      [
+        { transform: "translateX(0)", visibility: "visible" },
+        { transform: `translateX(${dir * -100}%)`, visibility: "visible" },
+      ],
+      timing,
+    );
+    return () => {
+      inAnim?.finish();
+      outAnim?.finish();
+    };
+  }, [active, reducedMotion]);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -48,7 +84,7 @@ export default function HeroSlideshow({
       easing: "linear",
       fill: "forwards",
     });
-    animation.onfinish = () => setActive((i) => (i + 1) % count);
+    animation.onfinish = () => goTo((active + 1) % count, 1);
     animationRef.current = animation;
     return () => animation.cancel();
   }, [active, count, reducedMotion]);
@@ -75,8 +111,11 @@ export default function HeroSlideshow({
       {slides.map((slide, i) => (
         <div
           key={slide.src}
-          className="absolute inset-0 transition-opacity duration-[1400ms] ease-out"
-          style={{ opacity: i === active ? 1 : 0 }}
+          ref={(el) => {
+            slideRefs.current[i] = el;
+          }}
+          className="absolute inset-0 will-change-transform"
+          style={{ visibility: i === active ? "visible" : "hidden" }}
           aria-hidden={i !== active}
         >
           <Image
@@ -92,10 +131,6 @@ export default function HeroSlideshow({
             className="object-cover"
             placeholder={slide.blurDataURL ? "blur" : "empty"}
             blurDataURL={slide.blurDataURL}
-            style={{
-              transform: i === active && !reducedMotion ? "scale(1.06)" : "scale(1)",
-              transition: `transform ${SLIDE_MS + 1400}ms linear`,
-            }}
           />
         </div>
       ))}
@@ -127,7 +162,9 @@ export default function HeroSlideshow({
                 <button
                   key={slide.src}
                   type="button"
-                  onClick={() => setActive(i)}
+                  onClick={() => {
+                    if (i !== active) goTo(i, i > active ? 1 : -1);
+                  }}
                   aria-label={`Show slide ${i + 1}: ${slide.caption}`}
                   aria-current={i === active}
                   className="relative h-[3px] w-10 overflow-hidden rounded-full bg-white/25 transition hover:bg-white/45 sm:w-14"
