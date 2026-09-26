@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { notifyTeam, siteOrigin } from "@/lib/email/culturinEmail";
+import { getEventBySlug } from "@/lib/events/eventsStore";
 import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -77,6 +79,23 @@ export async function POST(req: Request) {
   if (subscribeError && subscribeError.code !== "23505") {
     // Non-fatal: the RSVP itself already succeeded, so don't fail the request.
   }
+
+  const eventName = (await getEventBySlug(eventSlug).catch(() => undefined))?.name ?? eventSlug;
+  await notifyTeam({
+    subject: `New RSVP for ${eventName}: ${firstName} ${lastName}${company ? `, ${company}` : ""}`,
+    eyebrow: `RSVP · ${eventName}`,
+    headline: `${firstName} ${lastName} is requesting a place.`,
+    intro: `A new RSVP just came in for ${eventName}.`,
+    details: [
+      { label: "Name", value: `${firstName} ${lastName}` },
+      { label: "Email", value: email, href: `mailto:${email}` },
+      { label: "Role", value: title },
+      { label: "Company", value: company },
+      { label: "LinkedIn", value: linkedin, href: /^https?:\/\//i.test(linkedin) ? linkedin : undefined },
+    ],
+    cta: { label: "View the guest list", href: `${siteOrigin()}/admin/event-rsvps` },
+    replyTo: email,
+  });
 
   return NextResponse.json({ ok: true }, { status: 201 });
 }

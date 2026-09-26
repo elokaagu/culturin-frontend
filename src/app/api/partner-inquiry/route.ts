@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
 
+import { notifyTeam, siteOrigin } from "@/lib/email/culturinEmail";
 import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+const INTEREST_LABELS: Record<string, string> = {
+  intelligence: "Intelligence",
+  programming: "Programming",
+  moments: "Moments",
+  "cultural-marketing": "Not sure yet",
+};
 
 const VALID_INTERESTS = new Set([
   "intelligence",
@@ -69,6 +77,22 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
+
+  await notifyTeam({
+    subject: `New partner inquiry: ${name}${company ? `, ${company}` : ""}`,
+    eyebrow: "Partner inquiry",
+    headline: `${name}${company ? ` from ${company}` : ""} wants to talk.`,
+    intro: "Someone just asked for a call through Create an experience. Reply to this email to answer them directly.",
+    details: [
+      { label: "Name", value: name },
+      { label: "Email", value: email, href: `mailto:${email}` },
+      { label: "Company", value: company },
+      { label: "Interested in", value: INTEREST_LABELS[interest] ?? interest },
+      { label: "Message", value: message },
+    ],
+    cta: { label: "View in admin", href: `${siteOrigin()}/admin/partner-inquiries` },
+    replyTo: email,
+  });
 
   return NextResponse.json({ ok: true }, { status: 201 });
 }

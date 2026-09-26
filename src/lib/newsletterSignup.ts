@@ -5,7 +5,14 @@ import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
 /** Validates a sign-up request body and stores it in `newsletter_subscribers` under `source`. */
-export async function handleNewsletterSignup(req: Request, source: string) {
+export type NewsletterSignup = { email: string; firstName: string; lastName: string; company: string; alreadySubscribed: boolean };
+
+export async function handleNewsletterSignup(
+  req: Request,
+  source: string,
+  /** Runs after a successful sign-up (new or existing subscriber), e.g. to alert the team. Must not throw. */
+  onSignup?: (signup: NewsletterSignup) => Promise<unknown>,
+) {
   let body: unknown;
   try {
     body = await req.json();
@@ -61,11 +68,13 @@ export async function handleNewsletterSignup(req: Request, source: string) {
   if (error) {
     // 23505 = unique_violation (already subscribed)
     if (error.code === "23505") {
+      await onSignup?.({ email, firstName: firstNameRaw, lastName: lastNameRaw, company: companyRaw, alreadySubscribed: true });
       return NextResponse.json({ ok: true, alreadySubscribed: true }, { status: 200 });
     }
     console.error("[newsletter-signup] insert failed", { source, code: error.code, message: error.message });
     return NextResponse.json({ error: "Could not save your details. Try again in a moment." }, { status: 500 });
   }
 
+  await onSignup?.({ email, firstName: firstNameRaw, lastName: lastNameRaw, company: companyRaw, alreadySubscribed: false });
   return NextResponse.json({ ok: true }, { status: 201 });
 }

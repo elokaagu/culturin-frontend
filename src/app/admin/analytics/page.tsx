@@ -4,6 +4,7 @@ import { Link } from "next-view-transitions";
 import { getAdminEvents } from "@/lib/events/eventsStore";
 import { RANGES, getAnalytics, type Bucket, type Kpi, type RangeKey } from "@/lib/studio/analytics";
 import LazyImg from "@/app/components/LazyImg";
+import { AdminLiveRefresh } from "@/app/admin/_components/AdminLiveRefresh";
 import { studioPanelClass } from "@/app/admin/_lib/studioTheme";
 import { cn } from "@/lib/utils";
 
@@ -84,7 +85,10 @@ export default async function StudioAnalyticsPage({ searchParams }: { searchPara
 
   return (
     <div className="p-4 sm:p-6 md:p-10">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--c-accent)]">Audience</p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--c-accent)]">Audience</p>
+        <AdminLiveRefresh />
+      </div>
       <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-[color:var(--c-ink)] sm:text-3xl">Analytics</h1>
       <p className="mt-2 max-w-2xl text-sm text-[color:var(--c-muted)]">
         Who is joining your audience, where they come from, and what they engage with. Built from your own sign-ups, RSVPs, inquiries and downloads.
@@ -158,7 +162,7 @@ export default async function StudioAnalyticsPage({ searchParams }: { searchPara
           <div className="mt-6 grid gap-6 lg:grid-cols-2">
             <BarList
               title="Seniority"
-              note={`From job titles given on RSVPs. ${notGiven} ${notGiven === 1 ? "person" : "people"} in this period didn't give a title.`}
+              note={`From job titles on RSVPs and roles in Mailchimp imports. ${notGiven} ${notGiven === 1 ? "person" : "people"} in this period didn't give a title.`}
               items={a.seniority}
               empty="No contacts in this period."
             />
@@ -167,6 +171,18 @@ export default async function StudioAnalyticsPage({ searchParams }: { searchPara
             <BarList title="Top work email domains" items={a.topDomains} empty="No work emails in this period." />
             <BarList title="Where subscribers came from" items={a.sources} empty="No new subscribers in this period." />
             <BarList title="RSVPs by event" items={a.rsvpByEvent} empty="No RSVPs in this period." />
+            <BarList
+              title="Events attended"
+              note="From Mailchimp tags on subscribers who joined in this period."
+              items={a.eventsAttended}
+              empty="No event tags in this period."
+            />
+            <BarList
+              title="Countries"
+              note="From Mailchimp location data, which only some contacts have."
+              items={a.countries}
+              empty="No location data in this period."
+            />
             <BarList
               title="What inquiries are about"
               items={a.inquiryInterest.map((i) => ({ ...i, label: INTEREST_LABELS[i.label] ?? i.label }))}
@@ -219,8 +235,9 @@ export default async function StudioAnalyticsPage({ searchParams }: { searchPara
           <aside className="mt-8 rounded-xl border border-dashed border-[color:var(--c-rule)] p-5 text-sm text-[color:var(--c-muted)]">
             <p className="m-0 font-semibold text-[color:var(--c-ink)]">About demographics</p>
             <p className="m-0 mt-2 max-w-3xl leading-relaxed">
-              Culturin only knows what people choose to tell you: their name, email, company and, on RSVPs, their job title. Age, gender and location aren&apos;t
-              collected, so they can&apos;t be reported here. Website traffic (visitors, countries, devices) lives in{" "}
+              Culturin only knows what people choose to tell you: their name, email, company and job title (from RSVPs and Mailchimp roles), plus
+              country where Mailchimp recorded it. Age and gender aren&apos;t collected, so they can&apos;t be reported here. Mailchimp imports are dated by
+              when the person originally opted in, not the import day. Website traffic (visitors, countries, devices) lives in{" "}
               <a href="https://analytics.google.com/" target="_blank" rel="noopener noreferrer" className="text-[color:var(--c-accent)]">Google Analytics</a>.
               If you want richer audience data, the simplest step is adding optional fields (such as industry or city) to the RSVP and sign-up forms.
             </p>

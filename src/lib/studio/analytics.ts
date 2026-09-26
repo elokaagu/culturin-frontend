@@ -26,6 +26,10 @@ export type AnalyticsData = {
   topDomains: Bucket[];
   rsvpByEvent: Bucket[];
   inquiryInterest: Bucket[];
+  /** Country, from Mailchimp's location data (only some contacts have it). */
+  countries: Bucket[];
+  /** Events people attended, from Mailchimp tags. */
+  eventsAttended: Bucket[];
   topPhotos: { src: string; count: number }[];
   deckViews: { title: string; views: number; avgSeconds: number; completed: number }[];
   uniquePeople: number;
@@ -65,6 +69,39 @@ function weekStartIso(d: Date): string {
   return x.toISOString().slice(0, 10);
 }
 
+/** Mailchimp's OPTIN_TIME ("2025-06-20 10:22:11", UTC) as ISO, so imported people count from when they really joined. */
+function mailchimpJoinedIso(raw: Record<string, unknown> | null): string | null {
+  const v = String(raw?.OPTIN_TIME ?? raw?.CONFIRM_TIME ?? "").trim();
+  if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(v)) return null;
+  return `${v.replace(" ", "T")}Z`;
+}
+
+const rawField = (raw: Record<string, unknown> | null, ...keys: string[]): string => {
+  for (const k of keys) {
+    const v = String(raw?.[k] ?? "").trim();
+    if (v) return v;
+  }
+  return "";
+};
+
+let regionNames: Intl.DisplayNames | null = null;
+function countryName(code: string): string {
+  const cc = code.trim().toUpperCase() === "UK" ? "GB" : code.trim().toUpperCase();
+  if (!/^[A-Z]{2}$/.test(cc)) return code.trim();
+  try {
+    regionNames ??= new Intl.DisplayNames(["en"], { type: "region" });
+    return regionNames.of(cc) ?? cc;
+  } catch {
+    return cc;
+  }
+}
+
+/** Mailchimp TAGS look like "\"Cannes Welcome Party 2026\",\"Amafrobeat - 2026\"". */
+function parseTags(v: string): string[] {
+  const quoted = Array.from(v.matchAll(/"([^"]+)"/g), (m) => m[1].trim());
+  return (quoted.length > 0 ? quoted : v.split(",")).map((t) => t.trim()).filter(Boolean);
+}
+
 const emailDomain = (email: string) => email.split("@")[1]?.toLowerCase() ?? "";
 const companyKey = (c: string) => c.trim().replace(/\s+/g, " ");
 
@@ -88,19 +125,33 @@ export async function getAnalytics(range: RangeKey, eventNames: Record<string, s
   const rangeDef = RANGES.find((r) => r.key === range) ?? RANGES[1];
   const empty: AnalyticsData = {
     connected: false, rangeLabel: rangeDef.label, kpis: [], weekly: [], sources: [], seniority: [], emailKind: [],
-    topCompanies: [], topDomains: [], rsvpByEvent: [], inquiryInterest: [], topPhotos: [], deckViews: [],
+    topCompanies: [], topDomains: [], rsvpByEvent: [], inquiryInterest: [], countries: [], eventsAttended: [], topPhotos: [], deckViews: [],
     uniquePeople: 0, repeatPeople: 0,
   };
   if (!getSupabaseAdminFreshOrNull()) return empty;
 
-  const [subs, rsvps, inquiries, downloads, sessions, decks] = await Promise.all([
-    fetchAll("newsletter_subscribers", "email, company, source, created_at"),
+  const [rawSubs, rsvps, inquiries, downloads, sessions, decks] = await Promise.all([
+    fetchAll("newsletter_subscribers", "email, company, source, created_at, raw_data"),
     fetchAll("event_rsvps", "email, company, title, event_slug, created_at"),
     fetchAll("partner_inquiries", "email, company, interest, created_at"),
     fetchAll("gallery_downloads", "email, image_src, created_at"),
     fetchAll("deck_view_sessions", "deck_id, started_at, duration_seconds, completed"),
     fetchAll("sales_decks", "id, title"),
   ]);
+
+  // Fill in what Mailchimp imports know: real join date, role and company.
+  const subs: Row[] = rawSubs.map((r) => {
+    const raw = r.raw_data && typeof r.raw_data === "object" ? (r.raw_data as Record<string, unknown>) : null;
+    return {
+      ...r,
+      created_at: mailchimpJoinedIso(raw) ?? r.created_at,
+      title: rawField(raw, "Role", "Title", "Job Title", "JOBTITLE"),
+      company: String(r.company ?? "").trim() || rawField(raw, "Company", "COMPANY"),
+      country: rawField(raw, "CC", "Country", "COUNTRY"),
+      tags: rawField(raw, "TAGS", "Tags"),
+      channel: rawField(raw, "Source"),
+    };
+  });
 
   const now = Date.now();
   const days = rangeDef.days;
@@ -152,13 +203,15 @@ export async function getAnalytics(range: RangeKey, eventNames: Record<string, s
   bump(inquiries, "inquiries");
 
   // Everyone who has given us an email, once each, with the strongest info we have about them.
-  const people = new Map<string, { email: string; company: string; title: string; sources: Set<string>; inWindow: boolean }>();
+  const people = new Map<string, { email: string; company: string; title: string; country: string; sources: Set<string>; inWindow: boolean }>();
   const addPerson = (r: Row, source: string) => {
     const email = String(r.email ?? "").trim().toLowerCase();
     if (!email) return;
-    const p = people.get(email) ?? { email, company: "", title: "", sources: new Set<string>(), inWindow: false };
+    const p = people.get(email) ?? { email, company: "", title: "", country: "", sources: new Set<string>(), inWindow: false };
     const company = String(r.company ?? "").trim();
     const title = String(r.title ?? "").trim();
+    const country = String(r.country ?? "").trim();
+    if (country && !p.country) p.country = country;
     if (company && !p.company) p.company = company;
     if (title && !p.title) p.title = title;
     p.sources.add(source);
@@ -175,7 +228,9 @@ export async function getAnalytics(range: RangeKey, eventNames: Record<string, s
   const emailKind = new Map<string, number>();
   const companies = new Map<string, number>();
   const domains = new Map<string, number>();
+  const countries = new Map<string, number>();
   for (const p of windowPeople) {
+    if (p.country) inc(countries, countryName(p.country));
     // Seniority only from people who told us a title (RSVPs); "Not given" is reported separately.
     inc(seniority, seniorityOf(p.title));
     const domain = emailDomain(p.email);
@@ -186,7 +241,17 @@ export async function getAnalytics(range: RangeKey, eventNames: Record<string, s
   }
 
   const sources = new Map<string, number>();
-  for (const r of subs.filter((r) => inRange(r, "created_at"))) inc(sources, formatSubscriberSource(String(r.source ?? "")));
+  const eventsAttended = new Map<string, number>();
+  for (const r of subs.filter((r) => inRange(r, "created_at"))) {
+    // Mailchimp's own "Source" column is more specific than our "mailchimp" import label.
+    const channel = String(r.channel ?? "");
+    const source = String(r.source ?? "");
+    inc(sources, channel || (source === "mailchimp" ? "Mailchimp (source not recorded)" : formatSubscriberSource(source)));
+    for (const tag of parseTags(String(r.tags ?? ""))) {
+      // Skip Mailchimp's generic and system tags; keep the named events.
+      if (tag.toLowerCase() !== "event attendee" && !/^campaign pasted segment/i.test(tag)) inc(eventsAttended, tag);
+    }
+  }
 
   const rsvpByEvent = new Map<string, number>();
   for (const r of rsvps.filter((r) => inRange(r, "created_at"))) {
@@ -226,6 +291,8 @@ export async function getAnalytics(range: RangeKey, eventNames: Record<string, s
     topDomains: bucketsFrom(domains, 8),
     rsvpByEvent: bucketsFrom(rsvpByEvent, 8),
     inquiryInterest: bucketsFrom(interests, 8),
+    countries: bucketsFrom(countries, 10),
+    eventsAttended: bucketsFrom(eventsAttended, 10),
     topPhotos: Array.from(photos.entries()).map(([src, count]) => ({ src, count })).sort((a, b) => b.count - a.count).slice(0, 6),
     deckViews: Array.from(deckAgg.entries())
       .map(([id, a]) => ({ title: deckTitle.get(id) ?? "Deleted deck", views: a.views, avgSeconds: a.views ? Math.round(a.seconds / a.views) : 0, completed: a.completed }))

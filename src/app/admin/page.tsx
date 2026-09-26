@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "next-view-transitions";
 
+import { AdminLiveRefresh } from "@/app/admin/_components/AdminLiveRefresh";
+import { SendTestEmailButton } from "@/app/admin/_components/SendTestEmailButton";
 import { getAdminEvents } from "@/lib/events/eventsStore";
 import { listEventRsvpsForStudio } from "@/lib/studio/eventRsvps";
 import { getStudioCounts } from "@/lib/studio/getStudioCounts";
@@ -167,15 +169,19 @@ export default async function AdminDashboardPage() {
         <p className={`mt-4 max-w-xl text-base leading-relaxed ${studioMutedClass}`}>
           New inquiries, recent RSVPs, and live counts across the site.
         </p>
-        <a
-          href="/"
-          target="_blank"
-          rel="noreferrer"
-          className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--c-accent)] no-underline transition hover:opacity-80"
-        >
-          View public site
-          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
-        </a>
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <a
+            href="/"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--c-accent)] no-underline transition hover:opacity-80"
+          >
+            View public site
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+          </a>
+          <SendTestEmailButton />
+          <AdminLiveRefresh />
+        </div>
       </header>
 
       {attention.length > 0 ? (
