@@ -1,22 +1,27 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
 
+import {
+  DeleteIconButton,
+  EmptyNote,
+  Notice,
+  SearchField,
+  SelectBox,
+  SelectionBar,
+  formatAdminDate,
+} from "@/app/admin/_components/AdminListParts";
+import { useStudioConfirm } from "@/app/admin/_components/StudioConfirmDialog";
+import { studioListRowClass } from "@/app/admin/_components/StudioCulturinListKit";
+import { StudioCulturinListSection } from "@/app/admin/_components/StudioCulturinListKit";
+import { loadAudience, removeAudience, useAdminCollection } from "@/app/admin/_lib/useAdminCollection";
 import type { StudioEventRsvp } from "@/lib/studio/eventRsvps";
-
-function formatDate(iso: string): string {
-  if (!iso) return "—";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-}
 
 function toCsv(rows: StudioEventRsvp[]): string {
   const header = ["First name", "Last name", "Email", "Company", "Title", "LinkedIn", "RSVP date"];
   const escape = (v: string) => `"${v.replace(/"/g, '""')}"`;
   const lines = rows.map((r) =>
-    [r.firstName, r.lastName, r.email, r.company, r.title, r.linkedinUrl, formatDate(r.createdAt)]
+    [r.firstName, r.lastName, r.email, r.company, r.title, r.linkedinUrl, formatAdminDate(r.createdAt)]
       .map((v) => escape(v ?? ""))
       .join(","),
   );
@@ -24,8 +29,7 @@ function toCsv(rows: StudioEventRsvp[]): string {
 }
 
 function downloadCsv(filename: string, rows: StudioEventRsvp[]) {
-  const csv = toCsv(rows);
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const blob = new Blob([toCsv(rows)], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -33,6 +37,9 @@ function downloadCsv(filename: string, rows: StudioEventRsvp[]) {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+const exportButtonClass =
+  "inline-flex h-8 items-center rounded-full border border-[color:var(--c-rule)] px-3 text-xs font-medium text-[color:var(--c-ink)] transition hover:border-[color:var(--c-accent)]";
 
 export function StudioEventRsvpsPageClient({
   rsvps,
@@ -43,151 +50,118 @@ export function StudioEventRsvpsPageClient({
   eventLabels: Record<string, string>;
   hasDb: boolean;
 }) {
-  const router = useRouter();
+  const confirm = useStudioConfirm();
+  const load = useCallback(() => loadAudience<StudioEventRsvp>("event-rsvps"), []);
+  const remove = useCallback((ids: string[]) => removeAudience("event-rsvps", ids), []);
+  const list = useAdminCollection<StudioEventRsvp>({ initial: rsvps, getId: (r) => r.id, load, remove });
   const [search, setSearch] = useState("");
-  const [nominatingId, setNominatingId] = useState<string | null>(null);
-  const [nominationById, setNominationById] = useState<Record<string, "done" | "error">>({});
-
-  async function handleNominate(id: string) {
-    setNominatingId(id);
-    setNominationById((prev) => {
-      const next = { ...prev };
-      delete next[id];
-      return next;
-    });
-
-    const response = await fetch("/api/admin/event-rsvps/nominate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    setNominatingId(null);
-
-    if (!response.ok) {
-      setNominationById((prev) => ({ ...prev, [id]: "error" }));
-      return;
-    }
-
-    setNominationById((prev) => ({ ...prev, [id]: "done" }));
-    router.refresh();
-  }
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return rsvps;
-    return rsvps.filter((r) =>
+    if (!q) return list.items;
+    return list.items.filter((r) =>
       [r.firstName, r.lastName, r.email, r.company, r.title, eventLabels[r.eventSlug] ?? r.eventSlug].some((f) =>
         f.toLowerCase().includes(q),
       ),
     );
-  }, [rsvps, search, eventLabels]);
+  }, [list.items, search, eventLabels]);
 
   const groups = useMemo(() => {
     const byEvent = new Map<string, StudioEventRsvp[]>();
     for (const r of filtered) {
-      const list = byEvent.get(r.eventSlug);
-      if (list) list.push(r);
+      const existing = byEvent.get(r.eventSlug);
+      if (existing) existing.push(r);
       else byEvent.set(r.eventSlug, [r]);
     }
     return Array.from(byEvent.entries());
   }, [filtered]);
 
-  return (
-    <section className="mt-10 rounded-2xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_55%,white)] p-5 shadow-sm sm:p-6 dark:bg-[#1c1a17]/90 dark:shadow-[inset_0_1px_0_0_rgba(241,233,220,0.05)]">
-      <div className="flex flex-wrap items-end justify-between gap-3 gap-y-2">
-        <h2 className="m-0 font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
-          All RSVPs
-        </h2>
-        <div className="flex items-center gap-2">
-          <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90">
-            {search.trim() ? `${filtered.length} of ${rsvps.length} shown` : `${rsvps.length} RSVP${rsvps.length === 1 ? "" : "s"}`}
-          </span>
-          {rsvps.length > 0 ? (
-            <button
-              type="button"
-              onClick={() => downloadCsv("culturin-event-rsvps.csv", filtered)}
-              className="inline-flex h-8 items-center rounded-full border border-neutral-300 px-3 text-xs font-medium text-neutral-800 transition hover:bg-neutral-100 dark:border-white/20 dark:bg-white/[0.06] dark:text-white dark:hover:bg-white/10"
-            >
-              Export CSV
-            </button>
-          ) : null}
+  async function deleteRsvps(rows: StudioEventRsvp[]) {
+    if (rows.length === 0) return;
+    const one = rows.length === 1;
+    const ok = await confirm({
+      title: one ? `Delete ${rows[0].firstName} ${rows[0].lastName}'s RSVP?` : `Delete ${rows.length} RSVPs?`,
+      description: "This permanently removes the RSVP. They can RSVP again from the event page.",
+      confirmLabel: one ? "Delete RSVP" : `Delete ${rows.length} RSVPs`,
+      destructive: true,
+    });
+    if (ok) await list.deleteIds(rows.map((r) => r.id));
+  }
+
+  const total = list.items.length;
+  const countLabel = search.trim() ? `${filtered.length} of ${total} shown` : `${total} RSVP${total === 1 ? "" : "s"}`;
+
+  const toolbar =
+    hasDb && total > 0 ? (
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <SearchField value={search} onChange={setSearch} placeholder="Search name, email, company, event…" />
+          <button type="button" onClick={() => downloadCsv("culturin-event-rsvps.csv", filtered)} className={exportButtonClass}>
+            Export CSV
+          </button>
         </div>
+        <SelectionBar
+          visibleIds={filtered.map((r) => r.id)}
+          selectedIds={list.selectedIds}
+          onSetAll={list.setAll}
+          onClear={list.clearSelection}
+          onDelete={() => void deleteRsvps(list.items.filter((r) => list.selectedIds.has(r.id)))}
+          deleting={list.deleting}
+          noun="RSVPs"
+        />
       </div>
+    ) : null;
 
-      {hasDb && rsvps.length > 0 ? (
-        <label className="mt-5 flex flex-col gap-2 sm:max-w-sm">
-          <span className="text-[0.7rem] font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58">
-            Search
-          </span>
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search name, email, company, event…"
-            autoComplete="off"
-            className="w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-inner shadow-neutral-900/5 outline-none transition placeholder:text-neutral-400 focus-visible:border-culturin-500/60 focus-visible:ring-2 focus-visible:ring-culturin-400/25 dark:border-white/12 dark:bg-black/60 dark:text-white dark:shadow-black/40 dark:placeholder:text-white/35"
-          />
-        </label>
-      ) : null}
-
-      <div className="mt-8 space-y-8">
+  return (
+    <>
+      {list.error ? <Notice tone="error">{list.error}</Notice> : null}
+      <StudioCulturinListSection title="All RSVPs" countLabel={countLabel} toolbar={toolbar}>
         {!hasDb ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            Your content library isn&apos;t connected in this preview, so RSVPs can&apos;t be listed yet.
-          </p>
-        ) : rsvps.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            No RSVPs yet. New submissions from event pages will show up here.
-          </p>
+          <EmptyNote>The database isn&apos;t connected in this preview, so RSVPs can&apos;t be listed yet.</EmptyNote>
+        ) : total === 0 ? (
+          <EmptyNote>No RSVPs yet. New submissions from event pages will show up here.</EmptyNote>
         ) : filtered.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            No RSVPs match your search. Try a different term or clear the search box.
-          </p>
+          <EmptyNote>No RSVPs match your search.</EmptyNote>
         ) : (
-          groups.map(([slug, rows]) => (
-            <div key={slug}>
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="m-0 font-display text-lg font-semibold tracking-tight text-neutral-900 dark:text-white">
-                  {eventLabels[slug] ?? slug}
-                </h3>
-                <div className="flex items-center gap-2">
-                  <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90">
-                    {rows.length} RSVP{rows.length === 1 ? "" : "s"}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => downloadCsv(`culturin-${slug}-rsvps.csv`, rows)}
-                    className="inline-flex h-7 items-center rounded-full border border-neutral-300 px-2.5 text-[0.7rem] font-medium text-neutral-700 transition hover:bg-neutral-100 dark:border-white/20 dark:bg-white/[0.06] dark:text-white/85 dark:hover:bg-white/10"
-                  >
-                    Export this event
-                  </button>
+          <div className="space-y-8">
+            {groups.map(([slug, rows]) => (
+              <div key={slug}>
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3 className="m-0 font-display text-lg font-semibold tracking-tight text-[color:var(--c-ink)]">
+                    {eventLabels[slug] ?? slug}
+                  </h3>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-[color:var(--c-accent)]">
+                      {rows.length} RSVP{rows.length === 1 ? "" : "s"}
+                    </span>
+                    <button type="button" onClick={() => downloadCsv(`culturin-${slug}-rsvps.csv`, rows)} className={exportButtonClass}>
+                      Export this event
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="mt-4 space-y-3">
-                {rows.map((r) => (
-                  <div
-                    key={r.id}
-                    className="rounded-xl border border-neutral-200 bg-white px-4 py-3.5 dark:border-white/12 dark:bg-white/[0.04]"
-                  >
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <p className="m-0 text-sm font-semibold text-neutral-900 dark:text-white">
+                <ul className="m-0 mt-4 list-none space-y-3 p-0">
+                  {rows.map((r) => (
+                    <li key={r.id} className={`${studioListRowClass} flex items-start gap-3`}>
+                      <div className="pt-1">
+                        <SelectBox
+                          checked={list.selectedIds.has(r.id)}
+                          onChange={() => list.toggle(r.id)}
+                          label={`Select RSVP from ${r.email}`}
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="m-0 text-sm font-semibold text-[color:var(--c-ink)]">
                           {r.firstName} {r.lastName}
-                          {r.company ? (
-                            <span className="font-normal text-neutral-500 dark:text-white/58">
+                          {r.company || r.title ? (
+                            <span className="font-normal text-[color:var(--c-muted)]">
                               {" "}
-                              · {r.title ? `${r.title}, ` : ""}
+                              · {r.title ? `${r.title}${r.company ? ", " : ""}` : ""}
                               {r.company}
                             </span>
-                          ) : r.title ? (
-                            <span className="font-normal text-neutral-500 dark:text-white/58"> · {r.title}</span>
                           ) : null}
                         </p>
                         <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs">
-                          <a
-                            href={`mailto:${r.email}`}
-                            className="text-neutral-600 no-underline hover:underline dark:text-white/70"
-                          >
+                          <a href={`mailto:${r.email}`} className="text-[color:var(--c-muted)] no-underline hover:underline">
                             {r.email}
                           </a>
                           {r.linkedinUrl ? (
@@ -195,43 +169,27 @@ export function StudioEventRsvpsPageClient({
                               href={r.linkedinUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-culturin-800 no-underline hover:underline dark:text-culturin-300/90"
+                              className="text-[color:var(--c-accent)] no-underline hover:underline"
                             >
                               LinkedIn
                             </a>
                           ) : null}
                         </div>
                       </div>
-                      <span className="whitespace-nowrap text-xs text-neutral-500 dark:text-white/58">
-                        {formatDate(r.createdAt)}
-                      </span>
-                    </div>
-                    <div className="mt-2.5 flex items-center gap-2">
-                      {nominationById[r.id] === "done" ? (
-                        <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
-                          Nominated for Card ✓
-                        </span>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => handleNominate(r.id)}
-                          disabled={nominatingId === r.id}
-                          className="inline-flex h-7 items-center rounded-full border border-culturin-700/30 bg-culturin-50 px-2.5 text-[0.7rem] font-medium text-culturin-800 transition hover:bg-culturin-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-culturin-300/25 dark:bg-culturin-400/10 dark:text-culturin-300 dark:hover:bg-culturin-400/15"
-                        >
-                          {nominatingId === r.id ? "Nominating…" : "Nominate to Card"}
-                        </button>
-                      )}
-                      {nominationById[r.id] === "error" ? (
-                        <span className="text-xs text-rose-600 dark:text-rose-400">Could not nominate.</span>
-                      ) : null}
-                    </div>
-                  </div>
-                ))}
+                      <span className="whitespace-nowrap text-xs text-[color:var(--c-muted)]">{formatAdminDate(r.createdAt)}</span>
+                      <DeleteIconButton
+                        label={`Delete RSVP from ${r.email}`}
+                        disabled={list.deleting}
+                        onClick={() => void deleteRsvps([r])}
+                      />
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         )}
-      </div>
-    </section>
+      </StudioCulturinListSection>
+    </>
   );
 }

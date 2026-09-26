@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getCmsDbOrNull } from "@/lib/cms/server";
+import { getCmsDbFreshOrNull } from "@/lib/cms/server";
 import type { SalesDeck } from "@/lib/salesDecks/types";
 import { getCurrentAdminState } from "@/lib/studio/admin";
 
@@ -13,7 +13,7 @@ export async function GET() {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 
-  const db = getCmsDbOrNull();
+  const db = getCmsDbFreshOrNull();
   if (!db) {
     return NextResponse.json(
       { decks: [], viewCounts: {} },

@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { getCurrentAdminState } from "@/lib/studio/admin";
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 import { SITE_IMAGE_SLOTS } from "@/lib/siteImages";
 
 export async function PATCH(request: Request) {
@@ -24,7 +24,7 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ message: "An image is required." }, { status: 400 });
   }
 
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) {
     return NextResponse.json(
       { message: "Saving isn’t available—your workspace isn’t fully connected. Try again later or contact support." },

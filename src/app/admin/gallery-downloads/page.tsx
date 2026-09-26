@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { listGalleryDownloadsForStudio } from "@/lib/studio/galleryDownloads";
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 import { StudioGalleryDownloadsPageClient } from "./StudioGalleryDownloadsPageClient";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StudioGalleryDownloadsPage() {
-  const hasDb = Boolean(getSupabaseAdminOrNull());
+  const hasDb = Boolean(getSupabaseAdminFreshOrNull());
   const downloads = hasDb ? await listGalleryDownloadsForStudio() : [];
 
   return (

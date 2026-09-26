@@ -1,10 +1,16 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Link } from "next-view-transitions";
-import { useRouter } from "next/navigation";
-import { Trash2 } from "lucide-react";
 
+import {
+  DeleteIconButton,
+  EmptyNote,
+  Notice,
+  SelectBox,
+  SelectionBar,
+} from "@/app/admin/_components/AdminListParts";
+import { useStudioConfirm } from "@/app/admin/_components/StudioConfirmDialog";
 import {
   StudioCulturinListSection,
   StudioCulturinSearchSortRow,
@@ -12,82 +18,88 @@ import {
   studioListEditLinkClass,
   studioListRowClass,
 } from "@/app/admin/_components/StudioCulturinListKit";
-import { filterStudioList, sortStudioList, type StudioSortKey } from "@/app/admin/_lib/studioListShared";
-import { useStudioLiveList } from "@/app/admin/_lib/useStudioLiveList";
 import { deleteCmsEntry } from "@/app/admin/_lib/postCmsEntry";
-import { useStudioConfirm } from "@/app/admin/_components/StudioConfirmDialog";
+import { filterStudioList, sortStudioList, type StudioSortKey } from "@/app/admin/_lib/studioListShared";
+import { useAdminCollection } from "@/app/admin/_lib/useAdminCollection";
 import type { StudioBlogListItem } from "@/lib/cms/queries";
 
-type StudioArticlesPageClientProps = {
-  articles: StudioBlogListItem[];
-  hasDb: boolean;
-};
+async function loadArticles(): Promise<StudioBlogListItem[] | null> {
+  try {
+    const res = await fetch("/api/admin/list?type=blog", { cache: "no-store" });
+    if (!res.ok) return null;
+    const body = (await res.json()) as { items?: StudioBlogListItem[] };
+    return Array.isArray(body.items) ? body.items : null;
+  } catch {
+    return null;
+  }
+}
 
-export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPageClientProps) {
-  const router = useRouter();
+async function removeArticles(slugs: string[]): Promise<{ ok: boolean; message?: string }> {
+  const failures: string[] = [];
+  for (const slug of slugs) {
+    const result = await deleteCmsEntry("blog", slug);
+    if (!result.ok) failures.push(result.message);
+  }
+  if (failures.length === 0) return { ok: true };
+  return {
+    ok: false,
+    message: failures.length === slugs.length ? failures[0] : `${failures.length} of ${slugs.length} could not be deleted.`,
+  };
+}
+
+export function StudioArticlesPageClient({ articles, hasDb }: { articles: StudioBlogListItem[]; hasDb: boolean }) {
   const confirm = useStudioConfirm();
-  const liveArticles = useStudioLiveList("blog", articles);
+  const remove = useCallback((slugs: string[]) => removeArticles(slugs), []);
+  const list = useAdminCollection<StudioBlogListItem>({
+    initial: articles,
+    getId: (a) => a.currentSlug,
+    load: loadArticles,
+    remove,
+  });
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<StudioSortKey>("date-newest");
-  const [removed, setRemoved] = useState<Set<string>>(() => new Set());
-  const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [, startTransition] = useTransition();
-
-  const visibleArticles = useMemo(
-    () => liveArticles.filter((a) => !removed.has(a.currentSlug)),
-    [liveArticles, removed],
-  );
 
   const filteredSorted = useMemo(() => {
-    const filtered = filterStudioList(visibleArticles, search, (a) => [a.title, a.summary, a.currentSlug]);
+    const filtered = filterStudioList(list.items, search, (a) => [a.title, a.summary, a.currentSlug]);
     return sortStudioList(filtered, sort, (a) => a.title, (a) => a.currentSlug);
-  }, [visibleArticles, search, sort]);
+  }, [list.items, search, sort]);
 
-  const searchTrim = search.trim();
-  const countLabel =
-    searchTrim.length > 0
-      ? `${filteredSorted.length} of ${visibleArticles.length} shown`
-      : `${visibleArticles.length} item${visibleArticles.length === 1 ? "" : "s"}`;
+  async function deleteArticles(rows: StudioBlogListItem[]) {
+    if (rows.length === 0) return;
+    const one = rows.length === 1;
+    const ok = await confirm({
+      title: one ? `Delete "${rows[0].title}"?` : `Delete ${rows.length} articles?`,
+      description: "This permanently removes the article from the public site.",
+      confirmLabel: one ? "Delete article" : `Delete ${rows.length} articles`,
+      destructive: true,
+    });
+    if (ok) await list.deleteIds(rows.map((r) => r.currentSlug));
+  }
+
+  const total = list.items.length;
+  const countLabel = search.trim() ? `${filteredSorted.length} of ${total} shown` : `${total} item${total === 1 ? "" : "s"}`;
 
   const toolbar =
-    hasDb && visibleArticles.length > 0 ? (
-      <StudioCulturinSearchSortRow
-        searchValue={search}
-        onSearchChange={setSearch}
-        searchPlaceholder="Search title, slug, or summary…"
-        sortValue={sort}
-        onSortChange={setSort}
-      />
+    hasDb && total > 0 ? (
+      <div className="flex flex-col gap-4">
+        <StudioCulturinSearchSortRow
+          searchValue={search}
+          onSearchChange={setSearch}
+          searchPlaceholder="Search title, slug, or summary…"
+          sortValue={sort}
+          onSortChange={setSort}
+        />
+        <SelectionBar
+          visibleIds={filteredSorted.map((a) => a.currentSlug)}
+          selectedIds={list.selectedIds}
+          onSetAll={list.setAll}
+          onClear={list.clearSelection}
+          onDelete={() => void deleteArticles(list.items.filter((a) => list.selectedIds.has(a.currentSlug)))}
+          deleting={list.deleting}
+          noun="articles"
+        />
+      </div>
     ) : null;
-
-  async function handleDelete(article: StudioBlogListItem) {
-    const confirmed = await confirm({
-      title: `Delete "${article.title}"?`,
-      description: "This permanently removes the article from the public site.",
-      confirmLabel: "Delete article",
-    });
-    if (!confirmed) return;
-
-    setDeletingSlug(article.currentSlug);
-    setErrorMessage(null);
-
-    const result = await deleteCmsEntry("blog", article.currentSlug);
-
-    setDeletingSlug(null);
-
-    if (!result.ok) {
-      setErrorMessage(result.message);
-      return;
-    }
-
-    setRemoved((prev) => {
-      const next = new Set(prev);
-      next.add(article.currentSlug);
-      return next;
-    });
-    startTransition(() => router.refresh());
-  }
 
   return (
     <>
@@ -97,72 +109,52 @@ export function StudioArticlesPageClient({ articles, hasDb }: StudioArticlesPage
         </Link>
       </div>
 
-      {errorMessage ? (
-        <p
-          role="alert"
-          className="mt-4 rounded-lg border border-rose-300/60 bg-rose-50 px-3 py-2 text-sm text-rose-800 dark:border-rose-400/30 dark:bg-rose-500/10 dark:text-rose-200"
-        >
-          {errorMessage}
-        </p>
-      ) : null}
+      {list.error ? <Notice tone="error">{list.error}</Notice> : null}
 
       <StudioCulturinListSection title="All articles" countLabel={countLabel} toolbar={toolbar}>
         {!hasDb ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            Your content library isn&apos;t connected in this preview, so articles can&apos;t be listed yet.
-          </p>
-        ) : visibleArticles.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            No articles found. Use <span className="font-medium text-culturin-800 dark:text-culturin-300/90">Create article</span>{" "}
-            to add one.
-          </p>
+          <EmptyNote>The database isn&apos;t connected in this preview, so articles can&apos;t be listed yet.</EmptyNote>
+        ) : total === 0 ? (
+          <EmptyNote>No articles yet. Use Create article to add one.</EmptyNote>
         ) : filteredSorted.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            No articles match your search. Try a different term or clear the search box.
-          </p>
+          <EmptyNote>No articles match your search.</EmptyNote>
         ) : (
           <ul className="m-0 list-none space-y-3 p-0">
             {filteredSorted.map((article) => {
               const slug = article.currentSlug;
-              const viewHref = `/articles/${encodeURIComponent(slug)}`;
-              const isDeleting = deletingSlug === slug;
               return (
-                <li key={slug} className={studioListRowClass}>
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                    <a
-                      href={viewHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={`Open “${article.title}” in a new tab`}
-                      className="group min-w-0 flex-1 rounded-md no-underline outline-none focus-visible:ring-2 focus-visible:ring-culturin-400/50"
-                    >
-                      <p className="m-0 truncate text-sm font-semibold text-neutral-900 transition group-hover:text-culturin-800 dark:text-white dark:group-hover:text-culturin-300">
-                        {article.title}
-                      </p>
-                      <p className="m-0 mt-1 truncate text-xs text-neutral-500 dark:text-white/62">/{slug}</p>
-                      {article.summary ? (
-                        <p className="m-0 mt-1.5 line-clamp-2 text-xs text-neutral-600 dark:text-white/60">{article.summary}</p>
-                      ) : null}
-                    </a>
-                    <div className="flex shrink-0 items-center gap-2">
-                      <Link
-                        href={`/admin/articles/edit/${encodeURIComponent(slug)}`}
-                        className={studioListEditLinkClass}
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(article)}
-                        disabled={isDeleting}
-                        aria-label={`Delete ${article.title}`}
-                        title="Delete article"
-                        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-700 transition hover:border-rose-400/60 hover:bg-rose-50 hover:text-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400/70 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/18 dark:bg-white/[0.06] dark:text-white/85 dark:hover:border-rose-400/40 dark:hover:bg-rose-500/15 dark:hover:text-rose-200"
-                      >
-                        <Trash2 className="h-4 w-4" aria-hidden="true" />
-                        <span className="sr-only">{isDeleting ? "Deleting…" : "Delete"}</span>
-                      </button>
-                    </div>
+                <li key={slug} className={`${studioListRowClass} flex items-start gap-3`}>
+                  <div className="pt-1">
+                    <SelectBox
+                      checked={list.selectedIds.has(slug)}
+                      onChange={() => list.toggle(slug)}
+                      label={`Select ${article.title}`}
+                    />
+                  </div>
+                  <a
+                    href={`/articles/${encodeURIComponent(slug)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`Open "${article.title}" in a new tab`}
+                    className="group min-w-0 flex-1 rounded-md no-underline outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--c-accent)]"
+                  >
+                    <p className="m-0 truncate text-sm font-semibold text-[color:var(--c-ink)] transition group-hover:text-[color:var(--c-accent)]">
+                      {article.title}
+                    </p>
+                    <p className="m-0 mt-1 truncate text-xs text-[color:var(--c-muted)]">/{slug}</p>
+                    {article.summary ? (
+                      <p className="m-0 mt-1.5 line-clamp-2 text-xs text-[color:var(--c-muted)]">{article.summary}</p>
+                    ) : null}
+                  </a>
+                  <div className="flex shrink-0 items-center gap-2">
+                    <Link href={`/admin/articles/edit/${encodeURIComponent(slug)}`} className={studioListEditLinkClass}>
+                      Edit
+                    </Link>
+                    <DeleteIconButton
+                      label={`Delete ${article.title}`}
+                      disabled={list.deleting}
+                      onClick={() => void deleteArticles([article])}
+                    />
                   </div>
                 </li>
               );

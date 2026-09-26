@@ -2,10 +2,10 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { listGalleryImagesForStudio } from "@/lib/cms/queries";
-import { getCmsDbOrNull } from "@/lib/cms/server";
+import { getCmsDbFreshOrNull } from "@/lib/cms/server";
 import { resolveEventMediaSrc } from "@/lib/eventMedia";
 import { getCurrentAdminState } from "@/lib/studio/admin";
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 function asOrientation(input: unknown): "portrait" | "landscape" {
   return input === "portrait" ? "portrait" : "landscape";
@@ -27,7 +27,7 @@ export async function GET() {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 
-  const db = getCmsDbOrNull();
+  const db = getCmsDbFreshOrNull();
   const images = db ? await listGalleryImagesForStudio(db) : [];
   return NextResponse.json({
     images: images.map((img) => ({
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "An event name is required." }, { status: 400 });
   }
 
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) {
     return NextResponse.json(
       { message: "Saving isn’t available—your workspace isn’t fully connected. Try again later or contact support." },
@@ -102,7 +102,7 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ message: "An event name is required." }, { status: 400 });
   }
 
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) {
     return NextResponse.json(
       { message: "Saving isn’t available—your workspace isn’t fully connected. Try again later or contact support." },
@@ -140,7 +140,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ message: "id is required." }, { status: 400 });
   }
 
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) {
     return NextResponse.json(
       { message: "Deleting isn’t available—your workspace isn’t fully connected. Try again later or contact support." },

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import { getCurrentAdminState } from "@/lib/studio/admin";
 import { emptyPortableTextBlocks } from "@/lib/portableText/tiptapHtmlBridge";
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 type CmsType = "blog" | "video" | "provider" | "curator";
 
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Slug or title/name is required." }, { status: 400 });
   }
 
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) {
     return NextResponse.json(
       { message: "Saving isn’t available—your workspace isn’t fully connected. Try again later or contact support." },
@@ -179,7 +179,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ message: "Slug is required." }, { status: 400 });
   }
 
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) {
     return NextResponse.json(
       { message: "Deleting isn’t available—your workspace isn’t fully connected. Try again later or contact support." },

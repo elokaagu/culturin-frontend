@@ -69,7 +69,6 @@ export default async function AdminLayout({ children }: { children: ReactNode })
       partnerInquiryCount={counts.partnerInquiries}
       eventRsvpCount={counts.eventRsvps}
       galleryDownloadCount={counts.galleryDownloads}
-      cardApplicationCount={counts.cardApplications}
     >
       {children}
     </StudioLayoutClient>

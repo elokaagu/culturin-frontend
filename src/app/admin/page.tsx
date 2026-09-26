@@ -129,7 +129,6 @@ export default async function AdminDashboardPage() {
     { href: "/admin/event-rsvps", label: "Event RSVPs", value: counts.eventRsvps, note: "Guest list" },
     { href: "/admin/subscribers", label: "Subscribers", value: counts.subscribers, note: "Mailing list" },
     { href: "/admin/gallery-downloads", label: "Gallery downloads", value: counts.galleryDownloads, note: "Asset requests" },
-    { href: "/admin/card-applications", label: "Card applications", value: counts.cardApplications, note: "Pending review" },
   ];
 
   const attention = [
@@ -137,12 +136,6 @@ export default async function AdminDashboardPage() {
       ? {
           href: "/admin/partner-inquiries",
           label: `${counts.partnerInquiries} partner inquir${counts.partnerInquiries === 1 ? "y" : "ies"}`,
-        }
-      : null,
-    counts.cardApplications > 0
-      ? {
-          href: "/admin/card-applications",
-          label: `${counts.cardApplications} card application${counts.cardApplications === 1 ? "" : "s"} pending`,
         }
       : null,
   ].filter(Boolean) as { href: string; label: string }[];

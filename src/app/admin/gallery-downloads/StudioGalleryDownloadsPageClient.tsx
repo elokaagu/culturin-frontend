@@ -1,15 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
+import {
+  DeleteIconButton,
+  EmptyNote,
+  Notice,
+  SearchField,
+  SelectBox,
+  SelectionBar,
+  formatAdminDate,
+} from "@/app/admin/_components/AdminListParts";
+import { useStudioConfirm } from "@/app/admin/_components/StudioConfirmDialog";
+import { StudioCulturinListSection, studioListRowClass } from "@/app/admin/_components/StudioCulturinListKit";
+import { loadAudience, removeAudience, useAdminCollection } from "@/app/admin/_lib/useAdminCollection";
 import type { StudioGalleryDownload } from "@/lib/studio/galleryDownloads";
-
-function formatDate(iso: string): string {
-  if (!iso) return "—";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-}
 
 export function StudioGalleryDownloadsPageClient({
   downloads,
@@ -18,88 +23,105 @@ export function StudioGalleryDownloadsPageClient({
   downloads: StudioGalleryDownload[];
   hasDb: boolean;
 }) {
+  const confirm = useStudioConfirm();
+  const load = useCallback(() => loadAudience<StudioGalleryDownload>("gallery-downloads"), []);
+  const remove = useCallback((ids: string[]) => removeAudience("gallery-downloads", ids), []);
+  const list = useAdminCollection<StudioGalleryDownload>({ initial: downloads, getId: (d) => d.id, load, remove });
   const [search, setSearch] = useState("");
+  const [brokenImages, setBrokenImages] = useState<Set<string>>(() => new Set());
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return downloads;
-    return downloads.filter((d) =>
+    if (!q) return list.items;
+    return list.items.filter((d) =>
       [d.firstName, d.lastName, d.email, d.imageSrc].some((f) => f.toLowerCase().includes(q)),
     );
-  }, [downloads, search]);
+  }, [list.items, search]);
+
+  async function deleteDownloads(rows: StudioGalleryDownload[]) {
+    if (rows.length === 0) return;
+    const ok = await confirm({
+      title: rows.length === 1 ? "Delete this download record?" : `Delete ${rows.length} download records?`,
+      description: "This removes the record from this list. It doesn't affect the photos themselves.",
+      confirmLabel: rows.length === 1 ? "Delete" : `Delete ${rows.length}`,
+      destructive: true,
+    });
+    if (ok) await list.deleteIds(rows.map((r) => r.id));
+  }
+
+  const total = list.items.length;
+  const countLabel = search.trim() ? `${filtered.length} of ${total} shown` : `${total} download${total === 1 ? "" : "s"}`;
+
+  const toolbar =
+    hasDb && total > 0 ? (
+      <div className="flex flex-col gap-4">
+        <SearchField value={search} onChange={setSearch} placeholder="Search name, email, photo…" />
+        <SelectionBar
+          visibleIds={filtered.map((d) => d.id)}
+          selectedIds={list.selectedIds}
+          onSetAll={list.setAll}
+          onClear={list.clearSelection}
+          onDelete={() => void deleteDownloads(list.items.filter((d) => list.selectedIds.has(d.id)))}
+          deleting={list.deleting}
+          noun="downloads"
+        />
+      </div>
+    ) : null;
 
   return (
-    <section className="mt-10 rounded-2xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_55%,white)] p-5 shadow-sm sm:p-6 dark:bg-[#1c1a17]/90 dark:shadow-[inset_0_1px_0_0_rgba(241,233,220,0.05)]">
-      <div className="flex flex-wrap items-end justify-between gap-3 gap-y-2">
-        <h2 className="m-0 font-display text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
-          All downloads
-        </h2>
-        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-culturin-800 dark:text-culturin-300/90">
-          {search.trim()
-            ? `${filtered.length} of ${downloads.length} shown`
-            : `${downloads.length} download${downloads.length === 1 ? "" : "s"}`}
-        </span>
-      </div>
-
-      {hasDb && downloads.length > 0 ? (
-        <label className="mt-5 flex flex-col gap-2 sm:max-w-sm">
-          <span className="text-[0.7rem] font-medium uppercase tracking-[0.12em] text-neutral-500 dark:text-white/58">
-            Search
-          </span>
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search name, email, photo…"
-            autoComplete="off"
-            className="w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-inner shadow-neutral-900/5 outline-none transition placeholder:text-neutral-400 focus-visible:border-culturin-500/60 focus-visible:ring-2 focus-visible:ring-culturin-400/25 dark:border-white/12 dark:bg-black/60 dark:text-white dark:shadow-black/40 dark:placeholder:text-white/35"
-          />
-        </label>
-      ) : null}
-
-      <div className="mt-6 space-y-3">
+    <>
+      {list.error ? <Notice tone="error">{list.error}</Notice> : null}
+      <StudioCulturinListSection title="All downloads" countLabel={countLabel} toolbar={toolbar}>
         {!hasDb ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            Your content library isn&apos;t connected in this preview, so downloads can&apos;t be listed yet.
-          </p>
-        ) : downloads.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            No downloads yet. When someone downloads a full-quality photo from /gallery, it&apos;ll show up here.
-          </p>
+          <EmptyNote>The database isn&apos;t connected in this preview, so downloads can&apos;t be listed yet.</EmptyNote>
+        ) : total === 0 ? (
+          <EmptyNote>No downloads yet. When someone downloads a full-quality photo from /gallery, it&apos;ll show up here.</EmptyNote>
         ) : filtered.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            No downloads match your search. Try a different term or clear the search box.
-          </p>
+          <EmptyNote>No downloads match your search.</EmptyNote>
         ) : (
-          filtered.map((d) => (
-            <div
-              key={d.id}
-              className="flex flex-wrap items-center gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3.5 dark:border-white/12 dark:bg-white/[0.04]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={d.imageSrc}
-                alt={d.imageAlt || ""}
-                className="h-12 w-12 shrink-0 rounded-lg object-cover"
-              />
-              <div className="min-w-0 flex-1">
-                <p className="m-0 text-sm font-semibold text-neutral-900 dark:text-white">
-                  {d.firstName} {d.lastName}
-                </p>
-                <a
-                  href={`mailto:${d.email}`}
-                  className="text-xs text-neutral-600 no-underline hover:underline dark:text-white/70"
-                >
-                  {d.email}
-                </a>
-              </div>
-              <span className="whitespace-nowrap text-xs text-neutral-500 dark:text-white/58">
-                {formatDate(d.createdAt)}
-              </span>
-            </div>
-          ))
+          <ul className="m-0 list-none space-y-3 p-0">
+            {filtered.map((d) => (
+              <li key={d.id} className={`${studioListRowClass} flex flex-wrap items-center gap-3`}>
+                <SelectBox
+                  checked={list.selectedIds.has(d.id)}
+                  onChange={() => list.toggle(d.id)}
+                  label={`Select download by ${d.email}`}
+                />
+                {d.imageSrc && !brokenImages.has(d.id) ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={d.imageSrc}
+                    alt={d.imageAlt || ""}
+                    onError={() => setBrokenImages((prev) => new Set(prev).add(d.id))}
+                    className="h-12 w-12 shrink-0 rounded-lg object-cover"
+                  />
+                ) : (
+                  <span
+                    aria-hidden
+                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[color:var(--c-rule)] text-[0.6rem] uppercase tracking-wide text-[color:var(--c-muted)]"
+                  >
+                    No img
+                  </span>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="m-0 text-sm font-semibold text-[color:var(--c-ink)]">
+                    {d.firstName} {d.lastName}
+                  </p>
+                  <a href={`mailto:${d.email}`} className="text-xs text-[color:var(--c-muted)] no-underline hover:underline">
+                    {d.email}
+                  </a>
+                </div>
+                <span className="whitespace-nowrap text-xs text-[color:var(--c-muted)]">{formatAdminDate(d.createdAt)}</span>
+                <DeleteIconButton
+                  label={`Delete download by ${d.email}`}
+                  disabled={list.deleting}
+                  onClick={() => void deleteDownloads([d])}
+                />
+              </li>
+            ))}
+          </ul>
         )}
-      </div>
-    </section>
+      </StudioCulturinListSection>
+    </>
   );
 }

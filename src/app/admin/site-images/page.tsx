@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { getSiteImagesMap, SITE_IMAGE_SLOTS, manifestDefault } from "@/lib/siteImages";
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 import { StudioSiteImagesPageClient } from "./StudioSiteImagesPageClient";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StudioSiteImagesPage() {
-  const hasDb = Boolean(getSupabaseAdminOrNull());
+  const hasDb = Boolean(getSupabaseAdminFreshOrNull());
   const map = hasDb ? await getSiteImagesMap() : {};
 
   const slots = SITE_IMAGE_SLOTS.map((slot) => {

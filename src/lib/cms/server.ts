@@ -1,4 +1,4 @@
-import { getSupabaseAdmin } from "../supabaseServiceRole";
+import { getSupabaseAdmin, getSupabaseAdminFresh } from "../supabaseServiceRole";
 import type { CmsDb } from "./types";
 
 /**
@@ -8,6 +8,15 @@ import type { CmsDb } from "./types";
 export function getCmsDbOrNull(): CmsDb | null {
   try {
     return getSupabaseAdmin() as CmsDb;
+  } catch {
+    return null;
+  }
+}
+
+/** Same as {@link getCmsDbOrNull} but never served from Next's fetch cache. Use in admin code only. */
+export function getCmsDbFreshOrNull(): CmsDb | null {
+  try {
+    return getSupabaseAdminFresh() as CmsDb;
   } catch {
     return null;
   }

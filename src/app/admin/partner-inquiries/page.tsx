@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { listPartnerInquiriesForStudio } from "@/lib/studio/partnerInquiries";
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 import { StudioPartnerInquiriesPageClient } from "./StudioPartnerInquiriesPageClient";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StudioPartnerInquiriesPage() {
-  const hasDb = Boolean(getSupabaseAdminOrNull());
+  const hasDb = Boolean(getSupabaseAdminFreshOrNull());
   const inquiries = hasDb ? await listPartnerInquiriesForStudio() : [];
 
   return (

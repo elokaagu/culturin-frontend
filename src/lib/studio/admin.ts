@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 type AdminCheckResult = {
   userId: string | null;
@@ -23,7 +23,7 @@ export async function getCurrentAdminState(): Promise<AdminCheckResult> {
     return { userId: null, email: null, isAdmin: false };
   }
 
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) {
     return { userId: user.id, email: user.email ?? null, isAdmin: false };
   }

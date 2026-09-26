@@ -3,7 +3,6 @@
 import {
   BookOpen,
   CalendarCheck,
-  CreditCard,
   Download,
   ExternalLink,
   Handshake,
@@ -45,7 +44,6 @@ type StudioLayoutClientProps = {
   partnerInquiryCount: number;
   eventRsvpCount: number;
   galleryDownloadCount: number;
-  cardApplicationCount: number;
 };
 
 const navItemClass = (active: boolean) =>
@@ -86,7 +84,6 @@ export default function StudioLayoutClient({
   partnerInquiryCount,
   eventRsvpCount,
   galleryDownloadCount,
-  cardApplicationCount,
 }: StudioLayoutClientProps) {
   const router = useTransitionRouter();
   const pathname = usePathname() ?? "";
@@ -102,7 +99,6 @@ export default function StudioLayoutClient({
     partnerInquiries: partnerInquiryCount,
     eventRsvps: eventRsvpCount,
     galleryDownloads: galleryDownloadCount,
-    cardApplications: cardApplicationCount,
   });
 
   return (
@@ -308,24 +304,6 @@ export default function StudioLayoutClient({
                         liveCounts.galleryDownloads,
                         pathname === "/admin/gallery-downloads" ||
                           pathname?.startsWith("/admin/gallery-downloads/"),
-                      )}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/admin/card-applications"
-                      className={navItemClass(
-                        pathname === "/admin/card-applications" ||
-                          pathname?.startsWith("/admin/card-applications/"),
-                      )}
-                      aria-current={pathname === "/admin/card-applications" ? "page" : undefined}
-                    >
-                      <CreditCard className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                      <span className="min-w-0 flex-1">Card applications</span>
-                      {countBadge(
-                        liveCounts.cardApplications,
-                        pathname === "/admin/card-applications" ||
-                          pathname?.startsWith("/admin/card-applications/"),
                       )}
                     </Link>
                   </li>

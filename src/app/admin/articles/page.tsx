@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { getCmsDbOrNull } from "@/lib/cms/server";
+import { getCmsDbFreshOrNull } from "@/lib/cms/server";
 import { listBlogsForStudio } from "@/lib/cms/queries";
 
 import { StudioArticlesPageClient } from "./StudioArticlesPageClient";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StudioArticlesPage() {
-  const db = getCmsDbOrNull();
+  const db = getCmsDbFreshOrNull();
   const articles = db ? await listBlogsForStudio(db) : [];
 
   return (

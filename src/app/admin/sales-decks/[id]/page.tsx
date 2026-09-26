@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { getCmsDbOrNull } from "@/lib/cms/server";
+import { getCmsDbFreshOrNull } from "@/lib/cms/server";
 import type { DeckPageEvent, DeckPartnerLink, DeckViewSession, SalesDeck } from "@/lib/salesDecks/types";
 
 import { StudioDeckDetailClient } from "./StudioDeckDetailClient";
@@ -18,7 +18,7 @@ type PageProps = {
 };
 
 export default async function StudioDeckDetailPage({ params, searchParams }: PageProps) {
-  const db = getCmsDbOrNull();
+  const db = getCmsDbFreshOrNull();
   if (!db) notFound();
 
   const [{ data: deck }, { data: sessions }, { data: events }, { data: partnerLinks }] =

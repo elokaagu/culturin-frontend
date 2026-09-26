@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { events } from "@/lib/eventsData";
 import { listEventRsvpsForStudio } from "@/lib/studio/eventRsvps";
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 import { StudioEventRsvpsPageClient } from "./StudioEventRsvpsPageClient";
 
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StudioEventRsvpsPage() {
-  const hasDb = Boolean(getSupabaseAdminOrNull());
+  const hasDb = Boolean(getSupabaseAdminFreshOrNull());
   const rsvps = hasDb ? await listEventRsvpsForStudio() : [];
   const eventLabels = Object.fromEntries(events.map((e) => [e.slug, e.name]));
 

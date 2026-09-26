@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { listGalleryImagesForStudio } from "@/lib/cms/queries";
-import { getCmsDbOrNull } from "@/lib/cms/server";
+import { getCmsDbFreshOrNull } from "@/lib/cms/server";
 
 import { StudioGalleryPageClient } from "./StudioGalleryPageClient";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StudioGalleryPage() {
-  const db = getCmsDbOrNull();
+  const db = getCmsDbFreshOrNull();
   const images = db ? await listGalleryImagesForStudio(db) : [];
 
   return (

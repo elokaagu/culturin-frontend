@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { StudioArticleEditorPage, type StudioArticleEditorInitial } from "../../_components/StudioArticleEditorPage";
-import { getCmsDbOrNull } from "@/lib/cms/server";
+import { getCmsDbFreshOrNull } from "@/lib/cms/server";
 import { getBlogBySlug } from "@/lib/cms/queries";
 import { normalizeSlugParam } from "@/lib/slug";
 
@@ -13,7 +13,7 @@ type EditArticlePageProps = {
 };
 
 export async function generateMetadata({ params }: EditArticlePageProps): Promise<Metadata> {
-  const db = getCmsDbOrNull();
+  const db = getCmsDbFreshOrNull();
   const slug = normalizeSlugParam(params.slug);
   const blog = db ? await getBlogBySlug(db, slug) : null;
   if (!blog) {
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: EditArticlePageProps): Promis
 }
 
 export default async function StudioEditArticlePage({ params }: EditArticlePageProps) {
-  const db = getCmsDbOrNull();
+  const db = getCmsDbFreshOrNull();
   if (!db) {
     notFound();
   }

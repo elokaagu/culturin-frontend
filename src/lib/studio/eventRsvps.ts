@@ -1,4 +1,4 @@
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 export type StudioEventRsvp = {
   id: string;
@@ -13,7 +13,7 @@ export type StudioEventRsvp = {
 };
 
 export async function listEventRsvpsForStudio(): Promise<StudioEventRsvp[]> {
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) return [];
 
   const { data, error } = await admin

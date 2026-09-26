@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getCurrentAdminState } from "@/lib/studio/admin";
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   const sourceLabel = String(body.source ?? "").trim().slice(0, 120);
   const source = sourceLabel || "csv_import";
 
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) {
     return NextResponse.json(
       { message: "Importing isn’t available—your workspace isn’t fully connected. Try again later." },

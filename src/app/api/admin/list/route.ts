@@ -6,7 +6,7 @@ import {
   listProvidersForStudio,
   listVideosForStudio,
 } from "@/lib/cms/queries";
-import { getCmsDbOrNull } from "@/lib/cms/server";
+import { getCmsDbFreshOrNull } from "@/lib/cms/server";
 import { getCurrentAdminState } from "@/lib/studio/admin";
 
 export const dynamic = "force-dynamic";
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ message: "Invalid type." }, { status: 400 });
   }
 
-  const db = getCmsDbOrNull();
+  const db = getCmsDbFreshOrNull();
   if (!db) {
     return NextResponse.json({ items: [] }, { headers: { "Cache-Control": "no-store" } });
   }

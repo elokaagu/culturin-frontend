@@ -1,4 +1,4 @@
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 export type CardApplicationStatus = "pending" | "invited" | "active" | "declined";
 export type CardApplicationSource = "event_rsvp" | "advisor_application" | "manual";
@@ -22,7 +22,7 @@ export type StudioCardApplication = {
 };
 
 export async function listCardApplicationsForStudio(): Promise<StudioCardApplication[]> {
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) return [];
 
   const { data, error } = await admin

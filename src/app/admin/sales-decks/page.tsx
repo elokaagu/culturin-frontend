@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { getCmsDbOrNull } from "@/lib/cms/server";
+import { getCmsDbFreshOrNull } from "@/lib/cms/server";
 import type { SalesDeck } from "@/lib/salesDecks/types";
 
 import { StudioSalesDecksPageClient } from "./StudioSalesDecksPageClient";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StudioSalesDecksPage() {
-  const db = getCmsDbOrNull();
+  const db = getCmsDbFreshOrNull();
   const { data } = db
     ? await db.from("sales_decks").select("*").order("created_at", { ascending: false })
     : { data: [] as SalesDeck[] };

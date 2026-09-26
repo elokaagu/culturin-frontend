@@ -14,7 +14,6 @@ type StudioNavCounts = Pick<
   | "partnerInquiries"
   | "eventRsvps"
   | "galleryDownloads"
-  | "cardApplications"
 >;
 
 /**
@@ -37,7 +36,6 @@ export function useStudioLiveCounts(initial: StudioNavCounts): StudioNavCounts {
     initial.partnerInquiries,
     initial.eventRsvps,
     initial.galleryDownloads,
-    initial.cardApplications,
   ]);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
+import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 export type StudioPartnerInquiry = {
   id: string;
@@ -11,7 +11,7 @@ export type StudioPartnerInquiry = {
 };
 
 export async function listPartnerInquiriesForStudio(): Promise<StudioPartnerInquiry[]> {
-  const admin = getSupabaseAdminOrNull();
+  const admin = getSupabaseAdminFreshOrNull();
   if (!admin) return [];
 
   const { data, error } = await admin
