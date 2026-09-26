@@ -8,6 +8,8 @@ export type HeroSlide = {
   alt: string;
   caption: string;
   blurDataURL?: string;
+  /** Used if `src` fails to load (e.g. no full-resolution copy exists). */
+  fallbackSrc?: string;
 };
 
 const SLIDE_MS = 6500;
@@ -24,6 +26,7 @@ export default function HeroSlideshow({
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [failed, setFailed] = useState<Set<number>>(() => new Set());
   const progressRef = useRef<HTMLSpanElement>(null);
   const animationRef = useRef<Animation | null>(null);
   const count = slides.length;
@@ -77,11 +80,15 @@ export default function HeroSlideshow({
           aria-hidden={i !== active}
         >
           <Image
-            src={slide.src}
+            src={failed.has(i) && slide.fallbackSrc ? slide.fallbackSrc : slide.src}
             alt={slide.alt}
             fill
             priority={i === 0}
             sizes="100vw"
+            quality={90}
+            onError={() => {
+              if (slide.fallbackSrc && !failed.has(i)) setFailed((prev) => new Set(prev).add(i));
+            }}
             className="object-cover"
             placeholder={slide.blurDataURL ? "blur" : "empty"}
             blurDataURL={slide.blurDataURL}

@@ -20,6 +20,17 @@ export function resolveEventMediaSrc(src: string): string {
   return src;
 }
 
+/** Full-resolution copy of an event photo (`events/{folder}/large/{file}`), for full-bleed use. */
+export function largeEventMediaSrc(src: string): string {
+  const marker = `/storage/v1/object/public/${SUPABASE_PUBLIC_MEDIA_BUCKET}/events/`;
+  const idx = src.indexOf(marker);
+  if (idx < 0) return src;
+  const rest = src.slice(idx + marker.length);
+  const slash = rest.lastIndexOf("/");
+  if (slash < 0 || rest.includes("/large/")) return src;
+  return `${src.slice(0, idx + marker.length)}${rest.slice(0, slash)}/large/${rest.slice(slash + 1)}`;
+}
+
 /** Map a Storage public URL back to the legacy `/events/...` path for blur lookups. */
 export function toLegacyEventPath(src: string): string {
   const marker = `/storage/v1/object/public/${SUPABASE_PUBLIC_MEDIA_BUCKET}/events/`;

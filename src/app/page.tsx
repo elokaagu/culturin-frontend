@@ -22,7 +22,7 @@ import HeroSlideshow, { type HeroSlide } from "./components/HeroSlideshow";
 import AttendeeOriginMap from "./components/AttendeeOriginMap";
 import MagneticButton from "./components/motion/MagneticButton";
 import { getSiteImagesMap, resolveSiteImage, resolveEventHero, manifestDefault } from "@/lib/siteImages";
-import { eventMediaUrl } from "@/lib/eventMedia";
+import { eventMediaUrl, largeEventMediaSrc } from "@/lib/eventMedia";
 
 /** Site images can change in Admin; revalidatePath("/") runs on update. */
 export const revalidate = 120;
@@ -112,7 +112,13 @@ export default async function HomePage() {
   const siteImages = await getSiteImagesMap();
   const heroSlides: HeroSlide[] = HERO_SLIDE_SLOTS.map((key) => {
     const image = resolveSiteImage(siteImages, key, manifestDefault(key));
-    return { ...image, caption: image.alt, blurDataURL: blurForSrc(image.src) };
+    return {
+      ...image,
+      src: largeEventMediaSrc(image.src),
+      fallbackSrc: image.src,
+      caption: image.alt,
+      blurDataURL: blurForSrc(image.src),
+    };
   }).filter((slide) => slide.src);
   const cannesSection = resolveSiteImage(siteImages, "homepage-cannes-section", manifestDefault("homepage-cannes-section"));
   const pillars = PILLARS.map((p, i) => ({
