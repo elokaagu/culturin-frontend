@@ -14,7 +14,6 @@ import {
 } from "@/lib/theme/culturinTokens";
 import BlurImage from "./components/motion/BlurImage";
 import Reveal from "./components/motion/Reveal";
-import EditorialStatement from "./components/EditorialStatement";
 import HomeFooter from "./components/HomeFooter";
 import SiteHeader from "./components/SiteHeader";
 import LogoTicker, { type LogoTickerItem } from "./components/LogoTicker";
@@ -22,7 +21,11 @@ import HeroSlideshow, { type HeroSlide } from "./components/HeroSlideshow";
 import AttendeeOriginMap from "./components/AttendeeOriginMap";
 import MagneticButton from "./components/motion/MagneticButton";
 import { getSiteImagesMap, resolveSiteImage, resolveEventHero, manifestDefault } from "@/lib/siteImages";
-import { eventMediaUrl, largeEventMediaSrc } from "@/lib/eventMedia";
+import { largeEventMediaSrc } from "@/lib/eventMedia";
+import { getCmsDbOrNull } from "@/lib/cms/server";
+import { listBlogs } from "@/lib/cms/queries";
+import { cmsImageUnoptimized, resolveContentImageSrc } from "@/lib/imagePlaceholder";
+import SafeContentImage from "./components/SafeContentImage";
 
 /** Site images can change in Admin; revalidatePath("/") runs on update. */
 export const revalidate = 120;
@@ -62,23 +65,33 @@ const PRODUCTION_HISTORY: LogoTickerItem[] = [
 
 const SERVICES = [
   {
+    slug: "intelligence",
     label: "Intelligence",
-    body: "An ongoing read on what's moving in culture, and what it means for your brand: monthly reports, competitor monitoring, and quarterly strategy sessions.",
+    promise: "An ongoing read on what's moving in culture, and what it means for your brand.",
+    includes: ["Monthly culture reports", "Competitor monitoring", "Quarterly strategy sessions"],
     price: "From £3,000 / month",
-    cta: "Talk to us about Intelligence",
   },
   {
+    slug: "programming",
     label: "Programming",
-    body: "Culturin becomes your external cultural programming partner for the year: strategy, curation, and a season of rooms built around your brand.",
+    promise: "Culturin becomes your cultural programming partner for the year.",
+    includes: ["Annual cultural strategy", "Curated guest lists and talent", "A season of rooms built around your brand"],
     price: "£50,000–£150,000+ / year",
-    cta: "Talk to us about Programming",
   },
   {
+    slug: "moments",
     label: "Moments",
-    body: "Sponsor a room already built: Cannes, Frieze, Basel, and the nights in between, with your brand woven in with intention.",
+    promise: "Sponsor a room we've already built, with your brand woven in with intention.",
+    includes: ["Cannes, Frieze, Basel, and beyond", "Brand integration and hosting", "Photography and content from the night"],
     price: "From £20,000",
-    cta: "Talk to us about Moments",
   },
+] as const;
+
+const PROOF_STATS = [
+  { value: "500+", label: "Guests at Culturin × Cannes Lions 2026" },
+  { value: "12", label: "Countries in the room" },
+  { value: "4", label: "Cities: Cannes, New York, London, Miami" },
+  { value: "Super Bowl · Oscars · Davos · UNGA", label: "Where our team has produced cultural moments", small: true },
 ] as const;
 
 const featuredEvents = events.filter((e) => !e.isPast).slice(0, 3);
@@ -103,6 +116,14 @@ export default async function HomePage() {
     };
   }).filter((slide) => slide.src);
   const cannesSection = resolveSiteImage(siteImages, "homepage-cannes-section", manifestDefault("homepage-cannes-section"));
+  const services = SERVICES.map((s) => ({
+    ...s,
+    image: resolveSiteImage(siteImages, `homepage-service-${s.slug}`, manifestDefault(`homepage-service-${s.slug}`)),
+  }));
+  const db = getCmsDbOrNull();
+  const latestStories = db
+    ? (await listBlogs(db)).filter((a) => a.currentSlug?.trim()).slice(0, 3)
+    : [];
   const galleryPreview = GALLERY_PREVIEW_SLOTS.map((slot) => ({
     ...resolveSiteImage(siteImages, slot.key, manifestDefault(slot.key)),
     span: slot.span,
@@ -297,45 +318,174 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── Editorial statements (OPUS-style alternating narrative) ── */}
-      <section className="px-8 sm:px-14" style={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
-        <div className="mx-auto flex max-w-6xl flex-col gap-28">
-          <EditorialStatement
-            eyebrow="Cultural marketing"
-            headline={"Launch In A\nNew Territory\nWith The Room\nAlready Built."}
-            body="Brands come to Culturin for cultural marketing: how to launch in a new territory, and how to connect with cultural intelligence. Write to us. We'll set up a call."
-            image={eventMediaUrl("cannes-lions-2026/UNIKday1-83.jpg")}
-            imageAlt="Guests filling a red-lit room beneath the disco balls in Cannes"
-            imageSide="right"
-            buttons={[
-              { label: "Create an experience", href: "/partner", variant: "solid" },
-              { label: "See upcoming events", href: "/events", variant: "text" },
-            ]}
-          />
-          <EditorialStatement
-            eyebrow="Stories"
-            headline={"Stories From\nThe Room."}
-            body="Articles and video from artists, musicians, and founders, captured from the same rooms Culturin builds."
-            image={eventMediaUrl("cannes-lions-2026/UNIKday2-24.jpg")}
-            imageAlt="Couple posing together at a branded photo wall in Cannes"
-            imageSide="left"
-            buttons={[
-              { label: "See upcoming events", href: "/events", variant: "solid" },
-              { label: "Create an experience", href: "/partner", variant: "text" },
-            ]}
-          />
-          <EditorialStatement
-            eyebrow="Credibility"
-            headline={"Built By People\nWho've Done\nThis Before."}
-            body="Our founding team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly, and built relationships with Nike, Virgin, and Microsoft along the way."
-            image={eventMediaUrl("cannes-lions-2026/UNIKday1-42.jpg")}
-            imageAlt="Guest at a Culturin evening in Cannes"
-            imageSide="right"
-            buttons={[
-              { label: "Create an experience", href: "/partner", variant: "solid" },
-              { label: "See upcoming events", href: "/events", variant: "text" },
-            ]}
-          />
+      {/* ── Services ───────────────────────────────────────────── */}
+      <section
+        id="services"
+        className="px-8 sm:px-14"
+        style={{ paddingTop: "8rem", paddingBottom: "8rem" }}
+      >
+        <div className="mx-auto max-w-6xl">
+          <Reveal className="mb-14 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+                How brands work with us
+              </p>
+              <h2
+                className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
+                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+              >
+                Three ways to work with Culturin.
+              </h2>
+            </div>
+            <p className="m-0 max-w-sm text-base leading-relaxed" style={{ color: INK_MUTED }}>
+              Launch in a new territory with the room already built. Not every brand needs all three. Most start with one.
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {services.map((s, i) => (
+              <Reveal key={s.slug} as="div" delay={i * 140} y={48} className="h-full">
+                <article
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_56px_-28px_rgba(0,0,0,0.6)]"
+                  style={{ borderColor: RULE, background: `color-mix(in srgb, ${INK} 4%, ${BG})` }}
+                >
+                  <div className="relative aspect-[4/5] overflow-hidden">
+                    <BlurImage
+                      src={s.image.src}
+                      alt={s.image.alt}
+                      fill
+                      sizes="(min-width: 768px) 33vw, 100vw"
+                      className="object-cover transition-transform duration-[1200ms] ease-out group-hover:!scale-[1.06]"
+                      placeholder="blur"
+                      blurDataURL={blurForSrc(s.image.src)}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-6">
+                      <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.25em] text-white/70">
+                        {String(i + 1).padStart(2, "0")}
+                      </p>
+                      <h3
+                        className="m-0 mt-2 text-3xl font-medium text-white"
+                        style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+                      >
+                        {s.label}
+                      </h3>
+                      <p className="m-0 mt-2 text-sm leading-relaxed text-white/85">{s.promise}</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-1 flex-col px-6 pb-6 pt-5">
+                    <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
+                      {s.includes.map((item) => (
+                        <li key={item} className="flex items-start gap-3 text-sm" style={{ color: INK_MUTED }}>
+                          <span className="mt-[0.6em] block h-px w-3 shrink-0" style={{ background: ACCENT }} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-6 flex flex-1 items-end justify-between gap-4 border-t pt-5" style={{ borderColor: RULE }}>
+                      <p className="m-0 text-sm font-medium" style={{ color: INK }}>{s.price}</p>
+                      <Link
+                        href={`/partner?service=${s.slug}`}
+                        className="inline-flex shrink-0 items-center rounded-full px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] no-underline transition-opacity hover:opacity-85"
+                        style={{ background: ACCENT, color: SURFACE_DARK }}
+                      >
+                        Talk to us
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Latest stories ─────────────────────────────────────── */}
+      {latestStories.length > 0 ? (
+        <section
+          id="stories"
+          className="border-t px-8 sm:px-14"
+          style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
+        >
+          <div className="mx-auto max-w-6xl">
+            <Reveal className="mb-12 flex items-end justify-between gap-6">
+              <div>
+                <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+                  Stories
+                </p>
+                <h2
+                  className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
+                  style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+                >
+                  Stories from the room.
+                </h2>
+              </div>
+              <Link
+                href="/articles"
+                className="shrink-0 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
+                style={{ color: INK }}
+              >
+                All stories →
+              </Link>
+            </Reveal>
+
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              {latestStories.map((story, i) => {
+                const src = resolveContentImageSrc(story.titleImageUrl);
+                return (
+                  <Reveal key={story.currentSlug} as="div" delay={i * 120} className="h-full">
+                    <Link href={`/articles/${story.currentSlug}`} className="group flex h-full flex-col no-underline" style={{ color: INK }}>
+                      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-neutral-900">
+                        <SafeContentImage
+                          src={src}
+                          alt={story.title}
+                          className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.05]"
+                          sizes="(min-width: 768px) 33vw, 100vw"
+                          blurDataURL={blurForSrc(src)}
+                          unoptimized={cmsImageUnoptimized(src)}
+                        />
+                      </div>
+                      <h3
+                        className="m-0 mt-5 line-clamp-2 text-xl font-medium leading-snug"
+                        style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+                      >
+                        {story.title}
+                      </h3>
+                      {story.summary?.trim() ? (
+                        <p className="m-0 mt-2 line-clamp-2 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
+                          {story.summary}
+                        </p>
+                      ) : null}
+                      <span className="mt-4 text-xs font-semibold uppercase tracking-[0.16em] transition-transform duration-200 group-hover:translate-x-1" style={{ color: INK }}>
+                        Read →
+                      </span>
+                    </Link>
+                  </Reveal>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ── Proof in numbers ───────────────────────────────────── */}
+      <section className="border-t px-8 sm:px-14" style={{ borderColor: RULE }}>
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px lg:grid-cols-4" style={{ background: RULE }}>
+          {PROOF_STATS.map((stat, i) => (
+            <Reveal key={stat.label} as="div" delay={i * 100} className="h-full">
+              <div className="flex h-full flex-col justify-between gap-4 px-6 py-12" style={{ background: BG }}>
+                <p
+                  className={`m-0 font-medium leading-[1.05] ${"small" in stat ? "text-xl sm:text-2xl" : "text-5xl sm:text-6xl"}`}
+                  style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
+                >
+                  {stat.value}
+                </p>
+                <p className="m-0 text-xs leading-relaxed" style={{ color: INK_MUTED }}>
+                  {stat.label}
+                </p>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
@@ -455,55 +605,6 @@ export default async function HomePage() {
               ))}
             </div>
           </Reveal>
-        </div>
-      </section>
-
-      {/* ── Services (three ways to work with us) ─────────────── */}
-      <section
-        id="services"
-        className="border-b px-8 sm:px-14"
-        style={{ paddingTop: "8rem", paddingBottom: "8rem", borderColor: RULE }}
-      >
-        <div className="mx-auto max-w-6xl">
-          <Reveal className="mb-16 max-w-2xl">
-            <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-              How brands work with us
-            </p>
-            <h2
-              className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
-              style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-            >
-              Intelligence. Programming. Moments.
-            </h2>
-            <p className="m-0 mt-6 text-base leading-relaxed" style={{ color: INK_MUTED }}>
-              Not every brand needs all three. Most start with one.
-            </p>
-          </Reveal>
-
-          <div className={`grid grid-cols-1 gap-px ${EVENT_GRID_COLS[featuredEvents.length] ?? "sm:grid-cols-3"}`} style={{ background: RULE }}>
-            {SERVICES.map((s, i) => (
-              <Reveal key={s.label} as="div" delay={i * 120}>
-                <div className="flex h-full flex-col px-8 py-10" style={{ background: BG }}>
-                  <p
-                    className="m-0 text-2xl font-medium"
-                    style={{ fontFamily: "var(--font-display), 'Times New Roman', serif", color: INK }}
-                  >
-                    {s.label}
-                  </p>
-                  <p className="m-0 mt-4 flex-1 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                    {s.body}
-                  </p>
-                  <Link
-                    href="/partner"
-                    className="mt-6 inline-flex w-fit items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] no-underline transition-opacity hover:opacity-60"
-                    style={{ color: INK }}
-                  >
-                    {s.cta} →
-                  </Link>
-                </div>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

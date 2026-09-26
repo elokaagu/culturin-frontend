@@ -5,6 +5,9 @@ import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
 const VALID_INTERESTS = new Set([
+  "intelligence",
+  "programming",
+  "moments",
   "cultural-marketing",
   "new-territory",
   "cultural-intelligence",

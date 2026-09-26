@@ -17,7 +17,8 @@ export const metadata: Metadata = {
     "Cultural marketing for brands launching in new territories or connecting with cultural intelligence. Write to Culturin and we'll set up a call.",
 };
 
-export default function PartnerPage() {
+export default function PartnerPage({ searchParams }: { searchParams: { service?: string | string[] } }) {
+  const service = typeof searchParams.service === "string" ? searchParams.service : undefined;
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
       <SiteHeader />
@@ -75,7 +76,7 @@ export default function PartnerPage() {
 
           <div className="relative overflow-hidden rounded-2xl border p-8" style={{ borderColor: RULE }}>
             <ShineBorder shineColor={["#b5502e", "#e08a5b", "#f0ab85"]} />
-            <PartnerForm />
+            <PartnerForm initialInterest={service} />
           </div>
         </div>
       </div>

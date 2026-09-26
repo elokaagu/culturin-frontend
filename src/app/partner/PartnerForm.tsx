@@ -19,6 +19,9 @@ const RULE = EDITORIAL_RULE;
 const ACCENT = EDITORIAL_ACCENT;
 
 const INTERESTS = [
+  { value: "intelligence", label: "Intelligence: ongoing cultural reports" },
+  { value: "programming", label: "Programming: a year of rooms" },
+  { value: "moments", label: "Moments: sponsor a room" },
   { value: "cultural-marketing", label: "Cultural marketing" },
   { value: "new-territory", label: "Launching in a new territory" },
   { value: "cultural-intelligence", label: "Cultural intelligence" },
@@ -113,11 +116,13 @@ function InterestSelect({
   );
 }
 
-export function PartnerForm() {
+export function PartnerForm({ initialInterest }: { initialInterest?: string }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
-  const [interest, setInterest] = useState("cultural-marketing");
+  const [interest, setInterest] = useState(
+    INTERESTS.some((opt) => opt.value === initialInterest) ? initialInterest! : "cultural-marketing",
+  );
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
   const [status, setStatus] = useState<"idle" | "ok" | "error">("idle");
