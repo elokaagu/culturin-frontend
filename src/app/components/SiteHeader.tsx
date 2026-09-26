@@ -10,7 +10,7 @@ import { useTheme } from "../styles/ThemeContext";
 import CulturinWordmark from "./CulturinWordmark";
 
 const NAV = [
-  { label: "Reports", href: "/platform" },
+  { label: "Reports", href: "/reports" },
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
 ] as const;

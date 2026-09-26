@@ -159,7 +159,7 @@ export default function AboutPage() {
               Gallery
             </Link>
             <Link
-              href="/platform"
+              href="/reports"
               className="inline-flex min-h-[42px] items-center rounded-full border px-5 text-xs font-semibold uppercase tracking-[0.16em] no-underline transition hover:opacity-80"
               style={{ borderColor: "var(--c-rule)", color: "var(--c-ink)" }}
             >

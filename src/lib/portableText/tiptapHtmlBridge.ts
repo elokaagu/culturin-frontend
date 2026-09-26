@@ -23,28 +23,46 @@ type PtBlock = {
   level?: number;
 };
 
+/** An inline-uploaded picture. Stored as its own top-level block in `cms_blogs.body`. */
+export type PtImage = { _type: "image"; _key: string; url: string; alt?: string };
+
 function isPtBlock(v: unknown): v is PtBlock {
   return Boolean(v && typeof v === "object" && (v as PtBlock)._type === "block");
+}
+
+function isPtImage(v: unknown): v is PtImage {
+  return Boolean(
+    v && typeof v === "object" && (v as PtImage)._type === "image" && typeof (v as PtImage).url === "string" && (v as PtImage).url,
+  );
+}
+
+function imageToHtml(img: PtImage): string {
+  return `<img src="${escapeHtml(img.url)}" alt="${escapeHtml(img.alt ?? "")}">`;
 }
 
 /** Serialize PT blocks (with optional list grouping) to HTML for TipTap. */
 export function portableTextBlocksToHtml(body: unknown): string {
   if (!Array.isArray(body) || body.length === 0) return "<p></p>";
 
-  const blocks = body.filter(isPtBlock);
+  const blocks = body.filter((v): v is PtBlock | PtImage => isPtBlock(v) || isPtImage(v));
   if (blocks.length === 0) return "<p></p>";
 
   const htmlParts: string[] = [];
   let i = 0;
   while (i < blocks.length) {
     const b = blocks[i]!;
+    if (isPtImage(b)) {
+      htmlParts.push(imageToHtml(b));
+      i++;
+      continue;
+    }
     const listItem = (b as PtBlock & { listItem?: string }).listItem;
     if (listItem === "bullet" || listItem === "number") {
       const tag = listItem === "bullet" ? "ul" : "ol";
       const items: string[] = [];
       while (i < blocks.length) {
         const cur = blocks[i] as PtBlock & { listItem?: string };
-        if (cur.listItem !== listItem) break;
+        if (isPtImage(cur) || cur.listItem !== listItem) break;
         items.push(`<li>${inlineFromBlock(cur)}</li>`);
         i++;
       }
@@ -111,7 +129,7 @@ export function htmlToPortableTextBlocks(html: string): unknown[] {
   const root = doc.body.firstElementChild;
   if (!root) return [];
 
-  const blocks: PtBlock[] = [];
+  const blocks: Array<PtBlock | PtImage> = [];
   for (const child of Array.from(root.children)) {
     appendBlocksFromElement(child as HTMLElement, blocks);
   }
@@ -135,8 +153,13 @@ export function emptyPortableTextBlocks(): unknown[] {
   return emptyParagraphBlock();
 }
 
-function appendBlocksFromElement(el: HTMLElement, blocks: PtBlock[]): void {
+function appendBlocksFromElement(el: HTMLElement, blocks: Array<PtBlock | PtImage>): void {
   const tag = el.tagName.toLowerCase();
+  if (tag === "img") {
+    const url = el.getAttribute("src")?.trim();
+    if (url) blocks.push({ _type: "image", _key: randomKey(), url, alt: el.getAttribute("alt")?.trim() || undefined });
+    return;
+  }
   if (tag === "p") {
     blocks.push(paragraphBlockFromElement(el, "normal"));
     return;

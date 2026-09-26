@@ -155,7 +155,7 @@ export default async function AdminDashboardPage() {
   }));
 
   return (
-    <div className="p-4 sm:p-6 md:max-w-4xl md:p-10">
+    <div className="p-4 sm:p-6 md:p-10">
       <header className="border-b border-[color:var(--c-rule)] pb-8">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <p className={studioEyebrowClass}>Culturin Admin</p>

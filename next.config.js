@@ -44,6 +44,7 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      { source: "/platform", destination: "/reports", permanent: true },
       { source: "/studio", destination: "/admin", permanent: true },
       { source: "/studio/:path*", destination: "/admin/:path*", permanent: true },
       { source: "/spotlight", destination: "/community", permanent: true },

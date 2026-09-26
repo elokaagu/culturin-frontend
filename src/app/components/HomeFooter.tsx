@@ -171,7 +171,7 @@ function FooterSubscribe() {
 }
 
 const footerLinks = [
-  { label: "Reports", href: "/platform" },
+  { label: "Reports", href: "/reports" },
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
   { label: "Partners", href: "/partner" },

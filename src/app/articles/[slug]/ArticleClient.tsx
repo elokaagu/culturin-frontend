@@ -69,6 +69,24 @@ export default function ArticleClient({ data, curator }: { data: fullBlog; curat
 
   const portableTextComponents: PortableTextComponents = useMemo(
     () => ({
+      types: {
+        image: ({ value }: { value: { url?: string; alt?: string } }) =>
+          value?.url ? (
+            <figure className="my-8 w-full">
+              <LazyImg
+                src={value.url}
+                alt={value.alt ?? ""}
+                className="h-auto w-full rounded-2xl border object-cover"
+                style={{ borderColor: "var(--c-rule)" }}
+              />
+              {value.alt ? (
+                <figcaption className="mt-2 text-center text-xs" style={{ color: "var(--c-muted)" }}>
+                  {value.alt}
+                </figcaption>
+              ) : null}
+            </figure>
+          ) : null,
+      },
       block: {
         h2: ({ children }) => (
           <h2 className="mt-10 scroll-mt-24 text-3xl font-medium leading-tight tracking-tight sm:text-[2.2rem]" style={{ ...displayFont, color: "var(--c-ink)" }}>

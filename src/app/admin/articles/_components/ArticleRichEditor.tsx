@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
@@ -10,6 +11,7 @@ import {
   Code,
   Heading2,
   Heading3,
+  ImagePlus,
   Italic,
   Link2,
   List,
@@ -20,7 +22,9 @@ import {
   Underline as UnderlineIcon,
   Undo2,
 } from "lucide-react";
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+
+import { StudioImageUploadButton } from "@/app/admin/_components/StudioImageUploadButton";
 
 import { htmlToPortableTextBlocks, portableTextBlocksToHtml } from "@/lib/portableText/tiptapHtmlBridge";
 import { cn } from "@/lib/utils";
@@ -55,6 +59,8 @@ export const ArticleRichEditor = forwardRef<ArticleRichEditorHandle, ArticleRich
   function ArticleRichEditor({ initialBody, className }, ref) {
     const initialHtml = portableTextBlocksToHtml(initialBody);
     const initialRef = useRef(initialHtml);
+    const [imagePanelOpen, setImagePanelOpen] = useState(false);
+    const [imageAlt, setImageAlt] = useState("");
 
     const editor = useEditor({
       immediatelyRender: false,
@@ -65,6 +71,10 @@ export const ArticleRichEditor = forwardRef<ArticleRichEditorHandle, ArticleRich
           orderedList: { HTMLAttributes: { class: "list-decimal pl-6 my-3" } },
         }),
         Underline,
+        Image.configure({
+          allowBase64: false,
+          HTMLAttributes: { class: "my-6 h-auto max-w-full rounded-xl" },
+        }),
         Link.configure({ openOnClick: false, autolink: true, HTMLAttributes: { class: "text-culturin-700 underline dark:text-culturin-400/90" } }),
         Placeholder.configure({ placeholder: "Write the story — headings, lists, links, quotes…" }),
       ],
@@ -220,6 +230,17 @@ export const ArticleRichEditor = forwardRef<ArticleRichEditorHandle, ArticleRich
           >
             <Link2 className="h-4 w-4" strokeWidth={2.25} />
           </button>
+          <button
+            type="button"
+            className={cn(toolbarBtnClass, imagePanelOpen && toolbarBtnActiveClass)}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => setImagePanelOpen((o) => !o)}
+            aria-expanded={imagePanelOpen}
+            aria-label="Insert image"
+            title="Insert image"
+          >
+            <ImagePlus className="h-4 w-4" strokeWidth={2.25} />
+          </button>
           <span className="mx-1 hidden h-6 w-px bg-neutral-300 dark:bg-white/15 sm:inline-block" aria-hidden />
           <button
             type="button"
@@ -242,6 +263,29 @@ export const ArticleRichEditor = forwardRef<ArticleRichEditorHandle, ArticleRich
             <Redo2 className="h-4 w-4" strokeWidth={2.25} />
           </button>
         </div>
+
+        {imagePanelOpen ? (
+          <div className="flex flex-col gap-3 rounded-xl border border-[color:var(--c-rule)] p-3 sm:flex-row sm:items-end">
+            <label className="flex min-w-0 flex-1 flex-col gap-1.5 text-xs font-medium text-[color:var(--c-muted)]">
+              Caption / alt text (optional)
+              <input
+                type="text"
+                value={imageAlt}
+                onChange={(e) => setImageAlt(e.target.value)}
+                placeholder="Describe the image"
+                className="rounded-xl border border-[color:var(--c-rule)] bg-transparent px-3 py-2 text-sm text-[color:var(--c-ink)] outline-none focus-visible:border-[color:var(--c-accent)]"
+              />
+            </label>
+            <StudioImageUploadButton
+              buttonLabel="Upload image"
+              onUploaded={(url) => {
+                editor.chain().focus().setImage({ src: url, alt: imageAlt.trim() }).run();
+                setImageAlt("");
+                setImagePanelOpen(false);
+              }}
+            />
+          </div>
+        ) : null}
 
         <div className={cn(editorWrapClass)}>
           <EditorContent editor={editor} />

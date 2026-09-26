@@ -35,7 +35,7 @@ export default async function StudioSalesDecksPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 md:max-w-4xl md:p-10">
+    <div className="p-4 sm:p-6 md:p-10">
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--c-accent)]">
         Sales
       </p>

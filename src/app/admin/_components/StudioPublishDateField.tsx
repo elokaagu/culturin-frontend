@@ -44,6 +44,57 @@ const popoverSurfaceClass = cn(
   "culturin-editorial z-[1300] w-[min(calc(100vw-2rem),20rem)] rounded-2xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_55%,white)] p-3 shadow-xl outline-none dark:bg-[#1c1a17]",
 );
 
+const HOURS = Array.from({ length: 24 }, (_, i) => i);
+const MINUTES = [0, 15, 30, 45];
+
+const pillBase =
+  "flex h-8 items-center justify-center rounded-lg border text-xs font-medium tabular-nums transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--c-accent)] disabled:cursor-not-allowed";
+
+function Pill({ selected, disabled, onClick, children }: { selected: boolean; disabled: boolean; onClick: () => void; children: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-pressed={selected}
+      className={cn(pillBase, disabled && "opacity-50")}
+      style={
+        selected
+          ? { background: "var(--c-accent)", borderColor: "var(--c-accent)", color: "#1c1a17" }
+          : { borderColor: "var(--c-rule)", color: "var(--c-ink)" }
+      }
+    >
+      {children}
+    </button>
+  );
+}
+
+/** Branded replacement for the browser's native time popup, which can't be themed. */
+function TimePills({ time, onChange, disabled }: { time: string; onChange: (t: string) => void; disabled: boolean }) {
+  const [hRaw, mRaw] = time.split(":");
+  const hour = Number.parseInt(hRaw ?? "9", 10);
+  const minute = Number.parseInt(mRaw ?? "0", 10);
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-[color:var(--c-muted)]">Time</span>
+      <div className="grid grid-cols-6 gap-1.5" role="group" aria-label="Hour">
+        {HOURS.map((h) => (
+          <Pill key={h} selected={h === hour} disabled={disabled} onClick={() => onChange(`${pad2(h)}:${pad2(Number.isFinite(minute) ? minute : 0)}`)}>
+            {pad2(h)}
+          </Pill>
+        ))}
+      </div>
+      <div className="grid grid-cols-4 gap-1.5" role="group" aria-label="Minute">
+        {MINUTES.map((m) => (
+          <Pill key={m} selected={m === minute} disabled={disabled} onClick={() => onChange(`${pad2(Number.isFinite(hour) ? hour : 9)}:${pad2(m)}`)}>
+            {`:${pad2(m)}`}
+          </Pill>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 type StudioPublishDateFieldProps = {
   name: string;
   label: string;
@@ -121,23 +172,13 @@ export function StudioPublishDateField({ name, label, defaultValue = "" }: Studi
                   "[&_.rdp-day_button]:text-neutral-900 dark:[&_.rdp-day_button]:text-white/90",
                   "[&_.rdp-outside]:opacity-40 dark:[&_.rdp-outside]:opacity-30",
                   "[&_.rdp-disabled]:opacity-40",
+                  "[&_.rdp-nav_button]:!text-[color:var(--c-accent)] [&_.rdp-chevron]:!fill-[color:var(--c-accent)]",
+                  "[&_.rdp-day_button:hover]:!bg-[color:color-mix(in_srgb,var(--c-accent)_14%,transparent)]",
                 )}
               />
             </div>
             <div className="mt-3 flex flex-col gap-2 border-t border-[color:var(--c-rule)] pt-3">
-              <label className="flex items-center gap-2 text-xs font-medium text-[color:var(--c-muted)]">
-                <span className="shrink-0">Time</span>
-                <input
-                  type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  disabled={!selected}
-                  className={cn(
-                    "min-w-0 flex-1 rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-2 py-1.5 text-sm text-[color:var(--c-ink)] dark:bg-black/35",
-                    !selected && "cursor-not-allowed opacity-50",
-                  )}
-                />
-              </label>
+              <TimePills time={time} onChange={setTime} disabled={!selected} />
               <div className="flex justify-end gap-2">
                 <button
                   type="button"

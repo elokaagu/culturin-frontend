@@ -7,12 +7,12 @@ import { listBlogs, listProviders } from "../../lib/cms/queries";
 export const metadata: Metadata = {
   title: "Reports | Culturin",
   description:
-    "Stories, video, and rooms from Culturin.",
+    "Stories, reports, and rooms from Culturin.",
 };
 
 export const revalidate = 120;
 
-export default async function PlatformHomePage() {
+export default async function ReportsPage() {
   const db = getCmsDbOrNull();
   const [blogsFromCms, providersFromCms] = db
     ? await Promise.all([listBlogs(db), listProviders(db)])
