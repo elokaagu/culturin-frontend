@@ -27,6 +27,7 @@ import { getCmsDbOrNull } from "@/lib/cms/server";
 import { listBlogs } from "@/lib/cms/queries";
 import { cmsImageUnoptimized, resolveContentImageSrc } from "@/lib/imagePlaceholder";
 import SafeContentImage from "./components/SafeContentImage";
+import { SERVICES } from "@/lib/services";
 
 /** Site images can change in Admin; revalidatePath("/") runs on update. */
 export const revalidate = 120;
@@ -63,30 +64,6 @@ const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Aman", logoSrc: "/partners/aman-logo.png", heightClass: "h-5" },
   { name: "World Economic Forum", logoSrc: "/partners/world-economic-forum-logo.png", heightClass: "h-11" },
 ];
-
-const SERVICES = [
-  {
-    slug: "intelligence",
-    label: "Intelligence",
-    promise: "An ongoing read on what's moving in culture, and what it means for your brand.",
-    includes: ["Monthly culture reports", "Competitor monitoring", "Quarterly strategy sessions"],
-    price: "From £3,000 / month",
-  },
-  {
-    slug: "programming",
-    label: "Programming",
-    promise: "Culturin becomes your cultural programming partner for the year.",
-    includes: ["Annual cultural strategy", "Curated guest lists and talent", "A season of rooms built around your brand"],
-    price: "£50,000–£150,000+ / year",
-  },
-  {
-    slug: "moments",
-    label: "Moments",
-    promise: "Sponsor a room we've already built, with your brand woven in with intention.",
-    includes: ["Cannes, Frieze, Basel, and beyond", "Brand integration and hosting", "Photography and content from the night"],
-    price: "From £20,000",
-  },
-] as const;
 
 const PROOF_STATS = [
   { value: "500+", label: "Guests at Culturin × Cannes Lions 2026" },
@@ -349,7 +326,7 @@ export default async function HomePage() {
             {services.map((s, i) => (
               <Reveal key={s.slug} as="div" delay={i * 140} y={48} className="h-full">
                 <article
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_56px_-28px_rgba(0,0,0,0.6)]"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_56px_-28px_rgba(0,0,0,0.6)]"
                   style={{ borderColor: RULE, background: `color-mix(in srgb, ${INK} 4%, ${BG})` }}
                 >
                   <div className="relative aspect-[4/5] overflow-hidden">
@@ -371,25 +348,24 @@ export default async function HomePage() {
                         className="m-0 mt-2 text-3xl font-medium text-white"
                         style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
                       >
-                        {s.label}
+                        <Link
+                          href={`/services/${s.slug}`}
+                          className="text-inherit no-underline after:absolute after:inset-0 after:content-['']"
+                        >
+                          {s.label}
+                        </Link>
                       </h3>
                       <p className="m-0 mt-2 text-sm leading-relaxed text-white/85">{s.promise}</p>
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col px-6 pb-6 pt-5">
-                    <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
-                      {s.includes.map((item) => (
-                        <li key={item} className="flex items-start gap-3 text-sm" style={{ color: INK_MUTED }}>
-                          <span className="mt-[0.6em] block h-px w-3 shrink-0" style={{ background: ACCENT }} />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-6 flex flex-1 items-end justify-between gap-4 border-t pt-5" style={{ borderColor: RULE }}>
-                      <p className="m-0 text-sm font-medium" style={{ color: INK }}>{s.price}</p>
+                    <div className="flex flex-1 items-center justify-between gap-4">
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] transition-transform duration-300 group-hover:translate-x-1" style={{ color: INK }}>
+                        Explore {s.label} →
+                      </span>
                       <Link
                         href={`/partner?service=${s.slug}`}
-                        className="inline-flex shrink-0 items-center rounded-full px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] no-underline transition-opacity hover:opacity-85"
+                        className="relative z-10 inline-flex shrink-0 items-center rounded-full px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] no-underline transition-opacity hover:opacity-85"
                         style={{ background: ACCENT, color: SURFACE_DARK }}
                       >
                         Talk to us
@@ -501,7 +477,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <p className="mb-10 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-              Culturin at Cannes Lions 2026
+              Event recap · Culturin at Cannes Lions 2026
             </p>
           </Reveal>
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
