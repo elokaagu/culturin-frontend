@@ -189,11 +189,79 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── Services ───────────────────────────────────────────── */}
+      <section
+        id="services"
+        className="px-8 sm:px-14"
+        style={{ paddingTop: "8rem", paddingBottom: "4rem" }}
+      >
+        <div className="mx-auto max-w-6xl">
+          <Reveal className="mb-14 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
+                How brands work with us
+              </p>
+              <h2
+                className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
+                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+              >
+                Three ways to work with Culturin.
+              </h2>
+            </div>
+            <p className="m-0 max-w-sm text-base leading-relaxed" style={{ color: INK_MUTED }}>
+              Launch in a new territory with the room already built. Not every brand needs all three. Most start with one.
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {services.map((s, i) => (
+              <Reveal key={s.slug} as="div" delay={i * 140} y={48} className="h-full">
+                <Link
+                  href={`/services/${s.slug}`}
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border no-underline transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_56px_-28px_rgba(0,0,0,0.6)]"
+                  style={{ borderColor: RULE, background: `color-mix(in srgb, ${INK} 4%, ${BG})`, color: INK }}
+                >
+                  <div className="relative aspect-[4/5] overflow-hidden">
+                    <BlurImage
+                      src={s.image.src}
+                      alt={s.image.alt}
+                      fill
+                      sizes="(min-width: 768px) 33vw, 100vw"
+                      className="object-cover transition-transform duration-[1200ms] ease-out group-hover:!scale-[1.06]"
+                      placeholder="blur"
+                      blurDataURL={blurForSrc(s.image.src)}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-6">
+                      <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.25em] text-white/70">
+                        {String(i + 1).padStart(2, "0")}
+                      </p>
+                      <h3
+                        className="m-0 mt-2 text-3xl font-medium text-white"
+                        style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
+                      >
+                        {s.label}
+                      </h3>
+                      <p className="m-0 mt-2 text-sm leading-relaxed text-white/85">{s.promise}</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-1 items-center px-6 pb-6 pt-5">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.16em] transition-transform duration-300 group-hover:translate-x-1" style={{ color: INK }}>
+                      Explore {s.label} →
+                    </span>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Upcoming events ────────────────────────────────────── */}
       <section
         id="events"
         className="px-8 sm:px-14"
-        style={{ paddingTop: "8rem", paddingBottom: "4rem" }}
+        style={{ paddingTop: "8rem", paddingBottom: "8rem" }}
       >
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-12 flex items-end justify-between gap-6">
@@ -282,74 +350,6 @@ export default async function HomePage() {
               </Reveal>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Services ───────────────────────────────────────────── */}
-      <section
-        id="services"
-        className="px-8 sm:px-14"
-        style={{ paddingTop: "8rem", paddingBottom: "8rem" }}
-      >
-        <div className="mx-auto max-w-6xl">
-          <Reveal className="mb-14 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-                How brands work with us
-              </p>
-              <h2
-                className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
-                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-              >
-                Three ways to work with Culturin.
-              </h2>
-            </div>
-            <p className="m-0 max-w-sm text-base leading-relaxed" style={{ color: INK_MUTED }}>
-              Launch in a new territory with the room already built. Not every brand needs all three. Most start with one.
-            </p>
-          </Reveal>
-
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {services.map((s, i) => (
-              <Reveal key={s.slug} as="div" delay={i * 140} y={48} className="h-full">
-                <Link
-                  href={`/services/${s.slug}`}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border no-underline transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_56px_-28px_rgba(0,0,0,0.6)]"
-                  style={{ borderColor: RULE, background: `color-mix(in srgb, ${INK} 4%, ${BG})`, color: INK }}
-                >
-                  <div className="relative aspect-[4/5] overflow-hidden">
-                    <BlurImage
-                      src={s.image.src}
-                      alt={s.image.alt}
-                      fill
-                      sizes="(min-width: 768px) 33vw, 100vw"
-                      className="object-cover transition-transform duration-[1200ms] ease-out group-hover:!scale-[1.06]"
-                      placeholder="blur"
-                      blurDataURL={blurForSrc(s.image.src)}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 p-6">
-                      <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.25em] text-white/70">
-                        {String(i + 1).padStart(2, "0")}
-                      </p>
-                      <h3
-                        className="m-0 mt-2 text-3xl font-medium text-white"
-                        style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-                      >
-                        {s.label}
-                      </h3>
-                      <p className="m-0 mt-2 text-sm leading-relaxed text-white/85">{s.promise}</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-1 items-center px-6 pb-6 pt-5">
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.16em] transition-transform duration-300 group-hover:translate-x-1" style={{ color: INK }}>
-                      Explore {s.label} →
-                    </span>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
           </div>
         </div>
       </section>
