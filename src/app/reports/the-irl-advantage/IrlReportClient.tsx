@@ -122,7 +122,7 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
     if (!consent) return setError("Please accept the privacy policy to continue.");
     setPending(true);
     try {
-      const res = await fetch("/api/newsletter", {
+      const res = await fetch("/api/report-access", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -131,7 +131,6 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
           company: company.trim(),
           email: email.trim(),
           marketingConsent: true,
-          source: REPORT_SOURCE,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
@@ -141,7 +140,7 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
       }
       onUnlock();
     } catch {
-      setError("Network error. Check your connection and try again.");
+      setError("We couldn’t reach our server. If you use an ad blocker, pause it for this page and try again.");
     } finally {
       setPending(false);
     }
