@@ -113,7 +113,7 @@ export default function HomePageClient({ initialBlogs, initialProviders }: HomeP
       <main id="main-content" className="min-h-dvh w-full min-w-0 overflow-x-clip pb-20 antialiased">
         <header className={`${container} pb-12 pt-32 sm:pt-40`}>
           <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--c-accent)" }}>
-            Platform
+            Reports
           </p>
           <h1
             className="m-0 mt-5 max-w-4xl text-balance text-4xl font-medium leading-[1.05] tracking-tight sm:text-6xl"

@@ -33,6 +33,19 @@ export function escapeHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
+const linkStyle = `color:${INK} !important;text-decoration:underline;text-decoration-color:${ACCENT};`;
+
+/**
+ * Escape text and turn any email address or URL in it into a link styled in Culturin ink,
+ * so mail apps don't auto-link it in their default blue.
+ */
+function linkify(text: string): string {
+  return escapeHtml(text).replace(
+    /(https?:\/\/[^\s<]+[^\s<.,;:!?)])|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g,
+    (m, url: string | undefined) => `<a href="${url ? m : `mailto:${m}`}" style="${linkStyle}">${m}</a>`,
+  );
+}
+
 export type EmailDetail = { label: string; value: string; href?: string };
 
 /** The shared Culturin layout: cream card, serif headline, detail rows, terracotta button. */
@@ -48,8 +61,8 @@ export function renderCulturinEmail(opts: {
     .filter((d) => d.value.trim())
     .map((d) => {
       const value = d.href
-        ? `<a href="${escapeHtml(d.href)}" style="color:${INK};text-decoration:underline;">${escapeHtml(d.value)}</a>`
-        : escapeHtml(d.value).replace(/\n/g, "<br>");
+        ? `<a href="${escapeHtml(d.href)}" style="${linkStyle}">${escapeHtml(d.value)}</a>`
+        : linkify(d.value).replace(/\n/g, "<br>");
       return `<tr>
   <td style="padding:12px 0;border-top:1px solid ${RULE};width:34%;vertical-align:top;font:600 11px/1.4 ${SANS};letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">${escapeHtml(d.label)}</td>
   <td style="padding:12px 0;border-top:1px solid ${RULE};vertical-align:top;font:400 15px/1.5 ${SANS};color:${INK};">${value}</td>
@@ -58,8 +71,8 @@ export function renderCulturinEmail(opts: {
     .join("");
 
   return `<!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>${escapeHtml(opts.headline)}</title></head>
-<body style="margin:0;padding:0;background:${BG};">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"><style>a{color:${INK};}a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font:inherit !important;}u + #body a{color:inherit !important;text-decoration:none !important;}</style><title>${escapeHtml(opts.headline)}</title></head>
+<body id="body" style="margin:0;padding:0;background:${BG};">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${BG};">
 <tr><td align="center" style="padding:32px 16px;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
@@ -67,12 +80,12 @@ export function renderCulturinEmail(opts: {
     <tr><td style="background:#fffdf9;border:1px solid ${RULE};border-radius:20px;padding:32px 28px;">
       <p style="margin:0 0 12px;font:600 11px/1.4 ${SANS};letter-spacing:0.24em;text-transform:uppercase;color:${ACCENT};">${escapeHtml(opts.eyebrow)}</p>
       <h1 style="margin:0;font:500 28px/1.15 ${DISPLAY};color:${INK};">${escapeHtml(opts.headline)}</h1>
-      ${opts.intro ? `<p style="margin:14px 0 0;font:400 15px/1.6 ${SANS};color:${MUTED};">${escapeHtml(opts.intro)}</p>` : ""}
+      ${opts.intro ? `<p style="margin:14px 0 0;font:400 15px/1.6 ${SANS};color:${MUTED};">${linkify(opts.intro)}</p>` : ""}
       ${rows ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;border-bottom:1px solid ${RULE};">${rows}</table>` : ""}
-      ${opts.note ? `<p style="margin:20px 0 0;font:400 14px/1.6 ${SANS};color:${MUTED};">${escapeHtml(opts.note)}</p>` : ""}
+      ${opts.note ? `<p style="margin:20px 0 0;font:400 14px/1.6 ${SANS};color:${MUTED};">${linkify(opts.note)}</p>` : ""}
       ${
         opts.cta
-          ? `<p style="margin:28px 0 0;"><a href="${escapeHtml(opts.cta.href)}" style="display:inline-block;background:${ACCENT};color:${INK};text-decoration:none;border-radius:999px;padding:13px 26px;font:600 12px/1 ${SANS};letter-spacing:0.16em;text-transform:uppercase;">${escapeHtml(opts.cta.label)}</a></p>`
+          ? `<p style="margin:28px 0 0;"><a href="${escapeHtml(opts.cta.href)}" style="display:inline-block;background:${ACCENT};color:${INK} !important;text-decoration:none;border-radius:999px;padding:13px 26px;font:600 12px/1 ${SANS};letter-spacing:0.16em;text-transform:uppercase;">${escapeHtml(opts.cta.label)}</a></p>`
           : ""
       }
     </td></tr>

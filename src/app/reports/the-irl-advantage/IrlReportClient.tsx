@@ -49,7 +49,7 @@ function Eyebrow({ children }: { children: ReactNode }) {
 
 function Cite({ id }: { id: number }) {
   return (
-    <a href={`#source-${id}`} className="ml-0.5 align-super text-[10px] font-semibold no-underline" style={{ color: ACCENT }}>
+    <a href={`#source-${id}`} className="-my-2 ml-0.5 inline-block px-1 py-2 align-super text-[10px] font-semibold no-underline" style={{ color: ACCENT }}>
       [{id}]
     </a>
   );
@@ -147,7 +147,7 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
   }
 
   const input =
-    "w-full rounded-full border bg-transparent px-5 py-3 text-sm outline-none transition-colors placeholder:opacity-60 focus:border-[color:var(--c-accent)] disabled:opacity-60";
+    "w-full rounded-full border bg-transparent px-5 py-3 text-base outline-none sm:text-sm transition-colors placeholder:opacity-60 focus:border-[color:var(--c-accent)] disabled:opacity-60";
 
   return (
     <section id="get-the-report" className="border-t py-24 print:hidden" style={{ borderColor: RULE }}>

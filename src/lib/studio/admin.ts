@@ -7,6 +7,18 @@ type AdminCheckResult = {
   isAdmin: boolean;
 };
 
+/**
+ * People who always have admin access once they've signed in with a confirmed email, even if
+ * their `users.role` row is missing. Override with ADMIN_EMAILS (comma-separated).
+ */
+const DEFAULT_ADMIN_EMAILS = ["eloka.agu@icloud.com", "eloka@culturin.com", "unik@culturin.com"];
+
+function adminEmailAllowlist(): Set<string> {
+  const raw = process.env.ADMIN_EMAILS?.trim();
+  const list = raw ? raw.split(",") : DEFAULT_ADMIN_EMAILS;
+  return new Set(list.map((e) => e.trim().toLowerCase()).filter(Boolean));
+}
+
 export async function getCurrentAdminState(): Promise<AdminCheckResult> {
   let supabase;
   try {
@@ -34,6 +46,8 @@ export async function getCurrentAdminState(): Promise<AdminCheckResult> {
   return {
     userId: user.id,
     email: user.email ?? null,
-    isAdmin: role === "ADMIN",
+    isAdmin:
+      role === "ADMIN" ||
+      (Boolean(user.email_confirmed_at) && adminEmailAllowlist().has((user.email ?? "").toLowerCase())),
   };
 }

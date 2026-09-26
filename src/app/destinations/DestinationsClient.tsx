@@ -94,7 +94,7 @@ export default function DestinationsClient() {
             onClick={() =>
               sectionRefs.current[L]?.scrollIntoView({ behavior: "smooth", block: "start" })
             }
-            className="min-w-[1.5rem] shrink-0 rounded px-1.5 py-0.5 text-center text-xs font-medium uppercase tracking-wider transition hover:opacity-100 focus-visible:outline focus-visible:outline-2 lg:min-w-0 lg:px-0.5 lg:py-0.5 lg:text-left"
+            className="min-h-9 min-w-9 shrink-0 rounded px-1.5 py-1.5 text-center lg:min-h-0 text-xs font-medium uppercase tracking-wider transition hover:opacity-100 focus-visible:outline focus-visible:outline-2 lg:min-w-0 lg:px-0.5 lg:py-0.5 lg:text-left"
             style={{ color: "var(--c-muted)", opacity: 0.85, outlineColor: "var(--c-accent)" }}
           >
             {L}

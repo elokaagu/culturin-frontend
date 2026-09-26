@@ -13,13 +13,15 @@ import {
   LayoutDashboard,
   LogOut,
   Mail,
+  Menu,
   Moon,
   Presentation,
   Sun,
+  X,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Link as TransitionLink, useTransitionRouter } from "next-view-transitions";
-import { useState, type ComponentProps, type ReactNode } from "react";
+import { useEffect, useState, type ComponentProps, type ReactNode } from "react";
 
 import { useTheme } from "@/app/styles/ThemeContext";
 import { useSupabaseAuth } from "@/app/components/SupabaseAuthProvider";
@@ -92,6 +94,9 @@ export default function StudioLayoutClient({
   const { mode, toggleTheme } = useTheme();
   const { supabase } = useSupabaseAuth();
   const [signingOut, setSigningOut] = useState(false);
+  // On phones the nav is a drop-down menu so pages get the full screen.
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => setMenuOpen(false), [pathname]);
   useStudioPathRefresh();
   const liveCounts = useStudioLiveCounts({
     blogs: blogCount,
@@ -128,6 +133,16 @@ export default function StudioLayoutClient({
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <button
               type="button"
+              onClick={() => setMenuOpen((o) => !o)}
+              className={cn(studioGhostButtonClass, "h-9 gap-1.5 px-3 text-xs font-semibold md:hidden")}
+              aria-expanded={menuOpen}
+              aria-controls="admin-nav"
+            >
+              {menuOpen ? <X className="h-4 w-4" aria-hidden /> : <Menu className="h-4 w-4" aria-hidden />}
+              Menu
+            </button>
+            <button
+              type="button"
               onClick={toggleTheme}
               className={cn(studioGhostButtonClass, "h-9 w-9")}
               aria-label={mode === "dark" ? "Switch to light mode" : "Switch to dark mode"}
@@ -147,7 +162,11 @@ export default function StudioLayoutClient({
 
         <div className="flex min-h-0 min-w-0 flex-1 flex-col md:flex-row">
           <aside
-            className="flex max-h-[40vh] w-full shrink-0 flex-col border-b border-[color:var(--c-rule)] md:max-h-none md:w-64 md:border-b-0 md:border-r"
+            id="admin-nav"
+            className={cn(
+              "max-h-[75dvh] w-full shrink-0 flex-col border-b border-[color:var(--c-rule)] md:flex md:max-h-none md:w-64 md:border-b-0 md:border-r",
+              menuOpen ? "flex" : "hidden",
+            )}
             style={{ background: "color-mix(in srgb, var(--c-bg) 92%, black)" }}
             aria-label="Admin navigation"
           >

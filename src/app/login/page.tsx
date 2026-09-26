@@ -3,254 +3,204 @@
 import { Link } from "next-view-transitions";
 import { useSearchParams } from "next/navigation";
 import { useTransitionRouter } from "next-view-transitions";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useState, type FormEvent } from "react";
 
-import { GoogleSignInButton } from "../components/AuthButtons";
-import SiteHeader from "../components/SiteHeader";
-import HomeFooter from "../components/HomeFooter";
-import { editorialScopeClass, EDITORIAL_BG, EDITORIAL_INK } from "@/lib/theme/culturinTokens";
 import { useSupabaseAuth } from "../components/SupabaseAuthProvider";
 import { getPublicSiteUrl } from "@/lib/siteUrl";
+import { editorialScopeClass } from "@/lib/theme/culturinTokens";
 
-const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif" };
-const fieldClass = "rounded-lg border px-3 py-2.5 outline-none ring-offset-2 focus-visible:ring-2";
-const fieldStyle = { borderColor: "var(--c-rule)", background: "var(--c-bg)", color: "var(--c-ink)" };
+type Mode = "signin" | "signup" | "forgot" | "update";
 
-function AuthUnavailableBanner() {
-  const { supabase } = useSupabaseAuth();
-  if (supabase) return null;
+const COPY: Record<Mode, { title: string; sub: string; submit: string }> = {
+  signin: { title: "Sign in", sub: "Welcome back to Culturin.", submit: "Sign in" },
+  signup: { title: "Create account", sub: "We'll email you a link to confirm your address.", submit: "Create account" },
+  forgot: { title: "Reset password", sub: "Enter your email and we'll send you a reset link.", submit: "Send reset link" },
+  update: { title: "Choose a new password", sub: "At least 8 characters.", submit: "Save password" },
+};
+
+const inputClass =
+  "w-full rounded-xl border border-[color:var(--c-rule)] bg-transparent px-4 py-3 text-base text-[color:var(--c-ink)] outline-none transition placeholder:text-[color:var(--c-muted)] placeholder:opacity-70 focus:border-[color:var(--c-accent)] disabled:opacity-60 " +
+  // Stop browser autofill painting the field blue.
+  "[&:-webkit-autofill]:shadow-[inset_0_0_0_1000px_var(--c-bg)] [&:-webkit-autofill]:[-webkit-text-fill-color:var(--c-ink)]";
+
+function Field({ id, label, ...props }: { id: string; label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
-    <p
-      className="mb-4 rounded-lg border px-3 py-2.5 text-sm"
-      style={{ borderColor: "#e08a5b", background: "rgba(224,138,91,0.1)", color: "var(--c-ink)" }}
-      role="status"
-    >
-      Signing in isn&apos;t available in this build. Try again later, or contact support if you need help.
-    </p>
+    <div className="flex flex-col gap-2">
+      <label htmlFor={id} className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--c-muted)]">
+        {label}
+      </label>
+      <input id={id} name={id} className={inputClass} {...props} />
+    </div>
   );
 }
 
-function LoginPageContent() {
+/** Only allow same-site paths as the post-login destination. */
+function safeNext(raw: string | null): string {
+  return raw && raw.startsWith("/") && !raw.startsWith("//") ? raw : "/";
+}
+
+function LoginForm() {
   const { supabase } = useSupabaseAuth();
   const router = useTransitionRouter();
-  const searchParams = useSearchParams();
-  const [mode, setMode] = useState<"signin" | "signup">(searchParams.get("mode") === "signup" ? "signup" : "signin");
+  const params = useSearchParams();
+  const next = safeNext(params.get("next"));
+  const initial = params.get("mode");
+  const [mode, setMode] = useState<Mode>(initial === "signup" || initial === "update" ? initial : "signin");
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const next = searchParams.get("next") || "/";
-
-  const heading = mode === "signin" ? "Sign in to Culturin" : "Create your Culturin account";
-  const subtext = useMemo(
-    () =>
-      mode === "signin"
-        ? "Sign in with your email and password."
-        : "Use your email to create an account. We will ask you to confirm by email.",
-    [mode],
+  const [message, setMessage] = useState<{ tone: "error" | "ok"; text: string } | null>(
+    params.get("error") === "auth" ? { tone: "error", text: "That link has expired or was already used. Try again." } : null,
   );
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function go(m: Mode) {
+    setMode(m);
+    setMessage(null);
+  }
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!supabase) {
-      setError("Signing in isn’t available right now. Try again later or contact support.");
+      setMessage({ tone: "error", text: "Sign-in isn't available right now. Please try again later." });
       return;
     }
-
     const fd = new FormData(e.currentTarget);
-    const name = String(fd.get("name") || "").trim();
-    const email = String(fd.get("email") || "").trim();
-    const password = String(fd.get("password") || "");
+    const name = String(fd.get("name") ?? "").trim();
+    const email = String(fd.get("email") ?? "").trim().toLowerCase();
+    const password = String(fd.get("password") ?? "");
+    const site = getPublicSiteUrl();
 
-    if (!email || !password) {
-      setError("Enter your email and password.");
-      return;
-    }
-    if (mode === "signup" && !name) {
-      setError("Enter your name to create an account.");
-      return;
-    }
-
-    setError(null);
+    setMessage(null);
     setPending(true);
+    try {
+      if (mode === "signin") {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+          setMessage({ tone: "error", text: error.message === "Invalid login credentials" ? "That email and password don't match." : error.message });
+          return;
+        }
+        router.replace(next);
+        router.refresh();
+        return;
+      }
 
-    if (mode === "signin") {
-      const { error: signErr } = await supabase.auth.signInWithPassword({ email, password });
-      setPending(false);
-      if (signErr) {
-        setError(signErr.message);
+      if (mode === "signup") {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { full_name: name, name },
+            emailRedirectTo: site ? `${site}/auth/callback?next=${encodeURIComponent(next)}` : undefined,
+          },
+        });
+        if (error) {
+          setMessage({ tone: "error", text: error.message });
+          return;
+        }
+        setMode("signin");
+        setMessage({ tone: "ok", text: "Account created. Check your email to confirm it, then sign in." });
+        return;
+      }
+
+      if (mode === "forgot") {
+        const back = `/login?mode=update&next=${encodeURIComponent(next)}`;
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: site ? `${site}/auth/callback?next=${encodeURIComponent(back)}` : undefined,
+        });
+        if (error) {
+          setMessage({ tone: "error", text: error.message });
+          return;
+        }
+        setMessage({ tone: "ok", text: "If there's an account for that email, a reset link is on its way." });
+        return;
+      }
+
+      // mode === "update": the reset link has already signed them in.
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) {
+        setMessage({ tone: "error", text: error.message });
         return;
       }
       router.replace(next);
       router.refresh();
-      return;
+    } finally {
+      setPending(false);
     }
-
-    const siteUrl = getPublicSiteUrl();
-    const { error: signUpErr } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: name,
-          name,
-        },
-        emailRedirectTo: siteUrl
-          ? `${siteUrl}/auth/callback?next=${encodeURIComponent(next)}`
-          : undefined,
-      },
-    });
-    setPending(false);
-    if (signUpErr) {
-      setError(signUpErr.message);
-      return;
-    }
-    setError("Account created. Check your email to confirm, then sign in.");
-    setMode("signin");
   }
 
+  const copy = COPY[mode];
+
   return (
-    <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
-      <SiteHeader />
-      <main className="min-h-dvh px-4 pb-16 sm:px-6" style={{ paddingTop: "8rem" }}>
-        <div className="mx-auto mt-8 w-full max-w-md rounded-2xl border p-6 sm:mt-12 sm:p-7" style={{ borderColor: "var(--c-rule)" }}>
-          <div className="mb-6 flex rounded-full p-1" style={{ background: "rgba(28,26,23,0.06)" }}>
-            <button
-              type="button"
-              onClick={() => setMode("signin")}
-              className="flex-1 rounded-full px-4 py-2 text-sm font-semibold transition-colors"
-              style={mode === "signin" ? { background: "var(--c-bg)", color: "var(--c-ink)", boxShadow: "0 0 0 1px var(--c-rule)" } : { color: "var(--c-muted)" }}
-            >
+    <div className="w-full max-w-sm">
+      <Link href="/" className="font-display text-2xl font-semibold tracking-tight text-[color:var(--c-ink)] no-underline">
+        Culturin
+      </Link>
+
+      <h1 className="m-0 mt-10 font-display text-4xl font-medium tracking-tight text-[color:var(--c-ink)]">{copy.title}</h1>
+      <p className="m-0 mt-2 text-sm text-[color:var(--c-muted)]">{copy.sub}</p>
+
+      <form key={mode} onSubmit={onSubmit} className="mt-8 flex flex-col gap-5">
+        {mode === "signup" ? <Field id="name" label="Name" type="text" autoComplete="name" required disabled={pending} /> : null}
+        {mode !== "update" ? (
+          <Field id="email" label="Email" type="email" autoComplete="email" required disabled={pending} />
+        ) : null}
+        {mode !== "forgot" ? (
+          <Field
+            id="password"
+            label={mode === "update" ? "New password" : "Password"}
+            type="password"
+            autoComplete={mode === "signin" ? "current-password" : "new-password"}
+            minLength={8}
+            required
+            disabled={pending}
+          />
+        ) : null}
+
+        {message ? (
+          <p role={message.tone === "error" ? "alert" : "status"} className={`m-0 text-sm ${message.tone === "error" ? "text-rose-500" : "text-emerald-500"}`}>
+            {message.text}
+          </p>
+        ) : null}
+
+        <button
+          type="submit"
+          disabled={pending}
+          className="mt-1 rounded-full bg-[color:var(--c-accent)] px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#1c1a17] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {pending ? "One moment…" : copy.submit}
+        </button>
+      </form>
+
+      <div className="mt-6 flex flex-col gap-2 text-sm text-[color:var(--c-muted)]">
+        {mode === "signin" ? (
+          <>
+            <button type="button" onClick={() => go("forgot")} className="w-fit hover:text-[color:var(--c-ink)]">
+              Forgot password?
+            </button>
+            <p className="m-0">
+              New to Culturin?{" "}
+              <button type="button" onClick={() => go("signup")} className="font-semibold text-[color:var(--c-accent)] hover:underline">
+                Create an account
+              </button>
+            </p>
+          </>
+        ) : mode !== "update" ? (
+          <p className="m-0">
+            {mode === "signup" ? "Already have an account? " : "Remembered it? "}
+            <button type="button" onClick={() => go("signin")} className="font-semibold text-[color:var(--c-accent)] hover:underline">
               Sign in
             </button>
-            <button
-              type="button"
-              onClick={() => setMode("signup")}
-              className="flex-1 rounded-full px-4 py-2 text-sm font-semibold transition-colors"
-              style={mode === "signup" ? { background: "var(--c-bg)", color: "var(--c-ink)", boxShadow: "0 0 0 1px var(--c-rule)" } : { color: "var(--c-muted)" }}
-            >
-              Create account
-            </button>
-          </div>
-
-          <h1 className="text-2xl font-medium tracking-tight" style={{ ...displayFont, color: "var(--c-ink)" }}>{heading}</h1>
-          <p className="mt-2 text-sm" style={{ color: "var(--c-muted)" }}>{subtext}</p>
-
-          <div className="mt-4">
-            <AuthUnavailableBanner />
-          </div>
-
-          <div className="mt-5">
-            <GoogleSignInButton
-              directOAuth
-              className="!w-full !max-w-none rounded-lg border px-4 py-3 text-sm font-semibold transition hover:opacity-90"
-            />
-          </div>
-
-          <div className="relative my-5 flex items-center gap-3 py-1">
-            <span className="h-px flex-1" style={{ background: "var(--c-rule)" }} />
-            <span className="text-xs font-medium uppercase tracking-wide" style={{ color: "var(--c-muted)" }}>or continue with email</span>
-            <span className="h-px flex-1" style={{ background: "var(--c-rule)" }} />
-          </div>
-
-          <form onSubmit={onSubmit} className="flex flex-col gap-4">
-            {error ? (
-              <p
-                className="rounded-lg border px-3 py-2 text-sm"
-                style={
-                  error.startsWith("Account created")
-                    ? { borderColor: "rgba(16,185,129,0.4)", background: "rgba(16,185,129,0.08)", color: "var(--c-ink)" }
-                    : { borderColor: "rgba(244,63,94,0.4)", background: "rgba(244,63,94,0.08)", color: "var(--c-ink)" }
-                }
-              >
-                {error}
-              </p>
-            ) : null}
-            {mode === "signup" ? (
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="auth-name" className="text-sm font-medium" style={{ color: "var(--c-ink)" }}>
-                  Name
-                </label>
-                <input
-                  id="auth-name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  disabled={pending}
-                  required={mode === "signup"}
-                  className={fieldClass}
-                  style={fieldStyle}
-                />
-              </div>
-            ) : null}
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="auth-email" className="text-sm font-medium" style={{ color: "var(--c-ink)" }}>
-                Email
-              </label>
-              <input
-                id="auth-email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                disabled={pending}
-                className={fieldClass}
-                style={fieldStyle}
-              />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="auth-password" className="text-sm font-medium" style={{ color: "var(--c-ink)" }}>
-                Password
-              </label>
-              <input
-                id="auth-password"
-                name="password"
-                type="password"
-                autoComplete={mode === "signin" ? "current-password" : "new-password"}
-                required
-                disabled={pending}
-                minLength={8}
-                className={fieldClass}
-                style={fieldStyle}
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={pending}
-              className="mt-1 rounded-full px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-              style={{ background: "var(--c-accent)" }}
-            >
-              {pending ? "Please wait…" : mode === "signin" ? "Sign in with email" : "Create account"}
-            </button>
-          </form>
-
-          <p className="mt-5 text-sm" style={{ color: "var(--c-muted)" }}>
-            {mode === "signin" ? "Need an account?" : "Already have an account?"}{" "}
-            <button
-              type="button"
-              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-              className="font-semibold underline-offset-2 hover:underline"
-              style={{ color: "var(--c-accent)" }}
-            >
-              {mode === "signin" ? "Create one" : "Sign in"}
-            </button>
           </p>
-
-          <p className="mt-2 text-sm" style={{ color: "var(--c-muted)" }}>
-            Continue browsing?{" "}
-            <Link href="/" className="font-semibold underline-offset-2 hover:underline" style={{ color: "var(--c-accent)" }}>
-              Back home
-            </Link>
-          </p>
-        </div>
-      </main>
-      <HomeFooter />
+        ) : null}
+      </div>
     </div>
   );
 }
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-dvh" style={{ background: "#1c1a17", paddingTop: "8rem" }} />}>
-      <LoginPageContent />
-    </Suspense>
+    <main className={`${editorialScopeClass} flex min-h-dvh items-center justify-center bg-[color:var(--c-bg)] px-4 py-16 text-[color:var(--c-ink)]`}>
+      <Suspense fallback={null}>
+        <LoginForm />
+      </Suspense>
+    </main>
   );
 }
