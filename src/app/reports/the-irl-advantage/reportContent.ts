@@ -1,6 +1,6 @@
 export const REPORT_SLUG = "the-irl-advantage";
 export const REPORT_SOURCE = "report-irl-advantage-2026";
-export const REPORT_TITLE = "The IRL Advantage";
+export const REPORT_TITLE = "The In Real Life Advantage";
 export const REPORT_SUBTITLE = "Why real rooms win in a synthetic internet";
 export const REPORT_EDITION = "Culturin Intelligence · Edition 01 · 2026";
 

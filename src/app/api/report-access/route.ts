@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   return handleNewsletterSignup(req, REPORT_SOURCE, (s) =>
     notifyTeam({
       subject: `Report download: ${s.firstName} ${s.lastName}${s.company ? `, ${s.company}` : ""}`,
-      eyebrow: "The IRL Advantage",
+      eyebrow: "The In Real Life Advantage",
       headline: `${s.firstName} ${s.lastName} requested the report.`,
       intro: s.alreadySubscribed
         ? "They were already on the mailing list, so this is a returning reader."

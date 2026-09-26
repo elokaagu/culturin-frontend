@@ -23,7 +23,7 @@ export async function POST() {
     details: [
       { label: "Partner inquiries", value: "Every new request from /partner" },
       { label: "Event RSVPs", value: "Every new RSVP, with the guest's role and company" },
-      { label: "Report downloads", value: "Every request for The IRL Advantage" },
+      { label: "Report downloads", value: "Every request for The In Real Life Advantage" },
       { label: "Sent to", value: to.join(", ") },
       { label: "Triggered by", value: email ?? "an admin" },
     ],

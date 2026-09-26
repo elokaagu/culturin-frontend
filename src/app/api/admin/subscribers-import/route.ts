@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getCurrentAdminState } from "@/lib/studio/admin";
+import { enrichSubscriber } from "@/lib/studio/subscriberEnrich";
 import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -43,7 +44,7 @@ export async function POST(request: Request) {
     last_name: string;
     company: string | null;
     source: string;
-    raw_data: Record<string, string> | null;
+    raw_data: Record<string, unknown> | null;
   }> = [];
   let invalid = 0;
   let duplicateInFile = 0;
@@ -70,13 +71,15 @@ export async function POST(request: Request) {
       continue;
     }
     seen.add(email);
+    // Fill obvious gaps (name from "first.last@", company from a work domain, fix ALL CAPS) and note what was guessed.
+    const enriched = enrichSubscriber({ email, firstName, lastName, company, fullName: rawData?.name ?? rawData?.Name ?? "" });
     toInsert.push({
       email,
-      first_name: firstName,
-      last_name: lastName,
-      company: company || null,
+      first_name: enriched.firstName,
+      last_name: enriched.lastName,
+      company: enriched.company || null,
       source,
-      raw_data: rawData,
+      raw_data: enriched.inferred.length > 0 ? { ...(rawData ?? {}), _inferred: enriched.inferred } : rawData,
     });
   }
 

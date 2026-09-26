@@ -56,10 +56,10 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
     return (
       <div className="mt-10 max-w-md">
         <p className="text-lg font-medium" style={{ color: "var(--c-ink)" }}>
-          You&rsquo;re on the list.
+          Request received.
         </p>
         <p className="mt-2 text-sm" style={{ color: "var(--c-muted)" }}>
-          We&rsquo;ll be in touch with details, tickets, and everything you need to know before the night.
+          Thank you. Places are limited, so every request is reviewed. We&rsquo;ll email you to confirm whether you&rsquo;re on the guest list, along with the details you&rsquo;ll need.
         </p>
       </div>
     );

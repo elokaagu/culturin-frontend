@@ -62,7 +62,7 @@ export function StudioSubscribersPageClient({
     const q = search.trim().toLowerCase();
     if (!q) return list.items;
     return list.items.filter((s) =>
-      [s.firstName, s.lastName, s.email, s.company, formatSubscriberSource(s.source)].some((f) =>
+      [s.firstName, s.lastName, s.email, s.company, s.profile.role, s.profile.channel, formatSubscriberSource(s.source), ...s.profile.events].some((f) =>
         f.toLowerCase().includes(q),
       ),
     );
@@ -232,8 +232,8 @@ export function StudioSubscribersPageClient({
                     <td className="px-3 py-2.5 text-[color:var(--c-ink)]">{fullName(s) === s.email ? "-" : fullName(s)}</td>
                     <td className="px-3 py-2.5 text-[color:var(--c-ink)]">{s.email}</td>
                     <td className="px-3 py-2.5 text-[color:var(--c-muted)]">{s.company || "-"}</td>
-                    <td className="px-3 py-2.5 text-[color:var(--c-muted)]">{formatSubscriberSource(s.source)}</td>
-                    <td className="whitespace-nowrap px-3 py-2.5 text-[color:var(--c-muted)]">{formatAdminDate(s.createdAt)}</td>
+                    <td className="px-3 py-2.5 text-[color:var(--c-muted)]">{s.profile.channel || formatSubscriberSource(s.source)}</td>
+                    <td className="whitespace-nowrap px-3 py-2.5 text-[color:var(--c-muted)]">{formatAdminDate(s.joinedAt)}</td>
                     <td className="px-2 py-2.5">
                       <DeleteIconButton
                         label={`Delete ${s.email}`}
@@ -271,40 +271,64 @@ export function StudioSubscribersPageClient({
                 ✕
               </button>
             </div>
-            <dl className="mt-4 space-y-2.5 text-sm">
+            {detail.profile.role || detail.company ? (
+              <p className="m-0 mt-1 text-sm text-[color:var(--c-muted)]">
+                {[detail.profile.role, detail.company].filter(Boolean).join(" · ")}
+              </p>
+            ) : null}
+            <dl className="mt-5 space-y-2.5 text-sm">
               {(
                 [
-                  ["Email", detail.email],
-                  ["Company", detail.company || "-"],
-                  ["Source", formatSubscriberSource(detail.source)],
-                  ["Joined", formatAdminDate(detail.createdAt)],
+                  ["Email", detail.email, "email"],
+                  ["Name", [detail.firstName, detail.lastName].filter(Boolean).join(" "), "name"],
+                  ["Company", detail.company, "company"],
+                  ["Role", detail.profile.role, ""],
+                  ["Location", detail.profile.location, ""],
+                  ["Came from", detail.profile.channel || formatSubscriberSource(detail.source), ""],
+                  ["Joined", formatAdminDate(detail.joinedAt), ""],
+                  ["Phone", detail.profile.phone, ""],
+                  ["Social", detail.profile.social, ""],
+                  ["Notes", detail.profile.notes, ""],
                 ] as const
-              ).map(([k, v]) => (
-                <div key={k} className="flex justify-between gap-4">
-                  <dt className="text-[color:var(--c-muted)]">{k}</dt>
-                  <dd className="m-0 text-right">{v}</dd>
-                </div>
-              ))}
-            </dl>
-            {Object.keys(detail.rawData).length > 0 ? (
-              <div className="mt-5 border-t border-[color:var(--c-rule)] pt-4">
-                <p className="m-0 text-[0.7rem] font-medium uppercase tracking-[0.12em] text-[color:var(--c-muted)]">
-                  From the imported file
-                </p>
-                <dl className="mt-2.5 space-y-2.5 text-sm">
-                  {Object.entries(detail.rawData).map(([k, v]) => (
+              )
+                .filter(([, v]) => v)
+                .map(([k, v, field]) => {
+                  const guessed =
+                    (field === "name" && detail.inferred.some((f) => f === "first_name" || f === "last_name")) ||
+                    (field === "company" && detail.inferred.includes("company"));
+                  return (
                     <div key={k} className="flex justify-between gap-4">
-                      <dt className="text-[color:var(--c-muted)]">{k}</dt>
-                      <dd className="m-0 text-right">{v || "-"}</dd>
+                      <dt className="shrink-0 text-[color:var(--c-muted)]">{k}</dt>
+                      <dd className="m-0 min-w-0 break-words text-right">
+                        {v}
+                        {guessed ? (
+                          <span
+                            className="ml-1.5 rounded-full border border-[color:var(--c-rule)] px-1.5 py-0.5 text-[0.6rem] uppercase tracking-[0.1em] text-[color:var(--c-muted)]"
+                            title="Filled in from their email address or full name, not typed by them"
+                          >
+                            inferred
+                          </span>
+                        ) : null}
+                      </dd>
                     </div>
+                  );
+                })}
+            </dl>
+            {detail.profile.events.length > 0 ? (
+              <div className="mt-5 border-t border-[color:var(--c-rule)] pt-4">
+                <p className="m-0 text-[0.7rem] font-medium uppercase tracking-[0.12em] text-[color:var(--c-muted)]">Events</p>
+                <ul className="m-0 mt-2.5 flex list-none flex-wrap gap-1.5 p-0">
+                  {detail.profile.events.map((e) => (
+                    <li
+                      key={e}
+                      className="rounded-full border border-[color:var(--c-rule)] px-2.5 py-1 text-xs text-[color:var(--c-ink)]"
+                    >
+                      {e}
+                    </li>
                   ))}
-                </dl>
+                </ul>
               </div>
-            ) : (
-              <p className="mt-5 border-t border-[color:var(--c-rule)] pt-4 text-sm text-[color:var(--c-muted)]">
-                This subscriber joined from the site footer, so there&apos;s no imported file data to show.
-              </p>
-            )}
+            ) : null}
             <div className="mt-6 flex items-center gap-3 border-t border-[color:var(--c-rule)] pt-4">
               <button
                 type="button"

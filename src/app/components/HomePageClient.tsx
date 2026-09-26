@@ -13,12 +13,10 @@ import {
   SURFACE_DARK,
   editorialScopeClass,
 } from "@/lib/theme/culturinTokens";
-import WorldIndexGrid from "./WorldIndexGrid";
 import StoryGrid from "./StoryGrid";
 import ExperiencesSpread from "./ExperiencesSpread";
 import SafeContentImage from "./SafeContentImage";
 import type { providerHeroCard, simpleBlogCard } from "@/lib/interface";
-import { exploreWorldCountries } from "@/lib/exploreWorldCountries";
 import { appPageContainerClass } from "@/lib/appLayout";
 import {
   IMAGE_BLUR_DATA_URL,
@@ -162,16 +160,6 @@ export default function HomePageClient({ initialBlogs, initialProviders }: HomeP
               Read the report
             </span>
           </Link>
-        </section>
-
-        <section className={`${container} ${section}`} style={{ borderColor: "var(--c-rule)" }} aria-labelledby="cities-heading">
-          <WorldIndexGrid
-            countries={exploreWorldCountries}
-            title="Where Culturin gathers"
-            description="Cities and countries where Culturin builds rooms, and the stories that come out of them."
-            viewAllHref="/destinations"
-            headingId="cities-heading"
-          />
         </section>
 
         {initialProviders.length > 0 ? (
