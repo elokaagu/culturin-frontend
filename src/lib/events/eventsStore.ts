@@ -116,6 +116,7 @@ export function normalizeEvent(
     galleryEventKey: str(o.galleryEventKey, 120) || undefined,
     rsvpHeadline: str(o.rsvpHeadline, LIMITS.long),
     rsvpSubtext: str(o.rsvpSubtext, LIMITS.long),
+    externalRsvpUrl: /^https:\/\/\S+$/i.test(str(o.externalRsvpUrl, 500)) ? str(o.externalRsvpUrl, 500) : undefined,
   };
   return { ok: true, event, startsOn: start };
 }

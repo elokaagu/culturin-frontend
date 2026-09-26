@@ -2,6 +2,8 @@
 
 import { useState, type FormEvent } from "react";
 
+import { useSpamTrap } from "@/app/components/useSpamTrap";
+
 export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -12,6 +14,7 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { trap, trapPayload } = useSpamTrap();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -37,6 +40,7 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
           company: company.trim(),
           title: title.trim(),
           linkedin: linkedin.trim(),
+          ...trapPayload(),
         }),
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
@@ -69,7 +73,8 @@ export default function RSVPForm({ eventSlug }: { eventSlug: string }) {
     "w-full rounded-none border-b-2 bg-transparent px-0 py-3 text-base outline-none transition placeholder:opacity-60 placeholder:text-[color:var(--c-muted)] focus:border-[color:var(--c-ink)] disabled:opacity-60";
 
   return (
-    <form onSubmit={handleSubmit} className="mt-10 flex max-w-lg flex-col gap-5">
+    <form onSubmit={handleSubmit} className="relative mt-10 flex max-w-lg flex-col gap-5">
+      {trap}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <input
           type="text"

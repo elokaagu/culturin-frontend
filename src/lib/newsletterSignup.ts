@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { detectSpam, logSpam } from "@/lib/spamGuard";
 import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -49,6 +50,12 @@ export async function handleNewsletterSignup(
   }
 
   const email = emailRaw.toLowerCase();
+  const spam = detectSpam(o as Record<string, unknown>, { email, names: [firstNameRaw, lastNameRaw] });
+  if (spam) {
+    // Look like success so bots don't adapt; nothing is saved or emailed.
+    logSpam(`newsletter:${source}`, spam, email);
+    return NextResponse.json({ ok: true }, { status: 201 });
+  }
   const admin = getSupabaseAdminOrNull();
   if (!admin) {
     return NextResponse.json(

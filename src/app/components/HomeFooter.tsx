@@ -7,6 +7,7 @@ import { useState, type FormEvent } from "react";
 import { SURFACE_DARK, ACCENT_ON_DARK } from "@/lib/theme/culturinTokens";
 import { useTheme } from "../styles/ThemeContext";
 import CulturinWordmark from "./CulturinWordmark";
+import { useSpamTrap } from "./useSpamTrap";
 
 const INK = SURFACE_DARK;
 const CREAM = "#e8e3da";
@@ -21,6 +22,7 @@ function FooterSubscribe() {
   const [pending, setPending] = useState(false);
   const [status, setStatus] = useState<"idle" | "ok" | "error">("idle");
   const [message, setMessage] = useState("");
+  const { trap, trapPayload } = useSpamTrap();
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -46,6 +48,7 @@ function FooterSubscribe() {
           company: company.trim(),
           email: email.trim(),
           marketingConsent: true,
+          ...trapPayload(),
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -76,7 +79,8 @@ function FooterSubscribe() {
 
   return (
     <div>
-      <form onSubmit={onSubmit} noValidate className="flex w-full max-w-sm flex-col gap-2">
+      <form onSubmit={onSubmit} noValidate className="relative flex w-full max-w-sm flex-col gap-2">
+        {trap}
         <div
           className="flex items-stretch overflow-hidden rounded-full border"
           style={{ borderColor: RULE, background: CREAM }}

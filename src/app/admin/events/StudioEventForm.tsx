@@ -36,6 +36,7 @@ type FormState = {
   signalBody: string;
   rsvpHeadline: string;
   rsvpSubtext: string;
+  externalRsvpUrl: string;
   stats: { value: string; label: string }[];
   sections: FormSection[];
 };
@@ -71,6 +72,7 @@ function initialState(event: CulturinEvent | null, startsOn: string | null): For
     signalBody: event?.signalBody ?? "",
     rsvpHeadline: event?.rsvpHeadline ?? "",
     rsvpSubtext: event?.rsvpSubtext ?? "",
+    externalRsvpUrl: event?.externalRsvpUrl ?? "",
     stats: event?.stats.map((s) => ({ ...s })) ?? [],
     sections: event?.sections.map((s) => ({ ...s, photos: s.photos.map((p) => ({ ...p })) })) ?? [],
   };
@@ -415,6 +417,15 @@ export function StudioEventForm({
         </Label>
         <Label text="Supporting text">
           <textarea className={inputClass} rows={3} value={f.rsvpSubtext} onChange={(e) => set("rsvpSubtext", e.target.value)} />
+        </Label>
+        <Label text="Outside RSVP link (optional)" hint="e.g. a Luma page. When set, the RSVP button sends people there instead of showing the site form.">
+          <input
+            className={inputClass}
+            type="url"
+            value={f.externalRsvpUrl}
+            onChange={(e) => set("externalRsvpUrl", e.target.value)}
+            placeholder="https://luma.com/…"
+          />
         </Label>
       </Group>
 

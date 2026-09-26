@@ -28,6 +28,8 @@ export type CulturinEvent = {
   date: string;
   /** Last day of the event as YYYY-MM-DD (omit for a single-day event). Used to build `date` in Admin. */
   endsOn?: string;
+  /** Optional outside RSVP page (e.g. Luma). When set, the RSVP button links there instead of showing the site form. */
+  externalRsvpUrl?: string;
   /** City / venue display string */
   location: string;
   /** Category tag shown on the index card */

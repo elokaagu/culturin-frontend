@@ -169,6 +169,7 @@ export default async function EventLandingPage({ params }: Props) {
       ))}
 
       {/* ── Numbers ───────────────────────────────────────────────── */}
+      {event.stats.length > 0 ? (
       <section
         id="numbers"
         className="border-y px-8 sm:px-14"
@@ -195,6 +196,7 @@ export default async function EventLandingPage({ params }: Props) {
           ))}
         </div>
       </section>
+      ) : null}
 
       {/* ── Signal / What happened(ing) ──────────────────────────── */}
       <section
@@ -252,7 +254,24 @@ export default async function EventLandingPage({ params }: Props) {
               View the gallery
             </Link>
           ) : null}
-          <RSVPForm eventSlug={event.slug} />
+          {!isPast && event.externalRsvpUrl ? (
+            <div className="mt-10 flex flex-col items-start gap-3">
+              <a
+                href={event.externalRsvpUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-fit items-center rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+                style={{ background: ACCENT, color: SURFACE_DARK }}
+              >
+                Request to join ↗
+              </a>
+              <p className="m-0 text-xs" style={{ color: INK_MUTED }}>
+                Requests are handled on Luma and reviewed by the hosts.
+              </p>
+            </div>
+          ) : (
+            <RSVPForm eventSlug={event.slug} />
+          )}
         </Reveal>
       </section>
 

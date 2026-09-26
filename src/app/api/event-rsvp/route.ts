@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { notifyTeam, siteOrigin } from "@/lib/email/culturinEmail";
 import { getEventBySlug } from "@/lib/events/eventsStore";
+import { detectSpam, logSpam } from "@/lib/spamGuard";
 import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -40,6 +41,13 @@ export async function POST(req: Request) {
   }
   if (!emailOk(email)) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
+  }
+
+  const spam = detectSpam(o as Record<string, unknown>, { email, names: [firstName, lastName, title] });
+  if (spam) {
+    // Look like success so bots don't adapt; nothing is saved or emailed.
+    logSpam("event-rsvp", spam, email);
+    return NextResponse.json({ ok: true }, { status: 201 });
   }
 
   const admin = getSupabaseAdminOrNull();

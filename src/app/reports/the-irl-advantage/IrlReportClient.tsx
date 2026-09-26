@@ -11,6 +11,7 @@ import {
   SURFACE_DARK,
 } from "@/lib/theme/culturinTokens";
 import Reveal from "@/app/components/motion/Reveal";
+import { useSpamTrap } from "@/app/components/useSpamTrap";
 import {
   CASE_STUDY,
   CH1_STATS,
@@ -113,6 +114,7 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
   const [consent, setConsent] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
+  const { trap, trapPayload } = useSpamTrap();
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -131,6 +133,7 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
           company: company.trim(),
           email: email.trim(),
           marketingConsent: true,
+          ...trapPayload(),
         }),
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
@@ -174,7 +177,8 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
           </ul>
         </div>
 
-        <form onSubmit={onSubmit} noValidate className="flex flex-col gap-3 self-center">
+        <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-3 self-center">
+          {trap}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <input
               aria-label="First name"

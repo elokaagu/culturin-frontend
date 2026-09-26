@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useId, useState, type FormEvent } from "react";
 import { Check } from "lucide-react";
 
+import { useSpamTrap } from "@/app/components/useSpamTrap";
 import { ACCENT_ON_DARK, EDITORIAL_ACCENT, SURFACE_DARK } from "@/lib/theme/culturinTokens";
 
 const DISPLAY = "var(--font-display), 'Times New Roman', serif";
@@ -70,6 +71,7 @@ export function PartnerExperience({
   const [formError, setFormError] = useState("");
   const [pending, setPending] = useState(false);
   const [done, setDone] = useState(false);
+  const { trap, trapPayload } = useSpamTrap();
 
   const active = CHOICES.find((c) => c.value === interest) ?? CHOICES[3];
 
@@ -92,7 +94,7 @@ export function PartnerExperience({
       const res = await fetch("/api/partner-inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), company: company.trim(), interest, message: message.trim() }),
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), company: company.trim(), interest, message: message.trim(), ...trapPayload() }),
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
@@ -152,7 +154,8 @@ export function PartnerExperience({
             </p>
           </div>
         ) : (
-          <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6" style={{ color: "var(--c-ink)" }}>
+          <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-6" style={{ color: "var(--c-ink)" }}>
+            {trap}
             <fieldset className="m-0 border-0 p-0" disabled={pending}>
               <legend className="mb-3 p-0 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: "var(--c-muted)" }}>
                 I&apos;m interested in
