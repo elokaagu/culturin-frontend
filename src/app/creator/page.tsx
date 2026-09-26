@@ -27,7 +27,7 @@ export default async function CreatorOverviewPage() {
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed" style={{ color: "var(--c-muted)" }}>
         Submit drafts from the sidebar — they are stored for review and do not appear on the public site until the Culturin
-        team publishes them from Studio.
+        team publishes them.
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">

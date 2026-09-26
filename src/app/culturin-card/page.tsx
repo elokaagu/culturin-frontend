@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 const BENEFITS = [
   {
     label: "Invite-only access",
-    body: "Membership is issued by Culturin. Claim links come from Studio after an invitation or nomination, not a public signup form.",
+    body: "Membership is issued by Culturin. Claim links are sent by the Culturin team after an invitation or nomination, not a public signup form.",
   },
   {
     label: "Rooms and events first",

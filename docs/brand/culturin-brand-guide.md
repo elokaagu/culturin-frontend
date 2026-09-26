@@ -10,18 +10,24 @@ A working guide for anyone creating Culturin assets: designers, partners, and AI
 
 **Culturin connects the world through culture.** We're a network of founders, operators, artists, and cultural leaders. We build rooms at the pinnacle of culture (Cannes Lions, UNGA, the US Open, Frieze, Art Basel) and help brands enter new territories with cultural intelligence.
 
-| | |
-|---|---|
-| **Tagline** | We connect the world through Culture. |
-| **Positioning line** | We create iconic moments at the pinnacle of culture. |
-| **What we sell** | Intelligence · Programming · Moments |
-| **Proof** | Our team has produced cultural moments at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN General Assembly. |
+
+|                      |                                                                                                                                     |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Tagline**          | We connect the world through Culture.                                                                                               |
+| **Positioning line** | We create iconic moments at the pinnacle of culture.                                                                                |
+| **What we sell**     | Intelligence · Programming · Moments                                                                                                |
+| **Proof**            | Our team has produced cultural moments at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN General Assembly. |
+
 
 **Brand personality:** warm, discerning, well-connected, understated, nocturnal. Think of the best host you know: they never announce how good the party is, they just make sure the right people meet.
 
 ---
 
+
+
 ## 2. Voice and tone
+
+
 
 ### Principles
 
@@ -30,6 +36,8 @@ A working guide for anyone creating Culturin assets: designers, partners, and AI
 3. **Human first.** Talk about people, rooms, nights, and conversations, not "activations", "touchpoints" or "synergies".
 4. **Specific beats superlative.** "500 guests from 12 countries" beats "a huge international crowd".
 5. **Warm, with a little wit.** "Cannes, without the noise."
+
+
 
 ### House style
 
@@ -40,16 +48,22 @@ A working guide for anyone creating Culturin assets: designers, partners, and AI
 - **Write "Culturin", never "CULTURIN" in body copy.** The all-caps form is reserved for the logo.
 - Numbers: numerals for stats (500+, 12 countries), words for one to nine in prose.
 
+
+
 ### Our words
 
-| Use | Avoid |
-|---|---|
-| rooms, nights, moments | activations, touchpoints |
-| guests, the people in the room | consumers, targets, users |
-| woven in with intention | integrated, leveraged |
-| curated guest list | exclusive, VIP-only |
-| culture, taste, community | lifestyle, content (as a noun for everything) |
-| partners | sponsors (unless it's contractual) |
+
+| Use                            | Avoid                                         |
+| ------------------------------ | --------------------------------------------- |
+| rooms, nights, moments         | activations, touchpoints                      |
+| guests, the people in the room | consumers, targets, users                     |
+| woven in with intention        | integrated, leveraged                         |
+| curated guest list             | exclusive, VIP-only                           |
+| culture, taste, community      | lifestyle, content (as a noun for everything) |
+| partners                       | sponsors (unless it's contractual)            |
+
+
+
 
 ### Example lines
 
@@ -60,6 +74,8 @@ A working guide for anyone creating Culturin assets: designers, partners, and AI
 
 ---
 
+
+
 ## 3. Logo
 
 The Culturin logo has two parts:
@@ -67,15 +83,21 @@ The Culturin logo has two parts:
 - **The mark:** an eight-point burst. Eight rounded, arrow-shaped petals point inward to a shared centre. It stands for people arriving from every direction into one room.
 - **The wordmark:** CULTURIN in Recoleta, all caps, with a small superscript ™.
 
+
+
 ### Versions and files
 
-| Version | Use on | File |
-|---|---|---|
-| Mark, yellow | Dark backgrounds and photography | `public/logo/culturin_logo_icon_yellow.png` |
-| Mark, black | Cream and light backgrounds | `public/logo/culturin_logo_icon_black.png` |
-| Mark, white | Busy photography where yellow clashes | `public/logo/culturin_logo_icon_white.png` |
-| Wordmark, yellow / black / white | Same rules as the mark | `public/logo/culturin_logotype_*.png` |
-| Full logo (vector) | Print, large formats | `public/culturin_logo_black.svg` |
+
+| Version                          | Use on                                | File                                        |
+| -------------------------------- | ------------------------------------- | ------------------------------------------- |
+| Mark, yellow                     | Dark backgrounds and photography      | `public/logo/culturin_logo_icon_yellow.png` |
+| Mark, black                      | Cream and light backgrounds           | `public/logo/culturin_logo_icon_black.png`  |
+| Mark, white                      | Busy photography where yellow clashes | `public/logo/culturin_logo_icon_white.png`  |
+| Wordmark, yellow / black / white | Same rules as the mark                | `public/logo/culturin_logotype_*.png`       |
+| Full logo (vector)               | Print, large formats                  | `public/culturin_logo_black.svg`            |
+
+
+
 
 ### Rules
 
@@ -87,30 +109,40 @@ The Culturin logo has two parts:
 
 ---
 
+
+
 ## 4. Colour
 
 The palette is warm and nocturnal: candlelight on cream stone, terracotta, late-night ink.
 
 ### Core palette
 
-| Name | Hex | Role |
-|---|---|---|
-| **Ink** | `#1C1A17` | Primary dark. Text on light, the "room at night" background. |
-| **Night** | `#17130F` | Deepest background (dark mode). |
-| **Cream** | `#E8E3DA` | Primary light background. |
-| **Parchment** | `#F1E9DC` | Text on dark backgrounds. |
-| **Terracotta** | `#B5502E` | Accent on light backgrounds: highlighted words, buttons, numbers. |
-| **Copper Glow** | `#E08A5B` | Accent on dark backgrounds: buttons, highlighted words, stats. |
-| **Logo Yellow** | `#FAC100` | Logo only. Never used for text or UI. |
+
+| Name            | Hex       | Role                                                              |
+| --------------- | --------- | ----------------------------------------------------------------- |
+| **Ink**         | `#1C1A17` | Primary dark. Text on light, the "room at night" background.      |
+| **Night**       | `#17130F` | Deepest background (dark mode).                                   |
+| **Cream**       | `#E8E3DA` | Primary light background.                                         |
+| **Parchment**   | `#F1E9DC` | Text on dark backgrounds.                                         |
+| **Terracotta**  | `#B5502E` | Accent on light backgrounds: highlighted words, buttons, numbers. |
+| **Copper Glow** | `#E08A5B` | Accent on dark backgrounds: buttons, highlighted words, stats.    |
+| **Logo Yellow** | `#FAC100` | Logo only. Never used for text or UI.                             |
+
+
+
 
 ### Supporting neutrals
 
-| Name | Hex | Role |
-|---|---|---|
+
+| Name  | Hex       | Role                    |
+| ----- | --------- | ----------------------- |
 | Stone | `#6B6456` | Secondary text on cream |
-| Sand | `#B9AB98` | Secondary text on dark |
+| Sand  | `#B9AB98` | Secondary text on dark  |
 | Linen | `#CEC7BE` | Hairline rules on cream |
-| Umber | `#3A332A` | Hairline rules on dark |
+| Umber | `#3A332A` | Hairline rules on dark  |
+
+
+
 
 ### Proportions
 
@@ -124,12 +156,18 @@ Roughly **70% Ink or Cream**, **25% photography**, **5% accent**. The accent is 
 
 ---
 
+
+
 ## 5. Typography
 
-| Role | Typeface | Free alternative for Canva, Figma, and AI mockups |
-|---|---|---|
-| **Display and headlines** | **Recoleta** (Medium 500) | Fraunces (soft, low contrast) |
-| **Body, labels, buttons** | **TWK Everett** (Book 400, Medium 500) | Inter or Manrope |
+
+| Role                      | Typeface                               | Free alternative for Canva, Figma, and AI mockups |
+| ------------------------- | -------------------------------------- | ------------------------------------------------- |
+| **Display and headlines** | **Recoleta** (Medium 500)              | Fraunces (soft, low contrast)                     |
+| **Body, labels, buttons** | **TWK Everett** (Book 400, Medium 500) | Inter or Manrope                                  |
+
+
+
 
 ### Hierarchy
 
@@ -140,6 +178,8 @@ Roughly **70% Ink or Cream**, **25% photography**, **5% accent**. The accent is 
 - **Big stats:** Recoleta Medium, very large, in the accent colour. Example: **61%**.
 
 ---
+
+
 
 ## 6. Photography and art direction
 
@@ -153,6 +193,8 @@ Our imagery should feel like **being inside the room at 11pm**: warm, candid, in
 - **Texture:** velvet, brass, linen tablecloths, glassware, disco balls, terracotta walls.
 - **Places with character:** Riviera terraces, members' clubs, galleries, rooftops, private dining rooms.
 
+
+
 ### Never
 
 - Stock-looking poses, forced smiles at camera, or corporate headshots.
@@ -160,11 +202,15 @@ Our imagery should feel like **being inside the room at 11pm**: warm, candid, in
 - Heavy filters, HDR, oversaturation, or obviously AI-smooth skin.
 - Visible competitor logos, or recognisable celebrities in AI-generated images.
 
+
+
 ### Colour grade
 
 Warm shadows (brown-black, never blue-black), creamy highlights, rich reds and ambers, lifted blacks, subtle grain.
 
 ---
+
+
 
 ## 7. Layout and graphic language
 
@@ -176,20 +222,28 @@ Warm shadows (brown-black, never blue-black), creamy highlights, rich reds and a
 - **One italic accent word** per headline, maximum.
 - **Motion** (web and video): slow, eased fade-and-rise reveals. Nothing bouncy or flashy.
 
+
+
 ### Standard asset sizes
 
-| Asset | Size |
-|---|---|
-| Instagram post | 1080 × 1350 (4:5) |
-| Instagram / TikTok story | 1080 × 1920 (9:16) |
-| LinkedIn post | 1200 × 1200 or 1200 × 627 |
-| Website social share (OG) | 1200 × 630 |
-| Email header | 1200 × 600 |
-| Presentation slide | 1920 × 1080 (16:9) |
+
+| Asset                     | Size                      |
+| ------------------------- | ------------------------- |
+| Instagram post            | 1080 × 1350 (4:5)         |
+| Instagram / TikTok story  | 1080 × 1920 (9:16)        |
+| LinkedIn post             | 1200 × 1200 or 1200 × 627 |
+| Website social share (OG) | 1200 × 630                |
+| Email header              | 1200 × 600                |
+| Presentation slide        | 1920 × 1080 (16:9)        |
+
 
 ---
 
+
+
 ## 8. AI prompt kit
+
+
 
 ### 8.1 ChatGPT: brand voice instructions
 
@@ -220,6 +274,8 @@ Example lines: "We put the right people in the same room." / "Launch in a new te
 - "Write an email to our list about [event]. Subject line options, preview text, then a body under 150 words."
 - "Rewrite this in the Culturin voice: [paste text]."
 
+
+
 ### 8.2 Midjourney: house style
 
 Add this **style suffix** to the end of any Midjourney prompt:
@@ -241,31 +297,37 @@ Add this **negative prompt** to stay on-brand:
 Replace the parts in [brackets], then add the style suffix and negative prompt above.
 
 **Event atmosphere (hero images)**
+
 ```text
 a candlelit private dinner on a Riviera terrace at night, long table with linen and glassware, creative industry guests in conversation and laughter, [city] lights in the background
 ```
 
 **Nightlife energy**
+
 ```text
 a packed intimate members' club at midnight, red and amber lighting, disco ball reflections, stylish diverse crowd dancing, DJ booth glowing in the background
 ```
 
 **Conversations and connection (B2B)**
+
 ```text
 two founders mid-conversation at a cocktail party, one laughing, holding coupe glasses, warm bokeh lights behind, gallery walls with contemporary art
 ```
 
 **Place-led (destination teasers)**
+
 ```text
 golden hour on La Croisette in Cannes, palm trees, a terrace set for an evening event, terracotta and cream tones, anticipation before guests arrive
 ```
 
 **Detail and texture (backgrounds for text)**
+
 ```text
 close-up still life of a dinner table after midnight, half-melted candles, wine glasses, scattered flowers, crumpled linen, deep shadows, lots of negative space on the left
 ```
 
 **Abstract brand background**
+
 ```text
 soft abstract gradient of warm terracotta, copper and deep ink brown, velvety texture, subtle grain, like light through a red curtain, minimal, lots of negative space
 ```
@@ -277,6 +339,8 @@ soft abstract gradient of warm terracotta, copper and deep ink brown, velvety te
 - Never generate real people's likenesses, celebrities, or other brands' logos.
 - Midjourney can't spell reliably. **Add all text and the logo afterwards** in Canva or Figma, using the fonts in section 5.
 
+
+
 ### 8.4 ChatGPT image generation: layouts with text
 
 ChatGPT's image generator handles text better, so use it for quick social graphic drafts. Still place the real logo afterwards.
@@ -286,16 +350,20 @@ Design a 4:5 Instagram post for Culturin. Background: a warm, candid night-time 
 ```
 
 **Event announcement card**
+
 ```text
 A 1080x1350 announcement card on a deep ink background #1C1A17. Large soft serif headline in #F1E9DC: "Culturin at [Event]." Beneath it in small letter-spaced caps: "[DATES] · [CITY]". A thin 1px line in #3A332A separates a short line of body text in a clean sans-serif: "[One-sentence description]." Generous margins, editorial, minimal. No logos, no icons, no extra text.
 ```
 
 **Stat card (for reports and LinkedIn)**
+
 ```text
 A minimal square LinkedIn graphic on warm cream #E8E3DA. One huge number "[61%]" in a soft rounded serif, terracotta #B5502E. Beneath it, one sentence in a clean dark sans-serif #1C1A17: "[of consumers are more inclined to buy after a live brand experience.]" A tiny source line at the bottom in grey #6B6456: "Source: [source]". Lots of empty space. No other elements.
 ```
 
 ---
+
+
 
 ## 9. Before you publish: checklist
 
