@@ -16,6 +16,7 @@ import {
   Menu,
   Moon,
   Presentation,
+  Send,
   Sun,
   X,
 } from "lucide-react";
@@ -270,6 +271,16 @@ export default function StudioLayoutClient({
               <nav className="mt-5 space-y-4 px-2.5 pb-4 md:pb-6" aria-label="Audience management">
                 <p className={subLabelClass}>Audience</p>
                 <ul className="m-0 space-y-0.5 p-0">
+                  <li>
+                    <Link
+                      href="/admin/emails"
+                      className={navItemClass(pathname === "/admin/emails" || pathname?.startsWith("/admin/emails/"))}
+                      aria-current={pathname === "/admin/emails" ? "page" : undefined}
+                    >
+                      <Send className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                      <span className="min-w-0 flex-1">Emails</span>
+                    </Link>
+                  </li>
                   <li>
                     <Link
                       href="/admin/subscribers"

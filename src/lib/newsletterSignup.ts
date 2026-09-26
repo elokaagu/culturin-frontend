@@ -75,6 +75,8 @@ export async function handleNewsletterSignup(
   if (error) {
     // 23505 = unique_violation (already subscribed)
     if (error.code === "23505") {
+      // Signing up again after unsubscribing is an explicit opt back in.
+      await admin.from("newsletter_subscribers").update({ unsubscribed_at: null }).eq("email", email).not("unsubscribed_at", "is", null);
       await onSignup?.({ email, firstName: firstNameRaw, lastName: lastNameRaw, company: companyRaw, alreadySubscribed: true });
       return NextResponse.json({ ok: true, alreadySubscribed: true }, { status: 200 });
     }

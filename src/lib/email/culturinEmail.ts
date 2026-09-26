@@ -26,7 +26,7 @@ export function teamRecipients(): string[] {
 }
 
 export function siteOrigin(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://culturin.com").replace(/\/$/, "");
+  return (process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://www.culturin.com").replace(/\/$/, "");
 }
 
 export function escapeHtml(s: string): string {
@@ -48,7 +48,38 @@ function linkify(text: string): string {
 
 export type EmailDetail = { label: string; value: string; href?: string };
 
-/** The shared Culturin layout: cream card, serif headline, detail rows, terracotta button. */
+export const EMAIL_STYLE = { BG, INK, MUTED, RULE, ACCENT, DISPLAY, SANS, linkStyle } as const;
+
+/**
+ * The outer Culturin email: cream page, card with the gold Culturin logo on a dark band,
+ * and a small footer. `content` is trusted HTML already styled inline.
+ */
+export function emailShell(opts: { title: string; preheader?: string; content: string; footer: string }): string {
+  const logo = `${siteOrigin()}/email/culturin-logo.png`;
+  const preheader = opts.preheader
+    ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">${escapeHtml(opts.preheader)}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>`
+    : "";
+  return `<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"><style>a{color:${INK};}a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font:inherit !important;}u + #body a{color:inherit !important;text-decoration:none !important;}img{max-width:100%;height:auto;}</style><title>${escapeHtml(opts.title)}</title></head>
+<body id="body" style="margin:0;padding:0;background:${BG};">
+${preheader}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${BG};">
+<tr><td align="center" style="padding:32px 12px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">
+    <tr><td style="background:${INK};border-radius:20px 20px 0 0;padding:22px 28px;">
+      <a href="${siteOrigin()}" style="text-decoration:none;"><img src="${logo}" width="146" height="41" alt="Culturin" style="display:block;border:0;width:146px;height:41px;"></a>
+    </td></tr>
+    <tr><td style="background:#fffdf9;border:1px solid ${RULE};border-top:0;border-radius:0 0 20px 20px;padding:32px 28px;">
+${opts.content}
+    </td></tr>
+    <tr><td style="padding:20px 4px 0;font:400 12px/1.6 ${SANS};color:${MUTED};">${opts.footer}</td></tr>
+  </table>
+</td></tr>
+</table>
+</body></html>`;
+}
+
+/** Team alert layout: eyebrow, serif headline, detail rows, terracotta button. */
 export function renderCulturinEmail(opts: {
   eyebrow: string;
   headline: string;
@@ -70,30 +101,23 @@ export function renderCulturinEmail(opts: {
     })
     .join("");
 
-  return `<!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"><style>a{color:${INK};}a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font:inherit !important;}u + #body a{color:inherit !important;text-decoration:none !important;}</style><title>${escapeHtml(opts.headline)}</title></head>
-<body id="body" style="margin:0;padding:0;background:${BG};">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${BG};">
-<tr><td align="center" style="padding:32px 16px;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-    <tr><td style="padding:0 4px 20px;font:600 22px/1 ${DISPLAY};color:${INK};letter-spacing:-0.01em;">Culturin</td></tr>
-    <tr><td style="background:#fffdf9;border:1px solid ${RULE};border-radius:20px;padding:32px 28px;">
+  const content = `
       <p style="margin:0 0 12px;font:600 11px/1.4 ${SANS};letter-spacing:0.24em;text-transform:uppercase;color:${ACCENT};">${escapeHtml(opts.eyebrow)}</p>
       <h1 style="margin:0;font:500 28px/1.15 ${DISPLAY};color:${INK};">${escapeHtml(opts.headline)}</h1>
       ${opts.intro ? `<p style="margin:14px 0 0;font:400 15px/1.6 ${SANS};color:${MUTED};">${linkify(opts.intro)}</p>` : ""}
       ${rows ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;border-bottom:1px solid ${RULE};">${rows}</table>` : ""}
       ${opts.note ? `<p style="margin:20px 0 0;font:400 14px/1.6 ${SANS};color:${MUTED};">${linkify(opts.note)}</p>` : ""}
-      ${
-        opts.cta
-          ? `<p style="margin:28px 0 0;"><a href="${escapeHtml(opts.cta.href)}" style="display:inline-block;background:${ACCENT};color:${INK} !important;text-decoration:none;border-radius:999px;padding:13px 26px;font:600 12px/1 ${SANS};letter-spacing:0.16em;text-transform:uppercase;">${escapeHtml(opts.cta.label)}</a></p>`
-          : ""
-      }
-    </td></tr>
-    <tr><td style="padding:20px 4px 0;font:400 12px/1.6 ${SANS};color:${MUTED};">Culturin · Culture, in the room.<br>You're getting this because you're on the Culturin team.</td></tr>
-  </table>
-</td></tr>
-</table>
-</body></html>`;
+      ${opts.cta ? ctaButton(opts.cta) : ""}`;
+
+  return emailShell({
+    title: opts.headline,
+    content,
+    footer: "Culturin · Culture, in the room.<br>You're getting this because you're on the Culturin team.",
+  });
+}
+
+export function ctaButton(cta: { label: string; href: string }): string {
+  return `<p style="margin:28px 0 0;"><a href="${escapeHtml(cta.href)}" style="display:inline-block;background:${ACCENT};color:${INK} !important;text-decoration:none;border-radius:999px;padding:13px 26px;font:600 12px/1 ${SANS};letter-spacing:0.16em;text-transform:uppercase;">${escapeHtml(cta.label)}</a></p>`;
 }
 
 /** Plain-text fallback so the email isn't HTML-only (better deliverability). */
