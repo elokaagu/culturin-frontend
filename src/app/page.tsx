@@ -46,14 +46,6 @@ const ACCENT = EDITORIAL_ACCENT;
 
 const HERO_SLIDE_SLOTS = ["homepage-hero", "homepage-hero-2", "homepage-hero-3", "homepage-hero-4"] as const;
 
-const GALLERY_PREVIEW_SLOTS = [
-  { key: "homepage-preview-1", span: "row-span-2" },
-  { key: "homepage-preview-2", span: "" },
-  { key: "homepage-preview-3", span: "" },
-  { key: "homepage-preview-4", span: "" },
-  { key: "homepage-preview-5", span: "" },
-] as const;
-
 const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Super Bowl", logoSrc: "/partners/super-bowl.webp" },
   { name: "Davos", logoSrc: "/partners/davos-logo.svg", heightClass: "h-14" },
@@ -102,10 +94,6 @@ export default async function HomePage() {
   const latestStories = db
     ? (await listBlogs(db)).filter((a) => a.currentSlug?.trim()).slice(0, 3)
     : [];
-  const galleryPreview = GALLERY_PREVIEW_SLOTS.map((slot) => ({
-    ...resolveSiteImage(siteImages, slot.key, manifestDefault(slot.key)),
-    span: slot.span,
-  }));
 
   return (
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
@@ -325,9 +313,10 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {services.map((s, i) => (
               <Reveal key={s.slug} as="div" delay={i * 140} y={48} className="h-full">
-                <article
-                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_56px_-28px_rgba(0,0,0,0.6)]"
-                  style={{ borderColor: RULE, background: `color-mix(in srgb, ${INK} 4%, ${BG})` }}
+                <Link
+                  href={`/services/${s.slug}`}
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border no-underline transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_56px_-28px_rgba(0,0,0,0.6)]"
+                  style={{ borderColor: RULE, background: `color-mix(in srgb, ${INK} 4%, ${BG})`, color: INK }}
                 >
                   <div className="relative aspect-[4/5] overflow-hidden">
                     <BlurImage
@@ -348,31 +337,17 @@ export default async function HomePage() {
                         className="m-0 mt-2 text-3xl font-medium text-white"
                         style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
                       >
-                        <Link
-                          href={`/services/${s.slug}`}
-                          className="text-inherit no-underline after:absolute after:inset-0 after:content-['']"
-                        >
-                          {s.label}
-                        </Link>
+                        {s.label}
                       </h3>
                       <p className="m-0 mt-2 text-sm leading-relaxed text-white/85">{s.promise}</p>
                     </div>
                   </div>
-                  <div className="flex flex-1 flex-col px-6 pb-6 pt-5">
-                    <div className="flex flex-1 items-center justify-between gap-4">
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] transition-transform duration-300 group-hover:translate-x-1" style={{ color: INK }}>
-                        Explore {s.label} →
-                      </span>
-                      <Link
-                        href={`/partner?service=${s.slug}`}
-                        className="relative z-10 inline-flex shrink-0 items-center rounded-full px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] no-underline transition-opacity hover:opacity-85"
-                        style={{ background: ACCENT, color: SURFACE_DARK }}
-                      >
-                        Talk to us
-                      </Link>
-                    </div>
+                  <div className="flex flex-1 items-center px-6 pb-6 pt-5">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.16em] transition-transform duration-300 group-hover:translate-x-1" style={{ color: INK }}>
+                      Explore {s.label} →
+                    </span>
                   </div>
-                </article>
+                </Link>
               </Reveal>
             ))}
           </div>
@@ -530,60 +505,6 @@ export default async function HomePage() {
                 </Link>
             </Reveal>
           </div>
-        </div>
-      </section>
-
-      {/* ── Gallery preview ────────────────────────────────────── */}
-      <section
-        id="gallery"
-        className="px-8 sm:px-14"
-        style={{ paddingTop: "8rem", paddingBottom: "8rem" }}
-      >
-        <div className="mx-auto max-w-6xl">
-          <Reveal className="mb-12 flex items-end justify-between gap-6">
-            <div>
-              <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: INK_MUTED }}>
-                From the field
-              </p>
-              <h2
-                className="m-0 text-4xl font-medium leading-[1.08] sm:text-5xl"
-                style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
-              >
-                Life inside the rooms.
-              </h2>
-            </div>
-            <Link
-              href="/gallery"
-              className="shrink-0 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-60"
-              style={{ color: INK }}
-            >
-              Full gallery →
-            </Link>
-          </Reveal>
-
-          <Reveal>
-            <div className="grid grid-cols-3 gap-5" style={{ gridTemplateRows: "240px 240px" }}>
-              {galleryPreview.map((item, i) => (
-                <Link
-                  key={i}
-                  href="/gallery"
-                  className={`group relative block overflow-hidden no-underline ${item.span}`}
-                  style={{ borderRadius: 16 }}
-                >
-                  <BlurImage
-                    src={item.src}
-                    alt={item.alt}
-                    fill
-                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
-                    placeholder="blur"
-                    blurDataURL={blurForSrc(item.src)}
-                    sizes="(max-width: 640px) 50vw, 33vw"
-                    unoptimized
-                  />
-                </Link>
-              ))}
-            </div>
-          </Reveal>
         </div>
       </section>
 

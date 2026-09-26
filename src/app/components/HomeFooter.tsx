@@ -212,8 +212,8 @@ export default function HomeFooter() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <nav className="flex flex-wrap gap-x-6 gap-y-2">
+          <div className="flex w-full flex-col gap-4 sm:w-auto sm:items-end">
+            <nav className="flex flex-wrap gap-x-6 gap-y-2 sm:justify-end">
               {footerLinks.map((item) => (
                 <Link
                   key={item.label}

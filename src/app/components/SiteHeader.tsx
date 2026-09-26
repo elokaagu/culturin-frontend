@@ -13,7 +13,6 @@ const NAV = [
   { label: "Reports", href: "/platform" },
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Partners", href: "/partner" },
 ] as const;
 
 const gutterX = "pl-[var(--gutter-l)] pr-[var(--gutter-r)]";
