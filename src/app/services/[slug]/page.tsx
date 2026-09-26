@@ -66,45 +66,46 @@ export default async function ServicePage({ params }: { params: { slug: string }
     <div style={{ background: BG, color: INK }} className={`${editorialScopeClass} font-sans antialiased`}>
       <SiteHeader />
 
-      {/* Hero */}
-      <section className="px-3 pt-[5.5rem] sm:px-4 sm:pt-[6.5rem]">
-        <div className="relative flex min-h-[78vh] flex-col justify-end overflow-hidden rounded-3xl sm:rounded-[2rem]">
-          {hero.src ? (
-            <BlurImage
-              src={hero.src}
-              alt={hero.alt}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-[center_20%]"
-              placeholder="blur"
-              blurDataURL={blurForSrc(hero.src)}
-            />
-          ) : null}
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.88) 100%)" }}
-          />
-          <div className="relative z-10 grid items-end gap-8 px-6 pb-8 sm:px-10 sm:pb-10 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:px-14 lg:pb-14">
-            <Reveal y={32}>
-              <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.3em] text-white/70">
-                {String(index + 1).padStart(2, "0")} · {service.label}
-              </p>
-              <h1 className="m-0 max-w-3xl text-4xl font-medium leading-[1.05] text-white sm:text-6xl" style={{ fontFamily: DISPLAY }}>
-                {service.headline}
-              </h1>
-            </Reveal>
-            <Reveal y={24} delay={150} className="flex flex-col items-start md:items-end md:text-right">
-              <p className="m-0 max-w-sm text-sm leading-relaxed text-white/80 sm:text-base">{service.promise}</p>
-              <Link
-                href={contactHref}
-                className="mt-6 inline-flex items-center rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
-                style={{ background: ACCENT, color: SURFACE_DARK }}
-              >
-                Talk to us
-              </Link>
-            </Reveal>
-          </div>
+      {/* Hero: copy beside a 4:5 image card, the same proportions as the homepage service cards */}
+      <section className="px-8 pt-28 sm:px-14 sm:pt-32">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16">
+          <Reveal y={32} className="order-2 lg:order-1">
+            <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: MUTED }}>
+              {String(index + 1).padStart(2, "0")} · {service.label}
+            </p>
+            <h1 className="m-0 max-w-2xl text-4xl font-medium leading-[1.05] sm:text-6xl" style={{ fontFamily: DISPLAY }}>
+              {service.headline}
+            </h1>
+            <p className="mt-6 max-w-md text-base leading-relaxed" style={{ color: MUTED }}>
+              {service.promise}
+            </p>
+            <Link
+              href={contactHref}
+              className="mt-8 inline-flex items-center rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
+              style={{ background: ACCENT, color: SURFACE_DARK }}
+            >
+              Talk to us
+            </Link>
+          </Reveal>
+          <Reveal y={24} delay={120} className="order-1 lg:order-2">
+            <div
+              className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-2xl border lg:max-w-none"
+              style={{ borderColor: RULE, background: SURFACE_DARK }}
+            >
+              {hero.src ? (
+                <BlurImage
+                  src={hero.src}
+                  alt={hero.alt}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 40vw, (min-width: 448px) 28rem, 100vw"
+                  className="object-cover"
+                  placeholder="blur"
+                  blurDataURL={blurForSrc(hero.src)}
+                />
+              ) : null}
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -240,7 +241,7 @@ export default async function ServicePage({ params }: { params: { slug: string }
               <Reveal key={s.slug} as="div" delay={i * 140} y={40}>
                 <Link
                   href={`/services/${s.slug}`}
-                  className="group relative block aspect-[16/10] overflow-hidden rounded-2xl no-underline"
+                  className="group relative mx-auto block aspect-[4/5] w-full max-w-md overflow-hidden rounded-2xl no-underline md:max-w-none"
                 >
                   {s.image.src ? (
                     <BlurImage
