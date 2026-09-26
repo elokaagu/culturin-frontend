@@ -41,30 +41,6 @@ export const SITE_IMAGE_SLOTS: SiteImageSlot[] = [
     defaultAlt: "Guests laughing beneath the disco balls, Culturin at Cannes Lions 2026",
   },
   {
-    key: "homepage-pillar-1",
-    label: "Homepage — \"The rooms\" card photo",
-    defaultSrc: "/events/cannes-lions-2026/UNIKday1-46.jpg",
-    defaultAlt: "Guests mingling in a warm-lit lounge in Cannes",
-  },
-  {
-    key: "homepage-pillar-2",
-    label: "Homepage — \"The stories\" card photo",
-    defaultSrc: "/events/cannes-lions-2026/UNIKday2-34.jpg",
-    defaultAlt: "Two guests laughing together late at night in Cannes",
-  },
-  {
-    key: "homepage-pillar-3",
-    label: "Homepage — \"Cultural marketing\" card photo",
-    defaultSrc: "/events/cannes-lions-2026/UNIKday2-22.jpg",
-    defaultAlt: "Couple posing at a branded photo wall in Cannes",
-  },
-  {
-    key: "homepage-pillar-4",
-    label: "Homepage — \"The record\" card photo",
-    defaultSrc: "/events/cannes-lions-2026/UNIKday2-12.jpg",
-    defaultAlt: "Group of guests at a Culturin gathering in Cannes",
-  },
-  {
     key: "homepage-cannes-section",
     label: "Homepage — Cannes Lions section photo",
     defaultSrc: "/events/cannes-lions-2026/UNIKday1-2.jpg",

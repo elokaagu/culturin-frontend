@@ -49,25 +49,6 @@ const GALLERY_PREVIEW_SLOTS = [
   { key: "homepage-preview-5", span: "" },
 ] as const;
 
-const PILLARS = [
-  {
-    label: "The rooms",
-    body: "Dinners, festivals, and gatherings at the year's cultural moments: Cannes, New York, London, and the nights in between.",
-  },
-  {
-    label: "The stories",
-    body: "Articles, video, and conversations with artists, musicians, founders, and operators, captured from the same rooms we build.",
-  },
-  {
-    label: "Cultural marketing",
-    body: "Brands come to Culturin to launch in new territories and connect with cultural intelligence. Write to us and we'll set up a call.",
-  },
-  {
-    label: "The record",
-    body: "Built by a team with production history at the Super Bowl, the Oscars, Davos, Cannes, and the UN Assembly.",
-  },
-];
-
 const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Super Bowl", logoSrc: "/partners/super-bowl.webp" },
   { name: "Davos", logoSrc: "/partners/davos-logo.svg", heightClass: "h-14" },
@@ -101,6 +82,7 @@ const SERVICES = [
 ] as const;
 
 const featuredEvents = events.filter((e) => !e.isPast).slice(0, 3);
+const EVENT_GRID_COLS: Record<number, string> = { 1: "sm:grid-cols-1", 2: "sm:grid-cols-2", 3: "sm:grid-cols-3" };
 const cannesRecapEvent = events.find((e) => e.slug === "cannes-lions-2026");
 
 /** Short city label pulled from a full location string, for Trippin-style tag chips. */
@@ -121,10 +103,6 @@ export default async function HomePage() {
     };
   }).filter((slide) => slide.src);
   const cannesSection = resolveSiteImage(siteImages, "homepage-cannes-section", manifestDefault("homepage-cannes-section"));
-  const pillars = PILLARS.map((p, i) => ({
-    ...p,
-    image: resolveSiteImage(siteImages, `homepage-pillar-${i + 1}`, manifestDefault(`homepage-pillar-${i + 1}`)),
-  }));
   const galleryPreview = GALLERY_PREVIEW_SLOTS.map((slot) => ({
     ...resolveSiteImage(siteImages, slot.key, manifestDefault(slot.key)),
     span: slot.span,
@@ -161,7 +139,7 @@ export default async function HomePage() {
                   className="inline-flex items-center rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
                   style={{ background: ACCENT, color: SURFACE_DARK }}
                 >
-                  Read our Intelligence Briefing
+                  Download our briefing
                 </Link>
               </MagneticButton>
             </Reveal>
@@ -219,87 +197,6 @@ export default async function HomePage() {
               </p>
             </Reveal>
           </div>
-
-          <div className="mt-20 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {pillars.map((p, i) => (
-              <Reveal key={p.label} as="div" delay={i * 140} y={48} className="h-full">
-                <article
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border transition-[transform,border-color,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.55)]"
-                  style={{ borderColor: RULE, background: `color-mix(in srgb, ${INK} 4%, ${BG})` }}
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <BlurImage
-                      src={p.image.src}
-                      alt={p.image.alt}
-                      fill
-                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-[1200ms] ease-out group-hover:!scale-[1.06]"
-                      placeholder="blur"
-                      blurDataURL={blurForSrc(p.image.src)}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
-                    <span className="absolute left-4 top-4 text-[10px] font-semibold tracking-[0.25em] text-white/85">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <div className="flex flex-1 flex-col px-6 pb-7 pt-6">
-                    <span
-                      className="mb-4 block h-px w-8 origin-left transition-transform duration-500 ease-out group-hover:scale-x-[2.5]"
-                      style={{ background: ACCENT }}
-                    />
-                    <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: INK }}>
-                      {p.label}
-                    </p>
-                    <p className="m-0 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
-                      {p.body}
-                    </p>
-                  </div>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Editorial statements (OPUS-style alternating narrative) ── */}
-      <section className="px-8 sm:px-14" style={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
-        <div className="mx-auto flex max-w-6xl flex-col gap-28">
-          <EditorialStatement
-            eyebrow="Cultural marketing"
-            headline={"Launch In A\nNew Territory\nWith The Room\nAlready Built."}
-            body="Brands come to Culturin for cultural marketing: how to launch in a new territory, and how to connect with cultural intelligence. Write to us. We'll set up a call."
-            image={eventMediaUrl("cannes-lions-2026/UNIKday1-83.jpg")}
-            imageAlt="Guests filling a red-lit room beneath the disco balls in Cannes"
-            imageSide="right"
-            buttons={[
-              { label: "Create an experience", href: "/partner", variant: "solid" },
-              { label: "See upcoming events", href: "/events", variant: "text" },
-            ]}
-          />
-          <EditorialStatement
-            eyebrow="Stories"
-            headline={"Stories From\nThe Room."}
-            body="Articles and video from artists, musicians, and founders, captured from the same rooms Culturin builds."
-            image={eventMediaUrl("cannes-lions-2026/UNIKday2-24.jpg")}
-            imageAlt="Couple posing together at a branded photo wall in Cannes"
-            imageSide="left"
-            buttons={[
-              { label: "See upcoming events", href: "/events", variant: "solid" },
-              { label: "Create an experience", href: "/partner", variant: "text" },
-            ]}
-          />
-          <EditorialStatement
-            eyebrow="Credibility"
-            headline={"Built By People\nWho've Done\nThis Before."}
-            body="Our founding team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly, and built relationships with Nike, Virgin, and Microsoft along the way."
-            image={eventMediaUrl("cannes-lions-2026/UNIKday1-42.jpg")}
-            imageAlt="Guest at a Culturin evening in Cannes"
-            imageSide="right"
-            buttons={[
-              { label: "Create an experience", href: "/partner", variant: "solid" },
-              { label: "See upcoming events", href: "/events", variant: "text" },
-            ]}
-          />
         </div>
       </section>
 
@@ -331,7 +228,7 @@ export default async function HomePage() {
             </Link>
           </Reveal>
 
-          <div className="grid grid-cols-1 gap-px sm:grid-cols-3" style={{ background: RULE }}>
+          <div className={`grid grid-cols-1 gap-px ${EVENT_GRID_COLS[featuredEvents.length] ?? "sm:grid-cols-3"}`} style={{ background: RULE }}>
             {featuredEvents.map((event, i) => {
               const eventHero = resolveEventHero(siteImages, event);
               return (
@@ -397,6 +294,48 @@ export default async function HomePage() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* ── Editorial statements (OPUS-style alternating narrative) ── */}
+      <section className="px-8 sm:px-14" style={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
+        <div className="mx-auto flex max-w-6xl flex-col gap-28">
+          <EditorialStatement
+            eyebrow="Cultural marketing"
+            headline={"Launch In A\nNew Territory\nWith The Room\nAlready Built."}
+            body="Brands come to Culturin for cultural marketing: how to launch in a new territory, and how to connect with cultural intelligence. Write to us. We'll set up a call."
+            image={eventMediaUrl("cannes-lions-2026/UNIKday1-83.jpg")}
+            imageAlt="Guests filling a red-lit room beneath the disco balls in Cannes"
+            imageSide="right"
+            buttons={[
+              { label: "Create an experience", href: "/partner", variant: "solid" },
+              { label: "See upcoming events", href: "/events", variant: "text" },
+            ]}
+          />
+          <EditorialStatement
+            eyebrow="Stories"
+            headline={"Stories From\nThe Room."}
+            body="Articles and video from artists, musicians, and founders, captured from the same rooms Culturin builds."
+            image={eventMediaUrl("cannes-lions-2026/UNIKday2-24.jpg")}
+            imageAlt="Couple posing together at a branded photo wall in Cannes"
+            imageSide="left"
+            buttons={[
+              { label: "See upcoming events", href: "/events", variant: "solid" },
+              { label: "Create an experience", href: "/partner", variant: "text" },
+            ]}
+          />
+          <EditorialStatement
+            eyebrow="Credibility"
+            headline={"Built By People\nWho've Done\nThis Before."}
+            body="Our founding team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly, and built relationships with Nike, Virgin, and Microsoft along the way."
+            image={eventMediaUrl("cannes-lions-2026/UNIKday1-42.jpg")}
+            imageAlt="Guest at a Culturin evening in Cannes"
+            imageSide="right"
+            buttons={[
+              { label: "Create an experience", href: "/partner", variant: "solid" },
+              { label: "See upcoming events", href: "/events", variant: "text" },
+            ]}
+          />
         </div>
       </section>
 
@@ -541,7 +480,7 @@ export default async function HomePage() {
             </p>
           </Reveal>
 
-          <div className="grid grid-cols-1 gap-px sm:grid-cols-3" style={{ background: RULE }}>
+          <div className={`grid grid-cols-1 gap-px ${EVENT_GRID_COLS[featuredEvents.length] ?? "sm:grid-cols-3"}`} style={{ background: RULE }}>
             {SERVICES.map((s, i) => (
               <Reveal key={s.label} as="div" delay={i * 120}>
                 <div className="flex h-full flex-col px-8 py-10" style={{ background: BG }}>
