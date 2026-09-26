@@ -76,6 +76,8 @@ const PRODUCTION_HISTORY: LogoTickerItem[] = [
   { name: "Nike", logoSrc: "/partners/nike-logo.svg", heightClass: "h-6" },
   { name: "Virgin", logoSrc: "/partners/virgin-logo.webp" },
   { name: "Microsoft", logoSrc: "/partners/microsoft.webp", heightClass: "h-14" },
+  { name: "Aman", logoSrc: "/partners/aman-logo.png", heightClass: "h-5" },
+  { name: "World Economic Forum", logoSrc: "/partners/world-economic-forum-logo.png", heightClass: "h-11" },
 ];
 
 const SERVICES = [
@@ -158,19 +160,25 @@ export default async function HomePage() {
                   Create an experience
                 </Link>
               </MagneticButton>
-              <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[10px] font-semibold uppercase tracking-[0.25em] text-white/55">
-                <span>Cannes</span>
-                <span>New York</span>
-                <span>London</span>
-              </div>
             </Reveal>
           }
         />
       </section>
 
       {/* ── Client logos ───────────────────────────────────────── */}
-      <section className="px-8 py-8 sm:px-14 sm:py-10" aria-label="Production history">
-        <LogoTicker items={PRODUCTION_HISTORY} ink={INK_MUTED} />
+      <section
+        className="flex flex-col gap-4 px-8 py-8 sm:flex-row sm:items-center sm:gap-10 sm:px-14 sm:py-10"
+        aria-label="Trusted by"
+      >
+        <p
+          className="m-0 shrink-0 text-[10px] font-semibold uppercase tracking-[0.25em]"
+          style={{ color: INK_MUTED }}
+        >
+          Trusted by
+        </p>
+        <div className="min-w-0 flex-1">
+          <LogoTicker items={PRODUCTION_HISTORY} ink={INK_MUTED} />
+        </div>
       </section>
 
       {/* ── Mission ────────────────────────────────────────────── */}
