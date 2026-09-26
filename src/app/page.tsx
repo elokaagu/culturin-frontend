@@ -14,7 +14,6 @@ import {
 } from "@/lib/theme/culturinTokens";
 import BlurImage from "./components/motion/BlurImage";
 import Reveal from "./components/motion/Reveal";
-import ParallaxReveal from "./components/motion/ParallaxReveal";
 import EditorialStatement from "./components/EditorialStatement";
 import HomeFooter from "./components/HomeFooter";
 import SiteHeader from "./components/SiteHeader";
@@ -116,7 +115,6 @@ export default async function HomePage() {
     return { ...image, caption: image.alt, blurDataURL: blurForSrc(image.src) };
   }).filter((slide) => slide.src);
   const cannesSection = resolveSiteImage(siteImages, "homepage-cannes-section", manifestDefault("homepage-cannes-section"));
-  const parallax = resolveSiteImage(siteImages, "homepage-parallax", manifestDefault("homepage-parallax"));
   const pillars = PILLARS.map((p, i) => ({
     ...p,
     image: resolveSiteImage(siteImages, `homepage-pillar-${i + 1}`, manifestDefault(`homepage-pillar-${i + 1}`)),
@@ -153,11 +151,11 @@ export default async function HomePage() {
               </p>
               <MagneticButton strength={0.35} className="mt-6 w-fit">
                 <Link
-                  href="/partner"
+                  href="/platform"
                   className="inline-flex items-center rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
                   style={{ background: ACCENT, color: SURFACE_DARK }}
                 >
-                  Create an experience
+                  Read our Intelligence Briefing
                 </Link>
               </MagneticButton>
             </Reveal>
@@ -211,7 +209,7 @@ export default async function HomePage() {
                 We put the right people in the same room, and help brands enter new territories with cultural intelligence, through the rooms, the stories, and the marketing that holds them.
               </p>
               <p className="m-0 text-base leading-loose" style={{ color: INK_MUTED }}>
-                Our team has produced culture at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly. We bring that same care to every room we build, for our community, and for the partners who build alongside us.
+                Our team has produced cultural moments at the Super Bowl, the Oscars, Davos, the Cannes Film Festival, and the UN Assembly. We bring that same care to every room we build, for our community, and for the partners who build alongside us.
               </p>
             </Reveal>
           </div>
@@ -298,16 +296,6 @@ export default async function HomePage() {
           />
         </div>
       </section>
-
-      {/* ── Parallax movement break (Goals House-style pinned scroll) ── */}
-      <ParallaxReveal
-        src={parallax.src}
-        alt={parallax.alt}
-        blurDataURL={blurForSrc(parallax.src)}
-        eyebrow="The Movement"
-        headline="Culture doesn't wait for permission."
-        body="Every room we build is a bet that people showing up for each other, in person, still matters more than any feed."
-      />
 
       {/* ── Upcoming events ────────────────────────────────────── */}
       <section

@@ -71,12 +71,6 @@ export const SITE_IMAGE_SLOTS: SiteImageSlot[] = [
     defaultAlt: "Guest in a tailored blazer at a Culturin night in Cannes",
   },
   {
-    key: "homepage-parallax",
-    label: "Homepage — \"Culture doesn't wait\" parallax photo",
-    defaultSrc: "/events/cannes-lions-2026/UNIKday1-54.jpg",
-    defaultAlt: "Guests on the dancefloor at a late-night Culturin reception",
-  },
-  {
     key: "homepage-preview-1",
     label: "Homepage — Gallery preview photo 1 (tall, left)",
     defaultSrc: "/events/cannes-lions-2026/UNIKday1-34.jpg",
