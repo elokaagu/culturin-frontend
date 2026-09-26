@@ -118,6 +118,22 @@
     --c-accent: #e08a5b;
   }
 
+  /* Reports print on paper, so always use the light palette regardless of site theme. */
+  @media print {
+    .culturin-editorial,
+    .dark .culturin-editorial {
+      --c-bg: #ffffff;
+      --c-ink: #1c1a17;
+      --c-muted: #5c5548;
+      --c-rule: #d9d2c8;
+      --c-accent: #b5502e;
+    }
+    .culturin-editorial * {
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+  }
+
   body {
     @apply min-h-dvh overflow-x-clip bg-transparent text-inherit antialiased;
     font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,

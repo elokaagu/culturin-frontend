@@ -4,6 +4,8 @@ import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
+const VALID_SOURCES = new Set(["footer", "report-irl-advantage-2026"]);
+
 export async function POST(req: Request) {
   let body: unknown;
   try {
@@ -18,7 +20,9 @@ export async function POST(req: Request) {
     lastName?: unknown;
     company?: unknown;
     marketingConsent?: unknown;
+    source?: unknown;
   };
+  const source = typeof o.source === "string" && VALID_SOURCES.has(o.source) ? o.source : "footer";
   const emailRaw = typeof o.email === "string" ? o.email.trim() : "";
   const firstNameRaw = typeof o.firstName === "string" ? o.firstName.trim() : "";
   const lastNameRaw = typeof o.lastName === "string" ? o.lastName.trim() : "";
@@ -54,7 +58,7 @@ export async function POST(req: Request) {
     first_name: firstNameRaw,
     last_name: lastNameRaw,
     company: companyRaw || null,
-    source: "footer",
+    source,
   });
 
   if (error) {

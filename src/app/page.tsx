@@ -157,7 +157,7 @@ export default async function HomePage() {
               </p>
               <MagneticButton strength={0.35} className="mt-6 w-fit">
                 <Link
-                  href="/platform"
+                  href="/reports/the-irl-advantage"
                   className="inline-flex items-center rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition-opacity hover:opacity-85"
                   style={{ background: ACCENT, color: SURFACE_DARK }}
                 >
