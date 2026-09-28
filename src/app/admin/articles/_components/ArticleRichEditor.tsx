@@ -117,7 +117,7 @@ export const ArticleRichEditor = forwardRef<ArticleRichEditorHandle, ArticleRich
     return (
       <div className={cn("flex flex-col gap-2", className)}>
         <div
-          className="flex flex-wrap items-center gap-1 rounded-xl border border-neutral-200 bg-neutral-100/80 p-2 dark:border-white/10 dark:bg-neutral-900/80"
+          className="sticky top-0 z-10 flex flex-wrap items-center gap-1 rounded-xl border border-neutral-200 bg-neutral-100 p-2 dark:border-white/10 dark:bg-neutral-900"
           role="toolbar"
           aria-label="Formatting"
         >

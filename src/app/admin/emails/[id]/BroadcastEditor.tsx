@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Maximize2, Minimize2 } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -131,6 +131,22 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
   const [dirty, setDirty] = useState(false);
   const [cta, setCta] = useState<BroadcastCta | null>(() => getCta(broadcast.body));
   const ctaInvalid = cta !== null && (!cta.label.trim() || !isSafeCtaUrl(cta.url));
+  const [fullscreen, setFullscreen] = useState(false);
+
+  // Escape closes full-screen editing; lock the page underneath from scrolling while it's open.
+  useEffect(() => {
+    if (!fullscreen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFullscreen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [fullscreen]);
 
   function updateCta(next: BroadcastCta | null) {
     setCta(next);
@@ -281,12 +297,45 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
                 maxLength={250}
               />
             </Field>
-            <Field
-              label="Email"
-              hint="Heading 2 for the title, Heading 4 for the small orange label, quote for a pull quote. Add photos with the image button."
+            <div
+              className={cn(
+                "flex flex-col gap-2",
+                fullscreen && "fixed inset-0 z-[300] gap-3 bg-[color:var(--c-bg)] p-4 sm:p-6",
+              )}
             >
-              <ArticleRichEditor ref={editorRef} initialBody={broadcast.body} />
-            </Field>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex min-w-0 flex-col gap-0.5">
+                  <span className="text-[0.7rem] font-medium uppercase tracking-[0.12em] text-[color:var(--c-muted)]">
+                    {fullscreen ? subject || "Untitled email" : "Email"}
+                  </span>
+                  {!fullscreen ? (
+                    <span className="text-xs text-[color:var(--c-muted)]">
+                      Heading 2 for the title, Heading 4 for the small orange label, quote for a pull quote. Add photos with the image button.
+                    </span>
+                  ) : null}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setFullscreen((f) => !f)}
+                  className={cn(studioGhostButtonClass, "h-9 shrink-0 gap-1.5 px-3 text-xs font-semibold")}
+                >
+                  {fullscreen ? (
+                    <>
+                      <Minimize2 className="h-3.5 w-3.5" aria-hidden /> Done
+                    </>
+                  ) : (
+                    <>
+                      <Maximize2 className="h-3.5 w-3.5" aria-hidden /> Full screen
+                    </>
+                  )}
+                </button>
+              </div>
+              <ArticleRichEditor
+                ref={editorRef}
+                initialBody={broadcast.body}
+                className={fullscreen ? "min-h-0 flex-1 overflow-y-auto" : undefined}
+              />
+            </div>
 
             <div className="flex flex-col gap-3 rounded-xl border border-[color:var(--c-rule)] p-4">
               <label className="flex items-center gap-2.5 text-sm font-medium text-[color:var(--c-ink)]">
