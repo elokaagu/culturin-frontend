@@ -6,12 +6,7 @@ import { Trash2 } from "lucide-react";
 import { studioFieldInputClass } from "@/app/admin/_lib/studioTheme";
 import { cn } from "@/lib/utils";
 
-export function formatAdminDate(iso: string): string {
-  if (!iso) return "-";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "-";
-  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-}
+export { formatAdminDate } from "@/app/admin/_lib/formatAdminDate";
 
 export function DeleteIconButton({
   label,

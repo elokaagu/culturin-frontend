@@ -3,7 +3,7 @@ import { ArrowLeft, Pencil } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { notFound } from "next/navigation";
 
-import { formatAdminDate } from "@/app/admin/_components/AdminListParts";
+import { formatAdminDate } from "@/app/admin/_lib/formatAdminDate";
 import { studioGhostButtonClass } from "@/app/admin/_lib/studioTheme";
 import { getBroadcast, getBroadcastStats, getSendProgress } from "@/lib/email/broadcasts";
 import { cn } from "@/lib/utils";
