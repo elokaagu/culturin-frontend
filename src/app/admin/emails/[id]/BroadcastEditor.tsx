@@ -10,9 +10,11 @@ import { useStudioConfirm } from "@/app/admin/_components/StudioConfirmDialog";
 import { studioCreateButtonClass } from "@/app/admin/_components/StudioCulturinListKit";
 import { studioFieldInputClass, studioGhostButtonClass, studioPanelClass } from "@/app/admin/_lib/studioTheme";
 import { ArticleRichEditor, type ArticleRichEditorHandle } from "@/app/admin/articles/_components/ArticleRichEditor";
-import type { Broadcast, SendProgress } from "@/lib/email/broadcasts";
+import type { Broadcast, BroadcastStats, SendProgress } from "@/lib/email/broadcasts";
 import { renderBroadcastHtml } from "@/lib/email/broadcastRender";
 import { cn } from "@/lib/utils";
+
+import { BroadcastStatsPanel } from "./BroadcastStatsPanel";
 
 function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -114,7 +116,7 @@ function SendPanel({
   );
 }
 
-export function BroadcastEditor({ broadcast, progress }: { broadcast: Broadcast; progress: SendProgress }) {
+export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Broadcast; progress: SendProgress; stats: BroadcastStats }) {
   const router = useRouter();
   const confirm = useStudioConfirm();
   const editorRef = useRef<ArticleRichEditorHandle>(null);
@@ -234,6 +236,8 @@ export function BroadcastEditor({ broadcast, progress }: { broadcast: Broadcast;
       ) : null}
 
       {notice ? <Notice tone={notice.tone}>{notice.text}</Notice> : null}
+
+      {progress.sent > 0 ? <BroadcastStatsPanel stats={stats} subject={subject} /> : null}
 
       {canSend ? <SendPanel progress={progress} busy={busy !== null} lastSentAt={broadcast.sentAt} onSend={(n) => void sendBatch(n)} /> : null}
 

@@ -24,6 +24,8 @@ export async function POST(request: Request) {
   const db = getSupabaseAdminOrNull();
   if (db) {
     await db.from("newsletter_subscribers").update({ unsubscribed_at: new Date().toISOString() }).eq("email", email).is("unsubscribed_at", null);
+    // Separate update: the reason column only exists after migration 046.
+    await db.from("newsletter_subscribers").update({ suppressed_reason: "unsubscribed" }).eq("email", email).is("suppressed_reason", null);
   }
 
   const isForm = (request.headers.get("content-type") ?? "").includes("application/x-www-form-urlencoded") && !url.searchParams.get("e");

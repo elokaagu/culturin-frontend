@@ -22,6 +22,9 @@ export type Broadcast = {
   lastError: string | null;
   createdAt: string;
   updatedAt: string;
+  /** Unique opens / clicks so far (null when tracking isn't set up). */
+  opened?: number | null;
+  clicked?: number | null;
 };
 
 const COLUMNS =
@@ -53,7 +56,26 @@ export async function listBroadcasts(): Promise<{ tableReady: boolean; items: Br
   if (!db) return { tableReady: false, items: [] };
   const { data, error } = await db.from("email_broadcasts").select(COLUMNS).order("created_at", { ascending: false });
   if (error || !data) return { tableReady: false, items: [] };
-  return { tableReady: true, items: (data as Record<string, unknown>[]).map(toBroadcast) };
+  const items = (data as Record<string, unknown>[]).map(toBroadcast);
+  // Unique opens and clicks for anything that has gone out (quiet no-op before migration 046).
+  await Promise.all(
+    items
+      .filter((b) => b.sentCount > 0)
+      .map(async (b) => {
+        const count = async (col: string) => {
+          const { count: n, error: e } = await db
+            .from("email_broadcast_recipients")
+            .select("email", { count: "exact", head: true })
+            .eq("broadcast_id", b.id)
+            .not(col, "is", null);
+          return e ? null : n ?? 0;
+        };
+        const [opened, clicked] = await Promise.all([count("opened_at"), count("clicked_at")]);
+        b.opened = opened;
+        b.clicked = clicked;
+      }),
+  );
+  return { tableReady: true, items };
 }
 
 export async function getBroadcast(id: string): Promise<Broadcast | null> {
@@ -156,9 +178,11 @@ export async function countRecipients(): Promise<number | null> {
   return error ? null : count ?? 0;
 }
 
-function messageFor(b: Broadcast, email: string) {
+function messageFor(b: Broadcast, email: string, test = false) {
   const unsub = unsubscribeUrl(email);
   return {
+    // Lets webhook events be matched back to this broadcast (tests are kept out of the stats).
+    tags: [{ name: "broadcast_id", value: test ? "test" : b.id }],
     from: process.env.EMAIL_FROM?.trim() || FROM_DEFAULT,
     to: [email],
     subject: b.subject,
@@ -168,9 +192,11 @@ function messageFor(b: Broadcast, email: string) {
   };
 }
 
-async function resendBatch(messages: ReturnType<typeof messageFor>[], idempotencyKey: string): Promise<string | null> {
+type BatchResult = { error: string | null; ids: string[] };
+
+async function resendBatch(messages: ReturnType<typeof messageFor>[], idempotencyKey: string): Promise<BatchResult> {
   const key = process.env.RESEND_API_KEY?.trim();
-  if (!key) return "RESEND_API_KEY isn't set.";
+  if (!key) return { error: "RESEND_API_KEY isn't set.", ids: [] };
   for (let attempt = 0; attempt < 3; attempt++) {
     const res = await fetch("https://api.resend.com/emails/batch", {
       method: "POST",
@@ -178,15 +204,19 @@ async function resendBatch(messages: ReturnType<typeof messageFor>[], idempotenc
       body: JSON.stringify(messages),
       cache: "no-store",
     }).catch(() => null);
-    if (res?.ok) return null;
+    if (res?.ok) {
+      // Resend returns one id per message, in the order sent.
+      const data = (await res.json().catch(() => ({}))) as { data?: { id?: string }[] };
+      return { error: null, ids: (data.data ?? []).map((d) => String(d.id ?? "")) };
+    }
     // Back off on rate limits and server errors, give up on anything else.
     if (res && res.status !== 429 && res.status < 500) {
       const data = (await res.json().catch(() => ({}))) as { message?: string };
-      return data.message ?? `Resend returned ${res.status}.`;
+      return { error: data.message ?? `Resend returned ${res.status}.`, ids: [] };
     }
     await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
   }
-  return "Resend didn't accept this batch after 3 tries.";
+  return { error: "Resend didn't accept this batch after 3 tries.", ids: [] };
 }
 
 function validate(b: Broadcast): string | null {
@@ -200,11 +230,11 @@ export async function sendTest(id: string, to: string[]): Promise<string | null>
   if (!b) return "Email not found.";
   const invalid = validate(b);
   if (invalid) return invalid;
-  const err = await resendBatch(
-    to.map((email) => ({ ...messageFor(b, email), subject: `[Test] ${b.subject}` })),
+  const { error } = await resendBatch(
+    to.map((email) => ({ ...messageFor(b, email, true), subject: `[Test] ${b.subject}` })),
     `test-${id}-${Date.now()}`,
   );
-  return err;
+  return error;
 }
 
 /**
@@ -248,15 +278,22 @@ export async function sendBatch(id: string, limit: number | null, sentBy: string
     const chunk = batch.slice(i, i + BATCH_SIZE);
     // Same people → same key, so a retried chunk is never delivered twice (Resend keeps keys for 24h).
     const key = `broadcast-${id}-${createHash("sha256").update(chunk.join(",")).digest("hex").slice(0, 32)}`;
-    const err = await resendBatch(chunk.map((email) => messageFor(current, email)), key);
+    const { error: err, ids } = await resendBatch(chunk.map((email) => messageFor(current, email)), key);
     if (err) {
       failed += chunk.length;
       lastError = err;
     } else {
       sent += chunk.length;
-      await db
+      const rows = chunk.map((email, j) => ({ broadcast_id: id, email, resend_id: ids[j] || null }));
+      const { error: recordError } = await db
         .from("email_broadcast_recipients")
-        .upsert(chunk.map((email) => ({ broadcast_id: id, email })), { onConflict: "broadcast_id,email", ignoreDuplicates: true });
+        .upsert(rows, { onConflict: "broadcast_id,email", ignoreDuplicates: true });
+      // Before migration 046 there's no resend_id column; still record who got it so nobody is sent twice.
+      if (recordError) {
+        await db
+          .from("email_broadcast_recipients")
+          .upsert(chunk.map((email) => ({ broadcast_id: id, email })), { onConflict: "broadcast_id,email", ignoreDuplicates: true });
+      }
     }
     if (i + BATCH_SIZE < batch.length) await new Promise((r) => setTimeout(r, BATCH_PAUSE_MS));
   }
@@ -280,5 +317,106 @@ export async function sendBatch(id: string, limit: number | null, sentBy: string
     message: `Sent to ${sent.toLocaleString()} ${sent === 1 ? "person" : "people"}${failed ? `; ${failed} failed (${lastError})` : ""}. ${
       remaining > 0 ? `${remaining.toLocaleString()} still to go.` : "Everyone has now been sent this email."
     }`,
+  };
+}
+
+export type EngagedPerson = {
+  email: string;
+  name: string;
+  company: string;
+  openedAt: string | null;
+  clickedAt: string | null;
+  bouncedAt: string | null;
+  complainedAt: string | null;
+};
+
+export type BroadcastStats = {
+  /** False until migration 046 is run and Resend's webhook is sending events. */
+  tracking: boolean;
+  sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  bounced: number;
+  complained: number;
+  topLinks: { link: string; people: number; clicks: number }[];
+  people: EngagedPerson[];
+  lastEventAt: string | null;
+};
+
+export async function getBroadcastStats(id: string): Promise<BroadcastStats> {
+  const empty: BroadcastStats = { tracking: false, sent: 0, delivered: 0, opened: 0, clicked: 0, bounced: 0, complained: 0, topLinks: [], people: [], lastEventAt: null };
+  const db = getSupabaseAdminFreshOrNull();
+  if (!db) return empty;
+
+  const rows = await selectAllRows(
+    "email_broadcast_recipients",
+    "email, delivered_at, opened_at, clicked_at, bounced_at, complained_at",
+    (q) => q.eq("broadcast_id", id).order("email"),
+  );
+  if (rows.length === 0) {
+    // Either nothing sent yet, or migration 046 isn't in (the select fails); fall back to a plain count.
+    const sent = await alreadySent(id);
+    return { ...empty, sent: sent.size };
+  }
+
+  const has = (r: Record<string, unknown>, k: string) => typeof r[k] === "string" && r[k] !== "";
+  const clicks = await selectAllRows("email_events", "email, link, occurred_at", (q) => q.eq("broadcast_id", id).eq("type", "email.clicked").order("id"));
+  const { data: last } = await db.from("email_events").select("received_at").eq("broadcast_id", id).order("received_at", { ascending: false }).limit(1);
+
+  const links = new Map<string, { people: Set<string>; clicks: number }>();
+  for (const c of clicks) {
+    const link = String(c.link ?? "");
+    if (!link || link.includes("/unsubscribe")) continue;
+    const entry = links.get(link) ?? { people: new Set<string>(), clicks: 0 };
+    entry.people.add(String(c.email ?? ""));
+    entry.clicks += 1;
+    links.set(link, entry);
+  }
+
+  // Names and companies for everyone who did something notable.
+  const notable = rows.filter((r) => has(r, "opened_at") || has(r, "clicked_at") || has(r, "bounced_at") || has(r, "complained_at"));
+  const profiles = new Map<string, { name: string; company: string }>();
+  const emails = notable.map((r) => String(r.email));
+  for (let i = 0; i < emails.length; i += 200) {
+    const { data } = await db.from("newsletter_subscribers").select("email, first_name, last_name, company").in("email", emails.slice(i, i + 200));
+    for (const p of data ?? []) {
+      profiles.set(String(p.email).toLowerCase(), {
+        name: [p.first_name, p.last_name].filter(Boolean).join(" "),
+        company: String(p.company ?? ""),
+      });
+    }
+  }
+
+  const people: EngagedPerson[] = notable
+    .map((r) => {
+      const email = String(r.email);
+      const profile = profiles.get(email) ?? { name: "", company: "" };
+      return {
+        email,
+        ...profile,
+        openedAt: (r.opened_at as string | null) ?? null,
+        clickedAt: (r.clicked_at as string | null) ?? null,
+        bouncedAt: (r.bounced_at as string | null) ?? null,
+        complainedAt: (r.complained_at as string | null) ?? null,
+      };
+    })
+    .sort((a, b) => Number(Boolean(b.clickedAt)) - Number(Boolean(a.clickedAt)) || String(b.openedAt ?? "").localeCompare(String(a.openedAt ?? "")));
+
+  return {
+    tracking: rows.some((r) => has(r, "delivered_at")) || clicks.length > 0 || Boolean(last?.length),
+    sent: rows.length,
+    delivered: rows.filter((r) => has(r, "delivered_at")).length,
+    // Anyone who clicked must have opened, even if their mail app blocked the open pixel.
+    opened: rows.filter((r) => has(r, "opened_at") || has(r, "clicked_at")).length,
+    clicked: rows.filter((r) => has(r, "clicked_at")).length,
+    bounced: rows.filter((r) => has(r, "bounced_at")).length,
+    complained: rows.filter((r) => has(r, "complained_at")).length,
+    topLinks: Array.from(links.entries())
+      .map(([link, v]) => ({ link, people: v.people.size, clicks: v.clicks }))
+      .sort((a, b) => b.people - a.people)
+      .slice(0, 10),
+    people,
+    lastEventAt: (last?.[0]?.received_at as string | undefined) ?? null,
   };
 }
