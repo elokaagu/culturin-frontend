@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Maximize2, Minimize2 } from "lucide-react";
+import { ArrowLeft, BarChart3, Maximize2, Minimize2 } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -250,9 +250,19 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
 
   return (
     <div>
-      <Link href="/admin/emails" className="inline-flex items-center gap-1.5 text-sm text-[color:var(--c-muted)] no-underline hover:text-[color:var(--c-ink)]">
-        <ArrowLeft className="h-4 w-4" aria-hidden /> All emails
-      </Link>
+      <div className="flex items-center justify-between gap-3">
+        <Link href="/admin/emails" className="inline-flex items-center gap-1.5 text-sm text-[color:var(--c-muted)] no-underline hover:text-[color:var(--c-ink)]">
+          <ArrowLeft className="h-4 w-4" aria-hidden /> All emails
+        </Link>
+        {progress.sent > 0 ? (
+          <Link
+            href={`/admin/emails/${broadcast.id}/analytics`}
+            className={cn(studioGhostButtonClass, "gap-1.5 px-3 py-1.5 text-xs font-semibold no-underline")}
+          >
+            <BarChart3 className="h-3.5 w-3.5" aria-hidden /> Full analytics
+          </Link>
+        ) : null}
+      </div>
       <h1 className="mt-4 font-display text-2xl font-semibold tracking-tight text-[color:var(--c-ink)] sm:text-3xl">
         {isDraft ? "Edit email" : subject || "Untitled email"}
       </h1>

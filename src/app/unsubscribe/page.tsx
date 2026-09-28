@@ -49,7 +49,7 @@ export default function UnsubscribePage({ searchParams }: { searchParams: { e?: 
           <>
             <h1 className="m-0 mt-10 font-display text-4xl font-medium tracking-tight">Link not recognised.</h1>
             <p className="m-0 mt-3 text-sm text-[color:var(--c-muted)]">
-              This unsubscribe link is incomplete or has been changed. Use the link at the bottom of any Culturin email, or email hello@culturin.com.
+              This unsubscribe link is incomplete or has been changed. Use the link at the bottom of any Culturin email, or email info@culturin.com.
             </p>
           </>
         )}

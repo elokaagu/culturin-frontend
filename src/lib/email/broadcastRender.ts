@@ -21,10 +21,23 @@ const TAG_STYLES: Record<string, string> = {
   strong: "font-weight:600;",
 };
 
+// Classes that let the shell's dark-mode media query re-assert these colors (see emailShell).
+const TAG_CLASS: Record<string, string> = {
+  h2: "em-ink",
+  h3: "em-ink",
+  h4: "em-accent",
+  p: "em-ink",
+  blockquote: "em-ink",
+  li: "em-ink",
+};
+
 function styleHtml(html: string): string {
   return html
     .replace(/<p><\/p>/g, "")
-    .replace(/<(h2|h3|h4|p|blockquote|ul|ol|li|a|strong)(\s[^>]*)?>/g, (_m, tag: string, attrs = "") => `<${tag}${attrs} style="${TAG_STYLES[tag]}">`)
+    .replace(
+      /<(h2|h3|h4|p|blockquote|ul|ol|li|a|strong)(\s[^>]*)?>/g,
+      (_m, tag: string, attrs = "") => `<${tag}${attrs}${TAG_CLASS[tag] ? ` class="${TAG_CLASS[tag]}"` : ""} style="${TAG_STYLES[tag]}">`,
+    )
     .replace(/<img src="([^"]*)" alt="([^"]*)">/g, (_m, src: string, alt: string) => {
       const abs = src.startsWith("/") ? `${siteOrigin()}${src}` : src;
       return `<img src="${abs}" alt="${alt}" width="544" style="display:block;width:100%;max-width:544px;height:auto;border:0;border-radius:12px;margin:22px 0;">`;

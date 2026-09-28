@@ -1,16 +1,36 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
-<style>a{color:#1c1a17;}a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;}u + #body a{color:inherit !important;}</style></head>
-<body id="body" style="margin:0;padding:0;background:#f6f1ea;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f6f1ea;"><tr><td align="center" style="padding:32px 16px;">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
+<style>
+:root{color-scheme:light;supported-color-schemes:light;}
+@media (prefers-color-scheme:dark){
+  body,.em-bg{background:#f6f1ea !important;}
+  .em-head{background:#1c1a17 !important;}
+  .em-card{background:#fffdf9 !important;border-color:#e4dccf !important;}
+  .em-ink{color:#1c1a17 !important;}
+  .em-muted{color:#6f675d !important;}
+  .em-accent{color:#cd6b3f !important;}
+  .em-rule{border-color:#e4dccf !important;}
+  .em-btn{background:#cd6b3f !important;color:#1c1a17 !important;}
+}
+[data-ogsc] body,[data-ogsc] .em-bg{background:#f6f1ea !important;}
+[data-ogsc] .em-head{background:#1c1a17 !important;}
+[data-ogsc] .em-card{background:#fffdf9 !important;border-color:#e4dccf !important;}
+[data-ogsc] .em-ink{color:#1c1a17 !important;}
+[data-ogsc] .em-muted{color:#6f675d !important;}
+a{color:#1c1a17;}
+a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;}
+u + #body a{color:inherit !important;}
+</style></head>
+<body id="body" class="em-bg" bgcolor="#f6f1ea" style="margin:0;padding:0;background:#f6f1ea;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#f6f1ea" class="em-bg" style="background:#f6f1ea;"><tr><td align="center" style="padding:32px 16px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
-<tr><td style="background:#1c1a17;border-radius:20px 20px 0 0;padding:22px 28px;"><a href="https://www.culturin.com" style="text-decoration:none;"><img src="https://www.culturin.com/email/culturin-logo.png" width="146" height="41" alt="Culturin" style="display:block;border:0;width:146px;height:41px;"></a></td></tr>
-<tr><td style="background:#fffdf9;border:1px solid #e4dccf;border-top:0;border-radius:0 0 20px 20px;padding:32px 28px;">
-<p style="margin:0 0 12px;font:600 11px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.24em;text-transform:uppercase;color:#cd6b3f;">Welcome</p>
-<h1 style="margin:0;font:500 28px/1.15 Georgia,'Times New Roman',serif;color:#1c1a17;">Confirm your email.</h1>
-<p style="margin:14px 0 0;font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6f675d;">Thanks for creating a Culturin account. Confirm your email address to finish setting it up.</p>
-<p style="margin:28px 0 0;"><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#cd6b3f;color:#1c1a17 !important;text-decoration:none;border-radius:999px;padding:13px 26px;font:600 12px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.16em;text-transform:uppercase;">Confirm email</a></p>
-<p style="margin:24px 0 0;font:400 13px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6f675d;">If you didn't create an account, you can ignore this email.</p>
+<tr><td bgcolor="#1c1a17" class="em-head" style="background:#1c1a17;border-radius:20px 20px 0 0;padding:22px 28px;"><a href="https://www.culturin.com" style="text-decoration:none;"><img src="https://www.culturin.com/email/culturin-logo.png" width="146" height="41" alt="Culturin" style="display:block;border:0;width:146px;height:41px;"></a></td></tr>
+<tr><td bgcolor="#fffdf9" class="em-card em-rule" style="background:#fffdf9;border:1px solid #e4dccf;border-top:0;border-radius:0 0 20px 20px;padding:32px 28px;">
+<p class="em-accent" style="margin:0 0 12px;font:600 11px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.24em;text-transform:uppercase;color:#cd6b3f;">Welcome</p>
+<h1 class="em-ink" style="margin:0;font:500 28px/1.15 Georgia,'Times New Roman',serif;color:#1c1a17;">Confirm your email.</h1>
+<p class="em-muted" style="margin:14px 0 0;font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6f675d;">Thanks for creating a Culturin account. Confirm your email address to finish setting it up.</p>
+<p style="margin:28px 0 0;"><a href="{{ .ConfirmationURL }}" class="em-btn" style="display:inline-block;background:#cd6b3f;color:#1c1a17 !important;text-decoration:none;border-radius:999px;padding:13px 26px;font:600 12px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.16em;text-transform:uppercase;">Confirm email</a></p>
+<p class="em-muted" style="margin:24px 0 0;font:400 13px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6f675d;">If you didn't create an account, you can ignore this email.</p>
 </td></tr>
-<tr><td style="padding:20px 4px 0;font:400 12px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6f675d;"><a href="https://www.culturin.com" style="color:#6f675d !important;text-decoration:underline;">Culturin</a></td></tr>
+<tr><td class="em-muted" style="padding:20px 4px 0;font:400 12px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6f675d;"><a href="https://www.culturin.com" style="color:#6f675d !important;text-decoration:underline;">Culturin</a></td></tr>
 </table></td></tr></table></body></html>

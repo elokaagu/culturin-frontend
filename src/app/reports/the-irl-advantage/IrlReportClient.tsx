@@ -498,7 +498,7 @@ function FullReport() {
               See upcoming rooms
             </Link>
           </div>
-          <p className="mt-10 hidden text-sm text-white/80 print:block">culturin.com/partner · hello@culturin.com</p>
+          <p className="mt-10 hidden text-sm text-white/80 print:block">culturin.com/partner · info@culturin.com</p>
         </div>
       </section>
 

@@ -4,4 +4,4 @@
  */
 export const PUBLIC_CONTACT_EMAIL =
   (typeof process.env.NEXT_PUBLIC_CONTACT_EMAIL === "string" && process.env.NEXT_PUBLIC_CONTACT_EMAIL.trim()) ||
-  "hello@culturin.com";
+  "info@culturin.com";

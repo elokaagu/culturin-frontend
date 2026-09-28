@@ -1,5 +1,6 @@
 "use client";
 
+import { BarChart3 } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -101,6 +102,16 @@ export function StudioEmailsPageClient({ tableReady, initial }: { tableReady: bo
                 >
                   {STATUS_LABEL[b.status]}
                 </span>
+                {b.sentCount > 0 ? (
+                  <Link
+                    href={`/admin/emails/${b.id}/analytics`}
+                    aria-label={`Analytics for ${b.subject || "email"}`}
+                    title="Analytics"
+                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[color:var(--c-rule)] text-[color:var(--c-ink)] no-underline transition hover:border-[color:var(--c-accent)] hover:bg-[color:color-mix(in_srgb,var(--c-accent)_12%,transparent)] hover:text-[color:var(--c-accent)]"
+                  >
+                    <BarChart3 className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                ) : null}
                 {b.status !== "sending" ? <DeleteIconButton label={`Delete ${b.subject || "email"}`} onClick={() => void remove(b)} /> : null}
               </li>
             ))}

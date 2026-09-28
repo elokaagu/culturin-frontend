@@ -29,7 +29,7 @@ export type Broadcast = {
 
 const COLUMNS =
   "id, subject, preheader, body, status, recipient_count, sent_count, failed_count, sent_at, sent_by, last_error, created_at, updated_at";
-const FROM_DEFAULT = "Culturin <hello@culturin.com>";
+const FROM_DEFAULT = "Culturin <info@culturin.com>";
 const BATCH_SIZE = 100; // Resend's batch limit
 const BATCH_PAUSE_MS = 600; // stay under Resend's default 2 requests/second
 

@@ -3,11 +3,11 @@
  *
  * Env:
  * - RESEND_API_KEY   required; without it every send is a quiet no-op.
- * - EMAIL_FROM       optional, default "Culturin <hello@culturin.com>".
+ * - EMAIL_FROM       optional, default "Culturin <info@culturin.com>".
  * - NOTIFY_EMAILS    optional comma list, default "unik@culturin.com,eloka@culturin.com".
  */
 
-const DEFAULT_FROM = "Culturin <hello@culturin.com>";
+const DEFAULT_FROM = "Culturin <info@culturin.com>";
 const DEFAULT_TEAM = ["unik@culturin.com", "eloka@culturin.com"];
 const SEND_TIMEOUT_MS = 5000;
 
@@ -59,20 +59,47 @@ export function emailShell(opts: { title: string; preheader?: string; content: s
   const preheader = opts.preheader
     ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">${escapeHtml(opts.preheader)}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>`
     : "";
+  // Apple Mail, Gmail and Outlook all auto-invert light emails to "dark mode" using their own
+  // heuristics, regardless of `color-scheme` meta — Apple Mail in particular tends to flip
+  // border colors even when it leaves fills alone, which is what shows up as a stray light
+  // border around the card. bgcolor attributes (not just CSS) plus an explicit dark-mode media
+  // query that re-asserts our own palette are what actually stop each client from doing this.
+  const darkLock = `<style>
+:root{color-scheme:light;supported-color-schemes:light;}
+@media (prefers-color-scheme:dark){
+  body,.em-bg{background:${BG} !important;}
+  .em-head{background:${INK} !important;}
+  .em-card{background:#fffdf9 !important;border-color:${RULE} !important;}
+  .em-ink{color:${INK} !important;}
+  .em-muted{color:${MUTED} !important;}
+  .em-accent{color:${ACCENT} !important;}
+  .em-rule{border-color:${RULE} !important;}
+  .em-btn{background:${ACCENT} !important;color:${INK} !important;}
+}
+[data-ogsc] body,[data-ogsc] .em-bg{background:${BG} !important;}
+[data-ogsc] .em-head{background:${INK} !important;}
+[data-ogsc] .em-card{background:#fffdf9 !important;border-color:${RULE} !important;}
+[data-ogsc] .em-ink{color:${INK} !important;}
+[data-ogsc] .em-muted{color:${MUTED} !important;}
+a{color:${INK};}
+a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font:inherit !important;}
+u + #body a{color:inherit !important;text-decoration:none !important;}
+img{max-width:100%;height:auto;}
+</style>`;
   return `<!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"><style>a{color:${INK};}a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font:inherit !important;}u + #body a{color:inherit !important;text-decoration:none !important;}img{max-width:100%;height:auto;}</style><title>${escapeHtml(opts.title)}</title></head>
-<body id="body" style="margin:0;padding:0;background:${BG};">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">${darkLock}<title>${escapeHtml(opts.title)}</title></head>
+<body id="body" class="em-bg" bgcolor="${BG}" style="margin:0;padding:0;background:${BG};">
 ${preheader}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${BG};">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${BG}" class="em-bg" style="background:${BG};">
 <tr><td align="center" style="padding:32px 12px;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">
-    <tr><td style="background:${INK};border-radius:20px 20px 0 0;padding:22px 28px;">
+    <tr><td bgcolor="${INK}" class="em-head" style="background:${INK};border-radius:20px 20px 0 0;padding:22px 28px;">
       <a href="${siteOrigin()}" style="text-decoration:none;"><img src="${logo}" width="146" height="41" alt="Culturin" style="display:block;border:0;width:146px;height:41px;"></a>
     </td></tr>
-    <tr><td style="background:#fffdf9;border:1px solid ${RULE};border-top:0;border-radius:0 0 20px 20px;padding:32px 28px;">
+    <tr><td bgcolor="#fffdf9" class="em-card em-rule" style="background:#fffdf9;border:1px solid ${RULE};border-top:0;border-radius:0 0 20px 20px;padding:32px 28px;">
 ${opts.content}
     </td></tr>
-    <tr><td style="padding:20px 4px 0;font:400 12px/1.6 ${SANS};color:${MUTED};">${opts.footer}</td></tr>
+    <tr><td class="em-muted" style="padding:20px 4px 0;font:400 12px/1.6 ${SANS};color:${MUTED};">${opts.footer}</td></tr>
   </table>
 </td></tr>
 </table>
@@ -95,18 +122,18 @@ export function renderCulturinEmail(opts: {
         ? `<a href="${escapeHtml(d.href)}" style="${linkStyle}">${escapeHtml(d.value)}</a>`
         : linkify(d.value).replace(/\n/g, "<br>");
       return `<tr>
-  <td style="padding:12px 0;border-top:1px solid ${RULE};width:34%;vertical-align:top;font:600 11px/1.4 ${SANS};letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">${escapeHtml(d.label)}</td>
-  <td style="padding:12px 0;border-top:1px solid ${RULE};vertical-align:top;font:400 15px/1.5 ${SANS};color:${INK};">${value}</td>
+  <td class="em-muted em-rule" style="padding:12px 0;border-top:1px solid ${RULE};width:34%;vertical-align:top;font:600 11px/1.4 ${SANS};letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">${escapeHtml(d.label)}</td>
+  <td class="em-ink em-rule" style="padding:12px 0;border-top:1px solid ${RULE};vertical-align:top;font:400 15px/1.5 ${SANS};color:${INK};">${value}</td>
 </tr>`;
     })
     .join("");
 
   const content = `
-      <p style="margin:0 0 12px;font:600 11px/1.4 ${SANS};letter-spacing:0.24em;text-transform:uppercase;color:${ACCENT};">${escapeHtml(opts.eyebrow)}</p>
-      <h1 style="margin:0;font:500 28px/1.15 ${DISPLAY};color:${INK};">${escapeHtml(opts.headline)}</h1>
-      ${opts.intro ? `<p style="margin:14px 0 0;font:400 15px/1.6 ${SANS};color:${MUTED};">${linkify(opts.intro)}</p>` : ""}
-      ${rows ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;border-bottom:1px solid ${RULE};">${rows}</table>` : ""}
-      ${opts.note ? `<p style="margin:20px 0 0;font:400 14px/1.6 ${SANS};color:${MUTED};">${linkify(opts.note)}</p>` : ""}
+      <p class="em-accent" style="margin:0 0 12px;font:600 11px/1.4 ${SANS};letter-spacing:0.24em;text-transform:uppercase;color:${ACCENT};">${escapeHtml(opts.eyebrow)}</p>
+      <h1 class="em-ink" style="margin:0;font:500 28px/1.15 ${DISPLAY};color:${INK};">${escapeHtml(opts.headline)}</h1>
+      ${opts.intro ? `<p class="em-muted" style="margin:14px 0 0;font:400 15px/1.6 ${SANS};color:${MUTED};">${linkify(opts.intro)}</p>` : ""}
+      ${rows ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="em-rule" style="margin-top:24px;border-bottom:1px solid ${RULE};">${rows}</table>` : ""}
+      ${opts.note ? `<p class="em-muted" style="margin:20px 0 0;font:400 14px/1.6 ${SANS};color:${MUTED};">${linkify(opts.note)}</p>` : ""}
       ${opts.cta ? ctaButton(opts.cta) : ""}`;
 
   return emailShell({
@@ -117,7 +144,7 @@ export function renderCulturinEmail(opts: {
 }
 
 export function ctaButton(cta: { label: string; href: string }): string {
-  return `<p style="margin:28px 0 0;"><a href="${escapeHtml(cta.href)}" style="display:inline-block;background:${ACCENT};color:${INK} !important;text-decoration:none;border-radius:999px;padding:13px 26px;font:600 12px/1 ${SANS};letter-spacing:0.16em;text-transform:uppercase;">${escapeHtml(cta.label)}</a></p>`;
+  return `<p style="margin:28px 0 0;"><a href="${escapeHtml(cta.href)}" class="em-btn" style="display:inline-block;background:${ACCENT};color:${INK} !important;text-decoration:none;border-radius:999px;padding:13px 26px;font:600 12px/1 ${SANS};letter-spacing:0.16em;text-transform:uppercase;">${escapeHtml(cta.label)}</a></p>`;
 }
 
 /** Plain-text fallback so the email isn't HTML-only (better deliverability). */

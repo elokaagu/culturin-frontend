@@ -98,7 +98,7 @@ export function PartnerExperience({
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
-        setFormError(data.error ?? "Something went wrong. Please try again, or email hello@culturin.com.");
+        setFormError(data.error ?? "Something went wrong. Please try again, or email info@culturin.com.");
         return;
       }
       setDone(true);
@@ -283,8 +283,8 @@ export function PartnerExperience({
               >
                 {pending ? "Sending…" : "Send a message"}
               </button>
-              <a href="mailto:hello@culturin.com" className="text-sm no-underline hover:underline" style={{ color: "var(--c-muted)" }}>
-                or email hello@culturin.com
+              <a href="mailto:info@culturin.com" className="text-sm no-underline hover:underline" style={{ color: "var(--c-muted)" }}>
+                or email info@culturin.com
               </a>
             </div>
           </form>

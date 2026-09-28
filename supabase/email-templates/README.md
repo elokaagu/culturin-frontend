@@ -12,7 +12,7 @@ Supabase stores these in the dashboard, not in this repo, so paste them in by ha
 | Reset password | Reset your Culturin password | `reset-password.html` |
 | Change email address | Confirm your new email | `change-email.html` |
 
-To send them from `hello@culturin.com` instead of Supabase's shared sender (which is heavily rate-limited),
+To send them from `info@culturin.com` instead of Supabase's shared sender (which is heavily rate-limited),
 set up custom SMTP under Authentication → Emails → SMTP settings with Resend:
 host `smtp.resend.com`, port `465`, username `resend`, password = the Resend API key,
-sender `hello@culturin.com`, sender name `Culturin`.
+sender `info@culturin.com`, sender name `Culturin`.

@@ -244,10 +244,10 @@ export default function HomeFooter() {
               {isDark ? "Light mode" : "Dark mode"}
             </button>
             <a
-              href="mailto:hello@culturin.com"
+              href="mailto:info@culturin.com"
               className="text-white/45 no-underline transition-opacity hover:text-white/80"
             >
-              hello@culturin.com
+              info@culturin.com
             </a>
           </div>
         </div>
