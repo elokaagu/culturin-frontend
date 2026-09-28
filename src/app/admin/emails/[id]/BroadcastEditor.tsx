@@ -278,7 +278,7 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
 
       {notice ? <Notice tone={notice.tone}>{notice.text}</Notice> : null}
 
-      {progress.sent > 0 ? <BroadcastStatsPanel stats={stats} subject={subject} /> : null}
+      {progress.sent > 0 ? <BroadcastStatsPanel stats={stats} subject={subject} broadcastId={broadcast.id} /> : null}
 
       {canSend ? <SendPanel progress={progress} busy={busy !== null} lastSentAt={broadcast.sentAt} onSend={(n) => void sendBatch(n)} /> : null}
 

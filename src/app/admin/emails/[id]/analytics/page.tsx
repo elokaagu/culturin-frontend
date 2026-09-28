@@ -46,7 +46,7 @@ export default async function StudioEmailAnalyticsPage({ params }: { params: { i
         </Link>
       </div>
 
-      <BroadcastStatsPanel stats={stats} subject={broadcast.subject} />
+      <BroadcastStatsPanel stats={stats} subject={broadcast.subject} broadcastId={broadcast.id} />
     </div>
   );
 }

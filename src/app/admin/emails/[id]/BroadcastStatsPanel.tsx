@@ -39,9 +39,26 @@ function downloadCsv(people: EngagedPerson[], name: string) {
 }
 
 /** Results for a sent (or partly sent) broadcast, fed by Resend's webhook. Refreshes itself every minute. */
-export function BroadcastStatsPanel({ stats, subject }: { stats: BroadcastStats; subject: string }) {
+export function BroadcastStatsPanel({ stats, subject, broadcastId }: { stats: BroadcastStats; subject: string; broadcastId?: string }) {
   const router = useRouter();
   const [filter, setFilter] = useState<Filter>("clicked");
+  const [syncing, setSyncing] = useState(false);
+  const [syncNote, setSyncNote] = useState<string | null>(null);
+
+  async function sync() {
+    if (!broadcastId) return;
+    setSyncing(true);
+    setSyncNote(null);
+    const res = await fetch("/api/admin/broadcasts/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: broadcastId }),
+    }).catch(() => null);
+    const data = (await res?.json().catch(() => ({}))) as { message?: string } | undefined;
+    setSyncing(false);
+    setSyncNote(data?.message ?? (res?.ok ? "Synced." : "Couldn't reach Resend."));
+    if (res?.ok) router.refresh();
+  }
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -63,16 +80,23 @@ export function BroadcastStatsPanel({ stats, subject }: { stats: BroadcastStats;
     <section className={cn(studioPanelClass, "mt-6 flex flex-col gap-5")}>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="m-0 font-display text-lg font-semibold tracking-tight text-[color:var(--c-ink)]">Results</h2>
-        <p className="m-0 text-xs text-[color:var(--c-muted)]">
-          {stats.lastEventAt ? `Last activity ${formatAdminDate(stats.lastEventAt)} · updates every minute` : "Updates every minute"}
-        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="m-0 text-xs text-[color:var(--c-muted)]">
+            {stats.lastEventAt ? `Last activity ${formatAdminDate(stats.lastEventAt)} · updates every minute` : "Updates every minute"}
+          </p>
+          {broadcastId ? (
+            <button type="button" onClick={() => void sync()} disabled={syncing} className={cn(studioGhostButtonClass, "h-8 px-3 text-xs font-semibold")}>
+              {syncing ? "Syncing…" : "Sync with Resend"}
+            </button>
+          ) : null}
+        </div>
       </div>
+      {syncNote ? <p className="m-0 text-xs text-[color:var(--c-muted)]">{syncNote}</p> : null}
 
       {!stats.tracking ? (
         <p className="m-0 rounded-lg border border-dashed border-[color:var(--c-rule)] px-3 py-3 text-sm text-[color:var(--c-muted)]">
-          No tracking data yet. Results appear a few minutes after sending, once Resend&apos;s webhook is set up (URL{" "}
-          <code>https://www.culturin.com/api/webhooks/resend</code>, secret in Vercel as <code>RESEND_WEBHOOK_SECRET</code>) and
-          migration 046 has been run. Emails sent before tracking was on won&apos;t have results.
+          No tracking data yet. Results usually appear within a few minutes of sending. If they don&apos;t, use Sync with Resend to pull
+          them straight from Resend.
         </p>
       ) : null}
 

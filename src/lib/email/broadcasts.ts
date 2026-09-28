@@ -420,3 +420,98 @@ export async function getBroadcastStats(id: string): Promise<BroadcastStats> {
     lastEventAt: (last?.[0]?.received_at as string | undefined) ?? null,
   };
 }
+
+type ResendListedEmail = { id: string; to: string[] | string; subject: string; created_at: string; last_event: string };
+
+/** Every email Resend has on record, newest first, up to `max`. */
+async function listResendEmails(max = 5000): Promise<ResendListedEmail[]> {
+  const key = process.env.RESEND_API_KEY?.trim();
+  if (!key) return [];
+  const out: ResendListedEmail[] = [];
+  let after: string | undefined;
+  while (out.length < max) {
+    const url = new URL("https://api.resend.com/emails");
+    url.searchParams.set("limit", "100");
+    if (after) url.searchParams.set("after", after);
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${key}` }, cache: "no-store" }).catch(() => null);
+    if (!res?.ok) break;
+    const data = (await res.json().catch(() => ({}))) as { data?: ResendListedEmail[]; has_more?: boolean };
+    const page = data.data ?? [];
+    out.push(...page);
+    if (!data.has_more || page.length === 0) break;
+    after = page[page.length - 1].id;
+    await new Promise((r) => setTimeout(r, 550)); // Resend allows ~2 requests/second
+  }
+  return out;
+}
+
+/** Resend's list returns "2026-09-28 21:56:18.711000+00", which Date.parse can't read (bare "+00"). */
+function parseResendDate(v: string): number {
+  const iso = v.trim().replace(" ", "T").replace(/([+-]\d{2})$/, "$1:00");
+  const t = Date.parse(iso);
+  return Number.isFinite(t) ? t : NaN;
+}
+
+/** Status progression; a later state implies the earlier ones (clicked ⇒ opened ⇒ delivered). */
+const EVENT_RANK: Record<string, number> = { sent: 0, delivery_delayed: 0, delivered: 1, opened: 2, clicked: 3 };
+
+/**
+ * Fill in delivery/open/click/bounce data for a broadcast from Resend's own records. Covers
+ * anything the webhook missed (e.g. events sent before tracking was switched on). Only fills
+ * gaps; never overwrites data the webhook already recorded. Resend's list only gives each
+ * email's latest status, so filled-in times are the send time, not the exact moment.
+ */
+export async function syncBroadcastFromResend(id: string): Promise<{ ok: boolean; message: string }> {
+  const db = getSupabaseAdminFreshOrNull();
+  if (!db) return { ok: false, message: "The database isn't connected." };
+  const b = await getBroadcast(id);
+  if (!b) return { ok: false, message: "Email not found." };
+
+  const recipients = await selectAllRows(
+    "email_broadcast_recipients",
+    "email, sent_at, resend_id, delivered_at, opened_at, clicked_at, bounced_at, complained_at",
+    (q) => q.eq("broadcast_id", id).order("email"),
+  );
+  if (recipients.length === 0) return { ok: true, message: "Nothing has been sent yet." };
+  const firstSent = Math.min(...recipients.map((r) => Date.parse(String(r.sent_at)) || Date.now()));
+  const byEmail = new Map(recipients.map((r) => [String(r.email).toLowerCase(), r]));
+
+  const listed = (await listResendEmails()).filter(
+    (e) => e.subject === b.subject && parseResendDate(e.created_at) >= firstSent - 10 * 60_000,
+  );
+
+  let updated = 0;
+  let suppressed = 0;
+  for (const e of listed) {
+    const to = String(Array.isArray(e.to) ? e.to[0] : e.to).trim().toLowerCase();
+    const row = byEmail.get(to);
+    if (!row) continue;
+    const sentMs = parseResendDate(e.created_at);
+    const at = new Date(Number.isFinite(sentMs) ? sentMs : Date.now()).toISOString();
+    const patch: Record<string, string> = {};
+    if (!row.resend_id) patch.resend_id = e.id;
+    const rank = EVENT_RANK[e.last_event] ?? -1;
+    if (rank >= 1 && !row.delivered_at) patch.delivered_at = at;
+    if (rank >= 2 && !row.opened_at) patch.opened_at = at;
+    if (rank >= 3 && !row.clicked_at) patch.clicked_at = at;
+    if (e.last_event === "bounced" && !row.bounced_at) patch.bounced_at = at;
+    if (e.last_event === "complained" && !row.complained_at) patch.complained_at = at;
+    if (Object.keys(patch).length === 0) continue;
+    const { error } = await db.from("email_broadcast_recipients").update(patch).eq("broadcast_id", id).eq("email", row.email as string);
+    if (error) return { ok: false, message: `Couldn't save: ${error.message}. Has migration 046 been run?` };
+    updated++;
+    // Same protection as the webhook: never email bounces or spam complaints again.
+    if (patch.bounced_at || patch.complained_at) {
+      await db.from("newsletter_subscribers").update({ unsubscribed_at: new Date().toISOString() }).eq("email", to).is("unsubscribed_at", null);
+      await db.from("newsletter_subscribers").update({ suppressed_reason: patch.bounced_at ? "bounced" : "complained" }).eq("email", to);
+      suppressed++;
+    }
+  }
+  return {
+    ok: true,
+    message:
+      updated === 0
+        ? "Already up to date with Resend."
+        : `Updated ${updated} ${updated === 1 ? "person" : "people"} from Resend${suppressed ? `; ${suppressed} bounced and won't be emailed again` : ""}.`,
+  };
+}
