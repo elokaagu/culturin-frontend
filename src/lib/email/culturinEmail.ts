@@ -112,7 +112,7 @@ export function renderCulturinEmail(opts: {
   return emailShell({
     title: opts.headline,
     content,
-    footer: "Culturin · Culture, in the room.<br>You're getting this because you're on the Culturin team.",
+    footer: `<a href="${siteOrigin()}" style="color:${MUTED} !important;text-decoration:underline;">Culturin</a><br>You're getting this because you're on the Culturin team.`,
   });
 }
 

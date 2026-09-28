@@ -11,7 +11,7 @@ import { studioCreateButtonClass } from "@/app/admin/_components/StudioCulturinL
 import { studioFieldInputClass, studioGhostButtonClass, studioPanelClass } from "@/app/admin/_lib/studioTheme";
 import { ArticleRichEditor, type ArticleRichEditorHandle } from "@/app/admin/articles/_components/ArticleRichEditor";
 import type { Broadcast, BroadcastStats, SendProgress } from "@/lib/email/broadcasts";
-import { renderBroadcastHtml } from "@/lib/email/broadcastRender";
+import { DEFAULT_CTA, getCta, isSafeCtaUrl, renderBroadcastHtml, withCta, type BroadcastCta } from "@/lib/email/broadcastRender";
 import { cn } from "@/lib/utils";
 
 import { BroadcastStatsPanel } from "./BroadcastStatsPanel";
@@ -129,6 +129,13 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
   const [busy, setBusy] = useState<null | "save" | "test" | "send">(null);
   const [notice, setNotice] = useState<{ tone: "error" | "info"; text: string } | null>(null);
   const [dirty, setDirty] = useState(false);
+  const [cta, setCta] = useState<BroadcastCta | null>(() => getCta(broadcast.body));
+  const ctaInvalid = cta !== null && (!cta.label.trim() || !isSafeCtaUrl(cta.url));
+
+  function updateCta(next: BroadcastCta | null) {
+    setCta(next);
+    setDirty(true);
+  }
 
   // Follow the editor so the preview updates as you type.
   useEffect(() => {
@@ -155,10 +162,17 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
     };
   }, [isDraft]);
 
-  const previewHtml = useMemo(() => renderBroadcastHtml({ subject, preheader, body }, "#unsubscribe"), [subject, preheader, body]);
+  const previewHtml = useMemo(
+    () => renderBroadcastHtml({ subject, preheader, body: withCta(body, cta) }, "#unsubscribe"),
+    [subject, preheader, body, cta],
+  );
 
   const save = useCallback(async (): Promise<boolean> => {
-    const latest = editorRef.current?.getPortableBody() ?? body;
+    if (ctaInvalid) {
+      setNotice({ tone: "error", text: "The button needs a label and a link starting with https:// (or mailto:)." });
+      return false;
+    }
+    const latest = withCta(editorRef.current?.getPortableBody() ?? body, cta);
     const res = await fetch("/api/admin/broadcasts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -171,7 +185,7 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
     }
     setDirty(false);
     return true;
-  }, [body, broadcast.id, preheader, subject]);
+  }, [body, broadcast.id, cta, ctaInvalid, preheader, subject]);
 
   async function onSave() {
     setBusy("save");
@@ -273,6 +287,34 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
             >
               <ArticleRichEditor ref={editorRef} initialBody={broadcast.body} />
             </Field>
+
+            <div className="flex flex-col gap-3 rounded-xl border border-[color:var(--c-rule)] p-4">
+              <label className="flex items-center gap-2.5 text-sm font-medium text-[color:var(--c-ink)]">
+                <input
+                  type="checkbox"
+                  checked={cta !== null}
+                  onChange={(e) => updateCta(e.target.checked ? DEFAULT_CTA : null)}
+                  className="h-4 w-4 accent-[color:var(--c-accent)]"
+                />
+                End with a button
+              </label>
+              {cta ? (
+                <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+                  <Field label="Button text">
+                    <input className={studioFieldInputClass} value={cta.label} maxLength={40} onChange={(e) => updateCta({ ...cta, label: e.target.value })} />
+                  </Field>
+                  <Field label="Link" hint="Defaults to the Create an experience page, so enquiries reach you as alerts.">
+                    <input
+                      className={studioFieldInputClass}
+                      type="url"
+                      value={cta.url}
+                      onChange={(e) => updateCta({ ...cta, url: e.target.value })}
+                      aria-invalid={ctaInvalid}
+                    />
+                  </Field>
+                </div>
+              ) : null}
+            </div>
 
             <div className="flex flex-wrap items-center gap-3 border-t border-[color:var(--c-rule)] pt-5">
               <button type="button" onClick={onSave} disabled={busy !== null} className={cn(studioGhostButtonClass, "h-10 px-4 text-sm font-semibold")}>

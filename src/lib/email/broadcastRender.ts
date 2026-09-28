@@ -4,7 +4,7 @@
  */
 import { portableTextBlocksToHtml } from "@/lib/portableText/tiptapHtmlBridge";
 
-import { EMAIL_STYLE, emailShell, escapeHtml, siteOrigin } from "./culturinEmail";
+import { EMAIL_STYLE, ctaButton, emailShell, escapeHtml, siteOrigin } from "./culturinEmail";
 
 const { INK, MUTED, ACCENT, DISPLAY, SANS, linkStyle } = EMAIL_STYLE;
 
@@ -33,10 +33,36 @@ function styleHtml(html: string): string {
 
 export type BroadcastContent = { subject: string; preheader: string; body: unknown };
 
+/** The optional button at the end of a broadcast, stored as a trailing `{ _type: "cta" }` item in the body. */
+export type BroadcastCta = { label: string; url: string };
+
+export const DEFAULT_CTA: BroadcastCta = { label: "Get in touch", url: "https://www.culturin.com/partner" };
+
+export function isSafeCtaUrl(url: string): boolean {
+  return /^(https:\/\/|mailto:)\S+$/i.test(url.trim());
+}
+
+export function getCta(body: unknown): BroadcastCta | null {
+  if (!Array.isArray(body)) return null;
+  const item = body.find((b) => b && typeof b === "object" && (b as { _type?: string })._type === "cta") as
+    | { label?: unknown; url?: unknown }
+    | undefined;
+  const label = typeof item?.label === "string" ? item.label.trim() : "";
+  const url = typeof item?.url === "string" ? item.url.trim() : "";
+  return label && isSafeCtaUrl(url) ? { label, url } : null;
+}
+
+/** Editor blocks plus the button (if any), as saved. */
+export function withCta(blocks: unknown, cta: BroadcastCta | null): unknown[] {
+  const rest = (Array.isArray(blocks) ? blocks : []).filter((b) => !(b && typeof b === "object" && (b as { _type?: string })._type === "cta"));
+  return cta && cta.label.trim() && isSafeCtaUrl(cta.url) ? [...rest, { _type: "cta", _key: "cta", label: cta.label.trim(), url: cta.url.trim() }] : rest;
+}
+
 export function renderBroadcastHtml(b: BroadcastContent, unsubscribeUrl: string): string {
-  const content = styleHtml(portableTextBlocksToHtml(b.body));
+  const cta = getCta(b.body);
+  const content = styleHtml(portableTextBlocksToHtml(b.body)) + (cta ? ctaButton({ label: cta.label, href: cta.url }) : "");
   const footer = [
-    "Culturin · Culture, in the room.",
+    `<a href="${siteOrigin()}" style="color:${MUTED} !important;text-decoration:underline;">Culturin</a>`,
     `You're receiving this because you joined the Culturin list. <a href="${escapeHtml(unsubscribeUrl)}" style="color:${MUTED} !important;text-decoration:underline;">Unsubscribe</a>.`,
     process.env.NEXT_PUBLIC_EMAIL_POSTAL_ADDRESS?.trim() ? escapeHtml(process.env.NEXT_PUBLIC_EMAIL_POSTAL_ADDRESS.trim()) : "",
   ]
@@ -56,5 +82,6 @@ export function renderBroadcastText(b: BroadcastContent, unsubscribeUrl: string)
     .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"')
     .replace(/\n{3,}/g, "\n\n")
     .trim();
-  return `${text}\n\n—\nCulturin · Culture, in the room.\nUnsubscribe: ${unsubscribeUrl}`;
+  const cta = getCta(b.body);
+  return `${text}${cta ? `\n\n${cta.label}: ${cta.url}` : ""}\n\n—\nCulturin: ${siteOrigin()}\nUnsubscribe: ${unsubscribeUrl}`;
 }
