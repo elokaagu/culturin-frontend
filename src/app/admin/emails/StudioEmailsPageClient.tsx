@@ -10,7 +10,7 @@ import { StudioCulturinListSection, studioCreateButtonClass } from "@/app/admin/
 import type { Broadcast } from "@/lib/email/broadcasts";
 import { cn } from "@/lib/utils";
 
-const STATUS_LABEL: Record<Broadcast["status"], string> = { draft: "Draft", sending: "Sending…", sent: "Sent", failed: "Failed" };
+const STATUS_LABEL: Record<Broadcast["status"], string> = { draft: "Draft", partial: "Partly sent", sending: "Sending…", sent: "Sent", failed: "Failed" };
 
 export function StudioEmailsPageClient({ tableReady, initial }: { tableReady: boolean; initial: Broadcast[] }) {
   const router = useRouter();
@@ -77,7 +77,9 @@ export function StudioEmailsPageClient({ tableReady, initial }: { tableReady: bo
                 <Link href={`/admin/emails/${b.id}`} className="min-w-0 flex-1 no-underline">
                   <p className="m-0 truncate font-medium text-[color:var(--c-ink)]">{b.subject || "Untitled email"}</p>
                   <p className="m-0 mt-0.5 truncate text-xs text-[color:var(--c-muted)]">
-                    {b.status === "sent" || b.status === "failed"
+                    {b.status === "partial"
+                      ? `Sent to ${b.sentCount.toLocaleString()} of ${(b.recipientCount ?? 0).toLocaleString()} so far`
+                      : b.status === "sent" || b.status === "failed"
                       ? `Sent ${b.sentAt ? formatAdminDate(b.sentAt) : ""} to ${b.sentCount.toLocaleString()}${b.failedCount ? ` · ${b.failedCount} failed` : ""}`
                       : `Edited ${formatAdminDate(b.updatedAt)}`}
                   </p>
@@ -87,6 +89,8 @@ export function StudioEmailsPageClient({ tableReady, initial }: { tableReady: bo
                     "shrink-0 rounded-full border px-2.5 py-0.5 text-[0.7rem] font-semibold",
                     b.status === "sent"
                       ? "border-emerald-500/40 text-emerald-500"
+                      : b.status === "partial"
+                        ? "border-[color:var(--c-accent)] text-[color:var(--c-accent)]"
                       : b.status === "failed"
                         ? "border-rose-500/40 text-rose-500"
                         : "border-[color:var(--c-rule)] text-[color:var(--c-muted)]",

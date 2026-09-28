@@ -1,10 +1,12 @@
 import "server-only";
 
+import { createHash } from "node:crypto";
+
 import { renderBroadcastHtml, renderBroadcastText } from "@/lib/email/broadcastRender";
 import { unsubscribeOneClickUrl, unsubscribeUrl } from "@/lib/email/unsubscribe";
 import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
-export type BroadcastStatus = "draft" | "sending" | "sent" | "failed";
+export type BroadcastStatus = "draft" | "partial" | "sending" | "sent" | "failed";
 
 export type Broadcast = {
   id: string;
@@ -89,26 +91,62 @@ export async function deleteBroadcasts(ids: string[]): Promise<string | null> {
   return error ? error.message : null;
 }
 
-/** Everyone on the list who hasn't unsubscribed, read page by page (Supabase caps a select at 1,000 rows). */
-export async function listRecipients(): Promise<string[]> {
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase query builders are typed per table; this helper works across tables.
+async function selectAllRows(table: string, columns: string, filter?: (q: any) => any): Promise<Record<string, unknown>[]> {
   const db = getSupabaseAdminFreshOrNull();
   if (!db) return [];
-  const out = new Set<string>();
+  const out: Record<string, unknown>[] = [];
   for (let from = 0; from < 200_000; from += 1000) {
-    const { data, error } = await db
-      .from("newsletter_subscribers")
-      .select("email")
-      .is("unsubscribed_at", null)
-      .order("id")
-      .range(from, from + 999);
+    let q = db.from(table).select(columns);
+    if (filter) q = filter(q);
+    const { data, error } = await q.range(from, from + 999);
     if (error || !data) break;
-    for (const r of data) {
-      const e = String(r.email ?? "").trim().toLowerCase();
-      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) out.add(e);
-    }
+    out.push(...(data as unknown as Record<string, unknown>[]));
     if (data.length < 1000) break;
   }
-  return Array.from(out);
+  return out;
+}
+
+/**
+ * Everyone who should get broadcasts (not unsubscribed), most likely to engage first, so a
+ * warm-up starts with people who'll open it: the Culturin team, then event guests and partner
+ * contacts, then people who signed up on the site, then imported contacts (newest opt-ins first).
+ */
+export async function rankedRecipients(): Promise<string[]> {
+  const [subs, rsvps, inquiries] = await Promise.all([
+    selectAllRows("newsletter_subscribers", "id, email, source, created_at, optin:raw_data->>OPTIN_TIME", (q) => q.is("unsubscribed_at", null).order("id")),
+    selectAllRows("event_rsvps", "email"),
+    selectAllRows("partner_inquiries", "email"),
+  ]);
+  const engaged = new Set([...rsvps, ...inquiries].map((r) => String(r.email ?? "").trim().toLowerCase()));
+  const ranked = new Map<string, { tier: number; joined: number }>();
+  for (const r of subs) {
+    const email = String(r.email ?? "").trim().toLowerCase();
+    if (!EMAIL_RE.test(email) || ranked.has(email)) continue;
+    const source = String(r.source ?? "");
+    const tier = email.endsWith("@culturin.com") ? 0 : engaged.has(email) ? 1 : source === "mailchimp" || source === "csv_import" ? 3 : 2;
+    const optin = typeof r.optin === "string" ? Date.parse(r.optin.replace(" ", "T") + "Z") : NaN;
+    const joined = Number.isFinite(optin) ? optin : Date.parse(String(r.created_at ?? "")) || 0;
+    ranked.set(email, { tier, joined });
+  }
+  return Array.from(ranked.entries())
+    .sort((a, b) => a[1].tier - b[1].tier || b[1].joined - a[1].joined)
+    .map(([email]) => email);
+}
+
+async function alreadySent(id: string): Promise<Set<string>> {
+  const rows = await selectAllRows("email_broadcast_recipients", "email", (q) => q.eq("broadcast_id", id).order("email"));
+  return new Set(rows.map((r) => String(r.email)));
+}
+
+export type SendProgress = { sent: number; remaining: number; total: number };
+
+export async function getSendProgress(id: string): Promise<SendProgress> {
+  const [everyone, sent] = await Promise.all([rankedRecipients(), alreadySent(id)]);
+  const remaining = everyone.filter((e) => !sent.has(e)).length;
+  return { sent: sent.size, remaining, total: sent.size + remaining };
 }
 
 export async function countRecipients(): Promise<number | null> {
@@ -170,10 +208,11 @@ export async function sendTest(id: string, to: string[]): Promise<string | null>
 }
 
 /**
- * Send a draft to every subscriber. The draft is claimed (draft → sending) atomically first,
- * so a double click or a second admin can't send it twice.
+ * Send the next `limit` people who haven't had this email yet (or everyone left when `limit` is null).
+ * The broadcast is claimed (→ sending) atomically first so two clicks or two admins can't overlap;
+ * a send that died mid-way (still "sending" after 10 minutes) can be picked up again.
  */
-export async function sendToAll(id: string, sentBy: string): Promise<{ ok: boolean; message: string }> {
+export async function sendBatch(id: string, limit: number | null, sentBy: string): Promise<{ ok: boolean; message: string }> {
   const db = getSupabaseAdminFreshOrNull();
   if (!db) return { ok: false, message: "The database isn't connected." };
   const current = await getBroadcast(id);
@@ -181,39 +220,65 @@ export async function sendToAll(id: string, sentBy: string): Promise<{ ok: boole
   const invalid = validate(current);
   if (invalid) return { ok: false, message: invalid };
 
-  const recipients = await listRecipients();
-  if (recipients.length === 0) return { ok: false, message: "There's no one to send to." };
+  // Without the recipients table we can't record who got it, and a later batch would repeat people.
+  const { error: tableError } = await db.from("email_broadcast_recipients").select("email", { head: true, count: "exact" }).limit(1);
+  if (tableError) return { ok: false, message: "Run supabase/migrations/045_email_broadcast_recipients.sql in Supabase first, then try again." };
 
+  const [everyone, sentBefore] = await Promise.all([rankedRecipients(), alreadySent(id)]);
+  const pending = everyone.filter((e) => !sentBefore.has(e));
+  if (pending.length === 0) {
+    await db.from("email_broadcasts").update({ status: "sent" }).eq("id", id).neq("status", "sending");
+    return { ok: false, message: "Everyone has already been sent this email." };
+  }
+  const batch = limit === null ? pending : pending.slice(0, Math.max(1, Math.floor(limit)));
+
+  const staleBefore = new Date(Date.now() - 10 * 60_000).toISOString();
   const { data: claimed } = await db
     .from("email_broadcasts")
-    .update({ status: "sending", recipient_count: recipients.length, sent_by: sentBy, last_error: null })
+    .update({ status: "sending", recipient_count: everyone.length, sent_by: sentBy, last_error: null })
     .eq("id", id)
-    .eq("status", "draft")
-    .select("id");
-  if (!claimed || claimed.length === 0) return { ok: false, message: "This email has already been sent or is sending." };
+    .or(`status.in.(draft,partial),and(status.eq.sending,updated_at.lt.${staleBefore})`)
+    .select("status");
+  if (!claimed || claimed.length === 0) return { ok: false, message: "This email is already sending. Wait for it to finish." };
 
   let sent = 0;
   let failed = 0;
   let lastError: string | null = null;
-  for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
-    const chunk = recipients.slice(i, i + BATCH_SIZE);
-    const err = await resendBatch(chunk.map((email) => messageFor(current, email)), `broadcast-${id}-${i / BATCH_SIZE}`);
+  for (let i = 0; i < batch.length; i += BATCH_SIZE) {
+    const chunk = batch.slice(i, i + BATCH_SIZE);
+    // Same people → same key, so a retried chunk is never delivered twice (Resend keeps keys for 24h).
+    const key = `broadcast-${id}-${createHash("sha256").update(chunk.join(",")).digest("hex").slice(0, 32)}`;
+    const err = await resendBatch(chunk.map((email) => messageFor(current, email)), key);
     if (err) {
       failed += chunk.length;
       lastError = err;
     } else {
       sent += chunk.length;
+      await db
+        .from("email_broadcast_recipients")
+        .upsert(chunk.map((email) => ({ broadcast_id: id, email })), { onConflict: "broadcast_id,email", ignoreDuplicates: true });
     }
-    await db.from("email_broadcasts").update({ sent_count: sent, failed_count: failed }).eq("id", id);
-    if (i + BATCH_SIZE < recipients.length) await new Promise((r) => setTimeout(r, BATCH_PAUSE_MS));
+    if (i + BATCH_SIZE < batch.length) await new Promise((r) => setTimeout(r, BATCH_PAUSE_MS));
   }
 
+  const totalSent = sentBefore.size + sent;
+  const remaining = everyone.length - totalSent;
   await db
     .from("email_broadcasts")
-    .update({ status: sent > 0 ? "sent" : "failed", sent_at: new Date().toISOString(), sent_count: sent, failed_count: failed, last_error: lastError })
+    .update({
+      status: remaining > 0 ? (totalSent > 0 ? "partial" : "draft") : "sent",
+      sent_at: sent > 0 ? new Date().toISOString() : current.sentAt,
+      sent_count: totalSent,
+      failed_count: current.failedCount + failed,
+      last_error: lastError,
+    })
     .eq("id", id);
 
-  return sent > 0
-    ? { ok: true, message: `Sent to ${sent.toLocaleString()} ${sent === 1 ? "person" : "people"}${failed ? `; ${failed} failed (${lastError})` : ""}.` }
-    : { ok: false, message: `Nothing was sent: ${lastError}` };
+  if (sent === 0) return { ok: false, message: `Nothing was sent: ${lastError}` };
+  return {
+    ok: true,
+    message: `Sent to ${sent.toLocaleString()} ${sent === 1 ? "person" : "people"}${failed ? `; ${failed} failed (${lastError})` : ""}. ${
+      remaining > 0 ? `${remaining.toLocaleString()} still to go.` : "Everyone has now been sent this email."
+    }`,
+  };
 }

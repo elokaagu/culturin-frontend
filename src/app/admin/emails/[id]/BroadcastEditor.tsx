@@ -10,7 +10,7 @@ import { useStudioConfirm } from "@/app/admin/_components/StudioConfirmDialog";
 import { studioCreateButtonClass } from "@/app/admin/_components/StudioCulturinListKit";
 import { studioFieldInputClass, studioGhostButtonClass, studioPanelClass } from "@/app/admin/_lib/studioTheme";
 import { ArticleRichEditor, type ArticleRichEditorHandle } from "@/app/admin/articles/_components/ArticleRichEditor";
-import type { Broadcast } from "@/lib/email/broadcasts";
+import type { Broadcast, SendProgress } from "@/lib/email/broadcasts";
 import { renderBroadcastHtml } from "@/lib/email/broadcastRender";
 import { cn } from "@/lib/utils";
 
@@ -45,11 +45,81 @@ function EmailPreview({ html }: { html: string }) {
   );
 }
 
-export function BroadcastEditor({ broadcast, recipients }: { broadcast: Broadcast; recipients: number }) {
+/** Warm-up steps for a new sending domain: small, engaged batches first. */
+const WARMUP_STEPS = [50, 150, 400];
+
+function recommendedStep(sent: number, remaining: number): number | null {
+  const next = sent === 0 ? 50 : sent < 200 ? 150 : sent < 600 ? 400 : null;
+  return next !== null && next < remaining ? next : null;
+}
+
+function SendPanel({
+  progress,
+  busy,
+  lastSentAt,
+  onSend,
+}: {
+  progress: SendProgress;
+  busy: boolean;
+  lastSentAt: string | null;
+  onSend: (limit: number | null) => void;
+}) {
+  const { sent, remaining, total } = progress;
+  const recommended = recommendedStep(sent, remaining);
+  const pct = total > 0 ? Math.round((sent / total) * 100) : 0;
+  const steps = WARMUP_STEPS.filter((n) => n < remaining);
+
+  return (
+    <section className={cn(studioPanelClass, "mt-6 flex flex-col gap-4")}>
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="m-0 font-display text-lg font-semibold tracking-tight text-[color:var(--c-ink)]">Send in stages</h2>
+        <p className="m-0 text-sm tabular-nums text-[color:var(--c-muted)]">
+          {sent.toLocaleString()} of {total.toLocaleString()} sent{remaining > 0 ? ` · ${remaining.toLocaleString()} to go` : ""}
+        </p>
+      </div>
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-[color:var(--c-rule)]" aria-hidden>
+        <div className="h-full rounded-full bg-[color:var(--c-accent)] transition-all" style={{ width: `${pct}%` }} />
+      </div>
+      <p className="m-0 max-w-2xl text-sm leading-relaxed text-[color:var(--c-muted)]">
+        {sent === 0
+          ? "Start small so inboxes learn to trust culturin.com. People most likely to open go first: the Culturin team, then event guests and partners, then site sign-ups, then imported contacts."
+          : `Last batch sent ${lastSentAt ? formatAdminDate(lastSentAt) : "recently"}. Before the next one, check Resend for bounces and spam complaints, and leave about a day between batches.`}
+        {" "}The email can&apos;t be edited once the first batch has gone.
+      </p>
+      <div className="flex flex-wrap items-center gap-2">
+        {steps.map((n) => (
+          <button
+            key={n}
+            type="button"
+            disabled={busy}
+            onClick={() => onSend(n)}
+            className={cn(
+              n === recommended ? studioCreateButtonClass : cn(studioGhostButtonClass, "h-10 px-4 text-sm font-semibold"),
+            )}
+          >
+            Send to next {n}
+            {n === recommended ? " (recommended)" : ""}
+          </button>
+        ))}
+        <button
+          type="button"
+          disabled={busy || remaining === 0}
+          onClick={() => onSend(null)}
+          className={cn(recommended === null && remaining > 0 ? studioCreateButtonClass : cn(studioGhostButtonClass, "h-10 px-4 text-sm font-semibold"))}
+        >
+          {steps.length > 0 ? `Everyone left (${remaining.toLocaleString()})` : `Send to ${remaining.toLocaleString()}`}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+export function BroadcastEditor({ broadcast, progress }: { broadcast: Broadcast; progress: SendProgress }) {
   const router = useRouter();
   const confirm = useStudioConfirm();
   const editorRef = useRef<ArticleRichEditorHandle>(null);
-  const isDraft = broadcast.status === "draft";
+  const isDraft = broadcast.status === "draft" && progress.sent === 0;
+  const canSend = (broadcast.status === "draft" || broadcast.status === "partial") && progress.remaining > 0;
 
   const [subject, setSubject] = useState(broadcast.subject);
   const [preheader, setPreheader] = useState(broadcast.preheader);
@@ -108,28 +178,41 @@ export function BroadcastEditor({ broadcast, recipients }: { broadcast: Broadcas
     setBusy(null);
   }
 
-  async function send(mode: "test" | "all") {
+  async function sendTest() {
     setNotice(null);
-    if (mode === "all") {
-      const ok = await confirm({
-        title: `Send to ${recipients.toLocaleString()} ${recipients === 1 ? "person" : "people"}?`,
-        description: `“${subject || "Untitled email"}” goes to everyone on the mailing list who hasn't unsubscribed. This can't be undone, so send yourself a test first.`,
-        confirmLabel: "Send now",
-        destructive: false,
-      });
-      if (!ok) return;
-    }
-    setBusy(mode === "test" ? "test" : "send");
-    if (!(await save())) return setBusy(null);
+    setBusy("test");
+    if (isDraft && !(await save())) return setBusy(null);
+    await post({ id: broadcast.id, mode: "test" });
+  }
+
+  async function sendBatch(limit: number | null) {
+    setNotice(null);
+    const count = limit === null ? progress.remaining : Math.min(limit, progress.remaining);
+    const ok = await confirm({
+      title: `Send to ${count.toLocaleString()} ${count === 1 ? "person" : "people"}?`,
+      description:
+        progress.sent === 0
+          ? `This sends “${subject || "Untitled email"}” to the first ${count.toLocaleString()} people on the list and locks the email from further edits. Send yourself a test first if you haven't.`
+          : `The next ${count.toLocaleString()} people who haven't had “${subject || "Untitled email"}” yet. Nobody gets it twice.`,
+      confirmLabel: "Send now",
+      destructive: false,
+    });
+    if (!ok) return;
+    setBusy("send");
+    if (isDraft && !(await save())) return setBusy(null);
+    await post({ id: broadcast.id, mode: "batch", limit, confirm: true });
+    router.refresh();
+  }
+
+  async function post(payload: Record<string, unknown>) {
     const res = await fetch("/api/admin/broadcasts/send", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: broadcast.id, mode, confirm: mode === "all" }),
+      body: JSON.stringify(payload),
     }).catch(() => null);
     const data = (await res?.json().catch(() => ({}))) as { message?: string } | undefined;
     setBusy(null);
     setNotice({ tone: res?.ok ? "info" : "error", text: data?.message ?? (res?.ok ? "Done." : "Something went wrong.") });
-    if (mode === "all") router.refresh();
   }
 
   return (
@@ -141,7 +224,7 @@ export function BroadcastEditor({ broadcast, recipients }: { broadcast: Broadcas
         {isDraft ? "Edit email" : subject || "Untitled email"}
       </h1>
 
-      {!isDraft ? (
+      {!isDraft && broadcast.status !== "partial" ? (
         <p className="mt-2 text-sm text-[color:var(--c-muted)]">
           {broadcast.status === "sending"
             ? `Sending now: ${broadcast.sentCount.toLocaleString()} of ${(broadcast.recipientCount ?? 0).toLocaleString()} so far.`
@@ -151,6 +234,8 @@ export function BroadcastEditor({ broadcast, recipients }: { broadcast: Broadcas
       ) : null}
 
       {notice ? <Notice tone={notice.tone}>{notice.text}</Notice> : null}
+
+      {canSend ? <SendPanel progress={progress} busy={busy !== null} lastSentAt={broadcast.sentAt} onSend={(n) => void sendBatch(n)} /> : null}
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,620px)]">
         {isDraft ? (
@@ -189,12 +274,10 @@ export function BroadcastEditor({ broadcast, recipients }: { broadcast: Broadcas
               <button type="button" onClick={onSave} disabled={busy !== null} className={cn(studioGhostButtonClass, "h-10 px-4 text-sm font-semibold")}>
                 {busy === "save" ? "Saving…" : dirty ? "Save draft" : "Saved"}
               </button>
-              <button type="button" onClick={() => void send("test")} disabled={busy !== null} className={cn(studioGhostButtonClass, "h-10 px-4 text-sm font-semibold")}>
+              <button type="button" onClick={() => void sendTest()} disabled={busy !== null} className={cn(studioGhostButtonClass, "h-10 px-4 text-sm font-semibold")}>
                 {busy === "test" ? "Sending test…" : "Send me a test"}
               </button>
-              <button type="button" onClick={() => void send("all")} disabled={busy !== null || recipients === 0} className={cn(studioCreateButtonClass, "ml-auto")}>
-                {busy === "send" ? "Sending… keep this tab open" : `Send to ${recipients.toLocaleString()} subscribers`}
-              </button>
+              {busy === "send" ? <span className="ml-auto text-sm text-[color:var(--c-muted)]">Sending… keep this tab open</span> : null}
             </div>
           </section>
         ) : null}
