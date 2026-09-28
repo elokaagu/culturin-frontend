@@ -14,8 +14,8 @@ export type PartnerImage = { src: string; alt: string; blur: string };
 
 const CHOICES = [
   { value: "intelligence", label: "Intelligence", line: "An ongoing read on culture, and what it means for your brand." },
-  { value: "programming", label: "Programming", line: "A year of rooms, built around your brand." },
-  { value: "moments", label: "Moments", line: "Sponsor a room we've already built." },
+  { value: "programming", label: "Cultural Programming", line: "A year of rooms, built around your brand." },
+  { value: "moments", label: "Experiences", line: "Sponsor a room we've already built." },
   { value: "cultural-marketing", label: "Not sure yet", line: "Tell us the goal and we'll point you the right way." },
 ] as const;
 

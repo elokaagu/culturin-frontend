@@ -19,8 +19,8 @@ import type { StudioPartnerInquiry } from "@/lib/studio/partnerInquiries";
 
 const INTEREST_LABELS: Record<string, string> = {
   intelligence: "Intelligence",
-  programming: "Programming",
-  moments: "Moments",
+  programming: "Cultural Programming",
+  moments: "Experiences",
   "cultural-marketing": "Cultural marketing",
   "new-territory": "Launching in a new territory",
   "cultural-intelligence": "Cultural intelligence",

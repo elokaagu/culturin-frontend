@@ -8,8 +8,8 @@ const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
 const INTEREST_LABELS: Record<string, string> = {
   intelligence: "Intelligence",
-  programming: "Programming",
-  moments: "Moments",
+  programming: "Cultural Programming",
+  moments: "Experiences",
   "cultural-marketing": "Not sure yet",
 };
 

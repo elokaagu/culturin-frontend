@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 
 const INTEREST_LABELS: Record<string, string> = {
   intelligence: "Intelligence",
-  programming: "Programming",
-  moments: "Moments",
+  programming: "Cultural Programming",
+  moments: "Experiences",
   "cultural-marketing": "Cultural marketing",
   "new-territory": "New territory",
   "cultural-intelligence": "Cultural intelligence",

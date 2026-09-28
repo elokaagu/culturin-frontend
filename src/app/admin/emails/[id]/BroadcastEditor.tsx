@@ -12,6 +12,7 @@ import { studioFieldInputClass, studioGhostButtonClass, studioPanelClass } from 
 import { ArticleRichEditor, type ArticleRichEditorHandle } from "@/app/admin/articles/_components/ArticleRichEditor";
 import type { Broadcast, BroadcastStats, SendProgress } from "@/lib/email/broadcasts";
 import { DEFAULT_CTA, getCta, isSafeCtaUrl, renderBroadcastHtml, withCta, type BroadcastCta } from "@/lib/email/broadcastRender";
+import { EMAIL_STYLE } from "@/lib/email/culturinEmail";
 import { cn } from "@/lib/utils";
 
 import { BroadcastStatsPanel } from "./BroadcastStatsPanel";
@@ -41,8 +42,8 @@ function EmailPreview({ html }: { html: string }) {
       srcDoc={html}
       onLoad={fit}
       sandbox="allow-same-origin"
-      className="w-full rounded-xl border border-[color:var(--c-rule)] bg-[#f6f1ea]"
-      style={{ height }}
+      className="w-full rounded-xl"
+      style={{ height, border: `1px solid ${EMAIL_STYLE.RULE}`, background: EMAIL_STYLE.BG }}
     />
   );
 }
