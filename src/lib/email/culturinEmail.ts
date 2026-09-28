@@ -16,6 +16,14 @@ const INK = "#1c1a17";
 const MUTED = "#6f675d";
 const RULE = "#e4dccf";
 const ACCENT = "#cd6b3f";
+// Same palette the site itself uses for dark mode (.dark .culturin-editorial in globals.css),
+// so an email opened in a dark-mode client matches the dark site rather than a crude auto-invert.
+const DARK_BG = "#17130f";
+const DARK_CARD = "#201b15";
+const DARK_INK = "#f1e9dc";
+const DARK_MUTED = "#b9ab98";
+const DARK_RULE = "#3a332a";
+const DARK_ACCENT = "#e08a5b";
 const DISPLAY = "Recoleta, Georgia, 'Times New Roman', serif";
 const SANS = "'Helvetica Neue', Helvetica, Arial, sans-serif";
 
@@ -33,7 +41,13 @@ export function escapeHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
-const linkStyle = `color:${INK} !important;text-decoration:underline;text-decoration-color:${ACCENT};`;
+// No `!important` on color: that's deliberate. A dark-mode class rule (`!important`, inside a
+// media query) can override a *non-important* inline color regardless of specificity, but an
+// inline `!important` beats a class `!important` outright — so keeping this non-important is
+// what lets `.em-ink` actually recolor these links under `@media (prefers-color-scheme: dark)`.
+// Pair every use of this string with `class="em-ink"` on the same tag.
+const linkStyle = `color:${INK};text-decoration:underline;text-decoration-color:${ACCENT};`;
+const linkStyleMuted = `color:${MUTED};text-decoration:underline;`;
 
 /**
  * Escape text and turn any email address or URL in it into a link styled in Culturin ink,
@@ -42,13 +56,13 @@ const linkStyle = `color:${INK} !important;text-decoration:underline;text-decora
 function linkify(text: string): string {
   return escapeHtml(text).replace(
     /(https?:\/\/[^\s<]+[^\s<.,;:!?)])|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g,
-    (m, url: string | undefined) => `<a href="${url ? m : `mailto:${m}`}" style="${linkStyle}">${m}</a>`,
+    (m, url: string | undefined) => `<a href="${url ? m : `mailto:${m}`}" class="em-ink" style="${linkStyle}">${m}</a>`,
   );
 }
 
 export type EmailDetail = { label: string; value: string; href?: string };
 
-export const EMAIL_STYLE = { BG, INK, MUTED, RULE, ACCENT, DISPLAY, SANS, linkStyle } as const;
+export const EMAIL_STYLE = { BG, INK, MUTED, RULE, ACCENT, DISPLAY, SANS, linkStyle, linkStyleMuted } as const;
 
 /**
  * The outer Culturin email: cream page, card with the gold Culturin logo on a dark band,
@@ -59,35 +73,37 @@ export function emailShell(opts: { title: string; preheader?: string; content: s
   const preheader = opts.preheader
     ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">${escapeHtml(opts.preheader)}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>`
     : "";
-  // Apple Mail, Gmail and Outlook all auto-invert light emails to "dark mode" using their own
-  // heuristics, regardless of `color-scheme` meta — Apple Mail in particular tends to flip
-  // border colors even when it leaves fills alone, which is what shows up as a stray light
-  // border around the card. bgcolor attributes (not just CSS) plus an explicit dark-mode media
-  // query that re-asserts our own palette are what actually stop each client from doing this.
-  const darkLock = `<style>
-:root{color-scheme:light;supported-color-schemes:light;}
+  // We support both schemes and want dark clients to render OUR dark palette (the same one the
+  // site itself uses), not whatever an app's own auto-invert heuristic guesses. Classed
+  // `!important` rules inside the media query win over the plain inline colors used elsewhere
+  // in this file (those are deliberately left non-`!important` — see `linkStyle`), and the
+  // `[data-ogsc]` rules are the same thing for Gmail, which doesn't key off the media query.
+  const darkTheme = `<style>
+:root{color-scheme:light dark;supported-color-schemes:light dark;}
 @media (prefers-color-scheme:dark){
-  body,.em-bg{background:${BG} !important;}
+  body,.em-bg{background:${DARK_BG} !important;}
   .em-head{background:${INK} !important;}
-  .em-card{background:#fffdf9 !important;border-color:${RULE} !important;}
-  .em-ink{color:${INK} !important;}
-  .em-muted{color:${MUTED} !important;}
-  .em-accent{color:${ACCENT} !important;}
-  .em-rule{border-color:${RULE} !important;}
-  .em-btn{background:${ACCENT} !important;color:${INK} !important;}
+  .em-card{background:${DARK_CARD} !important;border-color:${DARK_RULE} !important;}
+  .em-ink{color:${DARK_INK} !important;}
+  .em-muted{color:${DARK_MUTED} !important;}
+  .em-accent{color:${DARK_ACCENT} !important;}
+  .em-rule{border-color:${DARK_RULE} !important;}
+  .em-btn{background:${DARK_ACCENT} !important;}
+  a{color:${DARK_INK} !important;}
 }
-[data-ogsc] body,[data-ogsc] .em-bg{background:${BG} !important;}
+[data-ogsc] body,[data-ogsc] .em-bg{background:${DARK_BG} !important;}
 [data-ogsc] .em-head{background:${INK} !important;}
-[data-ogsc] .em-card{background:#fffdf9 !important;border-color:${RULE} !important;}
-[data-ogsc] .em-ink{color:${INK} !important;}
-[data-ogsc] .em-muted{color:${MUTED} !important;}
+[data-ogsc] .em-card{background:${DARK_CARD} !important;border-color:${DARK_RULE} !important;}
+[data-ogsc] .em-ink{color:${DARK_INK} !important;}
+[data-ogsc] .em-muted{color:${DARK_MUTED} !important;}
+[data-ogsc] .em-btn{background:${DARK_ACCENT} !important;}
 a{color:${INK};}
 a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font:inherit !important;}
 u + #body a{color:inherit !important;text-decoration:none !important;}
 img{max-width:100%;height:auto;}
 </style>`;
   return `<!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">${darkLock}<title>${escapeHtml(opts.title)}</title></head>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">${darkTheme}<title>${escapeHtml(opts.title)}</title></head>
 <body id="body" class="em-bg" bgcolor="${BG}" style="margin:0;padding:0;background:${BG};">
 ${preheader}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${BG}" class="em-bg" style="background:${BG};">
@@ -119,7 +135,7 @@ export function renderCulturinEmail(opts: {
     .filter((d) => d.value.trim())
     .map((d) => {
       const value = d.href
-        ? `<a href="${escapeHtml(d.href)}" style="${linkStyle}">${escapeHtml(d.value)}</a>`
+        ? `<a href="${escapeHtml(d.href)}" class="em-ink" style="${linkStyle}">${escapeHtml(d.value)}</a>`
         : linkify(d.value).replace(/\n/g, "<br>");
       return `<tr>
   <td class="em-muted em-rule" style="padding:12px 0;border-top:1px solid ${RULE};width:34%;vertical-align:top;font:600 11px/1.4 ${SANS};letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">${escapeHtml(d.label)}</td>
@@ -139,7 +155,7 @@ export function renderCulturinEmail(opts: {
   return emailShell({
     title: opts.headline,
     content,
-    footer: `<a href="${siteOrigin()}" style="color:${MUTED} !important;text-decoration:underline;">Culturin</a><br>You're getting this because you're on the Culturin team.`,
+    footer: `<a href="${siteOrigin()}" class="em-muted" style="${linkStyleMuted}">Culturin</a><br>You're getting this because you're on the Culturin team.`,
   });
 }
 

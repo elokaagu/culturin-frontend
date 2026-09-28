@@ -6,7 +6,7 @@ import { portableTextBlocksToHtml } from "@/lib/portableText/tiptapHtmlBridge";
 
 import { EMAIL_STYLE, ctaButton, emailShell, escapeHtml, siteOrigin } from "./culturinEmail";
 
-const { INK, MUTED, ACCENT, DISPLAY, SANS, linkStyle } = EMAIL_STYLE;
+const { INK, ACCENT, DISPLAY, SANS, linkStyle, linkStyleMuted } = EMAIL_STYLE;
 
 const TAG_STYLES: Record<string, string> = {
   h2: `margin:28px 0 12px;font:500 28px/1.18 ${DISPLAY};color:${INK};`,
@@ -29,6 +29,7 @@ const TAG_CLASS: Record<string, string> = {
   p: "em-ink",
   blockquote: "em-ink",
   li: "em-ink",
+  a: "em-ink",
 };
 
 function styleHtml(html: string): string {
@@ -75,8 +76,8 @@ export function renderBroadcastHtml(b: BroadcastContent, unsubscribeUrl: string)
   const cta = getCta(b.body);
   const content = styleHtml(portableTextBlocksToHtml(b.body)) + (cta ? ctaButton({ label: cta.label, href: cta.url }) : "");
   const footer = [
-    `<a href="${siteOrigin()}" style="color:${MUTED} !important;text-decoration:underline;">Culturin</a>`,
-    `You're receiving this because you joined the Culturin list. <a href="${escapeHtml(unsubscribeUrl)}" style="color:${MUTED} !important;text-decoration:underline;">Unsubscribe</a>.`,
+    `<a href="${siteOrigin()}" class="em-muted" style="${linkStyleMuted}">Culturin</a>`,
+    `You're receiving this because you joined the Culturin list. <a href="${escapeHtml(unsubscribeUrl)}" class="em-muted" style="${linkStyleMuted}">Unsubscribe</a>.`,
     process.env.NEXT_PUBLIC_EMAIL_POSTAL_ADDRESS?.trim() ? escapeHtml(process.env.NEXT_PUBLIC_EMAIL_POSTAL_ADDRESS.trim()) : "",
   ]
     .filter(Boolean)
