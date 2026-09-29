@@ -37,7 +37,8 @@ type ResendEvent = {
     email_id?: string;
     to?: string[] | string;
     tags?: Record<string, string> | { name: string; value: string }[];
-    click?: { link?: string };
+    click?: { link?: string; userAgent?: string; user_agent?: string };
+    open?: { userAgent?: string; user_agent?: string };
     bounce?: { type?: string; subType?: string; message?: string };
   };
 };
@@ -98,7 +99,10 @@ export async function POST(req: Request) {
     broadcast_id: broadcastId,
     email,
     link: data.click?.link?.slice(0, 2000) ?? null,
-    detail: data.bounce ? [bounceType, data.bounce.subType, data.bounce.message].filter(Boolean).join(" · ").slice(0, 500) : null,
+    // Bounces: the reason. Opens and clicks: the reader's user agent (device and mail app).
+    detail: data.bounce
+      ? [bounceType, data.bounce.subType, data.bounce.message].filter(Boolean).join(" · ").slice(0, 500)
+      : (data.click?.userAgent ?? data.click?.user_agent ?? data.open?.userAgent ?? data.open?.user_agent ?? "").slice(0, 500) || null,
     occurred_at: event.created_at ?? new Date().toISOString(),
   });
   // Duplicate delivery of the same webhook: already handled.

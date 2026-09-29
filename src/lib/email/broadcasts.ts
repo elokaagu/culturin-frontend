@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 
 import { renderBroadcastHtml, renderBroadcastText } from "@/lib/email/broadcastRender";
 import { unsubscribeOneClickUrl, unsubscribeUrl } from "@/lib/email/unsubscribe";
+import { describeUserAgent } from "@/lib/email/userAgent";
 import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 export type BroadcastStatus = "draft" | "partial" | "sending" | "sent" | "failed";
@@ -328,6 +329,12 @@ export type EngagedPerson = {
   clickedAt: string | null;
   bouncedAt: string | null;
   complainedAt: string | null;
+  /** Every click this person made (tracked clicks only; early sends may only have a first-click time). */
+  clickCount: number;
+  /** Distinct links they clicked. */
+  links: string[];
+  /** Devices/apps seen on their clicks (or opens, if they never clicked). */
+  devices: string[];
 };
 
 export type BroadcastStats = {
@@ -340,12 +347,14 @@ export type BroadcastStats = {
   bounced: number;
   complained: number;
   topLinks: { link: string; people: number; clicks: number }[];
+  /** Where people clicked from (device · browser), by distinct people. */
+  clickDevices: { label: string; people: number }[];
   people: EngagedPerson[];
   lastEventAt: string | null;
 };
 
 export async function getBroadcastStats(id: string): Promise<BroadcastStats> {
-  const empty: BroadcastStats = { tracking: false, sent: 0, delivered: 0, opened: 0, clicked: 0, bounced: 0, complained: 0, topLinks: [], people: [], lastEventAt: null };
+  const empty: BroadcastStats = { tracking: false, sent: 0, delivered: 0, opened: 0, clicked: 0, bounced: 0, complained: 0, topLinks: [], clickDevices: [], people: [], lastEventAt: null };
   const db = getSupabaseAdminFreshOrNull();
   if (!db) return empty;
 
@@ -361,7 +370,25 @@ export async function getBroadcastStats(id: string): Promise<BroadcastStats> {
   }
 
   const has = (r: Record<string, unknown>, k: string) => typeof r[k] === "string" && r[k] !== "";
-  const clicks = await selectAllRows("email_events", "email, link, occurred_at", (q) => q.eq("broadcast_id", id).eq("type", "email.clicked").order("id"));
+  const clicks = await selectAllRows("email_events", "email, link, detail, occurred_at", (q) => q.eq("broadcast_id", id).eq("type", "email.clicked").order("id"));
+  const opens = await selectAllRows("email_events", "email, detail", (q) => q.eq("broadcast_id", id).eq("type", "email.opened").order("id"));
+
+  // Per person: click count, links, and devices (clicks first; opens only when they never clicked).
+  const perPerson = new Map<string, { clicks: number; links: Set<string>; clickDevices: Set<string>; openDevices: Set<string> }>();
+  const entry = (email: string) => {
+    const e = perPerson.get(email) ?? { clicks: 0, links: new Set<string>(), clickDevices: new Set<string>(), openDevices: new Set<string>() };
+    perPerson.set(email, e);
+    return e;
+  };
+  for (const c of clicks) {
+    const e = entry(String(c.email ?? ""));
+    e.clicks += 1;
+    if (c.link && !String(c.link).includes("/unsubscribe")) e.links.add(String(c.link));
+    if (c.detail) e.clickDevices.add(describeUserAgent(String(c.detail)));
+  }
+  for (const o of opens) if (o.detail) entry(String(o.email ?? "")).openDevices.add(describeUserAgent(String(o.detail)));
+  const clickDeviceCounts = new Map<string, number>();
+  Array.from(perPerson.values()).forEach((e) => e.clickDevices.forEach((d) => clickDeviceCounts.set(d, (clickDeviceCounts.get(d) ?? 0) + 1)));
   const { data: last } = await db.from("email_events").select("received_at").eq("broadcast_id", id).order("received_at", { ascending: false }).limit(1);
 
   const links = new Map<string, { people: Set<string>; clicks: number }>();
@@ -399,6 +426,12 @@ export async function getBroadcastStats(id: string): Promise<BroadcastStats> {
         clickedAt: (r.clicked_at as string | null) ?? null,
         bouncedAt: (r.bounced_at as string | null) ?? null,
         complainedAt: (r.complained_at as string | null) ?? null,
+        // A recorded first-click time with no click events (backfilled from Resend) still counts as one click.
+        clickCount: Math.max(perPerson.get(email)?.clicks ?? 0, r.clicked_at ? 1 : 0),
+        links: Array.from(perPerson.get(email)?.links ?? []),
+        devices: Array.from(
+          (perPerson.get(email)?.clickDevices.size ? perPerson.get(email)?.clickDevices : perPerson.get(email)?.openDevices) ?? [],
+        ),
       };
     })
     .sort((a, b) => Number(Boolean(b.clickedAt)) - Number(Boolean(a.clickedAt)) || String(b.openedAt ?? "").localeCompare(String(a.openedAt ?? "")));
@@ -416,6 +449,9 @@ export async function getBroadcastStats(id: string): Promise<BroadcastStats> {
       .map(([link, v]) => ({ link, people: v.people.size, clicks: v.clicks }))
       .sort((a, b) => b.people - a.people)
       .slice(0, 10),
+    clickDevices: Array.from(clickDeviceCounts.entries())
+      .map(([label, n]) => ({ label, people: n }))
+      .sort((a, b) => b.people - a.people),
     people,
     lastEventAt: (last?.[0]?.received_at as string | undefined) ?? null,
   };

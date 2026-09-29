@@ -10,6 +10,16 @@ import { cn } from "@/lib/utils";
 
 type Filter = "clicked" | "opened" | "bounced";
 
+/** "https://www.culturin.com/partner?x=1" -> "/partner"; other sites keep their domain. */
+const shortLink = (url: string) => {
+  try {
+    const u = new URL(url);
+    return /(^|\.)culturin\.com$/.test(u.hostname) ? u.pathname || "/" : `${u.hostname.replace(/^www\./, "")}${u.pathname === "/" ? "" : u.pathname}`;
+  } catch {
+    return url;
+  }
+};
+
 const pct = (n: number, of: number) => (of > 0 ? `${Math.round((n / of) * 1000) / 10}%` : "–");
 
 function Tile({ label, value, sub, tone }: { label: string; value: number; sub?: string; tone?: "warn" }) {
@@ -27,8 +37,23 @@ function Tile({ label, value, sub, tone }: { label: string; value: number; sub?:
 function downloadCsv(people: EngagedPerson[], name: string) {
   const esc = (v: string) => `"${v.replace(/"/g, '""')}"`;
   const lines = [
-    ["Email", "Name", "Company", "Opened", "Clicked", "Bounced", "Marked as spam"].join(","),
-    ...people.map((p) => [p.email, p.name, p.company, p.openedAt ?? "", p.clickedAt ?? "", p.bouncedAt ?? "", p.complainedAt ?? ""].map(esc).join(",")),
+    ["Email", "Name", "Company", "Opened", "Clicked", "Clicks", "Links clicked", "Device", "Bounced", "Marked as spam"].join(","),
+    ...people.map((p) =>
+      [
+        p.email,
+        p.name,
+        p.company,
+        p.openedAt ?? "",
+        p.clickedAt ?? "",
+        String(p.clickCount),
+        p.links.join(" | "),
+        p.devices.join(" | "),
+        p.bouncedAt ?? "",
+        p.complainedAt ?? "",
+      ]
+        .map(esc)
+        .join(","),
+    ),
   ];
   const url = URL.createObjectURL(new Blob([lines.join("\n")], { type: "text/csv" }));
   const a = document.createElement("a");
@@ -131,6 +156,19 @@ export function BroadcastStatsPanel({ stats, subject, broadcastId }: { stats: Br
         </div>
       ) : null}
 
+      {stats.clickDevices.length > 0 ? (
+        <div>
+          <h3 className="m-0 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-[color:var(--c-muted)]">Clicked from</h3>
+          <ul className="m-0 mt-2 flex list-none flex-wrap gap-2 p-0 text-sm">
+            {stats.clickDevices.map((d) => (
+              <li key={d.label} className="rounded-full border border-[color:var(--c-rule)] px-3 py-1 text-[color:var(--c-ink)]">
+                {d.label} <span className="tabular-nums text-[color:var(--c-muted)]">· {d.people}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
       {stats.people.length > 0 ? (
         <div>
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -171,12 +209,15 @@ export function BroadcastStatsPanel({ stats, subject, broadcastId }: { stats: Br
             <p className="m-0 mt-3 text-sm text-[color:var(--c-muted)]">Nobody here yet.</p>
           ) : (
             <div className="mt-3 overflow-x-auto rounded-xl border border-[color:var(--c-rule)]">
-              <table className="w-full min-w-[560px] border-collapse text-left text-sm">
+              <table className="w-full min-w-[760px] border-collapse text-left text-sm">
                 <thead>
                   <tr className="border-b border-[color:var(--c-rule)] text-[color:var(--c-muted)]">
                     <th className="px-3 py-2 font-medium">Person</th>
                     <th className="px-3 py-2 font-medium">Company</th>
-                    <th className="px-3 py-2 font-medium">{filter === "bounced" ? "What happened" : "When"}</th>
+                    {filter === "clicked" ? <th className="px-3 py-2 font-medium">Clicks</th> : null}
+                    {filter === "clicked" ? <th className="px-3 py-2 font-medium">Links</th> : null}
+                    {filter !== "bounced" ? <th className="px-3 py-2 font-medium">Device</th> : null}
+                    <th className="px-3 py-2 font-medium">{filter === "bounced" ? "What happened" : filter === "clicked" ? "First click" : "When"}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -187,6 +228,15 @@ export function BroadcastStatsPanel({ stats, subject, broadcastId }: { stats: Br
                         {p.name ? <span className="block text-xs text-[color:var(--c-muted)]">{p.email}</span> : null}
                       </td>
                       <td className="px-3 py-2 text-[color:var(--c-muted)]">{p.company || "–"}</td>
+                      {filter === "clicked" ? <td className="px-3 py-2 tabular-nums text-[color:var(--c-ink)]">{p.clickCount}</td> : null}
+                      {filter === "clicked" ? (
+                        <td className="px-3 py-2 text-[color:var(--c-muted)]">
+                          {p.links.length > 0 ? p.links.map((l) => <span key={l} className="block truncate">{shortLink(l)}</span>) : "Not recorded"}
+                        </td>
+                      ) : null}
+                      {filter !== "bounced" ? (
+                        <td className="px-3 py-2 text-[color:var(--c-muted)]">{p.devices.length > 0 ? p.devices.join(", ") : "Not recorded"}</td>
+                      ) : null}
                       <td className="whitespace-nowrap px-3 py-2 text-[color:var(--c-muted)]">
                         {filter === "bounced"
                           ? p.complainedAt
