@@ -8,7 +8,7 @@ import { studioGhostButtonClass, studioPanelClass } from "@/app/admin/_lib/studi
 import type { BroadcastStats, EngagedPerson } from "@/lib/email/broadcasts";
 import { cn } from "@/lib/utils";
 
-type Filter = "clicked" | "opened" | "bounced";
+type Filter = "clicked" | "opened" | "scanners" | "bounced";
 
 /** "https://www.culturin.com/partner?x=1" -> "/partner"; other sites keep their domain. */
 const shortLink = (url: string) => {
@@ -34,10 +34,25 @@ function Tile({ label, value, sub, tone }: { label: string; value: number; sub?:
   );
 }
 
+function Chips({ title, items }: { title: string; items: { label: string; people: number }[] }) {
+  return (
+    <div>
+      <h3 className="m-0 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-[color:var(--c-muted)]">{title}</h3>
+      <ul className="m-0 mt-2 flex list-none flex-wrap gap-2 p-0 text-sm">
+        {items.map((d) => (
+          <li key={d.label} className="rounded-full border border-[color:var(--c-rule)] px-3 py-1 text-[color:var(--c-ink)]">
+            {d.label} <span className="tabular-nums text-[color:var(--c-muted)]">· {d.people}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function downloadCsv(people: EngagedPerson[], name: string) {
   const esc = (v: string) => `"${v.replace(/"/g, '""')}"`;
   const lines = [
-    ["Email", "Name", "Company", "Opened", "Clicked", "Clicks", "Links clicked", "Device", "Bounced", "Marked as spam"].join(","),
+    ["Email", "Name", "Company", "Opened", "Clicked", "Clicks", "Links clicked", "Device", "Location", "Security scanner clicks", "Bounced", "Marked as spam"].join(","),
     ...people.map((p) =>
       [
         p.email,
@@ -48,6 +63,8 @@ function downloadCsv(people: EngagedPerson[], name: string) {
         String(p.clickCount),
         p.links.join(" | "),
         p.devices.join(" | "),
+        p.locations.join(" | "),
+        String(p.automatedClicks),
         p.bouncedAt ?? "",
         p.complainedAt ?? "",
       ]
@@ -96,7 +113,13 @@ export function BroadcastStatsPanel({ stats, subject, broadcastId }: { stats: Br
   const list = useMemo(
     () =>
       stats.people.filter((p) =>
-        filter === "clicked" ? p.clickedAt : filter === "opened" ? p.openedAt || p.clickedAt : p.bouncedAt || p.complainedAt,
+        filter === "clicked"
+          ? p.clickedAt
+          : filter === "opened"
+            ? p.openedAt || p.clickedAt
+            : filter === "scanners"
+              ? p.automated
+              : p.bouncedAt || p.complainedAt,
       ),
     [filter, stats.people],
   );
@@ -129,13 +152,16 @@ export function BroadcastStatsPanel({ stats, subject, broadcastId }: { stats: Br
         <Tile label="Sent" value={stats.sent} />
         <Tile label="Delivered" value={stats.delivered} sub={pct(stats.delivered, stats.sent)} />
         <Tile label="Opened" value={stats.opened} sub={`${pct(stats.opened, base)} · approximate`} />
-        <Tile label="Clicked" value={stats.clicked} sub={pct(stats.clicked, base)} />
+        <Tile label="Clicked" value={stats.clicked} sub={`${pct(stats.clicked, base)} · real people`} />
         <Tile label="Bounced" value={stats.bounced} sub={`${pct(stats.bounced, stats.sent)} · keep under 2%`} tone="warn" />
         <Tile label="Marked spam" value={stats.complained} sub={`${pct(stats.complained, stats.sent)} · keep under 0.1%`} tone="warn" />
       </ul>
       <p className="m-0 text-xs text-[color:var(--c-muted)]">
-        Opens are approximate: Apple Mail opens every email automatically for privacy, and some apps block tracking. Clicks are the reliable
-        signal. People who bounce or mark it as spam are taken off the list automatically.
+        Clicks count real people only. Many companies&apos; email security (Mimecast, Proofpoint, Microsoft Defender) opens every email and
+        clicks every link seconds after delivery to check it&apos;s safe
+        {stats.automatedClickers > 0 ? `; that happened for ${stats.automatedClickers} ${stats.automatedClickers === 1 ? "person" : "people"} here, shown under Security scanners and left out of the numbers` : ""}
+        . Opens are approximate: Apple Mail opens every email automatically for privacy. People who bounce or mark it as spam are taken
+        off the list automatically.
       </p>
 
       {stats.topLinks.length > 0 ? (
@@ -156,27 +182,18 @@ export function BroadcastStatsPanel({ stats, subject, broadcastId }: { stats: Br
         </div>
       ) : null}
 
-      {stats.clickDevices.length > 0 ? (
-        <div>
-          <h3 className="m-0 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-[color:var(--c-muted)]">Clicked from</h3>
-          <ul className="m-0 mt-2 flex list-none flex-wrap gap-2 p-0 text-sm">
-            {stats.clickDevices.map((d) => (
-              <li key={d.label} className="rounded-full border border-[color:var(--c-rule)] px-3 py-1 text-[color:var(--c-ink)]">
-                {d.label} <span className="tabular-nums text-[color:var(--c-muted)]">· {d.people}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      {stats.clickLocations.length > 0 ? <Chips title="Where people clicked from" items={stats.clickLocations} /> : null}
+      {stats.clickDevices.length > 0 ? <Chips title="Devices people clicked on" items={stats.clickDevices} /> : null}
 
       {stats.people.length > 0 ? (
         <div>
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex gap-1.5" role="tablist" aria-label="Who">
+            <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Who">
               {(
                 [
                   ["clicked", `Clicked (${stats.clicked})`],
                   ["opened", `Opened (${stats.opened})`],
+                  ["scanners", `Security scanners (${stats.automatedClickers})`],
                   ["bounced", `Bounced or spam (${stats.bounced + stats.complained})`],
                 ] as const
               ).map(([key, label]) => (
@@ -216,8 +233,12 @@ export function BroadcastStatsPanel({ stats, subject, broadcastId }: { stats: Br
                     <th className="px-3 py-2 font-medium">Company</th>
                     {filter === "clicked" ? <th className="px-3 py-2 font-medium">Clicks</th> : null}
                     {filter === "clicked" ? <th className="px-3 py-2 font-medium">Links</th> : null}
-                    {filter !== "bounced" ? <th className="px-3 py-2 font-medium">Device</th> : null}
-                    <th className="px-3 py-2 font-medium">{filter === "bounced" ? "What happened" : filter === "clicked" ? "First click" : "When"}</th>
+                    {filter === "clicked" || filter === "opened" ? <th className="px-3 py-2 font-medium">Device</th> : null}
+                    {filter === "clicked" ? <th className="px-3 py-2 font-medium">Location</th> : null}
+                    {filter === "scanners" ? <th className="px-3 py-2 font-medium">Scanner clicks</th> : null}
+                    {filter !== "scanners" ? (
+                      <th className="px-3 py-2 font-medium">{filter === "bounced" ? "What happened" : filter === "clicked" ? "First click" : "When"}</th>
+                    ) : null}
                   </tr>
                 </thead>
                 <tbody>
@@ -231,19 +252,35 @@ export function BroadcastStatsPanel({ stats, subject, broadcastId }: { stats: Br
                       {filter === "clicked" ? <td className="px-3 py-2 tabular-nums text-[color:var(--c-ink)]">{p.clickCount}</td> : null}
                       {filter === "clicked" ? (
                         <td className="px-3 py-2 text-[color:var(--c-muted)]">
-                          {p.links.length > 0 ? p.links.map((l) => <span key={l} className="block truncate">{shortLink(l)}</span>) : "Not recorded"}
+                          {p.links.length > 0 ? (
+                            p.links.map((l) => (
+                              <span key={l} className="block truncate">
+                                {shortLink(l)}
+                              </span>
+                            ))
+                          ) : (
+                            <span title="Clicked before click tracking was switched on, so only the fact of a click is known. It may have been a security scanner.">
+                              Unknown (early batch)
+                            </span>
+                          )}
                         </td>
                       ) : null}
-                      {filter !== "bounced" ? (
+                      {filter === "clicked" || filter === "opened" ? (
                         <td className="px-3 py-2 text-[color:var(--c-muted)]">{p.devices.length > 0 ? p.devices.join(", ") : "Not recorded"}</td>
                       ) : null}
-                      <td className="whitespace-nowrap px-3 py-2 text-[color:var(--c-muted)]">
-                        {filter === "bounced"
-                          ? p.complainedAt
-                            ? "Marked as spam"
-                            : "Bounced"
-                          : formatAdminDate((filter === "clicked" ? p.clickedAt : p.openedAt ?? p.clickedAt) ?? "")}
-                      </td>
+                      {filter === "clicked" ? (
+                        <td className="px-3 py-2 text-[color:var(--c-muted)]">{p.locations.length > 0 ? p.locations.join("; ") : "Not recorded"}</td>
+                      ) : null}
+                      {filter === "scanners" ? <td className="px-3 py-2 tabular-nums text-[color:var(--c-muted)]">{p.automatedClicks}</td> : null}
+                      {filter !== "scanners" ? (
+                        <td className="whitespace-nowrap px-3 py-2 text-[color:var(--c-muted)]">
+                          {filter === "bounced"
+                            ? p.complainedAt
+                              ? "Marked as spam"
+                              : "Bounced"
+                            : formatAdminDate((filter === "clicked" ? p.clickedAt : p.openedAt ?? p.clickedAt) ?? "")}
+                        </td>
+                      ) : null}
                     </tr>
                   ))}
                 </tbody>

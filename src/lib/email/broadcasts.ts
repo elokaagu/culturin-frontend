@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 
 import { renderBroadcastHtml, renderBroadcastText } from "@/lib/email/broadcastRender";
 import { unsubscribeOneClickUrl, unsubscribeUrl } from "@/lib/email/unsubscribe";
+import { classifyClicks, isUnsubscribeLink } from "@/lib/email/clickClassifier";
 import { describeUserAgent } from "@/lib/email/userAgent";
 import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
@@ -58,22 +59,14 @@ export async function listBroadcasts(): Promise<{ tableReady: boolean; items: Br
   const { data, error } = await db.from("email_broadcasts").select(COLUMNS).order("created_at", { ascending: false });
   if (error || !data) return { tableReady: false, items: [] };
   const items = (data as Record<string, unknown>[]).map(toBroadcast);
-  // Unique opens and clicks for anything that has gone out (quiet no-op before migration 046).
+  // Opens and clicks (security-scanner activity excluded) for anything that has gone out.
   await Promise.all(
     items
       .filter((b) => b.sentCount > 0)
       .map(async (b) => {
-        const count = async (col: string) => {
-          const { count: n, error: e } = await db
-            .from("email_broadcast_recipients")
-            .select("email", { count: "exact", head: true })
-            .eq("broadcast_id", b.id)
-            .not(col, "is", null);
-          return e ? null : n ?? 0;
-        };
-        const [opened, clicked] = await Promise.all([count("opened_at"), count("clicked_at")]);
-        b.opened = opened;
-        b.clicked = clicked;
+        const stats = await getBroadcastStats(b.id);
+        b.opened = stats.tracking ? stats.opened : null;
+        b.clicked = stats.tracking ? stats.clicked : null;
       }),
   );
   return { tableReady: true, items };
@@ -329,38 +322,64 @@ export type EngagedPerson = {
   clickedAt: string | null;
   bouncedAt: string | null;
   complainedAt: string | null;
-  /** Every click this person made (tracked clicks only; early sends may only have a first-click time). */
+  /** Clicks by the person themselves (backfilled first-batch clickers with no click detail count as 1). */
   clickCount: number;
-  /** Distinct links they clicked. */
+  /** Clicks made by their company's email security scanner, not by them. */
+  automatedClicks: number;
+  /** True when every tracked click was a security scanner's: they didn't actually click. */
+  automated: boolean;
+  /** Distinct links they clicked themselves. */
   links: string[];
-  /** Devices/apps seen on their clicks (or opens, if they never clicked). */
+  /** Devices/apps seen on their own clicks (or opens, if they never clicked). */
   devices: string[];
+  /** Approximate places they clicked from ("London, United Kingdom"). */
+  locations: string[];
 };
+
+export type Breakdown = { label: string; people: number }[];
 
 export type BroadcastStats = {
   /** False until migration 046 is run and Resend's webhook is sending events. */
   tracking: boolean;
   sent: number;
   delivered: number;
+  /** Opens, excluding scanners that opened the email seconds after delivery and never came back. */
   opened: number;
+  /** People who clicked themselves (security-scanner clicks excluded). */
   clicked: number;
+  /** People whose only clicks were their email security scanner's. */
+  automatedClickers: number;
   bounced: number;
   complained: number;
+  /** Real clicks only. */
   topLinks: { link: string; people: number; clicks: number }[];
-  /** Where people clicked from (device · browser), by distinct people. */
-  clickDevices: { label: string; people: number }[];
+  /** Where people clicked from (device · browser), real clicks only. */
+  clickDevices: Breakdown;
+  /** Approximate click locations, real clicks only. Empty until migration 047 and new clicks. */
+  clickLocations: Breakdown;
   people: EngagedPerson[];
   lastEventAt: string | null;
 };
 
+const SCANNER_OPEN_MS = 120_000;
+
+function tally(map: Map<string, Set<string>>): Breakdown {
+  return Array.from(map.entries())
+    .map(([label, set]) => ({ label, people: set.size }))
+    .sort((a, b) => b.people - a.people || a.label.localeCompare(b.label));
+}
+
 export async function getBroadcastStats(id: string): Promise<BroadcastStats> {
-  const empty: BroadcastStats = { tracking: false, sent: 0, delivered: 0, opened: 0, clicked: 0, bounced: 0, complained: 0, topLinks: [], clickDevices: [], people: [], lastEventAt: null };
+  const empty: BroadcastStats = {
+    tracking: false, sent: 0, delivered: 0, opened: 0, clicked: 0, automatedClickers: 0, bounced: 0, complained: 0,
+    topLinks: [], clickDevices: [], clickLocations: [], people: [], lastEventAt: null,
+  };
   const db = getSupabaseAdminFreshOrNull();
   if (!db) return empty;
 
   const rows = await selectAllRows(
     "email_broadcast_recipients",
-    "email, delivered_at, opened_at, clicked_at, bounced_at, complained_at",
+    "email, sent_at, delivered_at, opened_at, clicked_at, bounced_at, complained_at",
     (q) => q.eq("broadcast_id", id).order("email"),
   );
   if (rows.length === 0) {
@@ -370,36 +389,90 @@ export async function getBroadcastStats(id: string): Promise<BroadcastStats> {
   }
 
   const has = (r: Record<string, unknown>, k: string) => typeof r[k] === "string" && r[k] !== "";
-  const clicks = await selectAllRows("email_events", "email, link, detail, occurred_at", (q) => q.eq("broadcast_id", id).eq("type", "email.clicked").order("id"));
-  const opens = await selectAllRows("email_events", "email, detail", (q) => q.eq("broadcast_id", id).eq("type", "email.opened").order("id"));
+  const deliveredAt = new Map<string, number>();
+  for (const r of rows) {
+    const t = Date.parse(String(r.delivered_at ?? r.sent_at ?? ""));
+    if (Number.isFinite(t)) deliveredAt.set(String(r.email), t);
+  }
 
-  // Per person: click count, links, and devices (clicks first; opens only when they never clicked).
-  const perPerson = new Map<string, { clicks: number; links: Set<string>; clickDevices: Set<string>; openDevices: Set<string> }>();
-  const entry = (email: string) => {
-    const e = perPerson.get(email) ?? { clicks: 0, links: new Set<string>(), clickDevices: new Set<string>(), openDevices: new Set<string>() };
+  // Location columns only exist after migration 047.
+  const geo = !(await db.from("email_events").select("city").limit(1)).error;
+  const clicks = await selectAllRows(
+    "email_events",
+    `email, link, detail, occurred_at${geo ? ", city, country" : ""}`,
+    (q) => q.eq("broadcast_id", id).eq("type", "email.clicked").order("id"),
+  );
+  const opens = await selectAllRows("email_events", "email, detail", (q) => q.eq("broadcast_id", id).eq("type", "email.opened").order("id"));
+  const { data: last } = await db.from("email_events").select("received_at").eq("broadcast_id", id).order("received_at", { ascending: false }).limit(1);
+
+  const automated = classifyClicks(
+    clicks.map((c) => ({
+      email: String(c.email ?? ""),
+      link: (c.link as string | null) ?? null,
+      userAgent: (c.detail as string | null) ?? null,
+      at: Date.parse(String(c.occurred_at)),
+    })),
+    deliveredAt,
+  );
+
+  type Acc = { human: number; bot: number; links: Set<string>; devices: Set<string>; openDevices: Set<string>; places: Set<string> };
+  const perPerson = new Map<string, Acc>();
+  const acc = (email: string) => {
+    const e = perPerson.get(email) ?? { human: 0, bot: 0, links: new Set<string>(), devices: new Set<string>(), openDevices: new Set<string>(), places: new Set<string>() };
     perPerson.set(email, e);
     return e;
   };
-  for (const c of clicks) {
-    const e = entry(String(c.email ?? ""));
-    e.clicks += 1;
-    if (c.link && !String(c.link).includes("/unsubscribe")) e.links.add(String(c.link));
-    if (c.detail) e.clickDevices.add(describeUserAgent(String(c.detail)));
-  }
-  for (const o of opens) if (o.detail) entry(String(o.email ?? "")).openDevices.add(describeUserAgent(String(o.detail)));
-  const clickDeviceCounts = new Map<string, number>();
-  Array.from(perPerson.values()).forEach((e) => e.clickDevices.forEach((d) => clickDeviceCounts.set(d, (clickDeviceCounts.get(d) ?? 0) + 1)));
-  const { data: last } = await db.from("email_events").select("received_at").eq("broadcast_id", id).order("received_at", { ascending: false }).limit(1);
-
   const links = new Map<string, { people: Set<string>; clicks: number }>();
-  for (const c of clicks) {
+  const deviceMap = new Map<string, Set<string>>();
+  const placeMap = new Map<string, Set<string>>();
+  clicks.forEach((c, i) => {
+    const email = String(c.email ?? "");
+    const a = acc(email);
+    if (automated[i]) {
+      a.bot += 1;
+      return;
+    }
     const link = String(c.link ?? "");
-    if (!link || link.includes("/unsubscribe")) continue;
-    const entry = links.get(link) ?? { people: new Set<string>(), clicks: 0 };
-    entry.people.add(String(c.email ?? ""));
-    entry.clicks += 1;
-    links.set(link, entry);
-  }
+    if (isUnsubscribeLink(link)) return; // not engagement
+    a.human += 1;
+    if (link) {
+      a.links.add(link);
+      const l = links.get(link) ?? { people: new Set<string>(), clicks: 0 };
+      l.people.add(email);
+      l.clicks += 1;
+      links.set(link, l);
+    }
+    if (c.detail) {
+      const d = describeUserAgent(String(c.detail));
+      a.devices.add(d);
+      deviceMap.set(d, (deviceMap.get(d) ?? new Set<string>()).add(email));
+    }
+    const place = c.city ? `${c.city}${c.country ? `, ${c.country}` : ""}` : c.country ? String(c.country) : "";
+    if (place) {
+      a.places.add(place);
+      placeMap.set(place, (placeMap.get(place) ?? new Set<string>()).add(email));
+    }
+  });
+  for (const o of opens) if (o.detail) acc(String(o.email ?? "")).openDevices.add(describeUserAgent(String(o.detail)));
+
+  // Per person verdicts.
+  const isScannerOnly = (email: string) => {
+    const a = perPerson.get(email);
+    return Boolean(a && a.bot > 0 && a.human === 0);
+  };
+  const clickedForReal = (r: Record<string, unknown>) => {
+    const a = perPerson.get(String(r.email));
+    // Tracked clicks: judge by them. No tracked clicks but a click time (backfilled): count it, unverified.
+    return a && a.human + a.bot > 0 ? a.human > 0 : has(r, "clicked_at");
+  };
+  const openedForReal = (r: Record<string, unknown>) => {
+    if (clickedForReal(r)) return true; // a real click implies they opened it
+    if (!has(r, "opened_at")) return false;
+    if (!isScannerOnly(String(r.email))) return true;
+    // Scanner-only: an open within two minutes of delivery was the scanner too.
+    const delivered = deliveredAt.get(String(r.email));
+    return delivered === undefined || Date.parse(String(r.opened_at)) - delivered > SCANNER_OPEN_MS;
+  };
 
   // Names and companies for everyone who did something notable.
   const notable = rows.filter((r) => has(r, "opened_at") || has(r, "clicked_at") || has(r, "bounced_at") || has(r, "complained_at"));
@@ -418,40 +491,45 @@ export async function getBroadcastStats(id: string): Promise<BroadcastStats> {
   const people: EngagedPerson[] = notable
     .map((r) => {
       const email = String(r.email);
-      const profile = profiles.get(email) ?? { name: "", company: "" };
+      const a = perPerson.get(email);
+      const real = clickedForReal(r);
       return {
         email,
-        ...profile,
-        openedAt: (r.opened_at as string | null) ?? null,
-        clickedAt: (r.clicked_at as string | null) ?? null,
+        ...(profiles.get(email) ?? { name: "", company: "" }),
+        openedAt: openedForReal(r) ? ((r.opened_at as string | null) ?? (r.clicked_at as string | null) ?? null) : null,
+        clickedAt: real ? ((r.clicked_at as string | null) ?? null) : null,
         bouncedAt: (r.bounced_at as string | null) ?? null,
         complainedAt: (r.complained_at as string | null) ?? null,
-        // A recorded first-click time with no click events (backfilled from Resend) still counts as one click.
-        clickCount: Math.max(perPerson.get(email)?.clicks ?? 0, r.clicked_at ? 1 : 0),
-        links: Array.from(perPerson.get(email)?.links ?? []),
-        devices: Array.from(
-          (perPerson.get(email)?.clickDevices.size ? perPerson.get(email)?.clickDevices : perPerson.get(email)?.openDevices) ?? [],
-        ),
+        clickCount: real ? Math.max(a?.human ?? 0, 1) : 0,
+        automatedClicks: a?.bot ?? 0,
+        automated: isScannerOnly(email),
+        links: Array.from(a?.links ?? []),
+        devices: Array.from((a?.devices.size ? a.devices : a?.openDevices) ?? []),
+        locations: Array.from(a?.places ?? []),
       };
     })
-    .sort((a, b) => Number(Boolean(b.clickedAt)) - Number(Boolean(a.clickedAt)) || String(b.openedAt ?? "").localeCompare(String(a.openedAt ?? "")));
+    .sort(
+      (x, y) =>
+        Number(Boolean(y.clickedAt)) - Number(Boolean(x.clickedAt)) ||
+        y.clickCount - x.clickCount ||
+        String(y.openedAt ?? "").localeCompare(String(x.openedAt ?? "")),
+    );
 
   return {
     tracking: rows.some((r) => has(r, "delivered_at")) || clicks.length > 0 || Boolean(last?.length),
     sent: rows.length,
     delivered: rows.filter((r) => has(r, "delivered_at")).length,
-    // Anyone who clicked must have opened, even if their mail app blocked the open pixel.
-    opened: rows.filter((r) => has(r, "opened_at") || has(r, "clicked_at")).length,
-    clicked: rows.filter((r) => has(r, "clicked_at")).length,
+    opened: rows.filter(openedForReal).length,
+    clicked: rows.filter(clickedForReal).length,
+    automatedClickers: rows.filter((r) => isScannerOnly(String(r.email))).length,
     bounced: rows.filter((r) => has(r, "bounced_at")).length,
     complained: rows.filter((r) => has(r, "complained_at")).length,
     topLinks: Array.from(links.entries())
       .map(([link, v]) => ({ link, people: v.people.size, clicks: v.clicks }))
       .sort((a, b) => b.people - a.people)
       .slice(0, 10),
-    clickDevices: Array.from(clickDeviceCounts.entries())
-      .map(([label, n]) => ({ label, people: n }))
-      .sort((a, b) => b.people - a.people),
+    clickDevices: tally(deviceMap),
+    clickLocations: tally(placeMap),
     people,
     lastEventAt: (last?.[0]?.received_at as string | undefined) ?? null,
   };

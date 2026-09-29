@@ -2,6 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 
 import { NextResponse } from "next/server";
 
+import { lookupPlace } from "@/lib/email/geo";
 import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 export const dynamic = "force-dynamic";
@@ -37,7 +38,7 @@ type ResendEvent = {
     email_id?: string;
     to?: string[] | string;
     tags?: Record<string, string> | { name: string; value: string }[];
-    click?: { link?: string; userAgent?: string; user_agent?: string };
+    click?: { link?: string; userAgent?: string; user_agent?: string; ipAddress?: string; ip_address?: string };
     open?: { userAgent?: string; user_agent?: string };
     bounce?: { type?: string; subType?: string; message?: string };
   };
@@ -92,7 +93,9 @@ export async function POST(req: Request) {
   if (!broadcastId && tagged && /^[0-9a-f-]{36}$/i.test(tagged)) broadcastId = tagged;
 
   const bounceType = data.bounce?.type ?? "";
-  const { error: insertError } = await db.from("email_events").insert({
+  // Approximate location for clicks only (opens mostly come from mail-provider proxies).
+  const place = type === "email.clicked" ? await lookupPlace(data.click?.ipAddress ?? data.click?.ip_address) : null;
+  const row = {
     svix_id: check.id,
     type,
     resend_id: resendId,
@@ -104,7 +107,10 @@ export async function POST(req: Request) {
       ? [bounceType, data.bounce.subType, data.bounce.message].filter(Boolean).join(" · ").slice(0, 500)
       : (data.click?.userAgent ?? data.click?.user_agent ?? data.open?.userAgent ?? data.open?.user_agent ?? "").slice(0, 500) || null,
     occurred_at: event.created_at ?? new Date().toISOString(),
-  });
+  };
+  let { error: insertError } = await db.from("email_events").insert(place ? { ...row, ...place } : row);
+  // Location columns missing (migration 047 not run yet): keep the event, drop the location.
+  if (insertError && place && insertError.code !== "23505") ({ error: insertError } = await db.from("email_events").insert(row));
   // Duplicate delivery of the same webhook: already handled.
   if (insertError?.code === "23505") return NextResponse.json({ ok: true, duplicate: true });
 
