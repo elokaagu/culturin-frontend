@@ -72,6 +72,7 @@ export default async function EventLandingPage({ params }: Props) {
           <>
             <BlurImage
               src={hero.src}
+              style={{ objectPosition: hero.position }}
               alt={hero.alt}
               fill
               priority

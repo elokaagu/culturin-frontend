@@ -10,6 +10,8 @@ export type HeroSlide = {
   blurDataURL?: string;
   /** Used if `src` fails to load (e.g. no full-resolution copy exists). */
   fallbackSrc?: string;
+  /** CSS object-position from the slot's focal point. */
+  position?: string;
 };
 
 const SLIDE_MS = 6500;
@@ -129,6 +131,7 @@ export default function HeroSlideshow({
               if (slide.fallbackSrc && !failed.has(i)) setFailed((prev) => new Set(prev).add(i));
             }}
             className="object-cover"
+            style={{ objectPosition: slide.position }}
             placeholder={slide.blurDataURL ? "blur" : "empty"}
             blurDataURL={slide.blurDataURL}
           />

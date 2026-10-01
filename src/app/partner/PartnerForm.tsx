@@ -10,7 +10,7 @@ import { ACCENT_ON_DARK, EDITORIAL_ACCENT, SURFACE_DARK } from "@/lib/theme/cult
 const DISPLAY = "var(--font-display), 'Times New Roman', serif";
 const ACCENT = EDITORIAL_ACCENT;
 
-export type PartnerImage = { src: string; alt: string; blur: string };
+export type PartnerImage = { src: string; alt: string; blur: string; position?: string };
 
 const CHOICES = [
   { value: "intelligence", label: "Intelligence", line: "An ongoing read on culture, and what it means for your brand." },
@@ -40,6 +40,7 @@ function PanelImage({ img, active }: { img: PartnerImage; active: boolean }) {
         sizes="(min-width: 1024px) 50vw, 100vw"
         placeholder="blur"
         blurDataURL={img.blur}
+        style={{ objectPosition: img.position }}
         loading="lazy"
         onLoad={() => setLoaded(true)}
         className={`object-cover transition-[filter,transform] duration-1000 ease-out motion-reduce:transition-none ${

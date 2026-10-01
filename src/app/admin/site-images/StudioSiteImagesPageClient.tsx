@@ -6,21 +6,26 @@ import { useRouter } from "next/navigation";
 import { StudioImageUploadButton } from "@/app/admin/_components/StudioImageUploadButton";
 import LazyImg from "@/app/components/LazyImg";
 
+import { type Focal, FocalPointPicker } from "./FocalPointPicker";
+
 export type StudioSiteImageSlot = {
   key: string;
   label: string;
   src: string;
   alt: string;
   isCustomized: boolean;
+  focal: Focal;
 };
 
 function SlotCard({ slot, onSaved }: { slot: StudioSiteImageSlot; onSaved: () => void }) {
   const [src, setSrc] = useState(slot.src);
   const [alt, setAlt] = useState(slot.alt);
+  const [focal, setFocal] = useState<Focal>(slot.focal);
+  const [editingFocus, setEditingFocus] = useState(false);
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  const dirty = src !== slot.src || alt !== slot.alt;
+  const dirty = src !== slot.src || alt !== slot.alt || focal?.x !== slot.focal?.x || focal?.y !== slot.focal?.y;
 
   async function handleSave() {
     setPending(true);
@@ -28,7 +33,7 @@ function SlotCard({ slot, onSaved }: { slot: StudioSiteImageSlot; onSaved: () =>
     const response = await fetch("/api/admin/site-images", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slot_key: slot.key, src, alt }),
+      body: JSON.stringify({ slot_key: slot.key, src, alt, focal_x: focal?.x ?? null, focal_y: focal?.y ?? null }),
     });
     const data = (await response.json().catch(() => ({}))) as { message?: string };
     setPending(false);
@@ -36,7 +41,7 @@ function SlotCard({ slot, onSaved }: { slot: StudioSiteImageSlot; onSaved: () =>
       setMessage(data.message ?? "Could not save this image.");
       return;
     }
-    setMessage("Saved.");
+    setMessage(data.message && data.message !== "Image updated" ? data.message : "Saved.");
     onSaved();
   }
 
@@ -57,6 +62,7 @@ function SlotCard({ slot, onSaved }: { slot: StudioSiteImageSlot; onSaved: () =>
             src={src}
             alt=""
             className="h-32 w-full shrink-0 rounded-xl border border-neutral-200 object-cover dark:border-white/10 sm:w-48"
+            style={{ objectPosition: focal ? `${focal.x}% ${focal.y}%` : undefined }}
           />
         ) : (
           <div className="flex h-32 w-full shrink-0 items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-neutral-900 dark:border-white/15 sm:w-48">
@@ -66,7 +72,27 @@ function SlotCard({ slot, onSaved }: { slot: StudioSiteImageSlot; onSaved: () =>
           </div>
         )}
         <div className="flex flex-1 flex-col gap-3">
-          <StudioImageUploadButton onUploaded={setSrc} buttonLabel={src ? "Replace photo" : "Add photo"} />
+          <div className="flex flex-wrap gap-2">
+            <StudioImageUploadButton
+              onUploaded={(url) => {
+                setSrc(url);
+                // A new photo starts centred and opens the focal editor.
+                setFocal(null);
+                setEditingFocus(true);
+              }}
+              buttonLabel={src ? "Replace photo" : "Add photo"}
+            />
+            {src ? (
+              <button
+                type="button"
+                onClick={() => setEditingFocus((v) => !v)}
+                className="inline-flex h-9 items-center rounded-full border border-neutral-300 px-4 text-sm text-[color:var(--c-ink)] hover:border-neutral-500 dark:border-white/15"
+              >
+                {editingFocus ? "Done positioning" : "Set focal point"}
+              </button>
+            ) : null}
+          </div>
+          {editingFocus && src ? <FocalPointPicker src={src} value={focal} onChange={setFocal} /> : null}
           <label className="flex flex-col gap-1.5 text-sm">
             <span className="font-medium text-neutral-700 dark:text-white/80">Alt text</span>
             <input

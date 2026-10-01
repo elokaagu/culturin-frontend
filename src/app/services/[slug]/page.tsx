@@ -95,6 +95,7 @@ export default async function ServicePage({ params }: { params: { slug: string }
               {hero.src ? (
                 <BlurImage
                   src={hero.src}
+                  style={{ objectPosition: hero.position }}
                   alt={hero.alt}
                   fill
                   priority
@@ -246,6 +247,7 @@ export default async function ServicePage({ params }: { params: { slug: string }
                   {s.image.src ? (
                     <BlurImage
                       src={s.image.src}
+                      style={{ objectPosition: s.image.position }}
                       alt={s.image.alt}
                       fill
                       sizes="(min-width: 768px) 50vw, 100vw"

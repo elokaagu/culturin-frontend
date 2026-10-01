@@ -118,21 +118,37 @@ export const SITE_IMAGE_SLOTS: SiteImageSlot[] = [
   },
 ];
 
-export type SiteImage = { src: string; alt: string };
+export type SiteImage = {
+  src: string;
+  alt: string;
+  /** CSS object-position from the slot's focal point, e.g. "38% 22%". Undefined = centre. */
+  position?: string;
+};
+
+/** "x% y%" for object-position, or undefined when no focal point is set. */
+export function focalPosition(x: number | null | undefined, y: number | null | undefined): string | undefined {
+  if (typeof x !== "number" || typeof y !== "number") return undefined;
+  return `${Math.round(x * 10) / 10}% ${Math.round(y * 10) / 10}%`;
+}
 
 /** Server-side: fetch every configured slot as a lookup map, keyed by slot_key. */
 export async function getSiteImagesMap(): Promise<Record<string, SiteImage>> {
   const db = getCmsDbOrNull();
   if (!db) return {};
 
-  const { data, error } = await db.from("site_images").select("slot_key, src, alt");
-  if (error || !data) return {};
+  // Focal columns arrive with migration 048; until it has run, fall back to the older shape.
+  let rows: Array<{ slot_key: string; src: string; alt: string; focal_x?: number | null; focal_y?: number | null }> | null = null;
+  const withFocal = await db.from("site_images").select("slot_key, src, alt, focal_x, focal_y");
+  if (!withFocal.error) rows = withFocal.data;
+  else {
+    const basic = await db.from("site_images").select("slot_key, src, alt");
+    if (basic.error) return {};
+    rows = basic.data;
+  }
+  if (!rows) return {};
 
   return Object.fromEntries(
-    (data as Array<{ slot_key: string; src: string; alt: string }>).map((row) => [
-      row.slot_key,
-      { src: resolveEventMediaSrc(row.src), alt: row.alt },
-    ]),
+    rows.map((row) => [row.slot_key, { src: resolveEventMediaSrc(row.src), alt: row.alt, position: focalPosition(row.focal_x, row.focal_y) }]),
   );
 }
 
@@ -148,7 +164,7 @@ export function resolveSiteImage(map: Record<string, SiteImage>, slotKey: string
   if (!row || !row.src) {
     return { src: resolveEventMediaSrc(fallback.src), alt: fallback.alt };
   }
-  return { src: resolveEventMediaSrc(row.src), alt: row.alt || fallback.alt };
+  return { src: resolveEventMediaSrc(row.src), alt: row.alt || fallback.alt, position: row.position };
 }
 
 /** Manifest-only fallback, for the Studio admin UI when no DB row exists yet for a known slot. */

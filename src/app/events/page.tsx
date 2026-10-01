@@ -85,6 +85,7 @@ export default async function EventsPage() {
                   {eventHero ? (
                     <BlurImage
                       src={eventHero.src}
+                      style={{ objectPosition: eventHero.position }}
                       alt={eventHero.alt}
                       fill
                       className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"

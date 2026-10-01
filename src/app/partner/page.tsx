@@ -27,7 +27,7 @@ export default async function PartnerPage({ searchParams }: { searchParams: { se
   const images: Record<string, PartnerImage> = {};
   for (const [choice, key] of Object.entries(IMAGE_KEYS)) {
     const img = resolveSiteImage(siteImages, key, manifestDefault(key));
-    if (img.src) images[choice] = { src: img.src, alt: img.alt, blur: blurForSrc(img.src) };
+    if (img.src) images[choice] = { src: img.src, alt: img.alt, blur: blurForSrc(img.src), position: img.position };
   }
 
   return (

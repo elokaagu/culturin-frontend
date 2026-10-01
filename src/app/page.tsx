@@ -224,6 +224,7 @@ export default async function HomePage() {
                   <div className="relative aspect-[4/5] overflow-hidden">
                     <BlurImage
                       src={s.image.src}
+                      style={{ objectPosition: s.image.position }}
                       alt={s.image.alt}
                       fill
                       sizes="(min-width: 768px) 33vw, 100vw"
@@ -302,6 +303,7 @@ export default async function HomePage() {
                     {eventHero ? (
                       <BlurImage
                         src={eventHero.src}
+                        style={{ objectPosition: eventHero.position }}
                         alt={eventHero.alt}
                         fill
                         className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.05]"
@@ -459,6 +461,7 @@ export default async function HomePage() {
             <Reveal as="div" className="relative aspect-[3/4] overflow-hidden lg:aspect-auto lg:min-h-[520px]">
               <BlurImage
                 src={cannesSection.src}
+                style={{ objectPosition: cannesSection.position }}
                 alt={cannesSection.alt}
                 fill
                 className="object-cover"

@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   description: "Replace the fixed homepage and event photos shown across the marketing site.",
 };
 
+/** "38% 22%" → { x: 38, y: 22 } */
+function parseFocal(position: string | undefined) {
+  const m = position?.match(/^([\d.]+)% ([\d.]+)%$/);
+  return m ? { x: Number(m[1]), y: Number(m[2]) } : null;
+}
+
 export default async function StudioSiteImagesPage() {
   const hasDb = Boolean(getSupabaseAdminFreshOrNull());
   const map = hasDb ? await getSiteImagesMap() : {};
@@ -25,6 +31,7 @@ export default async function StudioSiteImagesPage() {
       src: current.src,
       alt: current.alt,
       isCustomized: Boolean(row && row.src),
+      focal: parseFocal(row?.position),
     };
   });
 
