@@ -11,6 +11,8 @@ import {
 } from "@/app/admin/_lib/studioTheme";
 import { cn } from "@/lib/utils";
 
+import { StudioSelect } from "./StudioSelect";
+
 /** Primary “create” CTA used across Studio entity pages (matches Culturin copper + pill pattern). */
 export const studioCreateButtonClass =
   "inline-flex min-h-11 items-center justify-center rounded-full border border-[color:color-mix(in_srgb,var(--c-accent)_40%,transparent)] bg-[color:var(--c-ink)] px-6 py-2.5 text-sm font-semibold text-[color:var(--c-bg)] shadow-sm transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--c-accent)]";
@@ -31,8 +33,6 @@ const labelClass = `text-[0.7rem] font-medium uppercase tracking-[0.12em] ${stud
 const inputClass = cn(studioFieldInputClass, "w-full");
 
 /** Wrapper: inset copper bar on the left. */
-const accentWrapClass =
-  "rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] shadow-inner transition focus-within:border-[color:var(--c-accent)] focus-within:ring-2 focus-within:ring-[color:color-mix(in_srgb,var(--c-accent)_30%,transparent)] dark:bg-black/35 dark:shadow-[inset_3px_0_0_0_rgba(224,138,91,0.42)]";
 
 type StudioCulturinListSectionProps = {
   title: string;
@@ -92,19 +92,12 @@ export function StudioCulturinSearchSortRow({
       </label>
       <label className="flex w-full flex-col gap-2 sm:w-52 md:w-56">
         <span className={labelClass}>Sort</span>
-        <div className={accentWrapClass}>
-          <select
-            value={sortValue}
-            onChange={(e) => onSortChange(e.target.value as StudioSortKey)}
-            className="w-full cursor-pointer appearance-none rounded-xl border-0 bg-transparent py-2.5 pl-3.5 pr-9 text-sm text-[color:var(--c-ink)] outline-none"
-          >
-            {STUDIO_SORT_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <StudioSelect
+          aria-label="Sort"
+          value={sortValue}
+          onChange={(v) => onSortChange(v as StudioSortKey)}
+          options={STUDIO_SORT_OPTIONS.map((o) => ({ value: o.value, label: o.label }))}
+        />
       </label>
     </div>
   );

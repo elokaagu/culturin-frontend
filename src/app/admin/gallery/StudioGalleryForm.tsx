@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 
 import { Field } from "@/app/admin/_components/Field";
 import { StudioImageUploadButton } from "@/app/admin/_components/StudioImageUploadButton";
+import { StudioSelect } from "@/app/admin/_components/StudioSelect";
 import type { StudioGalleryListItem } from "@/lib/cms/queries";
 import LazyImg from "@/app/components/LazyImg";
 
@@ -113,14 +114,14 @@ export function StudioGalleryForm({
         <Field name="alt" label="Alt text" required defaultValue={initial?.alt ?? ""} />
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-medium text-neutral-700 dark:text-white/80">Orientation</span>
-          <select
+          <StudioSelect
             name="orientation"
             defaultValue={initial?.orientation ?? "landscape"}
-            className="rounded-xl border border-[color:var(--c-rule)] bg-[color:color-mix(in_srgb,var(--c-bg)_40%,white)] px-3.5 py-2.5 text-sm text-[color:var(--c-ink)] shadow-inner outline-none transition placeholder:text-[color:var(--c-muted)] focus-visible:border-[color:var(--c-accent)] focus-visible:ring-2 focus-visible:ring-[color:color-mix(in_srgb,var(--c-accent)_35%,transparent)] dark:bg-black/35"
-          >
-            <option value="landscape">Landscape</option>
-            <option value="portrait">Portrait</option>
-          </select>
+            options={[
+              { value: "landscape", label: "Landscape" },
+              { value: "portrait", label: "Portrait" },
+            ]}
+          />
         </label>
         <button
           type="submit"
