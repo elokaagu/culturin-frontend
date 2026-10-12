@@ -15,16 +15,15 @@ import {
 } from "@/lib/theme/culturinTokens";
 import StoryGrid from "./StoryGrid";
 import ExperiencesSpread from "./ExperiencesSpread";
-import SafeContentImage from "./SafeContentImage";
 import type { providerHeroCard, simpleBlogCard } from "@/lib/interface";
 import { appPageContainerClass } from "@/lib/appLayout";
 import {
-  IMAGE_BLUR_DATA_URL,
-  cmsImageUnoptimized,
-  isBundledPlaceholderSrc,
-  resolveContentImageSrc,
-} from "../../lib/imagePlaceholder";
-import { REPORT_EDITION, REPORT_SLUG, REPORT_SUBTITLE, REPORT_TITLE } from "../reports/the-irl-advantage/reportContent";
+  HEADLINE_STATS,
+  REPORT_EDITION,
+  REPORT_SLUG,
+  REPORT_SUBTITLE,
+  REPORT_TITLE,
+} from "../reports/the-irl-advantage/reportContent";
 
 type HomePageClientProps = {
   initialBlogs: simpleBlogCard[];
@@ -35,45 +34,50 @@ const displayFont = { fontFamily: "var(--font-display), 'Times New Roman', serif
 const container = appPageContainerClass;
 const section = "border-t py-14 sm:py-20";
 
-function LeadStory({ story }: { story: simpleBlogCard }) {
-  const src = resolveContentImageSrc(story.titleImageUrl);
+function FeaturedReport() {
   return (
     <Link
-      href={`/articles/${story.currentSlug}`}
-      className="group grid grid-cols-1 items-center gap-8 no-underline outline-none lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-14"
+      href={`/reports/${REPORT_SLUG}`}
+      className="group block overflow-hidden rounded-3xl no-underline outline-none"
+      style={{ background: SURFACE_DARK, color: ON_DARK_TEXT }}
     >
-      <div
-        className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border"
-        style={{ borderColor: "var(--c-rule)", background: "var(--c-rule)" }}
-      >
-        <SafeContentImage
-          src={src}
-          alt={story.title}
-          blurDataURL={IMAGE_BLUR_DATA_URL}
-          className="object-cover transition duration-700 group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-          sizes="(max-width: 1024px) 100vw, 55vw"
-          unoptimized={isBundledPlaceholderSrc(src) || cmsImageUnoptimized(src)}
-          priority
-        />
-      </div>
-      <div className="min-w-0">
-        <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--c-accent)" }}>
-          Lead story
-        </p>
-        <h2
-          className="m-0 mt-4 text-balance text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl"
-          style={{ ...displayFont, color: "var(--c-ink)" }}
-        >
-          {story.title}
-        </h2>
-        {story.summary ? (
-          <p className="m-0 mt-4 line-clamp-4 text-base leading-relaxed" style={{ color: "var(--c-muted)" }}>
-            {story.summary}
+      <div className="grid grid-cols-1 gap-12 p-8 sm:p-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-16 lg:p-16">
+        <div className="flex flex-col">
+          <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: ACCENT_ON_DARK }}>
+            Core report 01
           </p>
-        ) : null}
-        <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold" style={{ color: "var(--c-accent)" }}>
-          Read the story <span aria-hidden>→</span>
-        </span>
+          <p className="m-0 mt-3 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: ON_DARK_MUTED }}>
+            {REPORT_EDITION}
+          </p>
+          <h2 id="report-heading" className="m-0 mt-8 text-5xl font-medium leading-[1.02] sm:text-7xl" style={displayFont}>
+            {REPORT_TITLE}
+          </h2>
+          <p className="m-0 mt-5 max-w-lg text-xl italic leading-snug sm:text-2xl" style={{ ...displayFont, color: ACCENT_ON_DARK }}>
+            {REPORT_SUBTITLE}
+          </p>
+          <p className="m-0 mt-6 max-w-lg text-sm leading-relaxed" style={{ color: ON_DARK_MUTED }}>
+            The latest independent data on why live experiences cut through a saturated internet, and the Culturin
+            playbook for brands that want to stand out in person.
+          </p>
+          <span
+            className="mt-10 inline-flex w-fit items-center rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] transition-opacity group-hover:opacity-85"
+            style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
+          >
+            Read the report →
+          </span>
+        </div>
+        <ul className="m-0 flex flex-col justify-end p-0">
+          {HEADLINE_STATS.map((s) => (
+            <li key={s.label} className="list-none border-t py-6 first:border-t-0 lg:first:border-t" style={{ borderColor: "rgba(241,233,220,0.15)" }}>
+              <p className="m-0 text-5xl font-medium leading-none sm:text-6xl" style={{ ...displayFont, color: ACCENT_ON_DARK }}>
+                {s.value}
+              </p>
+              <p className="m-0 mt-3 max-w-xs text-sm leading-relaxed" style={{ color: ON_DARK_MUTED }}>
+                {s.label}
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
     </Link>
   );
@@ -104,8 +108,7 @@ function SectionHead({ id, eyebrow, title, href, linkLabel }: { id: string; eyeb
 }
 
 export default function HomePageClient({ initialBlogs, initialProviders }: HomePageClientProps) {
-  const [lead, ...rest] = initialBlogs;
-  const latest = rest.slice(0, 6);
+  const latest = initialBlogs.slice(0, 6);
 
   return (
     <div className={editorialScopeClass} style={{ background: EDITORIAL_BG, color: EDITORIAL_INK }}>
@@ -123,11 +126,9 @@ export default function HomePageClient({ initialBlogs, initialProviders }: HomeP
           </h1>
         </header>
 
-        {lead ? (
-          <section className={`${container} pb-16`} aria-label="Lead story">
-            <LeadStory story={lead} />
-          </section>
-        ) : null}
+        <section className={`${container} pb-16`} aria-labelledby="report-heading">
+          <FeaturedReport />
+        </section>
 
         {latest.length > 0 ? (
           <section className={`${container} ${section}`} style={{ borderColor: "var(--c-rule)" }} aria-labelledby="latest-heading">
@@ -135,32 +136,6 @@ export default function HomePageClient({ initialBlogs, initialProviders }: HomeP
             <StoryGrid stories={latest} />
           </section>
         ) : null}
-
-        <section className={`${container} ${section}`} style={{ borderColor: "var(--c-rule)" }} aria-labelledby="report-heading">
-          <Link
-            href={`/reports/${REPORT_SLUG}`}
-            className="group grid grid-cols-1 gap-6 rounded-3xl p-8 no-underline sm:p-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end"
-            style={{ background: SURFACE_DARK, color: ON_DARK_TEXT }}
-          >
-            <div>
-              <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: ON_DARK_MUTED }}>
-                {REPORT_EDITION}
-              </p>
-              <h2 id="report-heading" className="m-0 mt-4 text-4xl font-medium leading-[1.05] sm:text-5xl" style={displayFont}>
-                {REPORT_TITLE}
-              </h2>
-              <p className="m-0 mt-4 max-w-xl text-base leading-relaxed" style={{ color: ON_DARK_MUTED }}>
-                {REPORT_SUBTITLE}
-              </p>
-            </div>
-            <span
-              className="inline-flex w-fit items-center rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] transition-opacity group-hover:opacity-85"
-              style={{ background: ACCENT_ON_DARK, color: SURFACE_DARK }}
-            >
-              Read the report
-            </span>
-          </Link>
-        </section>
 
         {initialProviders.length > 0 ? (
           <section className={`${container} ${section}`} style={{ borderColor: "var(--c-rule)" }} aria-labelledby="experiences-heading">
