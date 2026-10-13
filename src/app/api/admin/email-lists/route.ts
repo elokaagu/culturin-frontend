@@ -17,7 +17,7 @@ export async function GET() {
 export async function POST(request: Request) {
   const { isAdmin } = await getCurrentAdminState();
   if (!isAdmin) return NextResponse.json({ message: "Forbidden" }, { status: 403 });
-  const body = (await request.json().catch(() => ({}))) as { listId?: unknown; name?: unknown; members?: unknown };
+  const body = (await request.json().catch(() => ({}))) as { listId?: unknown; name?: unknown; members?: unknown; addToNewsletter?: unknown };
   const members = Array.isArray(body.members) ? (body.members as ListMemberInput[]).filter((m) => m && typeof m.email === "string") : [];
   if (members.length === 0) return NextResponse.json({ message: "There's nobody with an email address in that file." }, { status: 400 });
   if (members.length > MAX_MEMBERS) return NextResponse.json({ message: `Lists can hold up to ${MAX_MEMBERS.toLocaleString()} people.` }, { status: 400 });
@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     listId: typeof body.listId === "string" ? body.listId : undefined,
     name: typeof body.name === "string" ? body.name : undefined,
     members,
+    addToNewsletter: body.addToNewsletter === true,
   });
   if (!result.ok) return NextResponse.json({ message: result.message }, { status: 400 });
   return NextResponse.json(result, { status: 201 });

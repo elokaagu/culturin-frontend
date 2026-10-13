@@ -63,20 +63,86 @@ export async function listEmailLists(): Promise<{ ready: boolean; lists: EmailLi
   return { ready: true, lists };
 }
 
+/** Adds `tag` to a Studio-style `Tags` value ("\"A\", \"B\""), which the subscriber view shows as events. */
+function withTag(existing: unknown, tag: string): string {
+  const tags = Array.from(String(existing ?? "").matchAll(/"([^"]+)"/g), (m) => m[1]);
+  return (tags.includes(tag) ? tags : [...tags, tag]).map((t) => `"${t}"`).join(", ");
+}
+
+/**
+ * Adds guests to the general mailing list. New people are added with `source`; existing
+ * subscribers only get blanks filled in and the event added to their tags, and anyone who
+ * has unsubscribed stays unsubscribed.
+ */
+export async function addGuestsToNewsletter(
+  members: ListMemberInput[],
+  source: string,
+  eventTag: string,
+): Promise<{ ok: true; added: number; updated: number } | { ok: false; message: string }> {
+  const db = getSupabaseAdminFreshOrNull();
+  if (!db) return { ok: false, message: "The database isn't connected." };
+  const byEmail = new Map<string, ListMemberInput>();
+  for (const m of members) {
+    const email = String(m.email ?? "").trim().toLowerCase();
+    if (EMAIL_RE.test(email)) byEmail.set(email, m);
+  }
+  const all = await selectAllRowsOrNull("newsletter_subscribers", "id, email, first_name, last_name, company, raw_data", (q) => q.order("id"));
+  if (!all) return { ok: false, message: "Couldn't read the mailing list." };
+  const existing = new Map(all.map((r) => [String(r.email ?? "").trim().toLowerCase(), r]));
+
+  const inserts: Record<string, unknown>[] = [];
+  let updated = 0;
+  for (const [email, m] of Array.from(byEmail.entries())) {
+    const raw = { ...(m.raw ?? {}) };
+    const row = existing.get(email);
+    if (!row) {
+      inserts.push({
+        email,
+        first_name: m.firstName?.trim() || null,
+        last_name: m.lastName?.trim() || null,
+        company: m.company?.trim() || null,
+        source,
+        raw_data: { ...raw, Tags: withTag("", eventTag) },
+      });
+      continue;
+    }
+    const prevRaw = row.raw_data && typeof row.raw_data === "object" && !Array.isArray(row.raw_data) ? (row.raw_data as Record<string, unknown>) : {};
+    const patch: Record<string, unknown> = {
+      // Their existing details win; the event only fills gaps.
+      raw_data: { ...raw, ...prevRaw, Tags: withTag(prevRaw.Tags, eventTag) },
+    };
+    if (!row.first_name && m.firstName?.trim()) patch.first_name = m.firstName.trim();
+    if (!row.last_name && m.lastName?.trim()) patch.last_name = m.lastName.trim();
+    if (!row.company && m.company?.trim()) patch.company = m.company.trim();
+    const { error } = await db.from("newsletter_subscribers").update(patch).eq("id", row.id as string);
+    if (error) return { ok: false, message: `Couldn't update ${email}: ${error.message}` };
+    updated++;
+  }
+  for (let i = 0; i < inserts.length; i += 500) {
+    const { error } = await db.from("newsletter_subscribers").insert(inserts.slice(i, i + 500));
+    if (error) return { ok: false, message: `Couldn't add to the mailing list: ${error.message}` };
+  }
+  return { ok: true, added: inserts.length, updated };
+}
+
 /** Adds people to a list (creating it when `listId` is empty). Re-importing the same person just refreshes their details. */
-export async function importToList(input: { listId?: string; name?: string; members: ListMemberInput[] }): Promise<
-  { ok: true; id: string; added: number; skipped: number } | { ok: false; message: string }
+export async function importToList(input: { listId?: string; name?: string; members: ListMemberInput[]; addToNewsletter?: boolean }): Promise<
+  { ok: true; id: string; added: number; skipped: number; newsletter?: { added: number; updated: number } } | { ok: false; message: string }
 > {
   const db = getSupabaseAdminFreshOrNull();
   if (!db) return { ok: false, message: "The database isn't connected." };
 
   let listId = input.listId?.trim() ?? "";
+  let listName = input.name?.trim().slice(0, 120) ?? "";
   if (!listId) {
-    const name = input.name?.trim().slice(0, 120) ?? "";
-    if (!name) return { ok: false, message: "Give the list a name." };
-    const { data, error } = await db.from("email_lists").insert({ name }).select("id").single();
+    if (!listName) return { ok: false, message: "Give the list a name." };
+    const { data, error } = await db.from("email_lists").insert({ name: listName }).select("id").single();
     if (error || !data) return { ok: false, message: "Couldn't create the list. Has migration 049 been run?" };
     listId = String(data.id);
+  } else {
+    const { data } = await db.from("email_lists").select("name").eq("id", listId).maybeSingle();
+    if (!data) return { ok: false, message: "That list no longer exists." };
+    listName = String(data.name);
   }
 
   const rows = new Map<string, Record<string, unknown>>();
@@ -103,7 +169,11 @@ export async function importToList(input: { listId?: string; name?: string; memb
     if (error) return { ok: false, message: `Couldn't save the guests: ${error.message}` };
   }
   await db.from("email_lists").update({ updated_at: new Date().toISOString() }).eq("id", listId);
-  return { ok: true, id: listId, added: all.length, skipped };
+
+  if (!input.addToNewsletter) return { ok: true, id: listId, added: all.length, skipped };
+  const nl = await addGuestsToNewsletter(input.members, `Event guest (${listName})`, listName);
+  if (!nl.ok) return { ok: false, message: `The guest list was saved, but ${nl.message.charAt(0).toLowerCase()}${nl.message.slice(1)}` };
+  return { ok: true, id: listId, added: all.length, skipped, newsletter: { added: nl.added, updated: nl.updated } };
 }
 
 export async function deleteEmailList(id: string): Promise<string | null> {

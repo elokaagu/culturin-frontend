@@ -8,47 +8,10 @@ import { useStudioConfirm } from "@/app/admin/_components/StudioConfirmDialog";
 import { StudioCulturinListSection, studioCreateButtonClass } from "@/app/admin/_components/StudioCulturinListKit";
 import { studioFieldInputClass, studioGhostButtonClass } from "@/app/admin/_lib/studioTheme";
 import type { EmailList } from "@/lib/email/lists";
-import { parseSubscriberCsv } from "@/lib/studio/parseCsv";
+import { parseGuestCsv as parseGuests } from "@/lib/email/lumaGuests";
 import { cn } from "@/lib/utils";
 
-type Guest = { email: string; firstName: string; lastName: string; company: string; raw: Record<string, string>; approved: boolean; checkedIn: boolean };
 type Filter = "approved" | "checked_in" | "all";
-
-const pick = (raw: Record<string, string>, keys: string[]) => {
-  for (const [k, v] of Object.entries(raw)) if (keys.includes(k.trim().toLowerCase().replace(/[^a-z]/g, ""))) return v;
-  return undefined;
-};
-
-/** Reads a Luma guest export (or any CSV with an email column). */
-function parseGuests(text: string): { guests: Guest[]; hasStatus: boolean; hasCheckIn: boolean } {
-  const { rows } = parseSubscriberCsv(text);
-  let hasStatus = false;
-  let hasCheckIn = false;
-  const guests = rows
-    .filter((r) => r.email)
-    .map((r) => {
-      const status = pick(r.raw, ["approvalstatus"]);
-      const checkedInAt = pick(r.raw, ["checkedinat"]);
-      if (status !== undefined) hasStatus = true;
-      if (checkedInAt !== undefined) hasCheckIn = true;
-      let { firstName, lastName } = r;
-      if (!firstName && !lastName) {
-        const [first, ...rest] = (pick(r.raw, ["name", "fullname"]) ?? "").trim().split(/\s+/);
-        firstName = first ?? "";
-        lastName = rest.join(" ");
-      }
-      return {
-        email: r.email,
-        firstName,
-        lastName,
-        company: r.company,
-        raw: r.raw,
-        approved: status === undefined || status.trim().toLowerCase() === "approved",
-        checkedIn: Boolean(checkedInAt?.trim()),
-      };
-    });
-  return { guests, hasStatus, hasCheckIn };
-}
 
 function listNameFromFile(fileName: string): string {
   return fileName
@@ -62,6 +25,7 @@ function ImportPanel({ lists, onDone, onCancel }: { lists: EmailList[]; onDone: 
   const [name, setName] = useState("");
   const [parsed, setParsed] = useState<ReturnType<typeof parseGuests> | null>(null);
   const [filter, setFilter] = useState<Filter>("approved");
+  const [addToNewsletter, setAddToNewsletter] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -96,13 +60,17 @@ function ImportPanel({ lists, onDone, onCancel }: { lists: EmailList[]; onDone: 
       body: JSON.stringify({
         listId: target === "new" ? undefined : target,
         name,
+        addToNewsletter,
         members: selected.map(({ email, firstName, lastName, company, raw }) => ({ email, firstName, lastName, company, raw })),
       }),
     }).catch(() => null);
-    const data = (await res?.json().catch(() => ({}))) as { added?: number; skipped?: number; message?: string } | undefined;
+    const data = (await res?.json().catch(() => ({}))) as
+      | { added?: number; skipped?: number; newsletter?: { added: number; updated: number }; message?: string }
+      | undefined;
     setBusy(false);
     if (!res?.ok) return setError(data?.message ?? "Couldn't import the list.");
-    onDone(`Imported ${data?.added?.toLocaleString() ?? 0} guests${data?.skipped ? ` (${data.skipped} without a valid email left out)` : ""}.`);
+    const nl = data?.newsletter ? ` ${data.newsletter.added} new on the mailing list, ${data.newsletter.updated} existing subscribers updated.` : "";
+    onDone(`Imported ${data?.added?.toLocaleString() ?? 0} guests${data?.skipped ? ` (${data.skipped} without a valid email left out)` : ""}.${nl}`);
   }
 
   const options: { id: Filter; label: string; show: boolean }[] = [
@@ -114,7 +82,7 @@ function ImportPanel({ lists, onDone, onCancel }: { lists: EmailList[]; onDone: 
   return (
     <div className="flex flex-col gap-4 rounded-xl border border-[color:var(--c-rule)] p-4">
       <p className="m-0 text-sm text-[color:var(--c-muted)]">
-        In Luma, open the event, go to Guests and choose Download as CSV. Guests are only added to this list, not to the newsletter.
+        In Luma, open the event, go to Guests and choose Download as CSV. Role, company, LinkedIn and how they heard about the event are kept with each guest.
       </p>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="flex flex-col gap-2">
@@ -151,6 +119,22 @@ function ImportPanel({ lists, onDone, onCancel }: { lists: EmailList[]; onDone: 
             <p className="m-0 text-xs text-[color:var(--c-muted)]">Nobody was checked in on Luma, so use approved guests instead.</p>
           ) : null}
         </fieldset>
+      ) : null}
+      {parsed ? (
+        <label className="flex items-start gap-2.5 text-sm text-[color:var(--c-ink)]">
+          <input
+            type="checkbox"
+            checked={addToNewsletter}
+            onChange={(e) => setAddToNewsletter(e.target.checked)}
+            className="mt-0.5 h-4 w-4 accent-[color:var(--c-accent)]"
+          />
+          <span>
+            Also add them to the mailing list
+            <span className="block text-xs text-[color:var(--c-muted)]">
+              Only if they agreed to hear from Culturin. Anyone who has unsubscribed stays unsubscribed.
+            </span>
+          </span>
+        </label>
       ) : null}
       {error ? <Notice tone="error">{error}</Notice> : null}
       <div className="flex flex-wrap gap-2">
