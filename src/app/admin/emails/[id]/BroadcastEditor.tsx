@@ -12,7 +12,18 @@ import { studioFieldInputClass, studioGhostButtonClass, studioPanelClass } from 
 import { ArticleRichEditor, type ArticleRichEditorHandle } from "@/app/admin/articles/_components/ArticleRichEditor";
 import type { Broadcast, BroadcastStats, SendProgress } from "@/lib/email/broadcasts";
 import type { EmailList } from "@/lib/email/lists";
-import { DEFAULT_CTA, getCta, isSafeCtaUrl, renderBroadcastHtml, withCta, type BroadcastCta } from "@/lib/email/broadcastRender";
+import {
+  DEFAULT_CTA,
+  DEFAULT_SIGNOFF,
+  getCta,
+  getSignoff,
+  isSafeCtaUrl,
+  renderBroadcastHtml,
+  withCta,
+  withSignoff,
+  type BroadcastCta,
+  type BroadcastSignoff,
+} from "@/lib/email/broadcastRender";
 import { EMAIL_STYLE } from "@/lib/email/culturinEmail";
 import { cn } from "@/lib/utils";
 
@@ -150,6 +161,7 @@ export function BroadcastEditor({
   const [dirty, setDirty] = useState(false);
   const [cta, setCta] = useState<BroadcastCta | null>(() => getCta(broadcast.body));
   const ctaInvalid = cta !== null && (!cta.label.trim() || !isSafeCtaUrl(cta.url));
+  const [signoff, setSignoff] = useState<BroadcastSignoff | null>(() => getSignoff(broadcast.body));
   const [fullscreen, setFullscreen] = useState(false);
   const [listId, setListId] = useState<string | null>(broadcast.listId);
   const listName = listId ? audiences.lists.find((l) => l.id === listId)?.name ?? "an event list" : null;
@@ -171,6 +183,11 @@ export function BroadcastEditor({
 
   function updateCta(next: BroadcastCta | null) {
     setCta(next);
+    setDirty(true);
+  }
+
+  function updateSignoff(next: BroadcastSignoff | null) {
+    setSignoff(next);
     setDirty(true);
   }
 
@@ -200,8 +217,8 @@ export function BroadcastEditor({
   }, [isDraft]);
 
   const previewHtml = useMemo(
-    () => renderBroadcastHtml({ subject, preheader, body: withCta(body, cta) }, "#unsubscribe", listId !== null),
-    [subject, preheader, body, cta, listId],
+    () => renderBroadcastHtml({ subject, preheader, body: withSignoff(withCta(body, cta), signoff) }, "#unsubscribe", listId !== null),
+    [subject, preheader, body, cta, signoff, listId],
   );
 
   const save = useCallback(async (audience: string | null = listId): Promise<boolean> => {
@@ -209,7 +226,7 @@ export function BroadcastEditor({
       setNotice({ tone: "error", text: "The button needs a label and a link starting with https:// (or mailto:)." });
       return false;
     }
-    const latest = withCta(editorRef.current?.getPortableBody() ?? body, cta);
+    const latest = withSignoff(withCta(editorRef.current?.getPortableBody() ?? body, cta), signoff);
     const res = await fetch("/api/admin/broadcasts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -222,7 +239,7 @@ export function BroadcastEditor({
     }
     setDirty(false);
     return true;
-  }, [audiences.ready, body, broadcast.id, cta, ctaInvalid, listId, preheader, subject]);
+  }, [audiences.ready, body, broadcast.id, cta, ctaInvalid, listId, preheader, signoff, subject]);
 
   async function changeAudience(next: string | null) {
     const previous = listId;
@@ -431,6 +448,28 @@ export function BroadcastEditor({
                       onChange={(e) => updateCta({ ...cta, url: e.target.value })}
                       aria-invalid={ctaInvalid}
                     />
+                  </Field>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="flex flex-col gap-3 rounded-xl border border-[color:var(--c-rule)] p-4">
+              <label className="flex items-center gap-2.5 text-sm font-medium text-[color:var(--c-ink)]">
+                <input
+                  type="checkbox"
+                  checked={signoff !== null}
+                  onChange={(e) => updateSignoff(e.target.checked ? DEFAULT_SIGNOFF : null)}
+                  className="h-4 w-4 accent-[color:var(--c-accent)]"
+                />
+                End with a sign-off
+              </label>
+              {signoff ? (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Field label="Closing">
+                    <input className={studioFieldInputClass} value={signoff.closing} maxLength={60} onChange={(e) => updateSignoff({ ...signoff, closing: e.target.value })} />
+                  </Field>
+                  <Field label="From">
+                    <input className={studioFieldInputClass} value={signoff.name} maxLength={80} onChange={(e) => updateSignoff({ ...signoff, name: e.target.value })} />
                   </Field>
                 </div>
               ) : null}

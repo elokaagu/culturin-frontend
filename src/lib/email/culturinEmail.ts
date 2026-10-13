@@ -19,10 +19,11 @@ const ACCENT = "#cd6b3f";
 // Same palette the site itself uses for dark mode (.dark .culturin-editorial in globals.css),
 // so an email opened in a dark-mode client matches the dark site rather than a crude auto-invert.
 const DARK_BG = "#17130f";
-const DARK_CARD = "#201b15";
+const DARK_HEAD = "#0e0b08";
+const DARK_CARD = "#231d16";
 const DARK_INK = "#f1e9dc";
 const DARK_MUTED = "#b9ab98";
-const DARK_RULE = "#3a332a";
+const DARK_RULE = "#3f372d";
 const DARK_ACCENT = "#e08a5b";
 const DISPLAY = "Recoleta, Georgia, 'Times New Roman', serif";
 const SANS = "'Helvetica Neue', Helvetica, Arial, sans-serif";
@@ -64,11 +65,15 @@ export type EmailDetail = { label: string; value: string; href?: string };
 
 export const EMAIL_STYLE = { BG, INK, MUTED, RULE, ACCENT, DISPLAY, SANS, linkStyle, linkStyleMuted } as const;
 
+/** Width of the content column inside the card (600px card minus its side padding). */
+export const EMAIL_CONTENT_WIDTH = 528;
+
 /**
  * The outer Culturin email: cream page, card with the gold Culturin logo on a dark band,
- * and a small footer. `content` is trusted HTML already styled inline.
+ * and a small footer. `content` is trusted HTML already styled inline. `hero` is an
+ * optional full-width picture between the logo band and the card.
  */
-export function emailShell(opts: { title: string; preheader?: string; content: string; footer: string }): string {
+export function emailShell(opts: { title: string; preheader?: string; content: string; footer: string; hero?: { src: string; alt: string } }): string {
   const logo = `${siteOrigin()}/email/culturin-logo.png`;
   const preheader = opts.preheader
     ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">${escapeHtml(opts.preheader)}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>`
@@ -82,7 +87,7 @@ export function emailShell(opts: { title: string; preheader?: string; content: s
 :root{color-scheme:light dark;supported-color-schemes:light dark;}
 @media (prefers-color-scheme:dark){
   body,.em-bg{background:${DARK_BG} !important;}
-  .em-head{background:${INK} !important;}
+  .em-head{background:${DARK_HEAD} !important;}
   .em-card{background:${DARK_CARD} !important;border-color:${DARK_RULE} !important;}
   .em-ink{color:${DARK_INK} !important;}
   .em-muted{color:${DARK_MUTED} !important;}
@@ -92,7 +97,7 @@ export function emailShell(opts: { title: string; preheader?: string; content: s
   a{color:${DARK_INK} !important;}
 }
 [data-ogsc] body,[data-ogsc] .em-bg{background:${DARK_BG} !important;}
-[data-ogsc] .em-head{background:${INK} !important;}
+[data-ogsc] .em-head{background:${DARK_HEAD} !important;}
 [data-ogsc] .em-card{background:${DARK_CARD} !important;border-color:${DARK_RULE} !important;}
 [data-ogsc] .em-ink{color:${DARK_INK} !important;}
 [data-ogsc] .em-muted{color:${DARK_MUTED} !important;}
@@ -109,13 +114,18 @@ ${preheader}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${BG}" class="em-bg" style="background:${BG};">
 <tr><td align="center" style="padding:32px 12px;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">
-    <tr><td bgcolor="${INK}" class="em-head" style="background:${INK};border-radius:20px 20px 0 0;padding:22px 28px;">
+    <tr><td bgcolor="${INK}" class="em-head" style="background:${INK};border-radius:20px 20px 0 0;border-bottom:3px solid ${ACCENT};padding:24px 36px;">
       <a href="${siteOrigin()}" style="text-decoration:none;"><img src="${logo}" width="146" height="41" alt="Culturin" style="display:block;border:0;width:146px;height:41px;"></a>
     </td></tr>
-    <tr><td bgcolor="#fffdf9" class="em-card em-rule" style="background:#fffdf9;border:1px solid ${RULE};border-top:0;border-radius:0 0 20px 20px;padding:32px 28px;">
+    ${
+      opts.hero
+        ? `<tr><td style="padding:0;line-height:0;font-size:0;"><img src="${escapeHtml(opts.hero.src)}" alt="${escapeHtml(opts.hero.alt)}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;"></td></tr>`
+        : ""
+    }
+    <tr><td bgcolor="#fffdf9" class="em-card em-rule" style="background:#fffdf9;border:1px solid ${RULE};border-top:0;border-radius:0 0 20px 20px;padding:40px 36px 36px;">
 ${opts.content}
     </td></tr>
-    <tr><td class="em-muted" style="padding:20px 4px 0;font:400 12px/1.6 ${SANS};color:${MUTED};">${opts.footer}</td></tr>
+    <tr><td class="em-muted" style="padding:24px 36px 0;font:400 12px/1.7 ${SANS};color:${MUTED};">${opts.footer}</td></tr>
   </table>
 </td></tr>
 </table>
