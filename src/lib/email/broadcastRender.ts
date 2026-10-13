@@ -72,12 +72,14 @@ export function withCta(blocks: unknown, cta: BroadcastCta | null): unknown[] {
   return cta && cta.label.trim() && isSafeCtaUrl(cta.url) ? [...rest, { _type: "cta", _key: "cta", label: cta.label.trim(), url: cta.url.trim() }] : rest;
 }
 
-export function renderBroadcastHtml(b: BroadcastContent, unsubscribeUrl: string): string {
+/** `eventGuest`: sent to an event's guest list rather than the mailing list. */
+export function renderBroadcastHtml(b: BroadcastContent, unsubscribeUrl: string, eventGuest = false): string {
   const cta = getCta(b.body);
   const content = styleHtml(portableTextBlocksToHtml(b.body)) + (cta ? ctaButton({ label: cta.label, href: cta.url }) : "");
+  const reason = eventGuest ? "you registered for a Culturin event" : "you joined the Culturin list";
   const footer = [
     `<a href="${siteOrigin()}" class="em-muted" style="${linkStyleMuted}">Culturin</a>`,
-    `You're receiving this because you joined the Culturin list. <a href="${escapeHtml(unsubscribeUrl)}" class="em-muted" style="${linkStyleMuted}">Unsubscribe</a>.`,
+    `You're receiving this because ${reason}. <a href="${escapeHtml(unsubscribeUrl)}" class="em-muted" style="${linkStyleMuted}">Unsubscribe</a>.`,
     process.env.NEXT_PUBLIC_EMAIL_POSTAL_ADDRESS?.trim() ? escapeHtml(process.env.NEXT_PUBLIC_EMAIL_POSTAL_ADDRESS.trim()) : "",
   ]
     .filter(Boolean)

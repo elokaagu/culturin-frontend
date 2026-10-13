@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { suppressEmail } from "@/lib/email/suppress";
 import { verifyUnsubscribe } from "@/lib/email/unsubscribe";
 import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
@@ -22,11 +23,7 @@ export async function POST(request: Request) {
   if (!email) return NextResponse.json({ message: "This unsubscribe link isn't valid." }, { status: 400 });
 
   const db = getSupabaseAdminOrNull();
-  if (db) {
-    await db.from("newsletter_subscribers").update({ unsubscribed_at: new Date().toISOString() }).eq("email", email).is("unsubscribed_at", null);
-    // Separate update: the reason column only exists after migration 046.
-    await db.from("newsletter_subscribers").update({ suppressed_reason: "unsubscribed" }).eq("email", email).is("suppressed_reason", null);
-  }
+  if (db) await suppressEmail(db, email, "unsubscribed");
 
   const isForm = (request.headers.get("content-type") ?? "").includes("application/x-www-form-urlencoded") && !url.searchParams.get("e");
   if (isForm) return NextResponse.redirect(new URL(`/unsubscribe?done=1`, url.origin), 303);

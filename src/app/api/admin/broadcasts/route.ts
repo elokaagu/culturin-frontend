@@ -32,6 +32,7 @@ export async function POST(request: Request) {
     subject: String(body.subject ?? "").trim(),
     preheader: String(body.preheader ?? "").trim(),
     body: body.body,
+    listId: body.listId === null || typeof body.listId === "string" ? (body.listId as string | null) || null : undefined,
   });
   if (err) return NextResponse.json({ message: err }, { status: 400 });
   return NextResponse.json({ ok: true });

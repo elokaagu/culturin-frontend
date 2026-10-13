@@ -11,6 +11,7 @@ import { studioCreateButtonClass } from "@/app/admin/_components/StudioCulturinL
 import { studioFieldInputClass, studioGhostButtonClass, studioPanelClass } from "@/app/admin/_lib/studioTheme";
 import { ArticleRichEditor, type ArticleRichEditorHandle } from "@/app/admin/articles/_components/ArticleRichEditor";
 import type { Broadcast, BroadcastStats, SendProgress } from "@/lib/email/broadcasts";
+import type { EmailList } from "@/lib/email/lists";
 import { DEFAULT_CTA, getCta, isSafeCtaUrl, renderBroadcastHtml, withCta, type BroadcastCta } from "@/lib/email/broadcastRender";
 import { EMAIL_STYLE } from "@/lib/email/culturinEmail";
 import { cn } from "@/lib/utils";
@@ -60,11 +61,14 @@ function SendPanel({
   progress,
   busy,
   lastSentAt,
+  listName,
   onSend,
 }: {
   progress: SendProgress;
   busy: boolean;
   lastSentAt: string | null;
+  /** Set when this email goes to an event list rather than the whole mailing list. */
+  listName: string | null;
   onSend: (limit: number | null) => void;
 }) {
   const { sent, remaining, total } = progress;
@@ -84,7 +88,9 @@ function SendPanel({
         <div className="h-full rounded-full bg-[color:var(--c-accent)] transition-all" style={{ width: `${pct}%` }} />
       </div>
       <p className="m-0 max-w-2xl text-sm leading-relaxed text-[color:var(--c-muted)]">
-        {sent === 0
+        {sent === 0 && listName
+          ? `Going to the guests on “${listName}”, the Culturin team first. A guest list this size can go in one send; anyone who has unsubscribed or bounced is left out.`
+          : sent === 0
           ? "Start small so inboxes learn to trust culturin.com. People most likely to open go first: the Culturin team, then event guests and partners, then site sign-ups, then imported contacts."
           : `Last batch sent ${lastSentAt ? formatAdminDate(lastSentAt) : "recently"}. Before the next one, check Resend for bounces and spam complaints, and leave about a day between batches.`}
         {" "}The email can&apos;t be edited once the first batch has gone.
@@ -117,7 +123,19 @@ function SendPanel({
   );
 }
 
-export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Broadcast; progress: SendProgress; stats: BroadcastStats }) {
+type Audiences = { ready: boolean; lists: EmailList[]; mailingList: number | null };
+
+export function BroadcastEditor({
+  broadcast,
+  progress,
+  stats,
+  audiences,
+}: {
+  broadcast: Broadcast;
+  progress: SendProgress;
+  stats: BroadcastStats;
+  audiences: Audiences;
+}) {
   const router = useRouter();
   const confirm = useStudioConfirm();
   const editorRef = useRef<ArticleRichEditorHandle>(null);
@@ -133,6 +151,8 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
   const [cta, setCta] = useState<BroadcastCta | null>(() => getCta(broadcast.body));
   const ctaInvalid = cta !== null && (!cta.label.trim() || !isSafeCtaUrl(cta.url));
   const [fullscreen, setFullscreen] = useState(false);
+  const [listId, setListId] = useState<string | null>(broadcast.listId);
+  const listName = listId ? audiences.lists.find((l) => l.id === listId)?.name ?? "an event list" : null;
 
   // Escape closes full-screen editing; lock the page underneath from scrolling while it's open.
   useEffect(() => {
@@ -180,11 +200,11 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
   }, [isDraft]);
 
   const previewHtml = useMemo(
-    () => renderBroadcastHtml({ subject, preheader, body: withCta(body, cta) }, "#unsubscribe"),
-    [subject, preheader, body, cta],
+    () => renderBroadcastHtml({ subject, preheader, body: withCta(body, cta) }, "#unsubscribe", listId !== null),
+    [subject, preheader, body, cta, listId],
   );
 
-  const save = useCallback(async (): Promise<boolean> => {
+  const save = useCallback(async (audience: string | null = listId): Promise<boolean> => {
     if (ctaInvalid) {
       setNotice({ tone: "error", text: "The button needs a label and a link starting with https:// (or mailto:)." });
       return false;
@@ -193,7 +213,7 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
     const res = await fetch("/api/admin/broadcasts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: broadcast.id, subject, preheader, body: latest }),
+      body: JSON.stringify({ id: broadcast.id, subject, preheader, body: latest, ...(audiences.ready ? { listId: audience } : {}) }),
     }).catch(() => null);
     const data = (await res?.json().catch(() => ({}))) as { message?: string } | undefined;
     if (!res?.ok) {
@@ -202,7 +222,17 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
     }
     setDirty(false);
     return true;
-  }, [body, broadcast.id, cta, ctaInvalid, preheader, subject]);
+  }, [audiences.ready, body, broadcast.id, cta, ctaInvalid, listId, preheader, subject]);
+
+  async function changeAudience(next: string | null) {
+    const previous = listId;
+    setListId(next);
+    setNotice(null);
+    setBusy("save");
+    if (await save(next)) router.refresh();
+    else setListId(previous);
+    setBusy(null);
+  }
 
   async function onSave() {
     setBusy("save");
@@ -225,7 +255,7 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
       title: `Send to ${count.toLocaleString()} ${count === 1 ? "person" : "people"}?`,
       description:
         progress.sent === 0
-          ? `This sends “${subject || "Untitled email"}” to the first ${count.toLocaleString()} people on the list and locks the email from further edits. Send yourself a test first if you haven't.`
+          ? `This sends “${subject || "Untitled email"}” to ${count.toLocaleString()} ${listName ? `guests on “${listName}”` : "people on the mailing list"} and locks the email from further edits. Send yourself a test first if you haven't.`
           : `The next ${count.toLocaleString()} people who haven't had “${subject || "Untitled email"}” yet. Nobody gets it twice.`,
       confirmLabel: "Send now",
       destructive: false,
@@ -280,11 +310,41 @@ export function BroadcastEditor({ broadcast, progress, stats }: { broadcast: Bro
 
       {progress.sent > 0 ? <BroadcastStatsPanel stats={stats} subject={subject} broadcastId={broadcast.id} /> : null}
 
-      {canSend ? <SendPanel progress={progress} busy={busy !== null} lastSentAt={broadcast.sentAt} onSend={(n) => void sendBatch(n)} /> : null}
+      {!isDraft && listName ? <p className="mt-1 text-sm text-[color:var(--c-muted)]">Audience: {listName}.</p> : null}
+
+      {canSend ? (
+        <SendPanel progress={progress} busy={busy !== null} lastSentAt={broadcast.sentAt} listName={listName} onSend={(n) => void sendBatch(n)} />
+      ) : null}
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,620px)]">
         {isDraft ? (
           <section className={cn(studioPanelClass, "flex min-w-0 flex-col gap-5")}>
+            {audiences.ready ? (
+              <Field
+                label="Send to"
+                hint={
+                  audiences.lists.length === 0
+                    ? "To email one event's guests, import their Luma export under Event lists on the Emails page."
+                    : "Event lists only include that event's guests. Anyone who has unsubscribed or bounced is always left out."
+                }
+              >
+                <select
+                  className={studioFieldInputClass}
+                  value={listId ?? ""}
+                  disabled={busy !== null}
+                  onChange={(e) => void changeAudience(e.target.value || null)}
+                >
+                  <option value="">
+                    Everyone on the mailing list{audiences.mailingList !== null ? ` (${audiences.mailingList.toLocaleString()})` : ""}
+                  </option>
+                  {audiences.lists.map((l) => (
+                    <option key={l.id} value={l.id}>
+                      {l.name} ({l.sendable.toLocaleString()} {l.sendable === 1 ? "guest" : "guests"})
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            ) : null}
             <Field label="Subject line">
               <input
                 className={studioFieldInputClass}

@@ -3,6 +3,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 
 import { lookupPlace } from "@/lib/email/geo";
+import { suppressEmail } from "@/lib/email/suppress";
 import { getSupabaseAdminOrNull } from "@/lib/supabaseServiceRole";
 
 export const dynamic = "force-dynamic";
@@ -126,10 +127,7 @@ export async function POST(req: Request) {
 
   // Protect the sender reputation: never email hard bounces or people who marked it as spam again.
   const suppress = type === "email.complained" ? "complained" : type === "email.bounced" && bounceType.toLowerCase() !== "transient" ? "bounced" : null;
-  if (suppress && email) {
-    await db.from("newsletter_subscribers").update({ unsubscribed_at: new Date().toISOString() }).eq("email", email).is("unsubscribed_at", null);
-    await db.from("newsletter_subscribers").update({ suppressed_reason: suppress }).eq("email", email);
-  }
+  if (suppress && email) await suppressEmail(db, email, suppress);
 
   return NextResponse.json({ ok: true });
 }

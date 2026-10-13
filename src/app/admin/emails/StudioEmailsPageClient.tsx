@@ -13,7 +13,15 @@ import { cn } from "@/lib/utils";
 
 const STATUS_LABEL: Record<Broadcast["status"], string> = { draft: "Draft", partial: "Partly sent", sending: "Sending…", sent: "Sent", failed: "Failed" };
 
-export function StudioEmailsPageClient({ tableReady, initial }: { tableReady: boolean; initial: Broadcast[] }) {
+export function StudioEmailsPageClient({
+  tableReady,
+  initial,
+  listNames,
+}: {
+  tableReady: boolean;
+  initial: Broadcast[];
+  listNames: Record<string, string>;
+}) {
   const router = useRouter();
   const confirm = useStudioConfirm();
   const [items, setItems] = useState(initial);
@@ -83,6 +91,7 @@ export function StudioEmailsPageClient({ tableReady, initial }: { tableReady: bo
                       : b.status === "sent" || b.status === "failed"
                       ? `Sent ${b.sentAt ? formatAdminDate(b.sentAt) : ""} to ${b.sentCount.toLocaleString()}${b.failedCount ? ` · ${b.failedCount} failed` : ""}`
                       : `Edited ${formatAdminDate(b.updatedAt)}`}
+                    {b.listId ? ` · To ${listNames[b.listId] ?? "an event list"}` : ""}
                     {b.sentCount > 0 && typeof b.opened === "number" && typeof b.clicked === "number"
                       ? ` · ${Math.round((b.opened / b.sentCount) * 100)}% opened · ${Math.round((b.clicked / b.sentCount) * 100)}% clicked`
                       : ""}

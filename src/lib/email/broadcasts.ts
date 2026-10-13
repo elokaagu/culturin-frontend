@@ -5,6 +5,9 @@ import { createHash } from "node:crypto";
 import { renderBroadcastHtml, renderBroadcastText } from "@/lib/email/broadcastRender";
 import { unsubscribeOneClickUrl, unsubscribeUrl } from "@/lib/email/unsubscribe";
 import { classifyClicks, isUnsubscribeLink } from "@/lib/email/clickClassifier";
+import { listMemberProfiles, listRecipients } from "@/lib/email/lists";
+import { selectAllRowsOrNull } from "@/lib/email/selectAllRows";
+import { suppressEmail } from "@/lib/email/suppress";
 import { describeUserAgent } from "@/lib/email/userAgent";
 import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
@@ -24,6 +27,8 @@ export type Broadcast = {
   lastError: string | null;
   createdAt: string;
   updatedAt: string;
+  /** Event list this goes to; null means everyone on the mailing list. */
+  listId: string | null;
   /** Unique opens / clicks so far (null when tracking isn't set up). */
   opened?: number | null;
   clicked?: number | null;
@@ -50,15 +55,24 @@ function toBroadcast(r: Record<string, unknown>): Broadcast {
     lastError: (r.last_error as string | null) ?? null,
     createdAt: String(r.created_at ?? ""),
     updatedAt: String(r.updated_at ?? ""),
+    listId: typeof r.list_id === "string" ? r.list_id : null,
   };
+}
+
+/** Runs a select with the list column, falling back to the older columns before migration 049. */
+async function selectBroadcastRows<T>(
+  run: (columns: string) => PromiseLike<{ data: T | null; error: unknown }>,
+): Promise<{ data: T | null; error: unknown }> {
+  const withList = await run(`${COLUMNS}, list_id`);
+  return withList.error ? run(COLUMNS) : withList;
 }
 
 export async function listBroadcasts(): Promise<{ tableReady: boolean; items: Broadcast[] }> {
   const db = getSupabaseAdminFreshOrNull();
   if (!db) return { tableReady: false, items: [] };
-  const { data, error } = await db.from("email_broadcasts").select(COLUMNS).order("created_at", { ascending: false });
+  const { data, error } = await selectBroadcastRows((cols) => db.from("email_broadcasts").select(cols).order("created_at", { ascending: false }));
   if (error || !data) return { tableReady: false, items: [] };
-  const items = (data as Record<string, unknown>[]).map(toBroadcast);
+  const items = (data as unknown as Record<string, unknown>[]).map(toBroadcast);
   // Opens and clicks (security-scanner activity excluded) for anything that has gone out.
   await Promise.all(
     items
@@ -75,8 +89,8 @@ export async function listBroadcasts(): Promise<{ tableReady: boolean; items: Br
 export async function getBroadcast(id: string): Promise<Broadcast | null> {
   const db = getSupabaseAdminFreshOrNull();
   if (!db) return null;
-  const { data } = await db.from("email_broadcasts").select(COLUMNS).eq("id", id).maybeSingle();
-  return data ? toBroadcast(data as Record<string, unknown>) : null;
+  const { data } = await selectBroadcastRows((cols) => db.from("email_broadcasts").select(cols).eq("id", id).maybeSingle());
+  return data ? toBroadcast(data as unknown as Record<string, unknown>) : null;
 }
 
 export async function createBroadcast(): Promise<Broadcast | null> {
@@ -86,9 +100,14 @@ export async function createBroadcast(): Promise<Broadcast | null> {
   return data ? toBroadcast(data as Record<string, unknown>) : null;
 }
 
-export async function saveBroadcast(id: string, input: { subject: string; preheader: string; body: unknown }): Promise<string | null> {
+export async function saveBroadcast(
+  id: string,
+  input: { subject: string; preheader: string; body: unknown; listId?: string | null },
+): Promise<string | null> {
   const db = getSupabaseAdminFreshOrNull();
   if (!db) return "The database isn't connected.";
+  // The audience is fixed once anyone has been sent it.
+  if (input.listId !== undefined && (await alreadySent(id)).size > 0) return "This email has already gone to some people, so its audience can't change.";
   const { data, error } = await db
     .from("email_broadcasts")
     .update({ subject: input.subject.slice(0, 200), preheader: input.preheader.slice(0, 250), body: Array.isArray(input.body) ? input.body : [] })
@@ -96,7 +115,12 @@ export async function saveBroadcast(id: string, input: { subject: string; prehea
     .eq("status", "draft")
     .select("id");
   if (error) return error.message;
-  return data && data.length > 0 ? null : "Only drafts can be edited.";
+  if (!data || data.length === 0) return "Only drafts can be edited.";
+  if (input.listId !== undefined) {
+    const { error: listError } = await db.from("email_broadcasts").update({ list_id: input.listId }).eq("id", id).eq("status", "draft");
+    if (listError) return "Couldn't set the audience. Run supabase/migrations/049_email_lists.sql in Supabase first.";
+  }
+  return null;
 }
 
 export async function deleteBroadcasts(ids: string[]): Promise<string | null> {
@@ -109,20 +133,8 @@ export async function deleteBroadcasts(ids: string[]): Promise<string | null> {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase query builders are typed per table; this helper works across tables.
-async function selectAllRows(table: string, columns: string, filter?: (q: any) => any): Promise<Record<string, unknown>[]> {
-  const db = getSupabaseAdminFreshOrNull();
-  if (!db) return [];
-  const out: Record<string, unknown>[] = [];
-  for (let from = 0; from < 200_000; from += 1000) {
-    let q = db.from(table).select(columns);
-    if (filter) q = filter(q);
-    const { data, error } = await q.range(from, from + 999);
-    if (error || !data) break;
-    out.push(...(data as unknown as Record<string, unknown>[]));
-    if (data.length < 1000) break;
-  }
-  return out;
+async function selectAllRows(...args: Parameters<typeof selectAllRowsOrNull>): Promise<Record<string, unknown>[]> {
+  return (await selectAllRowsOrNull(...args)) ?? [];
 }
 
 /**
@@ -131,16 +143,18 @@ async function selectAllRows(table: string, columns: string, filter?: (q: any) =
  * contacts, then people who signed up on the site, then imported contacts (newest opt-ins first).
  */
 export async function rankedRecipients(): Promise<string[]> {
-  const [subs, rsvps, inquiries] = await Promise.all([
+  const [subs, rsvps, inquiries, suppressed] = await Promise.all([
     selectAllRows("newsletter_subscribers", "id, email, source, created_at, optin:raw_data->>OPTIN_TIME", (q) => q.is("unsubscribed_at", null).order("id")),
     selectAllRows("event_rsvps", "email"),
     selectAllRows("partner_inquiries", "email"),
+    selectAllRowsOrNull("email_suppressions", "email", (q) => q.order("email")),
   ]);
   const engaged = new Set([...rsvps, ...inquiries].map((r) => String(r.email ?? "").trim().toLowerCase()));
+  const blocked = new Set((suppressed ?? []).map((r) => String(r.email)));
   const ranked = new Map<string, { tier: number; joined: number }>();
   for (const r of subs) {
     const email = String(r.email ?? "").trim().toLowerCase();
-    if (!EMAIL_RE.test(email) || ranked.has(email)) continue;
+    if (!EMAIL_RE.test(email) || ranked.has(email) || blocked.has(email)) continue;
     const source = String(r.source ?? "");
     const tier = email.endsWith("@culturin.com") ? 0 : engaged.has(email) ? 1 : source === "mailchimp" || source === "csv_import" ? 3 : 2;
     const optin = typeof r.optin === "string" ? Date.parse(r.optin.replace(" ", "T") + "Z") : NaN;
@@ -159,17 +173,22 @@ async function alreadySent(id: string): Promise<Set<string>> {
 
 export type SendProgress = { sent: number; remaining: number; total: number };
 
+/** Who this email goes to: its event list, or the whole mailing list. Null if the list can't be read (never fall back to everyone). */
+async function recipientsFor(listId: string | null): Promise<string[] | null> {
+  return listId ? listRecipients(listId) : rankedRecipients();
+}
+
 export async function getSendProgress(id: string): Promise<SendProgress> {
-  const [everyone, sent] = await Promise.all([rankedRecipients(), alreadySent(id)]);
-  const remaining = everyone.filter((e) => !sent.has(e)).length;
+  const b = await getBroadcast(id);
+  const [everyone, sent] = await Promise.all([recipientsFor(b?.listId ?? null), alreadySent(id)]);
+  const remaining = (everyone ?? []).filter((e) => !sent.has(e)).length;
   return { sent: sent.size, remaining, total: sent.size + remaining };
 }
 
+/** People on the mailing list who can be emailed. */
 export async function countRecipients(): Promise<number | null> {
-  const db = getSupabaseAdminFreshOrNull();
-  if (!db) return null;
-  const { count, error } = await db.from("newsletter_subscribers").select("id", { count: "exact", head: true }).is("unsubscribed_at", null);
-  return error ? null : count ?? 0;
+  if (!getSupabaseAdminFreshOrNull()) return null;
+  return (await rankedRecipients()).length;
 }
 
 function messageFor(b: Broadcast, email: string, test = false) {
@@ -180,7 +199,7 @@ function messageFor(b: Broadcast, email: string, test = false) {
     from: process.env.EMAIL_FROM?.trim() || FROM_DEFAULT,
     to: [email],
     subject: b.subject,
-    html: renderBroadcastHtml(b, unsub),
+    html: renderBroadcastHtml(b, unsub, Boolean(b.listId)),
     text: renderBroadcastText(b, unsub),
     headers: { "List-Unsubscribe": `<${unsubscribeOneClickUrl(email)}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
   };
@@ -248,7 +267,9 @@ export async function sendBatch(id: string, limit: number | null, sentBy: string
   const { error: tableError } = await db.from("email_broadcast_recipients").select("email", { head: true, count: "exact" }).limit(1);
   if (tableError) return { ok: false, message: "Run supabase/migrations/045_email_broadcast_recipients.sql in Supabase first, then try again." };
 
-  const [everyone, sentBefore] = await Promise.all([rankedRecipients(), alreadySent(id)]);
+  const [audience, sentBefore] = await Promise.all([recipientsFor(current.listId), alreadySent(id)]);
+  if (!audience) return { ok: false, message: "Couldn't read the guest list for this email. Nothing was sent." };
+  const everyone = audience;
   const pending = everyone.filter((e) => !sentBefore.has(e));
   if (pending.length === 0) {
     await db.from("email_broadcasts").update({ status: "sent" }).eq("id", id).neq("status", "sending");
@@ -293,7 +314,7 @@ export async function sendBatch(id: string, limit: number | null, sentBy: string
   }
 
   const totalSent = sentBefore.size + sent;
-  const remaining = everyone.length - totalSent;
+  const remaining = pending.length - sent;
   await db
     .from("email_broadcasts")
     .update({
@@ -487,6 +508,10 @@ export async function getBroadcastStats(id: string): Promise<BroadcastStats> {
       });
     }
   }
+  const guests = await listMemberProfiles(emails.filter((e) => !profiles.get(e.toLowerCase())?.name));
+  guests.forEach((p, email) => {
+    if (p.name || p.company) profiles.set(email, p);
+  });
 
   const people: EngagedPerson[] = notable
     .map((r) => {
@@ -616,8 +641,7 @@ export async function syncBroadcastFromResend(id: string): Promise<{ ok: boolean
     updated++;
     // Same protection as the webhook: never email bounces or spam complaints again.
     if (patch.bounced_at || patch.complained_at) {
-      await db.from("newsletter_subscribers").update({ unsubscribed_at: new Date().toISOString() }).eq("email", to).is("unsubscribed_at", null);
-      await db.from("newsletter_subscribers").update({ suppressed_reason: patch.bounced_at ? "bounced" : "complained" }).eq("email", to);
+      await suppressEmail(db, to, patch.bounced_at ? "bounced" : "complained");
       suppressed++;
     }
   }
