@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowLeft, Pencil } from "lucide-react";
+import { ArrowLeft, FileDown, Pencil } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { notFound } from "next/navigation";
 
@@ -40,10 +40,23 @@ export default async function StudioEmailAnalyticsPage({ params }: { params: { i
             {broadcast.sentBy ? ` by ${broadcast.sentBy}` : ""}. Pulled live from Resend&apos;s delivery events.
           </p>
         </div>
-        <Link href={`/admin/emails/${broadcast.id}`} className={cn(studioGhostButtonClass, "gap-1.5 px-4 py-2 text-sm font-semibold no-underline")}>
-          <Pencil className="h-3.5 w-3.5" aria-hidden />
-          {progress.sent > 0 ? "View email" : "Edit email"}
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          {progress.sent > 0 ? (
+            <a
+              href={`/api/admin/broadcasts/report?id=${encodeURIComponent(broadcast.id)}`}
+              download
+              className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold no-underline transition hover:opacity-90"
+              style={{ background: "var(--c-accent)", color: "#1c1a17" }}
+            >
+              <FileDown className="h-3.5 w-3.5" aria-hidden />
+              Download PDF report
+            </a>
+          ) : null}
+          <Link href={`/admin/emails/${broadcast.id}`} className={cn(studioGhostButtonClass, "gap-1.5 px-4 py-2 text-sm font-semibold no-underline")}>
+            <Pencil className="h-3.5 w-3.5" aria-hidden />
+            {progress.sent > 0 ? "View email" : "Edit email"}
+          </Link>
+        </div>
       </div>
 
       <BroadcastStatsPanel stats={stats} subject={broadcast.subject} broadcastId={broadcast.id} />
