@@ -17,6 +17,7 @@ import {
   Moon,
   Presentation,
   Send,
+  Sparkles,
   Sun,
   X,
 } from "lucide-react";
@@ -357,6 +358,16 @@ export default function StudioLayoutClient({
                     >
                       <BarChart3 className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Analytics</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/admin/intelligence"
+                      className={navItemClass(pathname === "/admin/intelligence" || pathname?.startsWith("/admin/intelligence/"))}
+                      aria-current={pathname === "/admin/intelligence" ? "page" : undefined}
+                    >
+                      <Sparkles className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                      <span className="min-w-0 flex-1">Intelligence</span>
                     </Link>
                   </li>
                 </ul>

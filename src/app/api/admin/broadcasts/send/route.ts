@@ -7,8 +7,11 @@ export const dynamic = "force-dynamic";
 // Sending ~2,000 emails in batches of 100 takes well under a minute; leave headroom.
 export const maxDuration = 300;
 
+/** The co-founders always get test sends. */
+const TEST_RECIPIENTS = ["eloka@culturin.com", "unik@culturin.com"];
+
 /**
- * `{ id, mode: "test" }` sends to the signed-in admin.
+ * `{ id, mode: "test" }` sends to the co-founders (and the signed-in admin, if that's someone else).
  * `{ id, mode: "batch", limit: 50 | null, confirm: true }` sends to the next `limit` people who haven't had it (null = everyone left).
  */
 export async function POST(request: Request) {
@@ -19,9 +22,10 @@ export async function POST(request: Request) {
   if (!id) return NextResponse.json({ message: "Missing email id." }, { status: 400 });
 
   if (body.mode === "test") {
-    const err = await sendTest(id, [email]);
+    const to = Array.from(new Set([...TEST_RECIPIENTS, email.trim().toLowerCase()]));
+    const err = await sendTest(id, to);
     if (err) return NextResponse.json({ message: err }, { status: 400 });
-    return NextResponse.json({ ok: true, message: `Test sent to ${email}.` });
+    return NextResponse.json({ ok: true, message: `Test sent to ${to.join(" and ")}.` });
   }
 
   if (body.mode === "batch" && body.confirm === true) {
