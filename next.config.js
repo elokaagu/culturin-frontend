@@ -28,17 +28,19 @@ const nextConfig = {
       static: 180,
     },
     serverComponentsExternalPackages: ["@react-pdf/renderer"],
-    // The PDF report reads brand fonts and the logo from disk at runtime.
+    // PDF routes read brand fonts, the logo and pdfkit's built-in fonts (loaded dynamically, so not traced) from disk at runtime.
     outputFileTracingIncludes: {
       "/api/admin/broadcasts/report": [
         "./src/app/styles/fonts/NewSpirit-*-Condensed.otf",
         "./src/app/styles/fonts/MaisonNeue-{Book,Medium,Demi}.otf",
         "./public/culturin_logotype_white.png",
+        "./node_modules/pdfkit/js/standard-fonts/*.cjs",
       ],
       "/api/partners/prospectus": [
         "./src/app/styles/fonts/NewSpirit-*-Condensed.otf",
         "./src/app/styles/fonts/MaisonNeue-{Book,Medium,Demi}.otf",
         "./public/culturin_logotype_white.png",
+        "./node_modules/pdfkit/js/standard-fonts/*.cjs",
       ],
     },
   },
