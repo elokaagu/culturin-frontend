@@ -27,6 +27,16 @@ function pick(raw: Record<string, string>, test: (key: string) => boolean): stri
   return found;
 }
 
+/** Free-text answers that mean "nothing" ("N/A", "-", "none"). */
+const blankIfJunk = (v: string) => (/^(n\/?a|none|nil|null|no|-+|\.+|\?+|x)$/i.test(v.trim()) ? "" : v.trim());
+
+/** "KEVIN PARKER" / "ines abel" → "Kevin Parker" / "Ines Abel"; mixed-case names are left as typed. */
+function tidyName(v: string): string {
+  const s = v.trim().replace(/\s+/g, " ");
+  if (s.length < 2 || (s !== s.toUpperCase() && s !== s.toLowerCase())) return s;
+  return s.toLowerCase().replace(/(^|[\s\-'’])(\p{L})/gu, (_, sep: string, ch: string) => sep + ch.toUpperCase());
+}
+
 function cleanLinkedIn(v: string | undefined): string {
   const url = (v ?? "").trim();
   const handle = url.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//i, "").replace(/\/$/, "");
@@ -57,8 +67,10 @@ export function parseGuestCsv(text: string): { guests: Guest[]; hasStatus: boole
       }
 
       // Luma registration questions arrive as free-text headers ("What company do you work for?").
-      const company = r.company || (pick(r.raw, (k) => k.includes("company") || k.includes("organisation") || k.includes("organization")) ?? "").trim();
-      const title = (pick(r.raw, (k) => k.includes("title") || k.includes("role") || k.includes("position")) ?? "").trim();
+      firstName = tidyName(firstName);
+      lastName = tidyName(lastName);
+      const company = blankIfJunk(r.company || (pick(r.raw, (k) => k.includes("company") || k.includes("organisation") || k.includes("organization")) ?? ""));
+      const title = blankIfJunk(pick(r.raw, (k) => k.includes("title") || k.includes("role") || k.includes("position")) ?? "");
       const linkedIn = cleanLinkedIn(pick(r.raw, (k) => k.includes("linkedin")));
       const heardFrom = (pick(r.raw, (k) => k.includes("learnabout") || k.includes("hearabout"))?.trim() || pick(r.raw, (k) => k === "referrer") || "").trim();
 

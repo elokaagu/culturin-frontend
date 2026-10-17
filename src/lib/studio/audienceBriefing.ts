@@ -5,13 +5,13 @@ import { z } from "zod";
 
 import { selectAllRowsOrNull } from "@/lib/email/selectAllRows";
 import { getAdminEvents } from "@/lib/events/eventsStore";
-import { seniorityOf } from "@/lib/studio/analytics";
+import { PERSONAL_DOMAINS, seniorityOf } from "@/lib/studio/analytics";
 import { getSupabaseAdminFreshOrNull } from "@/lib/supabaseServiceRole";
 
 export const BRIEFING_MODEL = "openai/gpt-5.4";
 
 /** Most people sent to the model in one briefing; the best-profiled come first. */
-const MAX_PROFILES = 1200;
+const MAX_PROFILES = 3000;
 
 export const briefingSchema = z.object({
   headline: z.string().describe("One sentence that sums up who the audience is right now."),
@@ -67,6 +67,8 @@ type Person = {
   name: string;
   title: string;
   company: string;
+  /** Employer's email domain ("vml.com"), never the address itself; empty for personal providers. */
+  domain: string;
   country: string;
   events: Set<string>;
   channels: Set<string>;
@@ -117,8 +119,9 @@ async function gatherAudience() {
     if (!key.includes("@")) return null;
     let p = people.get(key);
     if (!p) {
+      const domain = key.split("@")[1] ?? "";
       p = {
-        name: "", title: "", company: "", country: "",
+        name: "", title: "", company: "", domain: PERSONAL_DOMAINS.has(domain) ? "" : domain, country: "",
         events: new Set(), channels: new Set(), interests: new Set(),
         subscribed: false, sent: 0, opened: 0, clicked: 0,
       };
@@ -176,9 +179,10 @@ async function gatherAudience() {
   }
 
   const all = Array.from(people.values());
-  const profiled = all.filter((p) => p.title || p.company);
+  // Older subscribers often have no role or company on file, but a work email still says where they work.
+  const profiled = all.filter((p) => p.title || p.company || p.domain);
   const score = (p: Person) =>
-    (p.title ? 3 : 0) + (p.company ? 3 : 0) + p.clicked * 2 + Math.min(p.opened, 3) + p.events.size + p.interests.size * 2;
+    (p.title ? 3 : 0) + (p.company ? 3 : p.domain ? 1 : 0) + p.clicked * 2 + Math.min(p.opened, 3) + p.events.size + p.interests.size * 2;
   const ranked = profiled.sort((a, b) => score(b) - score(a)).slice(0, MAX_PROFILES);
 
   const stats: BriefingStats = {
@@ -203,7 +207,7 @@ async function gatherAudience() {
   };
 
   const lines = ranked.map((p) => {
-    const parts = [p.name || "(no name)", p.title || "-", p.company || "-", p.country || "-"];
+    const parts = [p.name || "(no name)", p.title || "-", p.company || (p.domain ? `${p.domain} (from work email)` : "-"), p.country || "-"];
     if (p.events.size) parts.push(`events: ${Array.from(p.events).join(", ")}`);
     if (p.channels.size) parts.push(`came via: ${Array.from(p.channels).join(", ")}`);
     if (p.interests.size) parts.push(`enquired about: ${Array.from(p.interests).join(", ")}`);
@@ -213,7 +217,8 @@ async function gatherAudience() {
   });
 
   const overview = [
-    `Total people: ${stats.people}. With a role or company: ${stats.profiled}. Active newsletter subscribers: ${stats.subscribers}.`,
+    `Total people: ${stats.people}. With a role, company or work email: ${stats.profiled}. Active newsletter subscribers: ${stats.subscribers}.`,
+    `Work email domains of people with no company given: ${tally((p) => (!p.company && p.domain ? [p.domain] : []))}.`,
     `Event RSVPs: ${stats.rsvps}. Partnership inquiries: ${stats.inquiries}. Event guest list entries: ${stats.listMembers}. Campaign emails sent: ${emailsSent}.`,
     `Seniority across everyone: ${tally((p) => [seniorityOf(p.title)])}.`,
     `Most common events: ${tally((p) => Array.from(p.events))}.`,

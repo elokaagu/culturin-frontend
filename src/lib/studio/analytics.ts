@@ -36,10 +36,12 @@ export type AnalyticsData = {
   repeatPeople: number;
 };
 
-const PERSONAL_DOMAINS = new Set([
+export const PERSONAL_DOMAINS = new Set([
   "gmail.com", "googlemail.com", "icloud.com", "me.com", "mac.com", "yahoo.com", "yahoo.co.uk", "ymail.com",
   "outlook.com", "hotmail.com", "hotmail.co.uk", "live.com", "msn.com", "aol.com", "proton.me", "protonmail.com",
   "gmx.com", "mail.com", "btinternet.com", "sky.com", "comcast.net", "verizon.net", "att.net",
+  "hotmail.fr", "yahoo.fr", "outlook.fr", "live.fr", "orange.fr", "free.fr", "sfr.fr", "wanadoo.fr", "laposte.net",
+  "gmx.de", "web.de", "t-online.de", "libero.it", "hotmail.it", "yahoo.it", "hotmail.es", "yahoo.es",
 ]);
 
 /** Group job titles into broad seniority bands. Titles are free text, so this is a best-effort read. */
