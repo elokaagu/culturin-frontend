@@ -74,7 +74,7 @@ export const EMAIL_CONTENT_WIDTH = 528;
  * optional full-width picture between the logo band and the card.
  */
 export function emailShell(opts: { title: string; preheader?: string; content: string; footer: string; hero?: { src: string; alt: string } }): string {
-  const logo = `${siteOrigin()}/email/culturin-logo.png`;
+  const logo = `${siteOrigin()}/email/culturin-logo-transparent.png`;
   const preheader = opts.preheader
     ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">${escapeHtml(opts.preheader)}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>`
     : "";
