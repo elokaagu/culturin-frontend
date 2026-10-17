@@ -47,7 +47,8 @@ function AccessDenied() {
 }
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
-  const state = await getCurrentAdminState();
+  // The counts are only shown once the admin check passes; fetching them alongside saves a round trip.
+  const [state, counts] = await Promise.all([getCurrentAdminState(), getStudioCounts()]);
 
   if (!state.userId) {
     redirect("/login?next=/admin");
@@ -56,8 +57,6 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   if (!state.isAdmin) {
     return <AccessDenied />;
   }
-
-  const counts = await getStudioCounts();
 
   return (
     <StudioLayoutClient
