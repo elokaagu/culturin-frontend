@@ -93,9 +93,13 @@ export default function GalleryDownloadDialog({
       /* ignore */
     }
 
+    const filename = decodeURIComponent(target.src.split("?")[0].split("/").pop() || "culturin-photo.jpg");
     const link = document.createElement("a");
-    link.href = target.src;
-    link.download = target.src.split("/").pop() ?? "culturin-photo.jpg";
+    // `download` is ignored for cross-origin files, so ask Supabase Storage to send it as an attachment.
+    link.href = target.src.includes("/storage/v1/object/public/")
+      ? `${target.src}${target.src.includes("?") ? "&" : "?"}download=${encodeURIComponent(filename)}`
+      : target.src;
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
     link.remove();

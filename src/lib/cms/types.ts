@@ -55,6 +55,8 @@ export type GalleryImageRow = {
   location: string;
   src: string;
   large_src: string;
+  /** The photographer's untouched file, offered for download. Null for older photos. */
+  original_src: string | null;
   alt: string;
   orientation: "portrait" | "landscape";
   sort_order: number;

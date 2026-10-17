@@ -21,7 +21,7 @@ export default async function StudioGalleryPage() {
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--c-accent)]">Content</p>
       <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-[color:var(--c-ink)] sm:text-3xl">Gallery</h1>
       <p className="mt-2 text-sm text-[color:var(--c-muted)]">
-        Photos shown on the public /gallery page, grouped by event.
+        Photos shown on the public /gallery page, grouped by event. Downloads give visitors the original file wherever one was uploaded.
       </p>
 
       <StudioGalleryPageClient images={images} hasDb={Boolean(db)} />

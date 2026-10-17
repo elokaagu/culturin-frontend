@@ -428,34 +428,51 @@ export async function searchProviders(db: CmsDb, term: string): Promise<provider
   return ids.map((id) => mapProviderRowToHero(first.get(id)!));
 }
 
-const gallerySelect = "id, event_key, event_label, caption, location, src, large_src, alt, orientation, sort_order, created_at";
+const gallerySelectBase = "id, event_key, event_label, caption, location, src, large_src, alt, orientation, sort_order, created_at";
+const gallerySelect = `${gallerySelectBase}, original_src`;
 
 export type GalleryImagePublic = {
   src: string;
   largeSrc: string;
+  /** Best file to download: the original when we have it, otherwise the large copy. */
+  downloadSrc: string;
   alt: string;
   event: string;
+  eventLabel: string;
   location: string;
   eventKey: string;
   orientation: "portrait" | "landscape";
+  createdAt: string;
 };
 
+/** Gallery rows, falling back to the pre-051 columns if `original_src` doesn't exist yet. */
+async function selectGalleryRows(db: CmsDb): Promise<GalleryImageRow[]> {
+  const query = (columns: string) =>
+    db.from("gallery_images").select(columns).order("event_key", { ascending: false }).order("sort_order", { ascending: true });
+  const { data, error } = await query(gallerySelect);
+  if (!error && data) return data as unknown as GalleryImageRow[];
+  const fallback = await query(gallerySelectBase);
+  if (fallback.error || !fallback.data) return [];
+  return (fallback.data as unknown as Omit<GalleryImageRow, "original_src">[]).map((row) => ({ ...row, original_src: null }));
+}
+
 export async function listGalleryImagesPublic(db: CmsDb): Promise<GalleryImagePublic[]> {
-  const { data, error } = await db
-    .from("gallery_images")
-    .select(gallerySelect)
-    .order("event_key", { ascending: false })
-    .order("sort_order", { ascending: true });
-  if (error || !data) return [];
-  return (data as GalleryImageRow[]).map((row) => ({
-    src: resolveEventMediaSrc(row.src),
-    largeSrc: resolveEventMediaSrc(row.large_src || row.src),
-    alt: row.alt,
-    event: row.caption,
-    location: row.location,
-    eventKey: row.event_key,
-    orientation: row.orientation,
-  }));
+  const rows = await selectGalleryRows(db);
+  return rows.map((row) => {
+    const largeSrc = resolveEventMediaSrc(row.large_src || row.src);
+    return {
+      src: resolveEventMediaSrc(row.src),
+      largeSrc,
+      downloadSrc: row.original_src ? resolveEventMediaSrc(row.original_src) : largeSrc,
+      alt: row.alt,
+      event: row.caption,
+      eventLabel: row.event_label,
+      location: row.location,
+      eventKey: row.event_key,
+      orientation: row.orientation,
+      createdAt: row.created_at,
+    };
+  });
 }
 
 export type StudioGalleryListItem = {
@@ -467,17 +484,14 @@ export type StudioGalleryListItem = {
   src: string;
   alt: string;
   orientation: "portrait" | "landscape";
+  sortOrder: number;
+  hasOriginal: boolean;
   createdAt: string;
 };
 
 export async function listGalleryImagesForStudio(db: CmsDb): Promise<StudioGalleryListItem[]> {
-  const { data, error } = await db
-    .from("gallery_images")
-    .select(gallerySelect)
-    .order("event_key", { ascending: false })
-    .order("sort_order", { ascending: true });
-  if (error || !data) return [];
-  return (data as GalleryImageRow[]).map((row) => ({
+  const rows = await selectGalleryRows(db);
+  return rows.map((row) => ({
     id: row.id,
     eventKey: row.event_key,
     eventLabel: row.event_label,
@@ -486,6 +500,8 @@ export async function listGalleryImagesForStudio(db: CmsDb): Promise<StudioGalle
     src: row.src,
     alt: row.alt,
     orientation: row.orientation,
+    sortOrder: row.sort_order,
+    hasOriginal: Boolean(row.original_src),
     createdAt: row.created_at,
   }));
 }

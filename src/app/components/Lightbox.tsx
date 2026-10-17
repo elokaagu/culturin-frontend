@@ -7,6 +7,8 @@ export type LightboxItem = {
   alt: string;
   width: number;
   height: number;
+  /** File handed over by "Download full quality" when it differs from what's shown (e.g. the untouched original). */
+  downloadSrc?: string;
 };
 
 type LightboxProps = {

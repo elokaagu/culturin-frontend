@@ -16,11 +16,15 @@ export type Orientation = "portrait" | "landscape";
 export type GalleryItem = {
   src: string;
   largeSrc: string;
+  /** The photographer's original when we have it; falls back to `largeSrc`. */
+  downloadSrc?: string;
   alt: string;
   event: string;
+  eventLabel?: string;
   location: string;
   eventKey: string;
   orientation: Orientation;
+  createdAt?: string;
 };
 
 export type GalleryFilter = {
@@ -98,6 +102,7 @@ export default function GalleryGrid({
 
   const lightboxItems: LightboxItem[] = filteredItems.map((item) => ({
     src: item.largeSrc,
+    downloadSrc: item.downloadSrc ?? item.largeSrc,
     alt: item.alt,
     ...LARGE_DIMS[item.orientation],
   }));
@@ -211,7 +216,7 @@ export default function GalleryGrid({
         index={openIndex}
         onClose={() => setOpenIndex(null)}
         onNavigate={setOpenIndex}
-        onDownloadRequest={(item) => setDownloadTarget({ src: item.src, alt: item.alt })}
+        onDownloadRequest={(item) => setDownloadTarget({ src: item.downloadSrc ?? item.src, alt: item.alt })}
       />
 
       <GalleryDownloadDialog target={downloadTarget} onClose={() => setDownloadTarget(null)} />

@@ -71,6 +71,7 @@ export async function POST(request: Request) {
     location: String(entry.location ?? "").trim(),
     src,
     large_src: String(entry.large_src ?? "").trim() || src,
+    ...(String(entry.original_src ?? "").trim() ? { original_src: String(entry.original_src).trim() } : {}),
     alt: String(entry.alt ?? "").trim(),
     orientation: asOrientation(entry.orientation),
     sort_order: Number.isFinite(Number(entry.sort_order)) ? Number(entry.sort_order) : 0,

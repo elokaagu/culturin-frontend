@@ -12,6 +12,7 @@ import {
 import { useStudioConfirm } from "@/app/admin/_components/StudioConfirmDialog";
 import type { StudioGalleryListItem } from "@/lib/cms/queries";
 
+import { StudioGalleryBulkUpload } from "./StudioGalleryBulkUpload";
 import { StudioGalleryForm } from "./StudioGalleryForm";
 import LazyImg from "@/app/components/LazyImg";
 
@@ -44,6 +45,11 @@ export function StudioGalleryPageClient({
     }
     return Array.from(byEvent.values());
   }, [visible]);
+
+  const eventOptions = useMemo(
+    () => groups.map((g) => ({ label: g.label, location: g.items.find((i) => i.location)?.location ?? "" })),
+    [groups],
+  );
 
   async function handleDelete(image: StudioGalleryListItem) {
     const confirmed = await confirm({
@@ -89,16 +95,16 @@ export function StudioGalleryPageClient({
           </div>
         ) : !createOpen ? (
           <button type="button" onClick={() => setCreateOpen(true)} className={studioCreateButtonClass}>
-            Add photo
+            Upload photos
           </button>
         ) : (
           <div className={studioCreateFormShellClass}>
             <div className="mb-2 flex justify-end">
               <button type="button" onClick={() => setCreateOpen(false)} className={studioCancelButtonClass}>
-                Cancel
+                Close
               </button>
             </div>
-            <StudioGalleryForm onSaved={handleSaved} />
+            <StudioGalleryBulkUpload events={eventOptions} onFinished={() => router.refresh()} />
           </div>
         )}
       </div>
@@ -119,7 +125,7 @@ export function StudioGalleryPageClient({
           </p>
         ) : groups.length === 0 ? (
           <p className="rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm text-neutral-600 dark:border-white/15 dark:text-white/65">
-            No photos yet. Use <span className="font-medium text-culturin-800 dark:text-culturin-300/90">Add photo</span> to upload one.
+            No photos yet. Use <span className="font-medium text-culturin-800 dark:text-culturin-300/90">Upload photos</span> to add some.
           </p>
         ) : (
           groups.map((group) => (

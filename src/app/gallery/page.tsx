@@ -79,25 +79,35 @@ const EVENT_CHRONOLOGICAL_RANK: Record<string, number> = {
   "cannes-2025": 4, // June 2025
 };
 
-function eventRank(eventKey: string): number {
-  return EVENT_CHRONOLOGICAL_RANK[eventKey] ?? Number.MAX_SAFE_INTEGER;
+/**
+ * Events uploaded through the admin since the list above was written are newer than all of
+ * them, so they go first, most recently uploaded first.
+ */
+function eventRanks(items: GalleryItem[]): Map<string, number> {
+  const latest = new Map<string, number>();
+  for (const item of items) {
+    if (item.eventKey in EVENT_CHRONOLOGICAL_RANK) continue;
+    const t = item.createdAt ? Date.parse(item.createdAt) : 0;
+    latest.set(item.eventKey, Math.max(latest.get(item.eventKey) ?? 0, Number.isFinite(t) ? t : 0));
+  }
+  const newest = Array.from(latest.entries()).sort((a, b) => b[1] - a[1]);
+  const ranks = new Map<string, number>(newest.map(([key], i) => [key, i - newest.length]));
+  for (const [key, rank] of Object.entries(EVENT_CHRONOLOGICAL_RANK)) ranks.set(key, rank);
+  return ranks;
 }
 
 function sortByEventRecency(items: GalleryItem[]): GalleryItem[] {
-  return [...items].sort((a, b) => eventRank(a.eventKey) - eventRank(b.eventKey));
+  const ranks = eventRanks(items);
+  return [...items].sort((a, b) => (ranks.get(a.eventKey) ?? 0) - (ranks.get(b.eventKey) ?? 0));
 }
 
 function buildFilters(items: GalleryItem[]): GalleryFilter[] {
-  const seen: string[] = [];
+  const labels = new Map<string, string>();
   for (const item of items) {
-    if (!seen.includes(item.eventKey)) seen.push(item.eventKey);
+    if (!labels.has(item.eventKey)) labels.set(item.eventKey, FILTER_LABELS[item.eventKey] ?? (item.eventLabel || item.eventKey));
   }
-  if (seen.length <= 1) return [];
-  const ordered = [...seen].sort((a, b) => eventRank(a) - eventRank(b));
-  return [
-    { key: "all", label: "All" },
-    ...ordered.map((key) => ({ key, label: FILTER_LABELS[key] ?? key })),
-  ];
+  if (labels.size <= 1) return [];
+  return [{ key: "all", label: "All" }, ...Array.from(labels.entries()).map(([key, label]) => ({ key, label }))];
 }
 
 async function loadGallery(): Promise<GalleryItem[]> {
