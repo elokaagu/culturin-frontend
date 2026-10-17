@@ -1,41 +1,13 @@
 import "server-only";
 
-import path from "node:path";
-
-import { Document, Font, Image, Page, StyleSheet, Text, View, renderToBuffer } from "@react-pdf/renderer";
+import { Document, Image, Page, StyleSheet, Text, View, renderToBuffer } from "@react-pdf/renderer";
 
 import type { Broadcast, BroadcastStats, EngagedPerson } from "@/lib/email/broadcasts";
+import { LOGO_WHITE as REPORT_LOGO, PDF_COLORS, registerBrandFonts } from "@/lib/pdf/brand";
 
-const FONTS = path.join(process.cwd(), "src/app/styles/fonts");
-const REPORT_LOGO = path.join(process.cwd(), "public/culturin_logotype_white.png");
+registerBrandFonts();
 
-Font.register({
-  family: "NewSpirit",
-  fonts: [
-    { src: path.join(FONTS, "NewSpirit-Regular-Condensed.otf"), fontWeight: 400 },
-    { src: path.join(FONTS, "NewSpirit-SemiBold-Condensed.otf"), fontWeight: 600 },
-  ],
-});
-Font.register({
-  family: "Maison",
-  fonts: [
-    { src: path.join(FONTS, "MaisonNeue-Book.otf"), fontWeight: 400 },
-    { src: path.join(FONTS, "MaisonNeue-Medium.otf"), fontWeight: 500 },
-    { src: path.join(FONTS, "MaisonNeue-Demi.otf"), fontWeight: 600 },
-  ],
-});
-// Never hyphenate, but let long unbroken strings (email addresses, URLs) wrap inside table cells.
-Font.registerHyphenationCallback((word) => (word.length > 20 ? word.match(/.{1,16}/g) ?? [word] : [word]));
-
-const BG = "#f6f1ea";
-const CARD = "#fffdf9";
-const INK = "#1c1a17";
-const MUTED = "#6f675d";
-const RULE = "#e4dccf";
-const ACCENT = "#cd6b3f";
-const HEAD = "#0e0b08";
-const HEAD_MUTED = "#b9ab98";
-const WARN = "#c2413b";
+const { bg: BG, card: CARD, ink: INK, muted: MUTED, rule: RULE, accent: ACCENT, head: HEAD, onDarkMuted: HEAD_MUTED, warn: WARN } = PDF_COLORS;
 
 const s = StyleSheet.create({
   page: { backgroundColor: BG, fontFamily: "Maison", fontSize: 9.5, color: INK, paddingBottom: 56 },

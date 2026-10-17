@@ -35,6 +35,11 @@ const nextConfig = {
         "./src/app/styles/fonts/MaisonNeue-{Book,Medium,Demi}.otf",
         "./public/culturin_logotype_white.png",
       ],
+      "/api/partners/prospectus": [
+        "./src/app/styles/fonts/NewSpirit-*-Condensed.otf",
+        "./src/app/styles/fonts/MaisonNeue-{Book,Medium,Demi}.otf",
+        "./public/culturin_logotype_white.png",
+      ],
     },
   },
   images: {
