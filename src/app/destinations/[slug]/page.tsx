@@ -8,6 +8,7 @@ import { getDestinationContent } from "../../../lib/destinationContent";
 import { appPageContainerClass } from "@/lib/appLayout";
 import { ContentPageShell } from "../../components/layout/ContentPageShell";
 import { IMAGE_BLUR_DATA_URL } from "../../../lib/imagePlaceholder";
+import { getPublishedGuide } from "@/lib/briefings/store";
 import { getCmsDbOrNull } from "@/lib/cms/server";
 import { searchBlogs, searchProviders, searchVideos } from "@/lib/cms/queries";
 import { getShowcaseVideoCards } from "@/lib/cms/showcaseContent";
@@ -78,6 +79,8 @@ export default async function DestinationDetailPage({ params }: PageProps) {
     travelerCards = [];
   }
 
+  const guide = await getPublishedGuide(d.slug).catch(() => null);
+
   const highlights = content?.highlights ?? ["Iconic city landmarks", "Neighborhood walks", "Local-led experiences"];
   const neighborhoods = content?.neighborhoods ?? ["Historic center", "Creative quarter", "Waterfront district"];
   const foodToTry = content?.foodToTry ?? ["Signature local dishes", "Seasonal street food", "Traditional desserts"];
@@ -120,6 +123,15 @@ export default async function DestinationDetailPage({ params }: PageProps) {
               {content?.intro ??
                 `${d.name} is one of the cities where Culturin gathers: rooms, stories, and the people already there.`}
             </p>
+            {guide ? (
+              <Link
+                href={`/destinations/${d.slug}/guide`}
+                className="inline-flex items-center rounded-full px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] no-underline transition hover:opacity-85"
+                style={{ background: "var(--c-accent)", color: "#1c1a17" }}
+              >
+                Read the {d.name} culture guide
+              </Link>
+            ) : null}
           </header>
 
           <div className={`grid gap-4 sm:grid-cols-2 ${cardClass}`} style={cardStyle}>

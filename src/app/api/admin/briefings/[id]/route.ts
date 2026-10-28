@@ -46,7 +46,10 @@ export async function POST(request: Request, { params }: { params: { id: string 
   if (action === "publish" || action === "unpublish") {
     const res = await setPublished(params.id, action === "publish");
     if (!res.ok) return NextResponse.json({ message: res.message }, { status: 400 });
-    if (res.slug) revalidatePath(`/destinations/${res.slug}/guide`);
+    if (res.slug) {
+      revalidatePath(`/destinations/${res.slug}/guide`);
+      revalidatePath(`/destinations/${res.slug}`);
+    }
     return NextResponse.json({ ok: true });
   }
   return NextResponse.json({ message: "Unknown action." }, { status: 400 });
