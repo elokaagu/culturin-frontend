@@ -3,6 +3,7 @@
 import {
   BarChart3,
   BookOpen,
+  Compass,
   CalendarCheck,
   CalendarDays,
   Download,
@@ -368,6 +369,16 @@ export default function StudioLayoutClient({
                     >
                       <Sparkles className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
                       <span className="min-w-0 flex-1">Intelligence</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/admin/briefings"
+                      className={navItemClass(pathname === "/admin/briefings" || pathname?.startsWith("/admin/briefings/"))}
+                      aria-current={pathname === "/admin/briefings" ? "page" : undefined}
+                    >
+                      <Compass className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                      <span className="min-w-0 flex-1">Guides &amp; Briefings</span>
                     </Link>
                   </li>
                 </ul>
