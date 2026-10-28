@@ -34,32 +34,31 @@ function Footer({ label }: { label: string }) {
   );
 }
 
-function Section({ k, children }: { k: keyof typeof SECTION_META; children: React.ReactNode }) {
+/** A section heading kept on the same page as its first block, so headings never end a page. */
+function Section({ k, blocks }: { k: keyof typeof SECTION_META; blocks: React.ReactNode[] }) {
+  const [first, ...rest] = blocks;
   return (
     <View style={{ marginTop: 18 }}>
       <View wrap={false}>
         <Text style={s.eyebrow}>{SECTION_META[k].eyebrow}</Text>
         <Text style={s.h2}>{SECTION_META[k].title}</Text>
+        {first}
       </View>
-      {children}
+      {rest}
     </View>
   );
 }
 
-function Named({ items }: { items: NamedItem[] }) {
-  return (
-    <>
-      {items.map((i) => (
-        <View key={i.id} style={s.item} wrap={false}>
-          <Text style={s.itemName}>{i.name}</Text>
-          <Text>
-            {i.detail}
-            <Text style={s.cite}>{cite(i.sources)}</Text>
-          </Text>
-        </View>
-      ))}
-    </>
-  );
+function named(items: NamedItem[]) {
+  return items.map((i) => (
+    <View key={i.id} style={s.item} wrap={false}>
+      <Text style={s.itemName}>{i.name}</Text>
+      <Text>
+        {i.detail}
+        <Text style={s.cite}>{cite(i.sources)}</Text>
+      </Text>
+    </View>
+  ));
 }
 
 /* eslint-disable jsx-a11y/alt-text -- react-pdf Image has no alt prop */
@@ -93,48 +92,36 @@ function BriefingPdf({ request: r, briefing: b, sources }: { request: BriefingRe
       </Page>
 
       <Page size="A4" style={s.page}>
-        <Section k="snapshot">
-          <Text style={{ fontSize: 11, lineHeight: 1.6 }}>
-            {sec.snapshot.text}
-            <Text style={s.cite}>{cite(sec.snapshot.sources)}</Text>
-          </Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 14, marginHorizontal: -5 }}>
-            {sec.snapshot.numbers.map((n) => (
-              <View key={n.id} style={{ width: "33.33%", padding: 5 }} wrap={false}>
-                <View style={{ backgroundColor: C.card, borderWidth: 1, borderColor: C.rule, borderRadius: 8, padding: 10, minHeight: 64 }}>
-                  <Text style={{ fontFamily: "NewSpirit", fontWeight: 600, fontSize: 18, color: C.accent }}>{n.value}</Text>
-                  <Text style={{ fontSize: 8, color: C.muted, marginTop: 3 }}>
-                    {n.label}
-                    {cite(n.sources)}
-                  </Text>
+        <Section
+          k="snapshot"
+          blocks={[
+            <Text key="text" style={{ fontSize: 11, lineHeight: 1.6 }}>
+              {sec.snapshot.text}
+              <Text style={s.cite}>{cite(sec.snapshot.sources)}</Text>
+            </Text>,
+            <View key="numbers" style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 14, marginHorizontal: -5 }}>
+              {sec.snapshot.numbers.map((n) => (
+                <View key={n.id} style={{ width: "33.33%", padding: 5 }} wrap={false}>
+                  <View style={{ backgroundColor: C.card, borderWidth: 1, borderColor: C.rule, borderRadius: 8, padding: 10, minHeight: 64 }}>
+                    <Text style={{ fontFamily: "NewSpirit", fontWeight: 600, fontSize: 15, lineHeight: 1.2, color: C.accent }}>{n.value}</Text>
+                    <Text style={{ fontSize: 8, lineHeight: 1.4, color: C.muted, marginTop: 5 }}>
+                      {n.label}
+                      {cite(n.sources)}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            ))}
-          </View>
-        </Section>
-        {sec.food.length ? (
-          <Section k="food">
-            <Named items={sec.food} />
-          </Section>
-        ) : null}
-        {sec.history.length ? (
-          <Section k="history">
-            <Named items={sec.history} />
-          </Section>
-        ) : null}
-        {sec.musicArt.length ? (
-          <Section k="musicArt">
-            <Named items={sec.musicArt} />
-          </Section>
-        ) : null}
-        {sec.neighbourhoods.length ? (
-          <Section k="neighbourhoods">
-            <Named items={sec.neighbourhoods} />
-          </Section>
-        ) : null}
+              ))}
+            </View>,
+          ]}
+        />
+        {sec.food.length ? <Section k="food" blocks={named(sec.food)} /> : null}
+        {sec.history.length ? <Section k="history" blocks={named(sec.history)} /> : null}
+        {sec.musicArt.length ? <Section k="musicArt" blocks={named(sec.musicArt)} /> : null}
+        {sec.neighbourhoods.length ? <Section k="neighbourhoods" blocks={named(sec.neighbourhoods)} /> : null}
         {sec.influencers.length ? (
-          <Section k="influencers">
-            {sec.influencers.map((p) => (
+          <Section
+            k="influencers"
+            blocks={sec.influencers.map((p) => (
               <View key={p.id} style={s.item} wrap={false}>
                 <Text style={s.itemName}>
                   {p.name}
@@ -147,11 +134,12 @@ function BriefingPdf({ request: r, briefing: b, sources }: { request: BriefingRe
                 </Text>
               </View>
             ))}
-          </Section>
+          />
         ) : null}
         {sec.calendar.length ? (
-          <Section k="calendar">
-            {sec.calendar.map((m) => (
+          <Section
+            k="calendar"
+            blocks={sec.calendar.map((m) => (
               <View key={m.id} style={{ flexDirection: "row", borderTopWidth: 1, borderTopColor: C.rule, paddingVertical: 6 }} wrap={false}>
                 <Text style={{ width: "26%", fontSize: 8.5, color: C.accent }}>{formatDateRange(m.start, m.end)}</Text>
                 <View style={{ flex: 1 }}>
@@ -166,11 +154,12 @@ function BriefingPdf({ request: r, briefing: b, sources }: { request: BriefingRe
                 </View>
               </View>
             ))}
-          </Section>
+          />
         ) : null}
         {sec.sensitivities.length ? (
-          <Section k="sensitivities">
-            {sec.sensitivities.map((x) => (
+          <Section
+            k="sensitivities"
+            blocks={sec.sensitivities.map((x) => (
               <View key={x.id} style={s.item} wrap={false}>
                 <Text style={s.itemName}>{x.title}</Text>
                 <Text>
@@ -179,11 +168,12 @@ function BriefingPdf({ request: r, briefing: b, sources }: { request: BriefingRe
                 </Text>
               </View>
             ))}
-          </Section>
+          />
         ) : null}
         {sec.opportunities.length ? (
-          <Section k="opportunities">
-            {sec.opportunities.map((o, i) => (
+          <Section
+            k="opportunities"
+            blocks={sec.opportunities.map((o, i) => (
               <View key={o.id} style={[s.item, { backgroundColor: C.card, borderWidth: 1, borderColor: C.rule, borderRadius: 8, padding: 12 }]} wrap={false}>
                 <Text style={[s.eyebrow, { fontSize: 7 }]}>Idea {i + 1}</Text>
                 <Text style={[s.itemName, { marginTop: 4 }]}>{o.title}</Text>
@@ -194,7 +184,7 @@ function BriefingPdf({ request: r, briefing: b, sources }: { request: BriefingRe
                 </Text>
               </View>
             ))}
-          </Section>
+          />
         ) : null}
         {b.localNotes ? (
           <View style={{ marginTop: 18 }} wrap={false}>
