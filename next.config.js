@@ -42,6 +42,12 @@ const nextConfig = {
         "./public/culturin_logotype_white.png",
         "./node_modules/pdfkit/js/standard-fonts/**/*.cjs",
       ],
+      "/api/briefings/[token]/pdf": [
+        "./src/app/styles/fonts/NewSpirit-*-Condensed.otf",
+        "./src/app/styles/fonts/MaisonNeue-{Book,Medium,Demi}.otf",
+        "./public/culturin_logotype_white.png",
+        "./node_modules/pdfkit/js/standard-fonts/**/*.cjs",
+      ],
     },
   },
   images: {
