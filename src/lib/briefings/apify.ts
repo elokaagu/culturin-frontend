@@ -91,6 +91,17 @@ export type SocialAccount = {
 };
 
 const clean = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
+
+/** Bios often carry personal emails and phone numbers; briefings never keep them. */
+export function scrubContact(text: string | null): string | null {
+  if (!text) return text;
+  const out = text
+    .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "")
+    .replace(/(?:\+|00)?\d[\d\s().-]{7,}\d/g, (m) => (m.replace(/\D/g, "").length >= 9 ? "" : m))
+    .replace(/\s{2,}/g, " ")
+    .trim();
+  return out || null;
+}
 const int = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? Math.round(v) : null);
 
 /** Public Instagram accounts matching each search term (Instagram's own account search). */
@@ -109,7 +120,7 @@ export async function searchInstagramAccounts(terms: string[], perTerm: number, 
         platform: "instagram",
         handle,
         name: clean(item.fullName) ?? clean(item.full_name),
-        bio: clean(item.biography)?.slice(0, 300) ?? null,
+        bio: scrubContact(clean(item.biography)?.slice(0, 300) ?? null),
         followers: int(item.followersCount),
         verified: item.verified === true,
         url: `https://www.instagram.com/${handle}/`,
@@ -136,7 +147,7 @@ export async function searchTikTokAccounts(terms: string[], perTerm: number, dea
         platform: "tiktok",
         handle,
         name: clean(item.nickName),
-        bio: clean(item.signature)?.slice(0, 300) ?? null,
+        bio: scrubContact(clean(item.signature)?.slice(0, 300) ?? null),
         followers: int(item.fans),
         verified: item.verified === true,
         url: `https://www.tiktok.com/@${handle}`,
@@ -164,7 +175,7 @@ export async function lookupInstagramProfiles(handles: string[], deadline: numbe
         platform: "instagram",
         handle,
         name: clean(item.fullName),
-        bio: clean(item.biography)?.slice(0, 300) ?? null,
+        bio: scrubContact(clean(item.biography)?.slice(0, 300) ?? null),
         followers: int(item.followersCount),
         verified: item.verified === true,
         url: `https://www.instagram.com/${handle}/`,

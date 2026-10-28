@@ -103,11 +103,15 @@ export type BriefingSections = {
   calendar: CalendarMoment[];
   sensitivities: Sensitivity[];
   opportunities: Opportunity[];
+  /** Checker notes on the summary and snapshot, which aren't list items. */
+  notes?: string[];
 };
 
-export type ListSectionKey = Exclude<keyof BriefingSections, "snapshot">;
+export type ListSectionKey = Exclude<keyof BriefingSections, "snapshot" | "notes">;
 
-export const SECTION_META: Record<keyof BriefingSections, { title: string; eyebrow: string; inGuide: boolean }> = {
+export type SectionKey = Exclude<keyof BriefingSections, "notes">;
+
+export const SECTION_META: Record<SectionKey, { title: string; eyebrow: string; inGuide: boolean }> = {
   snapshot: { title: "Snapshot", eyebrow: "The place", inGuide: true },
   food: { title: "Food", eyebrow: "What to eat", inGuide: true },
   history: { title: "History", eyebrow: "The stories behind it", inGuide: true },

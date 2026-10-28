@@ -2,7 +2,7 @@ import "server-only";
 
 import { getAnalytics } from "@/lib/studio/analytics";
 
-import { apifyConfigured, searchInstagramAccounts, searchTikTokAccounts, type SocialAccount } from "./apify";
+import { apifyConfigured, lookupInstagramProfiles, searchInstagramAccounts, searchTikTokAccounts, type SocialAccount } from "./apify";
 import { domainOf, exaConfigured, exaContents, exaSearch, type ExaCategory, type ExaResult } from "./exa";
 import { countryCodeFor, publicHolidays } from "./holidays";
 import { addCost, addSources, updateRequest } from "./store";
@@ -179,10 +179,11 @@ export async function researchCalendar(r: BriefingRequest): Promise<string> {
 export async function researchSocial(r: BriefingRequest, deadline: number): Promise<string> {
   if (!apifyConfigured()) return "Skipped: APIFY_TOKEN isn't set, so social handles come only from web sources.";
   const city = r.place.toLowerCase();
-  const terms = [`${city} food`, `${city} music`, `${city} art`, `${city} culture`, `${city} restaurants`];
+  const terms = [`${city} chef`, `${city} food writer`, `${city} artist`, `${city} dj`, `${city} gallery`, `${city} culture`];
+  const searchDeadline = Math.min(deadline, Date.now() + 90_000);
   const results = await Promise.allSettled([
-    searchInstagramAccounts(terms, 8, deadline),
-    searchTikTokAccounts(terms.slice(0, 3), 6, deadline),
+    searchInstagramAccounts(terms, 8, searchDeadline),
+    searchTikTokAccounts([`${city} food`, `${city} music`, `${city} art`], 6, searchDeadline),
   ]);
   let costUsd = 0;
   const accounts: SocialAccount[] = [];
@@ -192,6 +193,21 @@ export async function researchSocial(r: BriefingRequest, deadline: number): Prom
       accounts.push(...res.value.accounts);
     } else {
       console.error("[briefings] social search failed:", res.reason instanceof Error ? res.reason.message : res.reason);
+    }
+  }
+  // Instagram's search returns handles without follower counts; the profile lookup fills them in.
+  const igHandles = Array.from(new Set(accounts.filter((a) => a.platform === "instagram").map((a) => a.handle))).slice(0, 40);
+  if (igHandles.length) {
+    try {
+      const looked = await lookupInstagramProfiles(igHandles, deadline);
+      costUsd += looked.costUsd;
+      const byHandle = new Map(looked.accounts.map((a) => [a.handle, a]));
+      for (const a of accounts) {
+        const full = a.platform === "instagram" ? byHandle.get(a.handle) : undefined;
+        if (full) Object.assign(a, { name: full.name ?? a.name, bio: full.bio ?? a.bio, followers: full.followers, verified: full.verified });
+      }
+    } catch (error) {
+      console.error("[briefings] Instagram profile lookup failed:", error instanceof Error ? error.message : error);
     }
   }
   const seen = new Set<string>();

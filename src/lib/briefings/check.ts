@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { apifyConfigured, lookupInstagramProfiles } from "./apify";
 import { CHECKER_MODEL, structured } from "./llm";
-import { addCost, briefingsDb, getSources, latestBriefing } from "./store";
+import { addCost, addSources, briefingsDb, getSources, latestBriefing } from "./store";
 import {
   LIST_SECTIONS,
   type BriefingRequest,
@@ -108,11 +108,29 @@ export async function checkBriefing(r: BriefingRequest, deadline: number): Promi
           Math.min(deadline, Date.now() + 120_000),
         );
         apifyCost = costUsd;
+        // The lookups become sources, so the support check can see who the account is and its reach.
+        const saved = await addSources(
+          r.id,
+          accounts.map((a) => ({
+            url: a.url,
+            title: `${a.name ?? a.handle} (@${a.handle}) on Instagram`,
+            publisher: "Instagram",
+            publishedDate: null,
+            excerpt: [a.bio, a.followers != null ? `${a.followers.toLocaleString("en-GB")} followers` : null].filter(Boolean).join(" · ") || null,
+            kind: "social" as const,
+            meta: { section: "influencers", platform: "instagram", handle: a.handle, followers: a.followers, verified: a.verified, term: "lookup" },
+          })),
+        );
+        const sourceFor = new Map(saved.map((s) => [String(s.meta.handle), s]));
+        for (const s of saved) byKey.set(s.key, s);
         const found = new Map(accounts.map((a) => [a.handle, a]));
         for (const p of toLookUp) {
-          const a = found.get((p.handle as string).toLowerCase().replace(/^@/, ""));
+          const handle = (p.handle as string).toLowerCase().replace(/^@/, "");
+          const a = found.get(handle);
           p.verified = Boolean(a);
           p.followers = a?.followers ?? null;
+          const s = sourceFor.get(handle);
+          if (s && !p.sources.includes(s.key)) p.sources.push(s.key);
           if (!a) flag(p.id, `Instagram handle @${p.handle} couldn't be found`);
         }
       } catch (error) {
@@ -128,13 +146,24 @@ export async function checkBriefing(r: BriefingRequest, deadline: number): Promi
   for (const { item } of items) for (const issue of voiceIssues(claimText("", item))) flag(item.id, issue);
 
   // 5. Each claim is supported by what its sources say.
-  const excerpt = (s: BriefingSource) => `${s.title ?? ""} ${s.excerpt ?? ""}`.replace(/\s+/g, " ").slice(0, 700);
+  // The checker sees the same evidence the writer had: each cited source once, with full page text where held.
+  const pages = r.progress.pages ?? {};
   const checkable = items.filter(({ item }) => item.sources.length);
-  const prompt = `Check each claim against the excerpts from its cited sources. "supported" means the excerpts state it; "partial" means some details (a number, date, name or place) aren't in them; "unsupported" means they don't back it up. Social profile sources support a person's handle, bio and follower count. Public-holiday sources support holiday dates.
+  const cited = Array.from(new Set(checkable.flatMap(({ item }) => item.sources)));
+  const evidence = cited
+    .map((k) => {
+      const s = byKey.get(k) as BriefingSource;
+      const text = [s.title, s.excerpt, pages[k] ? `Full text: ${pages[k].slice(0, 5000)}` : null].filter(Boolean).join("\n");
+      return `[${k}] ${s.kind}${s.publishedDate ? ` · ${s.publishedDate}` : ""}\n${text}`;
+    })
+    .join("\n\n");
+  const prompt = `Check each claim against the evidence from its cited sources. Writers paraphrase, so judge the facts (names, numbers, dates, places, events), not the wording. "supported": the cited evidence states the facts. "partial": a specific fact (a number, date, price, venue or name) isn't in the cited evidence. "unsupported": the cited evidence doesn't back the claim up. Social profile sources support a person's handle, bio and follower count. Public-holiday sources support holiday dates.
 
-${checkable
-  .map(({ section, item }) => `CLAIM ${item.id}\n${claimText(section, item)}\n${item.sources.map((k) => `[${k}] ${excerpt(byKey.get(k) as BriefingSource)}`).join("\n")}`)
-  .join("\n\n")}`;
+EVIDENCE
+${evidence}
+
+CLAIMS
+${checkable.map(({ section, item }) => `${item.id} (cites ${item.sources.join(", ")}): ${claimText(section, item)}`).join("\n")}`;
   const verdicts = new Map<string, { verdict: string; note: string }>();
   let llm = { costUsd: 0, inputTokens: 0, outputTokens: 0 };
   if (checkable.length) {
@@ -165,6 +194,11 @@ ${checkable
   }
   const share = items.length ? high / items.length : 0;
   const overall: Confidence = share >= 0.8 ? "high" : share >= 0.55 ? "medium" : "low";
+  sections.notes = [
+    ...voiceIssues(r.progress.draftSummary ?? "").map((n) => `Summary: ${n}`),
+    ...voiceIssues(sections.snapshot.text).map((n) => `Snapshot: ${n}`),
+    ...(sections.snapshot.sources.length ? [] : ["Snapshot: no source cited"]),
+  ];
 
   const previous = await latestBriefing(r.id);
   const db = briefingsDb();

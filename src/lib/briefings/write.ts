@@ -41,7 +41,11 @@ const SYSTEM = `You are Culturin's culture researcher and writer. You turn resea
 
 ${VOICE_RULES}
 
-Citations: every item must list the source keys (like "S4") whose evidence supports it. Use only keys from the evidence. If the evidence doesn't support something, leave it out.`;
+Citations: every item must list the source keys (like "S4") whose evidence supports it. Use only keys from the evidence.
+
+Accuracy: state only facts the cited evidence gives. Leave out any price, venue, date, number, ranking, distance or name you can't point to in the evidence, even if you believe it is true. A shorter item that is fully sourced beats a richer one that isn't. Give a person's reach only from a follower count in the evidence.
+
+The buyer's brief may use words the voice rules ban (such as "activation"). Never repeat them: write "moment", "room" or "night" instead.`;
 
 const withIds = <T extends object>(prefix: string, items: T[]) => items.map((item, i) => ({ id: `${prefix}-${i + 1}`, ...item }));
 

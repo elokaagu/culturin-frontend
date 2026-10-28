@@ -340,6 +340,13 @@ export function BriefingReviewClient({ request: r, briefing: b, sources, curator
                 ? `${pending} flagged item${pending === 1 ? "" : "s"} need${pending === 1 ? "s" : ""} a decision before approval: keep or remove each one, editing as you go.`
                 : "Every item has a decision. Edit anything you like, then approve below."}
             </p>
+            {sections.notes?.length ? (
+              <ul className="m-0 list-disc pl-5 text-sm text-[color:var(--c-accent)]">
+                {sections.notes.map((n) => (
+                  <li key={n}>{n}</li>
+                ))}
+              </ul>
+            ) : null}
             <label className="flex flex-col gap-1.5 text-sm">
               <span className={studioMutedClass}>Summary</span>
               <textarea rows={2} value={summary} disabled={locked} onChange={(e) => (setSummary(e.target.value), setDirty(true))} className={studioFieldInputClass} />
